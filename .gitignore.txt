@@ -12,3 +12,4 @@ __pycache__/
 # Ignore IDE settings
 .idea/
 .vscode/
+.idea/
