@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>Home</title>
+</head>
+<body>
+    <h1>Welcome to My Project!</h1>
+    <h2>My name is Guha Mahesh</h2>
+    <p>These are some basic tools that you can use in your life.</p>
+
+    <a href="{{ url_for('class_average_calculator') }}" class="futon">Class Average Calculator</a>
+    <br>
+    <a href="{{ url_for('investment_portfolio') }}" class="futon">Investment Portfolio Tracker</a> <!-- Change highlighted here -->
+</body>
+</html>
