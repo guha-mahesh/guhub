@@ -6,8 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="8d999a08-17ae-4051-ad6a-e53d48a3efea" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my_flask_app/static/market_AAPL.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/my_flask_app/static/market_AMZN.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
