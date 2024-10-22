@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Market Graph</title>
+</head>
+<body>
+  <h>Market Graph showing total dollar value traded over time!</h>
+  <form method="GET" action="{{ url_for('market_graph_ticker') }}">
+        <label for="ticker">Enter your investment's abbreviation:</label>
+        <input type="text" id="ticker" name="ticker" required>
+        <br>
+        <input type="submit" value="Generate Graph">
+  </form>
+    <h2>Your graph for {{ticker}}:</h2>
+    <img src="{{ url_for('static', filename='market_' + ticker + '.png') }}" alt="Market Graph">
+    <br>
+    <a href="{{ url_for('home') }}" class="futon">Go Back to Home</a>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <title>Home</title>
 </head>
 <body>
@@ -14,5 +14,7 @@
     <a href="{{ url_for('class_average_calculator') }}" class="futon">Class Average Calculator</a>
     <br>
     <a href="{{ url_for('investment_portfolio') }}" class="futon">Investment Portfolio Tracker</a> <!-- Change highlighted here -->
+    <br>
+    <a href="{{ url_for('market_graph_ticker') }}" class="futon">Market Grapher</a>
 </body>
 </html>

@@ -3,21 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <title>Investment Portfolio</title>
 </head>
 <body>
-    <h1>Investment Portfolio Data</h1>
+    <h1 class="catty">Investment Portfolio Data</h1>
     <p>This page will display data for your investments.</p>
 
     <form method="GET" action="{{ url_for('investment_portfolio') }}">
         <label for="investments">Enter your investment's abbreviations (comma-separated):</label>
         <input type="text" id="investments" name="investments" required>
+        <br>
+        <label for="timeperiod">What time increment would you like data for?</label>
+        <input type ="text" id="timeperiod" name = "timeperiod" required>
         <button type="submit" class="button">Submit Info</button>
+
     </form>
 
-    {% if alldata %}
+
         <h2>Your Investments:</h2>
+        {% if alldata %}
         <table>
             <thead>
                 <tr>
@@ -43,9 +48,12 @@
                 </tr>
                 {% endfor %}
             </tbody>
-        </table>
+        </table>x
     {% else %}
         <h2>No investments data available.</h2>
     {% endif %}
+    <br>
+     <a href="{{ url_for('home') }}" class="futon">Go Back to Home</a>
+
 </body>
 </html>
