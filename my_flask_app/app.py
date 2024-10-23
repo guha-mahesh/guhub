@@ -48,7 +48,7 @@ def investment_portfolio():
     alldata = []
     for item in investments_list:
         try:
-            stock_data = get_stock_price(item,timeperiod)
+            stock_data = get_stock_price(item)
             latest_timestamp = next(iter(stock_data))  # Get the first key (most recent time)
             latest_data = stock_data[latest_timestamp]
             alldata.append({
@@ -70,11 +70,11 @@ def investment_portfolio():
 
 
 
-def get_stock_price(symbol, timeperiod):
-    url = f'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&interval={timeperiod}min&apikey=QFZPU1WC5HF1G598'
+def get_stock_price(symbol):
+    url = f'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&interval=5min&apikey=QFZPU1WC5HF1G598'
     response = requests.get(url)
     data = response.json()
-    return data.get(f'Time Series ({timeperiod}min)', {})  # Use .get to avoid KeyError
+    return data.get(f'Time Series (5min)', {})  # Use .get to avoid KeyError
 
     
 
