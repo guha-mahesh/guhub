@@ -178,20 +178,17 @@ def market_graph_ticker():
     months = []
     for row in grouped_lists:
         months.append(row[0][0:7])
-        try:
-            plt.clf()
-            plt.plot(months, max_cap_per_month, color="sienna")
-            y_ticks = range(0, int(max(max_cap_per_month)) + 100_000_000_000, 100_000_000_000)
-            plt.yticks(y_ticks)
-            plt.xlabel("time")
-            plt.ylabel("Dollar Value of Stock Traded (100bil)")
-            plt.gca().set_xticks([])
-            plt.savefig(os.path.join('static', f"market_{ticker}.png"))
-            os.remove(f'{ticker}_historical_data_5years.csv')
-            os.remove('static', f"market_{ticker}.png")
+    plt.clf()
+    plt.plot(months, max_cap_per_month, color="sienna")
+    y_ticks = range(0, int(max(max_cap_per_month)) + 100_000_000_000, 100_000_000_000)
+    plt.yticks(y_ticks)
+    plt.xlabel("time")
+    plt.ylabel("Dollar Value of Stock Traded (100bil)")
+    plt.gca().set_xticks([])
+    plt.savefig(os.path.join('static', f"market_{ticker}.png"))
+    os.remove(f'{ticker}_historical_data_5years.csv')
 
-        except Exception as e:
-            print(f"An error occurred while plotting: {e}")
+
 
 
 
