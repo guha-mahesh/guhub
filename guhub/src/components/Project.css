@@ -1,0 +1,55 @@
+.project-card {
+    font-size: .5rem;
+    width: 10rem;
+    height: 15rem;
+
+    background-color: black;
+    border-radius: 1rem;
+    padding: 1rem;
+
+
+}
+
+.bp {
+    padding-right: 1rem;
+    display: none;
+    font-size: .9rem;
+
+
+}
+
+.projImage {
+    width: 10rem;
+    height: 10rem;
+
+
+
+}
+
+.project-card:hover .bp {
+    display: block;
+}
+
+.project-card:hover {
+    display: block;
+    height: auto;
+    background-color: rgb(68, 65, 65)
+}
+
+.projTitle {
+    height: 2rem;
+}
+
+
+.project-flex {
+    padding-top: 10rem;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.bullet {
+    padding-bottom: 1rem;
+}
