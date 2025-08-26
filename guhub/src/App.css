@@ -85,7 +85,10 @@ body.scrolled {
 }
 
 .linkLabel {
-  padding-left: 0.5em;
+  position: relative;
+  left: 1em;
+  top: auto;
+
 
   color: #FFFDD0;
 }
@@ -325,6 +328,7 @@ body.scrolled {
 
 .iconLinkScroll {
   position: fixed;
+  flex-wrap: wrap;
 
 
 
@@ -339,6 +343,19 @@ body.scrolled {
   z-index: 3;
 
 }
+
+/*display: flex;
+  flex-wrap: wrap;
+  font-size: clamp(0.7rem, 1vw, 1rem);
+
+  width: 12rem;
+  margin: 1em 1em;
+  padding: 1em;
+  border-radius: 1em;
+  background-color: #123524;
+  text-align: left;
+  position: fixed;
+  z-index: 3;*/
 
 
 .iconLinkScroll:hover {
