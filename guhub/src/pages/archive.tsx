@@ -1,17 +1,64 @@
 
+import './Archive.css'
 
-const archive = () => {
+
+const Archive = () => {
   return (
-    <div><h1 className="animate__animated animate__fadeInDown animate__slow">
-  Guha Mahesh
-</h1>
-<h5> 346-368-4903 • guhamaheshv@gmail.com</h5>
-      <h4 className="mb-1">📍 Boston, MA  📍 Houston, TX</h4>
-      <h2 className="mb-2">Honors Data Science + Fintech student at Northeastern University</h2>
-      <h3 className="italic text-gray-500 max-w-lg mb-6">
-        Someone smarter than you disagrees with you. Don't carry your opinions as stone walls
-      </h3></div>
+    <>
+    <div className = "table1" >
+        <div className = "navHeader">
+          <h1>Languages</h1>
+          <div className = "listCont">
+             <ul>
+        <li>Python</li>
+        <li>Javascript</li>
+        <li>Typescript</li>
+        <li>SQL</li>
+
+
+
+      </ul>
+          </div>
+        </div>
+        <div className = "navHeader">
+          <h1>Libraries</h1>
+          <div className = "listCont">
+             <ul>
+        <li>React</li>
+        <li>Pandas</li>
+        <li>Axios</li>
+        <li>scikit-learn</li>
+        <li>numpy</li>
+        <li>plotly</li>
+        <li>matplotlib</li>
+        <li>Flask</li>
+
+
+
+      </ul>
+          </div>
+        </div>
+       <div className = "navHeader">
+          <h1>Tools</h1>
+          <div className = "listCont">
+             <ul>
+        <li>GitHub</li>
+        <li>Docker</li>
+        <li>VSCode</li>
+        <li>Node.js</li>
+        <li>MySQL</li>
+
+
+
+      </ul>
+          </div>
+        </div>
+
+
+    </div>
+    
+    </>
   )
 }
 
-export default archive
+export default Archive

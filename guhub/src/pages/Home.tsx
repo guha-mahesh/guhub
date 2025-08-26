@@ -5,6 +5,7 @@ import clownfish from '../assets/clownfish.png';
 import bubble from '../assets/bubbles.png';
 import Project from '../components/Project';
 import ribbon from '../assets/background2.png'
+import Archive from './archive';
 
 
 const Home = () => {
@@ -21,7 +22,7 @@ const Home = () => {
    useEffect(() => {
     const handleScroll = () => {
       
-      if (window.scrollY >= 830) {
+      if (window.scrollY >= 920) {
         setScrolled(true)
         document.body.classList.add("scrolled");
       } else {
@@ -62,10 +63,10 @@ const Home = () => {
 
 </div>
 </div>
-<img src={jellyfish} alt="Jellyfish" className={!scrolled?"jellyfish aero": "hidden"} />
-<img src={clownfish} alt="Clownfish" className={!scrolled?"clownfish aero":"hidden"} />
-<img src={bubble} alt="Bubble" className={!scrolled?"bubble aero":"hidden"} />
-<img src={ribbon} alt="ribbon" className={!scrolled?"hide":"ribbon aero"} />
+<img src={jellyfish} alt="Jellyfish" className={!scrolled?"jellyfish aero": "hiddenImg"} />
+<img src={clownfish} alt="Clownfish" className={!scrolled?"clownfish aero":"hiddenImg"} />
+<img src={bubble} alt="Bubble" className={!scrolled?"bubble aero":"hiddenImg"} />
+<img src={ribbon} alt="ribbon" className={!scrolled?"hiddenImg":"ribbon aero"} />
 
 
 
@@ -136,61 +137,10 @@ const Home = () => {
           <span className = "linkLabel">Instagram</span>
         </a>
       </div>
-  <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-  <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br></br><br/><br/><br/><br/><br/><br/><br/>
-  <h1 className ="border"><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span></h1>
-    <div className = "table">
-  <div className = "miniNav">
-    <div className ="navItem">Languages</div>
-    <div className ="navItem">Libraries</div>
-    <div className="navItem" style={{"paddingRight": "1rem"}}>Tools</div>
-
-  </div>
-  <div className = "navContent">
-    <div className = 'navItem'>
-      <ul>
-        <li>Python</li>
-        <li>Javascript</li>
-        <li>Typescript</li>
-        <li>SQL</li>
-
-
-
-      </ul>
-    </div>
-    <div className = 'navItem'>
-      <ul>
-        <li>React</li>
-        <li>Pandas</li>
-        <li>Axios</li>
-        <li>scikit-learn</li>
-        <li>numpy</li>
-        <li>plotly</li>
-        <li>matplotlib</li>
-        <li>Flask</li>
-
-
-
-      </ul>
-    </div>
-    <div className = 'navItem'>
-      <ul>
-        <li>GitHub</li>
-        <li>Docker</li>
-        <li>VSCode</li>
-        <li>Node.js</li>
-        <li>MySQL</li>
-
-
-
-      </ul>
-    </div>
-
-
-  </div>
-
+  <br/><br/><br/><br/>
+ 
   
-  </div>
+    
 
   <div className = {!scrolled?"AboutMeNS":"AboutMe"}>
     <h1 className = {!scrolled?"Aboutme":"aboutMe"}>About Me</h1>
@@ -221,9 +171,12 @@ const Home = () => {
 "Leveraged AWS S3 to store user-submitted image evidence validating completed predictions"
 
 ]}  link="https://github.com/guha-mahesh/Monkroyer"/>
+</div>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<Archive></Archive>
 <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    
   
-  </div>
     </>
   )
 }

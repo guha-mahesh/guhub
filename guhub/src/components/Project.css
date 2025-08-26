@@ -42,12 +42,16 @@
 
 
 .project-flex {
-    padding-top: 10rem;
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
     gap: 2rem;
-    flex-wrap: wrap;
+    justify-items: center;
+
+    padding-top: 10rem;
+
+
+
+
 }
 
 .bullet {
