@@ -57,6 +57,7 @@ const Home = () => {
     <FaPhone style={{ marginRight: '0.5rem' }} /> 346-368-4903
   </a>
   <a href="mailto:guhamaheshv@gmail.com" style={{ textDecoration: 'none', color: 'inherit' }}>
+    <br className = "envelopeBr"></br>
     <FaEnvelope style={{ marginRight: '0.5rem' }} /> guhamaheshv@gmail.com
   </a>
 </h5>

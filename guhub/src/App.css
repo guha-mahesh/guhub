@@ -64,6 +64,7 @@ body.scrolled {
   background-color: #123524;
   text-align: left;
   position: fixed;
+  z-index: 3;
 
 }
 
@@ -94,6 +95,7 @@ body.scrolled {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  z-index: 2;
 
 }
 
@@ -112,6 +114,7 @@ body.scrolled {
   border: none;
   background: black;
   animation: showAfterDelay .5s ease-in 1s forwards;
+  z-index: 3;
 }
 
 .hidden a {
@@ -294,7 +297,9 @@ body.scrolled {
   }
 }
 
-
+.envelopeBr {
+  display: none;
+}
 
 
 
@@ -331,6 +336,7 @@ body.scrolled {
   border-radius: 1em;
   background-color: #ad3e23;
   text-align: left;
+  z-index: 3;
 
 }
 
@@ -521,5 +527,69 @@ body.scrolled {
 
 
   }
+
+  .funky-links>a:nth-child(2) {
+    position: fixed;
+    --end-left: 1vw;
+    --end-top: 76vh;
+    --start-left: 80vw;
+    --start-top: 76vh;
+    --endleft: 1vw;
+    --endtop: 15vh;
+    left: 80vw;
+    top: 76vh;
+
+    animation: slideInThenUp 0.5s ease-out forwards;
+
+  }
+
+
+
+  .funky-links>a:nth-child(3) {
+    position: fixed;
+    --end-left: 1vw;
+    --end-top: 76vh;
+    --endleft: 1vw;
+    --endtop: 30vh;
+    --start-left: 100vw;
+    --start-top: 76vh;
+    left: 100vw;
+    top: 76vh;
+    animation: slideInThenUp 0.5s ease-out .2s forwards;
+
+  }
+
+  .funky-links>a:nth-child(4) {
+    position: fixed;
+    --end-left: 1vw;
+    --end-top: 76vh;
+    --start-left: 115vw;
+    --start-top: 76vh;
+    --endleft: 1vw;
+    --endtop: 45vh;
+    left: 115vw;
+    top: 76vh;
+    animation: slideInThenUp 0.5s ease-out .4s forwards;
+
+  }
+
+  .funky-links>a:nth-child(5) {
+    position: fixed;
+    --end-left: 1vw;
+    --end-top: 76vh;
+    --start-left: 130vw;
+    --start-top: 76vh;
+    --endleft: 1vw;
+    --endtop: 60vh;
+    left: 130vw;
+    top: 76vh;
+    animation: slideInThenUp 0.5s ease-out .6s forwards;
+
+  }
+
+  .envelopeBr {
+    display: block;
+  }
+
 
 }
