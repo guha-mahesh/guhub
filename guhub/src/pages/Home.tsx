@@ -5,18 +5,36 @@ import clownfish from '../assets/clownfish.png';
 import bubble from '../assets/bubbles.png';
 import Project from '../components/Project';
 import ribbon from '../assets/background2.png'
+import { useMediaQuery } from 'react-responsive';
 import Archive from './archive';
 
 
 const Home = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(true);
+
+
+  const [isDesktop, setIsDesktop] = useState(true)
+
+  
   const [scrolled,setScrolled] = useState(false)
-  /*const [lang, setLang] = useState(true)
-  const [lib, setLib] = useState(true)
-  const [tool, setTool] = useState(true)*/
+  const [isMenuOpen, setIsMenuOpen] = useState(false);  
  
+ 
+ useEffect(() => {
+    const checkIsDesktop = () => {
+      setIsDesktop(window.innerWidth >= 768);
+    };
 
 
+    checkIsDesktop();
+    
+
+
+    window.addEventListener('resize', checkIsDesktop);
+    return () => window.removeEventListener('resize', checkIsDesktop);
+  }, []);
+useEffect(() => {
+  setIsMenuOpen(isDesktop);
+}, [isDesktop]);
 
 
    useEffect(() => {
