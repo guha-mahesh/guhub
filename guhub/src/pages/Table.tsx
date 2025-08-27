@@ -1,8 +1,8 @@
 
-import './Archive.css'
+import './Table.css'
 
 
-const Archive = () => {
+const Table = () => {
   return (
     <>
     <div className = "table1" >
@@ -61,4 +61,4 @@ const Archive = () => {
   )
 }
 
-export default Archive
+export default Table

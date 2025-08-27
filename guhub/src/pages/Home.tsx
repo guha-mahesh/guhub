@@ -5,7 +5,7 @@ import clownfish from '../assets/clownfish.png';
 import bubble from '../assets/bubbles.png';
 import Project from '../components/Project';
 import ribbon from '../assets/background2.png'
-import Archive from './Archive';
+import Archive from './Table';
 
 
 
