@@ -158,11 +158,11 @@ const Portfolio: React.FC = () => {
       link: "https://github.com/guha-mahesh/ClubStop"
     },
     {
-      title: "Monkroyer",
-      description: "Gamified real-world predictions app with interactive Monkey Avatar, utilizing Ollama LLM and AWS S3 for image storage.",
-      tech: ["React", "Express.js", "MySQL", "AWS S3", "Ollama LLM"],
+      title: "FlightScope",
+      description: "Developed a web-app which helps birders know the optimal conditions for viewing specific birds.",
+      tech: ["React", "Flask", "pandas", "NumPy", "Poisson Distribution"],
       gradient: "from-green-500 to-teal-500",
-      link: "https://github.com/guha-mahesh/Monkroyer"
+      link: "https://github.com/guha-mahesh/FlightScope"
     }
   ];
 
