@@ -249,8 +249,6 @@ const Portfolio: React.FC = () => {
             );
           })}
         </div>
-/Users/guhamahesh/VSCODE/guhub/guhub/public/GuhaMaheshResume.pdf
-/Users/guhamahesh/VSCODE/guhub/guhub/src/pages/Home.tsx
 
         <div className={`fade-in ${isLoaded ? 'stagger-5' : ''}`}>
           <a href="/GuhaMaheshResume.pdf" download className="download-btn">
