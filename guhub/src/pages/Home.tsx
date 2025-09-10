@@ -173,9 +173,11 @@ const Portfolio: React.FC = () => {
   ];
 
   const skills: Skill[] = [
-    { icon: Code, name: "Full-Stack Development", level: 90 },
+    { icon: Globe, name: "Data Science", level: 88 },
     { icon: Database, name: "Machine Learning", level: 85 },
-    { icon: Globe, name: "Data Science", level: 88 }
+    { icon: Code, name: "Full-Stack Development", level: 90 }
+    
+    
   ];
 
   const scrollToSection = (sectionId: string): void => {
