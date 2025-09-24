@@ -105,6 +105,7 @@ const PortfolioCardDeck: React.FC = () => {
   };
 
   const handleDragEnd = () => {
+    console.log(dragOffset);
     setDraggedProject(null);
     setDragOffset({ x: 0, y: 0 });
   };
