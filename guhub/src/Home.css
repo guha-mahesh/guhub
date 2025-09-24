@@ -196,3 +196,22 @@
     }
 
 }
+
+.contactInfo {
+    display: flex;
+    gap: 1vw;
+    margin-top: 1vw;
+    transform: translateY(10px);
+    transition: transform 1s ease;
+    animation: slideIn 1.5s ease forwards;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(0px);
+    }
+
+    to {
+        transform: translateY(-10px);
+    }
+}

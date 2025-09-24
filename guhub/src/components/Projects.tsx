@@ -186,7 +186,7 @@ const PortfolioCardDeck: React.FC = () => {
     return (
       <div className="mobilePortfolioSection">
         <div className="mobilePortfolioContainer">
-          <h1 className="mobilePortfolioTitle">Portfolio Projects</h1>
+          <h1 className="mobilePortfolioTitle">Some Stuff I've Been Working On</h1>
           <div className="mobileProjectsGrid">
             {initialProjects.map((project) => (
               <MobileProjectCard key={project.id} project={project} />
@@ -208,7 +208,7 @@ const PortfolioCardDeck: React.FC = () => {
       }
     >
       <div className="portfolioContainer">
-        <h1 className="portfolioTitle">Portfolio Projects</h1>
+        <h1 className="portfolioTitle">Some Stuff I've Been Working On</h1>
         
         <div className="portfolioGrid">
           <div className="deckSection">
