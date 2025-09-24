@@ -1,21 +1,24 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Home from './pages/Home'
-
-
-import './App.css'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import PhysicsScene from "./Home";
 
 function App() {
 
 
   return (
     <>
-      <Router>
+    <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
 
-        
-        </Routes>  
-      </Router>
+
+        <Route path ="/" element = {<PhysicsScene/>}/>
+      </Routes>
+
+
+
+    </Router>
+    
+    
+     
     </>
   )
 }

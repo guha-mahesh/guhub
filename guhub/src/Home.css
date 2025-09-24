@@ -1,0 +1,182 @@
+.HomeScreen {
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+
+
+
+
+    background-color: black;
+    background-position: center;
+
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+
+
+
+
+}
+
+.HomeScreen * {
+    color: white;
+}
+
+.HomeScreen::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+
+    border-top: 50vh solid transparent;
+    border-bottom: 50vh solid transparent;
+    border-left: 10vw solid #123524;
+}
+
+
+.Title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.flip {
+    display: inline-block;
+    font-size: 6rem;
+    font-weight: bold;
+
+
+    animation: spin 1s ease-out forwards;
+}
+
+.flip:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.flip:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.flip:nth-child(3) {
+    animation-delay: 0.2s;
+}
+
+.flip:nth-child(4) {
+    animation-delay: 0.3s;
+}
+
+.flip:nth-child(5) {
+    animation-delay: 0.4s;
+}
+
+.flip:nth-child(6) {
+    animation-delay: 0.5s;
+}
+
+.flip:nth-child(7) {
+    animation-delay: 0.6s;
+}
+
+.flip:nth-child(8) {
+    animation-delay: 0.7s;
+}
+
+.flip:nth-child(9) {
+    animation-delay: 0.8s;
+}
+
+.flip:nth-child(10) {
+    animation-delay: 0.9s;
+}
+
+.flip:nth-child(11) {
+    animation-delay: 1s;
+}
+
+@keyframes spin {
+    from {
+        transform: rotateY(0deg);
+    }
+
+    to {
+        transform: rotateY(360deg);
+    }
+}
+
+
+
+
+.linkButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+    color: #123524;
+    border-radius: 3vw;
+    width: 10vw;
+    height: 10vh;
+    font-size: 2rem;
+    border: 3px solid #123524;
+    background-color: black;
+    transition: transform .3s ease-out;
+
+
+
+
+}
+
+
+.linkButtons {
+    position: absolute;
+    display: flex;
+    align-items: center;
+
+    bottom: 3rem;
+    gap: 1rem;
+
+}
+
+.linkButton svg {
+
+    fill: #123524;
+
+}
+
+
+.linkButton:hover {
+    border: 3px solid #268356;
+    transform: translateY(-12px);
+}
+
+.linkButton:hover svg {
+    fill: #268356;
+
+
+}
+
+.tooltip {
+    display: none;
+    position: absolute;
+    font-size: .8rem;
+    top: -5vh;
+    text-wrap: nowrap;
+    text-align: center;
+
+
+}
+
+
+.linkButton:hover .tooltip {
+
+    display: block;
+}
+
+
+.Projects {
+    background: rgb(141, 214, 136);
+}
