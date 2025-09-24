@@ -20,7 +20,7 @@ interface ProjectCardProps {
   style?: React.CSSProperties;
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ project, isDragging, onDragStart, onDragEnd, style }) => {
+export const ProjectCard: React.FC<ProjectCardProps> = ({ project, isDragging, onDragStart, onDragEnd, style }) => {
   return (
     <div
       className={`projectCard ${isDragging ? 'dragging' : ''} ${project.color}`}
@@ -47,6 +47,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, isDragging, onDragSt
     </div>
   );
 };
+
 
 
 const MobileProjectCard: React.FC<{ project: Project }> = ({ project }) => {
