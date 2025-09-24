@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { FaGithub } from 'react-icons/fa';
 import './Portfolio.css';
 
@@ -32,7 +32,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, isDragging, onDragSt
       <div className="cardContent">
         <div className="cardInfo">
           <h3 className="cardTitle">{project.title}</h3>
-
         </div>
         <div className="cardFooter">
           <div className="techTags">
@@ -49,50 +48,86 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, isDragging, onDragSt
   );
 };
 
+
+const MobileProjectCard: React.FC<{ project: Project }> = ({ project }) => {
+  return (
+    <div className="mobileProjectCard">
+      <h3 className="mobileCardTitle">{project.title}</h3>
+      <p className="mobileCardDescription">{project.description}</p>
+      <div className="mobileCardTech">
+        {project.tech.map((tech, index) => (
+          <span key={index} className="mobileTechTag">
+            {tech}
+          </span>
+        ))}
+      </div>
+      <a href={project.github} target="_blank" rel="noopener noreferrer" className="mobileGithubLink">
+        <FaGithub /> View on GitHub
+      </a>
+    </div>
+  );
+};
+
 const PortfolioCardDeck: React.FC = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
   const initialProjects = [
-  {
-    id: 1,
-    title: "BioClock",
-    description: "Built a CNN that predicts biodiversity from satellite images, achieving 80% accuracy using augmented datasets.",
-    tech: ["Python", "PyTorch", "Google Earth Engine", "Torchvision"],
-    color: "greenGradient",
-    image: "BioClock.png",
-    github: "https://github.com/guha-mahesh/BioClock"
-  },
-  {
-    id: 2,
-    title: "FlightScope",
-    description: "Created a web app recommending optimal birdwatching conditions using predictive Poisson models for species sightings.",
-    tech: ["Python", "Flask", "React", "Scikit-learn"],
-    color: "blueGradient",
-    image: "flightscope.png",
-    github: "https://github.com/guha-mahesh/FlightScope"
-  },
-  {
-    id: 3,
-    title: "Policy Playground",
-    description: "Developed regression-based models to forecast financial markets and a policy recommender system for better user engagement.",
-    tech: ["Python", "Flask", "MySQL", "Scikit-learn"],
-    color: "purpleGradient",
-    image: "PolicyPlayground.png",
-    github: "https://github.com/guha-mahesh/PolicyPlayground"
-  },
-  {
-    id: 4,
-    title: "ClubStop",
-    description: "Built a full-stack platform for students to discover, rate, and manage university clubs with secure authentication.",
-    tech: ["React", "TypeScript", "MySQL", "Express.js"],
-    color: "orangeGradient",
-    image: "ClubStop.png",
-    github: "https://github.com/guha-mahesh/ClubStop"
-  }
-];
+    {
+      id: 1,
+      title: "BioClock",
+      description: "Built a CNN that predicts biodiversity from satellite images, achieving 80% accuracy using augmented datasets.",
+      tech: ["Python", "PyTorch", "Google Earth Engine", "Torchvision"],
+      color: "greenGradient",
+      image: "BioClock.png",
+      github: "https://github.com/guha-mahesh/BioClock"
+    },
+    {
+      id: 2,
+      title: "FlightScope",
+      description: "Created a web app recommending optimal birdwatching conditions using predictive Poisson models for species sightings.",
+      tech: ["Python", "Flask", "React", "Scikit-learn"],
+      color: "blueGradient",
+      image: "flightscope.png",
+      github: "https://github.com/guha-mahesh/FlightScope"
+    },
+    {
+      id: 3,
+      title: "Policy Playground",
+      description: "Developed regression-based models to forecast financial markets and a policy recommender system for better user engagement.",
+      tech: ["Python", "Flask", "MySQL", "Scikit-learn"],
+      color: "purpleGradient",
+      image: "PolicyPlayground.png",
+      github: "https://github.com/guha-mahesh/PolicyPlayground"
+    },
+    {
+      id: 4,
+      title: "ClubStop",
+      description: "Built a full-stack platform for students to discover, rate, and manage university clubs with secure authentication.",
+      tech: ["React", "TypeScript", "MySQL", "Express.js"],
+      color: "orangeGradient",
+      image: "ClubStop.png",
+      github: "https://github.com/guha-mahesh/ClubStop"
+    }
+  ];
+
   const [deckProjects, setDeckProjects] = useState<Project[]>(initialProjects);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [draggedProject, setDraggedProject] = useState<Project | null>(null);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const gridRef = useRef<HTMLDivElement>(null);
+
+  
+  useEffect(() => {
+    const checkIfMobile = () => {
+      const isMobileDevice = window.innerWidth <= 768 || 
+                            /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      setIsMobile(isMobileDevice);
+    };
+
+    checkIfMobile();
+    window.addEventListener('resize', checkIfMobile);
+    return () => window.removeEventListener('resize', checkIfMobile);
+  }, []);
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, project: Project) => {
     setDraggedProject(project);
@@ -146,15 +181,32 @@ const PortfolioCardDeck: React.FC = () => {
     }
   };
 
+  
+  if (isMobile) {
+    return (
+      <div className="mobilePortfolioSection">
+        <div className="mobilePortfolioContainer">
+          <h1 className="mobilePortfolioTitle">Portfolio Projects</h1>
+          <div className="mobileProjectsGrid">
+            {initialProjects.map((project) => (
+              <MobileProjectCard key={project.id} project={project} />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  
   return (
     <div
-  className={`portfolioSection ${selectedProject ? "withBackground" : ""}`}
-  style={
-    selectedProject
-      ? { backgroundImage: `url(${selectedProject.image})` }
-      : {}
-  }
->
+      className={`portfolioSection ${selectedProject ? "withBackground" : ""}`}
+      style={
+        selectedProject
+          ? { backgroundImage: `url(${selectedProject.image})` }
+          : {}
+      }
+    >
       <div className="portfolioContainer">
         <h1 className="portfolioTitle">Portfolio Projects</h1>
         
@@ -207,7 +259,6 @@ const PortfolioCardDeck: React.FC = () => {
                     ×
                   </button>
                   <h3 className="selectedProjectTitle">{selectedProject.title}</h3>
-
                   <div className="selectedProjectTech">
                     {selectedProject.tech.map((tech, index) => (
                       <span key={index} className="selectedTechTag">
@@ -217,28 +268,21 @@ const PortfolioCardDeck: React.FC = () => {
                   </div>
                 </div>
               )}
-              
             </div>
-            
-
-
-            
           </div>
-          
-         
         </div>
-        
       </div>
-       {selectedProject && (<div className= "projectLive">
-        
-        {selectedProject.description}
-        <a href={selectedProject.github ?? "#"} target="_blank" rel="noopener noreferrer"><button  className = "linkButton">{<FaGithub/>}</button></a>
-
-
-
-      </div>)}
-
       
+      {selectedProject && (
+        <div className="projectLive">
+          {selectedProject.description}
+          <a href={selectedProject.github ?? "#"} target="_blank" rel="noopener noreferrer">
+            <button className="linkButton">
+              <FaGithub />
+            </button>
+          </a>
+        </div>
+      )}
     </div>
   );
 };
