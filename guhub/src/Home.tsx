@@ -3,7 +3,7 @@ import { useState } from 'react'
 import PortfolioCardDeck from './components/Projects'
 
 import './Home.css'
-import { ProjectCard } from './components/Projects'
+
 
 import LinkButton from './components/LinkButton'
 

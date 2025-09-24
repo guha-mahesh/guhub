@@ -15,7 +15,7 @@ const LinkButton = ({icon}: props) => {
   const linkMap: Record<string, string> = {
     "GitHub": "https://github.com/guha-mahesh",
     "linkedin": "https://linkedin.com/in/guhamahesh",
-    "download": "/GuhaMaheshResumé.pdf" // Path to your resume in the public folder
+    "download": "/GuhaMaheshResumé.pdf" 
   };
 
   const hoverMap: Record<string, string> = {
@@ -28,7 +28,7 @@ const LinkButton = ({icon}: props) => {
   const handleClick = (e: React.MouseEvent) => {
     if (icon === "download") {
       e.preventDefault();
-      // Create a temporary anchor element for download
+      
       const link = document.createElement('a');
       link.href = '/GuhaMaheshResumé.pdf';
       link.download = 'GuhaMaheshResumé.pdf';
