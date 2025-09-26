@@ -1,18 +1,18 @@
-
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import PortfolioCardDeck from './components/Projects'
 
 import './Home.css'
-
 
 import LinkButton from './components/LinkButton'
 
 const Home = () => {
   const [cards, setCards] = useState(true)
+  const [skill, setSkill] = useState(true)
+  const [firstTime,setFirsttime] = useState(true)
 
-
-
-
+  useEffect(()=>{
+    setFirsttime(false)
+  }, [])
 
   return (
     <>
@@ -21,44 +21,41 @@ const Home = () => {
 
       <div className ="Title">
 
-
         <h1> <span className = "flip">G</span><span className = "flip">u</span><span className = "flip">h</span><span className = "flip">a</span> <span className="space">&nbsp;</span> <span className = "flip">M</span><span className = "flip">a</span><span className = "flip">h</span><span className = "flip">e</span><span className = "flip">s</span><span className = "flip">h</span></h1>
         <div className = "contactInfo"><h2>346•368•4903</h2> <h2>guhamaheshv@gmail.com</h2></div>
 
-
       </div>
       
-
-
-      <div className = "linkButtons">
+      <div className =  {`linkButtons ${!skill && ('hidden')}`}>
 
         <LinkButton icon = "GitHub"/>
         <LinkButton icon = "linkedin"/>
         <LinkButton icon = "download"/>
+        {skill && (<span  onClick = {()=>{setSkill(false)}}className= "transitioner">▶</span>)}
+
+      </div>
+       <div className =  {`linkButtons interests ${(skill && !firstTime) && ('hiddenInterests')}`}>
+
+{!skill && (<span  onClick = {()=>{setSkill(true)}}className= "transitioner">◀</span>)}
+        <LinkButton icon = "GitHub"/>
+        <LinkButton icon = "linkedin"/>
+        <LinkButton icon = "download"/>
+        
 
       </div>
 
-      
-    
-      
     </div>
-    <div className = "transition-strip"></div>
-     <div className="projectsHeader">
-    <h2 className="projectsHeaderTitle">Projects</h2>
-    <button 
-      className="linkButton viewToggle" 
-      onClick={() => setCards(!cards)}
-    >
-      {cards ? 'Simple View' : 'Interactive View'}
-    </button>
-  </div>
+
+    
     <div className = "projs">
       
-      {cards && (<PortfolioCardDeck></PortfolioCardDeck>)}
+      {cards && (<PortfolioCardDeck toggleState={setCards}></PortfolioCardDeck>)}
 
       {!cards && (
   <div className="simpleProjectsContainer">
     <div className = "titleBox">
+      <button className= "linkButton toggleState" onClick = {()=>setCards(true)}>View in Cards</button>
+      
     <h1 className="portfolioTitle">Some Stuff I've Been Working On</h1>
     
       </div>

@@ -69,8 +69,13 @@ const MobileProjectCard: React.FC<{ project: Project }> = ({ project }) => {
   );
 };
 
-const PortfolioCardDeck: React.FC = () => {
+interface PortfolioCardDeckProps{
+  toggleState: (value: boolean) => void;
+}
+
+const PortfolioCardDeck: React.FC<PortfolioCardDeckProps> = ({ toggleState }) => {
   const [isMobile, setIsMobile] = useState(false);
+  const [cards, setCards] = useState(true)
 
   const initialProjects = [
     {
@@ -119,6 +124,7 @@ const PortfolioCardDeck: React.FC = () => {
 
   
   useEffect(() => {
+    console.log(cards)
     const checkIfMobile = () => {
       const isMobileDevice = window.innerWidth <= 768 || 
                             /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -209,7 +215,14 @@ const PortfolioCardDeck: React.FC = () => {
       }
     >
       <div className="portfolioContainer">
-        <h1 className="portfolioTitle">Some Stuff I've Been Working On</h1>
+        <h1 className="portfolioTitle">Some Stuff I've Been Working On <button className = "linkButton toggleState"onClick={() => {
+  setCards(prev => {
+    const newValue = !prev;
+    toggleState(newValue);
+    return newValue;
+  });
+}}>View in Block</button></h1>
+       
         
         <div className="portfolioGrid">
           <div className="deckSection">
