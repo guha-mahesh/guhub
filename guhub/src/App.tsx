@@ -1,11 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import PhysicsScene from "./Home";
-
+import Sidebar from "./components/Sidebar";
 function App() {
 
 
   return (
     <>
+    <Sidebar />
     <Router>
       <Routes>
 

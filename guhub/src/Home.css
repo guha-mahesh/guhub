@@ -117,13 +117,6 @@
     transition: transform .3s ease-out;
 }
 
-.linkButtons {
-    position: absolute;
-    display: flex;
-    align-items: center;
-    bottom: 3rem;
-    gap: 1rem;
-}
 
 .linkButton svg {
     fill: #123524;
@@ -319,6 +312,7 @@
 .transitioner {
     color: #123524;
     font-size: 3rem;
+
     cursor: pointer;
 
 }
@@ -350,6 +344,12 @@
 
 .interests {
     animation: slideInLeft 0.5s forwards;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    bottom: 3rem;
+    gap: 1rem;
+    padding-right: 3rem;
 }
 
 @keyframes slideInLeft {
@@ -378,4 +378,27 @@
         transform: translateX(-100vw);
         opacity: 0;
     }
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100vw);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+
+.linkButtons {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    bottom: 3rem;
+    gap: 1rem;
+    padding-left: 3rem;
+    animation: slideInRight 0.5s forwards;
 }
