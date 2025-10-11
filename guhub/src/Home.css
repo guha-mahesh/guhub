@@ -148,48 +148,6 @@
     background: rgb(141, 214, 136);
 }
 
-@media (max-width: 768px) {
-
-    .HomeScreen {
-        padding: 1rem;
-    }
-
-    .HomeScreen::before {
-        display: none
-    }
-
-    .flip {
-        font-size: 2.5rem;
-    }
-
-    .linkButton {
-        width: 20vw;
-        height: 8vh;
-        font-size: 1.2rem;
-        border-radius: 15px;
-    }
-
-
-}
-
-@media (max-width: 480px) {
-
-    .flip {
-        font-size: 2rem;
-    }
-
-    .linkButton {
-        width: 22vw;
-        height: 7vh;
-        font-size: 1rem;
-    }
-
-    .HomeScreen::before {
-        display: none
-    }
-
-}
-
 .contactInfo {
     display: flex;
     gap: 1vw;
@@ -212,10 +170,7 @@
 .simpleProjectsContainer {
     padding: 2rem;
     max-width: 1200px;
-
     margin: 0rem auto;
-
-
 }
 
 .portfolioTitle {
@@ -290,7 +245,6 @@
     background: #374151;
 }
 
-
 .titleBox {
     display: flex;
     gap: 3rem;
@@ -302,27 +256,19 @@
     font-size: 1rem;
 }
 
-
 .projs {
     background-color: black;
-
 }
-
 
 .transitioner {
     color: #123524;
     font-size: 3rem;
-
     cursor: pointer;
-
 }
 
 .transitioner:hover {
     color: #268356;
-
 }
-
-
 
 .linkButtons.hidden {
     animation: slideOutRight 0.5s forwards;
@@ -339,8 +285,6 @@
         opacity: 0;
     }
 }
-
-
 
 .interests {
     animation: slideInLeft 0.5s forwards;
@@ -392,7 +336,6 @@
     }
 }
 
-
 .linkButtons {
     position: absolute;
     display: flex;
@@ -401,4 +344,235 @@
     gap: 1rem;
     padding-left: 3rem;
     animation: slideInRight 0.5s forwards;
+}
+
+.eduSection {
+    padding: 4rem 2rem;
+    width: 100vw;
+    background-color: black;
+}
+
+.sectionHeader {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: #123524;
+}
+
+.eduBox {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.eduTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.eduTop h2 {
+    color: #1f2937;
+    font-size: 1.75rem;
+}
+
+.eduDate {
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.eduDegree {
+    color: #374151;
+    font-size: 1.1rem;
+    margin: 0.5rem 0;
+}
+
+.eduGpa {
+    color: #6b7280;
+    font-size: 0.95rem;
+}
+
+.skillsSection {
+    padding: 4rem 2rem;
+    width: 100vw;
+    background-color: black;
+}
+
+.skillsGrid {
+    display: grid;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.skillCategory {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
+}
+
+.categoryTitle {
+    color: #1f2937;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.skillTags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.skillTag {
+    background: #f3f4f6;
+    color: #374151;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.expSection {
+    padding: 4rem 2rem;
+    width: 100vw;
+    background-color: black;
+}
+
+.expGrid {
+    display: grid;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.expBox {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.expBox:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.expTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.expTitle {
+    color: #1f2937;
+    font-size: 1.4rem;
+    margin-bottom: 0.25rem;
+}
+
+.expCompany {
+    color: #6b7280;
+    font-size: 1rem;
+}
+
+.expDate {
+    color: #6b7280;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.expList {
+    color: #374151;
+    line-height: 1.6;
+    padding-left: 1.25rem;
+}
+
+.expList li {
+    margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+
+    .HomeScreen {
+        padding: 1rem;
+    }
+
+    .HomeScreen::before {
+        display: none
+    }
+
+    .flip {
+        font-size: 2.5rem;
+    }
+
+    .linkButton {
+        width: 18vw;
+        height: 7vh;
+        font-size: 1rem;
+        border-radius: 12px;
+    }
+
+    .linkButtons {
+        bottom: 2rem;
+        gap: 0.5rem;
+        padding-left: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .interests {
+        bottom: 2rem;
+        gap: 0.5rem;
+        padding-right: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .transitioner {
+        font-size: 2rem;
+    }
+
+}
+
+@media (max-width: 480px) {
+
+    .flip {
+        font-size: 1.8rem;
+    }
+
+    .linkButton {
+        width: 20vw;
+        height: 6vh;
+        font-size: 0.85rem;
+    }
+
+    .HomeScreen::before {
+        display: none
+    }
+
+    .linkButtons {
+        bottom: 1.5rem;
+        gap: 0.4rem;
+        padding-left: 0.5rem;
+    }
+
+    .interests {
+        bottom: 1.5rem;
+        gap: 0.4rem;
+        padding-right: 0.5rem;
+    }
+
+    .transitioner {
+        font-size: 1.5rem;
+    }
+
 }
