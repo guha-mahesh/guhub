@@ -36,6 +36,7 @@ const Home = () => {
       </div>
 
     </div>
+          {cards && (<PortfolioCardDeck toggleState={setCards}></PortfolioCardDeck>)}
 
     <div className="eduSection">
       <h1 className="sectionHeader">Education</h1>
@@ -121,7 +122,6 @@ const Home = () => {
     </div>
     
     <div className = "projs">
-      {cards && (<PortfolioCardDeck toggleState={setCards}></PortfolioCardDeck>)}
 
       {!cards && (
   <div className="simpleProjectsContainer">
