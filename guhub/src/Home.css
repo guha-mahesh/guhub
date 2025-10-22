@@ -357,6 +357,10 @@
     font-size: 2.5rem;
     margin-bottom: 2rem;
     color: #268356;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
 }
 
 .eduBox {
@@ -584,4 +588,34 @@ body::-webkit-scrollbar {
 body {
     -ms-overflow-style: none;
     scrollbar-width: none;
+}
+
+.arborSection {
+    padding: 4rem 2rem;
+    width: 100vw;
+    background-color: black;
+}
+
+.arborContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.arborFrame {
+
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(38, 131, 86, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.arborFrame:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 35px rgba(38, 131, 86, 0.5);
+}
+
+.arborIcon {
+    height: 5vh;
 }

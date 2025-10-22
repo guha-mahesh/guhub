@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react'
 import PortfolioCardDeck from './components/Projects'
 import LinkButton from './components/LinkButton'
@@ -183,11 +182,22 @@ const Home = () => {
       </div>
     </div>
     
-    <div className = "projs">
+    <div className="arborSection">
+      <h1 className="sectionHeader">Check out Arbor <img className ="arborIcon" src ="https://arbor-blue.vercel.app/logo.png"/></h1>
+      <div className="arborContainer">
+        <iframe 
+          src="https://arbor-blue.vercel.app/embeds/guiha" 
+          width="450" 
+          height="680" 
 
-      
-      
+            style={{ border: "0px solid #268356" }}
+
+
+
+          className="arborFrame"
+        />
       </div>
+    </div>
 
     </div>
 
