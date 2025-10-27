@@ -102,7 +102,7 @@ const Home = () => {
       <h1 className="sectionHeader">Check out Arbor ~ Work in Progress <img className ="arborIcon" src ="https://arbor-blue.vercel.app/logo.png"/></h1>
       <div className="arborContainer">
         <iframe 
-          src="https://arbor-blue.vercel.app/embeds/guiha" 
+          src="https://arbor-blue.vercel.app/embeds/guha" 
           width="450" 
           height="680" 
 
