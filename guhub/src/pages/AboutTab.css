@@ -180,6 +180,43 @@
   margin-bottom: 0.5rem;
 }
 
+.arborSection {
+  margin-top: 3rem;
+  padding-top: 3rem;
+  border-top: 2px solid rgba(255, 192, 203, 0.2);
+}
+
+.arborHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.arborIcon {
+  height: 2.5rem;
+  vertical-align: middle;
+}
+
+.arborContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.arborFrame {
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(38, 131, 86, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  max-width: 100%;
+}
+
+.arborFrame:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 35px rgba(38, 131, 86, 0.5);
+}
+
 @media (max-width: 768px) {
   .aboutTab {
     padding: 2rem 1rem;
@@ -196,5 +233,14 @@
   .aboutHeader {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .arborFrame {
+    width: 100%;
+    height: 500px;
+  }
+
+  .arborIcon {
+    height: 2rem;
   }
 }

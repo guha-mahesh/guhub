@@ -99,6 +99,22 @@ const AboutTab = () => {
             ))}
           </div>
         </div>
+
+        <div className="arborSection">
+          <h2 className="sectionHeader arborHeader">
+            Check out Arbor <img className="arborIcon" src="https://arbor-blue.vercel.app/logo.png" alt="Arbor logo" />
+          </h2>
+          <div className="arborContainer">
+            <iframe
+              src="https://arbor-blue.vercel.app/embeds/guiha"
+              width="450"
+              height="680"
+              style={{ border: "0px solid #268356" }}
+              className="arborFrame"
+              title="Arbor Profile"
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
