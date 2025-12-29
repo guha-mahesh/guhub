@@ -1,3 +1,23 @@
+:root {
+  /* Main palette */
+  --color-primary: #ffc0cb;
+  --color-dark: #2f0a0a;
+  --color-bg: #2f0a0a;
+
+  /* Galaxy colors */
+  --color-music: #ffc0cb;
+  --color-philosophy: #6b4e71;
+  --color-geography: #4a7c59;
+  --color-animals: #c17c74;
+  --color-culture: #8b6f8f;
+
+  /* Text colors */
+  --color-text-light: #ffffff;
+  --color-text-primary: #ffc0cb;
+  --color-text-secondary: rgba(255, 192, 203, 0.8);
+  --color-text-muted: rgba(255, 192, 203, 0.6);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -8,28 +28,48 @@ html,
 body {
   height: 100%;
   font-family: system-ui, -apple-system, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  overflow-x: hidden;
 }
 
 #root {
-  height: 100%;
-
-  background-color: orange;
-
-
-}
-
-html {
-
-  height: 100%;
-}
-
-body {
-
-  height: 100%;
-}
-
-#root {
-
-  height: 100vh;
+  min-height: 100vh;
   width: 100vw;
+  background-color: var(--color-bg);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection colors */
+::selection {
+  background-color: var(--color-primary);
+  color: var(--color-dark);
+}
+
+::-moz-selection {
+  background-color: var(--color-primary);
+  color: var(--color-dark);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ff9fb5;
 }

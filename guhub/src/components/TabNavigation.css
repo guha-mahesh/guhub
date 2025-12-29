@@ -1,0 +1,52 @@
+.tabNavigation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #2f0a0a;
+  border-bottom: 2px solid #ffc0cb;
+  z-index: 1000;
+  padding: 0.5rem 0;
+}
+
+.tabContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  flex-wrap: wrap;
+}
+
+.tab {
+  color: #ffc0cb;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  background: rgba(255, 192, 203, 0.1);
+  color: #fff;
+}
+
+/* Removed active state highlighting */
+
+@media (max-width: 768px) {
+  .tabContainer {
+    gap: 0.5rem;
+    padding: 0 1rem;
+  }
+
+  .tab {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.7rem;
+  }
+}

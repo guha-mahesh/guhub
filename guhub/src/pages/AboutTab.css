@@ -1,0 +1,200 @@
+.aboutTab {
+  min-height: calc(100vh - 60px);
+  margin-top: 60px;
+  background: #2f0a0a;
+  padding: 3rem 2rem;
+}
+
+.aboutContainer {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.aboutHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.aboutTitle {
+  font-size: 3rem;
+  color: #ffc0cb;
+  margin: 0;
+}
+
+.resumeButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  background: transparent;
+  border: 2px solid #ffc0cb;
+  color: #ffc0cb;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.resumeButton:hover {
+  background: #ffc0cb;
+  color: #2f0a0a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 192, 203, 0.3);
+}
+
+.sectionHeader {
+  color: #ffc0cb;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid rgba(255, 192, 203, 0.3);
+}
+
+.eduSection,
+.skillsSection,
+.expSection {
+  margin-bottom: 3rem;
+}
+
+.eduBox {
+  background: rgba(255, 192, 203, 0.05);
+  border: 2px solid rgba(255, 192, 203, 0.2);
+  border-radius: 12px;
+  padding: 2rem;
+}
+
+.eduTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.eduTop h3 {
+  color: #ffc0cb;
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.eduDate {
+  color: rgba(255, 192, 203, 0.7);
+  font-weight: 600;
+}
+
+.eduDegree,
+.eduGpa {
+  color: rgba(255, 192, 203, 0.8);
+  margin: 0.5rem 0;
+  line-height: 1.6;
+}
+
+.skillsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.skillCategory {
+  background: rgba(255, 192, 203, 0.05);
+  border: 2px solid rgba(255, 192, 203, 0.2);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.categoryTitle {
+  color: #ffc0cb;
+  font-size: 1.2rem;
+  margin: 0 0 1rem 0;
+}
+
+.skillTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+.skillTag {
+  background: rgba(107, 78, 113, 0.3);
+  color: rgba(255, 192, 203, 0.9);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.expGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.expBox {
+  background: rgba(255, 192, 203, 0.05);
+  border: 2px solid rgba(255, 192, 203, 0.2);
+  border-radius: 12px;
+  padding: 2rem;
+  transition: all 0.3s ease;
+}
+
+.expBox:hover {
+  border-color: #ffc0cb;
+  transform: translateX(4px);
+}
+
+.expTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.expTitle {
+  color: #ffc0cb;
+  font-size: 1.3rem;
+  margin: 0 0 0.3rem 0;
+}
+
+.expCompany {
+  color: rgba(255, 192, 203, 0.7);
+  margin: 0;
+  font-style: italic;
+}
+
+.expList {
+  color: rgba(255, 192, 203, 0.8);
+  line-height: 1.7;
+  padding-left: 1.5rem;
+  margin: 0;
+}
+
+.expList li {
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .aboutTab {
+    padding: 2rem 1rem;
+  }
+
+  .aboutTitle {
+    font-size: 2rem;
+  }
+
+  .sectionHeader {
+    font-size: 1.5rem;
+  }
+
+  .aboutHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

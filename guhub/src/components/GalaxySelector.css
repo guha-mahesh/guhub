@@ -1,0 +1,75 @@
+.galaxySelector {
+  position: fixed;
+  bottom: 6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  background: rgba(47, 10, 10, 0.95);
+  border: 2px solid rgba(255, 192, 203, 0.3);
+  border-radius: 16px;
+  padding: 1rem 2rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(255, 192, 203, 0.2);
+}
+
+.galaxySelectorLabel {
+  color: rgba(255, 192, 203, 0.7);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  margin: 0 0 0.8rem 0;
+  text-align: center;
+}
+
+.galaxyButtons {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.galaxyButton {
+  padding: 0.6rem 1.2rem;
+  border: 2px solid;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: transparent;
+}
+
+.galaxyButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(255, 192, 203, 0.3);
+}
+
+.galaxyButton.active {
+  font-weight: 700;
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 20px rgba(255, 192, 203, 0.4);
+}
+
+@media (max-width: 768px) {
+  .galaxySelector {
+    bottom: 4rem;
+    padding: 0.8rem 1.5rem;
+    max-width: 90%;
+  }
+
+  .galaxySelectorLabel {
+    font-size: 0.75rem;
+  }
+
+  .galaxyButtons {
+    gap: 0.5rem;
+  }
+
+  .galaxyButton {
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+  }
+}

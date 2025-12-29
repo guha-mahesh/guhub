@@ -1,0 +1,23 @@
+.galaxyBadge {
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  border: 2px solid;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.galaxyBadge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 192, 203, 0.3);
+}
+
+.galaxyBadge.active {
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(255, 192, 203, 0.4);
+}

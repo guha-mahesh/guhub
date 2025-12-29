@@ -1,0 +1,143 @@
+.projectsTab {
+  min-height: calc(100vh - 60px);
+  margin-top: 60px;
+  background: #2f0a0a;
+  padding: 3rem 2rem;
+}
+
+.projectsContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.projectsPageTitle {
+  font-size: 3rem;
+  color: #ffc0cb;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.galaxyFilters {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+}
+
+.filterLabel {
+  color: rgba(255, 192, 203, 0.8);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.filterBadges {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.projectsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.projectBox {
+  background: rgba(255, 192, 203, 0.05);
+  border: 2px solid rgba(255, 192, 203, 0.2);
+  border-radius: 12px;
+  padding: 2rem;
+  transition: all 0.3s ease;
+}
+
+.projectBox:hover {
+  border-color: #ffc0cb;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(255, 192, 203, 0.2);
+}
+
+.projectTitle {
+  color: #ffc0cb;
+  font-size: 1.8rem;
+  margin: 0 0 1rem 0;
+}
+
+.projectDescription {
+  color: rgba(255, 192, 203, 0.8);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.projectGalaxies {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.projectTech {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.techTag {
+  background: rgba(107, 78, 113, 0.3);
+  color: rgba(255, 192, 203, 0.9);
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.githubLinkButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: 2px solid #ffc0cb;
+  color: #ffc0cb;
+  padding: 0.7rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.githubLinkButton:hover {
+  background: #ffc0cb;
+  color: #2f0a0a;
+  transform: translateX(4px);
+}
+
+.noProjects {
+  text-align: center;
+  color: rgba(255, 192, 203, 0.6);
+  font-size: 1.2rem;
+  margin-top: 3rem;
+}
+
+@media (max-width: 768px) {
+  .projectsTab {
+    padding: 2rem 1rem;
+  }
+
+  .projectsPageTitle {
+    font-size: 2rem;
+  }
+
+  .projectsGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .galaxyFilters {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+}
