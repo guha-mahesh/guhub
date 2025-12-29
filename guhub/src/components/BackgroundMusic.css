@@ -1,0 +1,46 @@
+.backgroundMusicControl {
+  position: fixed;
+  top: 80px;
+  left: 2rem;
+  z-index: 100;
+}
+
+.musicToggle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(47, 10, 10, 0.95);
+  border: 2px solid #ffc0cb;
+  color: #ffc0cb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.musicToggle:hover {
+  background: #ffc0cb;
+  color: #2f0a0a;
+  transform: scale(1.1);
+  box-shadow: 0 4px 20px rgba(255, 192, 203, 0.4);
+}
+
+.musicToggle:active {
+  transform: scale(0.95);
+}
+
+@media (max-width: 768px) {
+  .backgroundMusicControl {
+    top: 70px;
+    left: 1rem;
+  }
+
+  .musicToggle {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+}

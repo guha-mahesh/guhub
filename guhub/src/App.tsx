@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import TabNavigation from "./components/TabNavigation";
 import Sidebar from "./components/Sidebar";
+import BackgroundMusic from "./components/BackgroundMusic";
 import BrainLanding from "./pages/BrainLanding";
 import ProjectsTab from "./pages/ProjectsTab";
 import AboutTab from "./pages/AboutTab";
@@ -11,6 +12,7 @@ function App() {
       <Router>
         <TabNavigation />
         <Sidebar />
+        <BackgroundMusic />
         <Routes>
           <Route path="/" element={<BrainLanding />} />
           <Route path="/projects" element={<ProjectsTab />} />
