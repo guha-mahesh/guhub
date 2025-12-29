@@ -106,10 +106,9 @@ const AboutTab = () => {
           </h2>
           <div className="arborContainer">
             <iframe
-              src="https://arbor-blue.vercel.app/embeds/guiha"
+              src="https://arbor-blue.vercel.app/embeds/guha"
               width="450"
               height="680"
-              style={{ border: "0px solid #268356" }}
               className="arborFrame"
               title="Arbor Profile"
             />
