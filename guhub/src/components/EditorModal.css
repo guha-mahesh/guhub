@@ -160,6 +160,23 @@
   color: #2f0a0a;
 }
 
+.deleteButton {
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: 1px solid #ff6b6b;
+  border-radius: 6px;
+  color: #ff6b6b;
+  font-size: 0.85rem;
+  font-family: 'Courier New', monospace;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.deleteButton:hover {
+  background: #ff6b6b;
+  color: #fff;
+}
+
 .editForm {
   display: flex;
   flex-direction: column;
@@ -322,14 +339,16 @@
 }
 
 .addButton {
-  padding: 0.8rem;
+  padding: 0.6rem 1.2rem;
   background: transparent;
   border: 2px dashed rgba(255, 192, 203, 0.4);
   border-radius: 8px;
   color: rgba(255, 192, 203, 0.7);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 600;
   font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -339,4 +358,8 @@
   border-color: #ffc0cb;
   color: #ffc0cb;
   background: rgba(255, 192, 203, 0.05);
+}
+
+.editorActions .addButton {
+  padding: 0.6rem 1.2rem;
 }

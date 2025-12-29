@@ -27,9 +27,20 @@ const ProjectEditor = ({ onClose }: ProjectEditorProps) => {
   const handleSave = () => {
     if (!selectedProject) return;
 
-    const updated = projects.map((p) =>
-      p.id === selectedProject.id ? { ...p, ...editData } : p
-    );
+    // Check if this is a new project or editing existing
+    const existingProject = projects.find(p => p.id === selectedProject.id);
+
+    let updated;
+    if (existingProject) {
+      // Editing existing project
+      updated = projects.map((p) =>
+        p.id === selectedProject.id ? { ...p, ...editData } : p
+      );
+    } else {
+      // Adding new project
+      updated = [...projects, { ...selectedProject, ...editData } as Project];
+    }
+
     setProjects(updated);
     localStorage.setItem('projects', JSON.stringify(updated));
     setSelectedProject(null);
@@ -54,6 +65,29 @@ const ProjectEditor = ({ onClose }: ProjectEditorProps) => {
     setEditData(project);
   };
 
+  const addNewProject = () => {
+    const newProject: Project = {
+      id: Math.max(...projects.map(p => p.id), 0) + 1,
+      title: '',
+      description: '',
+      tech: [],
+      galaxies: [],
+      color: 'pinkGradient',
+      image: '',
+      github: ''
+    };
+    setSelectedProject(newProject);
+    setEditData(newProject);
+  };
+
+  const deleteProject = (id: number) => {
+    if (confirm('Are you sure you want to delete this project?')) {
+      const updated = projects.filter(p => p.id !== id);
+      setProjects(updated);
+      localStorage.setItem('projects', JSON.stringify(updated));
+    }
+  };
+
   return (
     <>
       <div className="editorOverlay" onClick={onClose} />
@@ -69,6 +103,9 @@ const ProjectEditor = ({ onClose }: ProjectEditorProps) => {
           {!selectedProject ? (
             <>
               <div className="editorActions">
+                <button className="addButton" onClick={addNewProject}>
+                  + Add New Project
+                </button>
                 <button className="editorExportButton" onClick={handleExport}>
                   Export Updated File
                 </button>
@@ -81,12 +118,20 @@ const ProjectEditor = ({ onClose }: ProjectEditorProps) => {
                       <h3>{project.title}</h3>
                       <p>{project.description.substring(0, 80)}...</p>
                     </div>
-                    <button
-                      className="editButton"
-                      onClick={() => startEdit(project)}
-                    >
-                      Edit
-                    </button>
+                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                      <button
+                        className="editButton"
+                        onClick={() => startEdit(project)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="deleteButton"
+                        onClick={() => deleteProject(project.id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
