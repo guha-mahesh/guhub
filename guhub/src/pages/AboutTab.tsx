@@ -1,7 +1,23 @@
+import { useState, useEffect } from 'react';
 import { FaDownload } from 'react-icons/fa';
+import { resumeData as initialResumeData, type ResumeData } from '../data/resumeData';
 import './AboutTab.css';
 
 const AboutTab = () => {
+  const [resumeData, setResumeData] = useState<ResumeData>(initialResumeData);
+
+  useEffect(() => {
+    // Load resume data from localStorage if available (admin edits)
+    const saved = localStorage.getItem('resumeData');
+    if (saved) {
+      try {
+        setResumeData(JSON.parse(saved));
+      } catch (e) {
+        console.error('Failed to load saved resume data');
+      }
+    }
+  }, []);
+
   const handleResumeDownload = (e: React.MouseEvent) => {
     e.preventDefault();
     const link = document.createElement('a');
@@ -26,13 +42,13 @@ const AboutTab = () => {
           <h2 className="sectionHeader">Education</h2>
           <div className="eduBox">
             <div className="eduTop">
-              <h3>Northeastern University</h3>
-              <span className="eduDate">May 2028</span>
+              <h3>{resumeData.education.school}</h3>
+              <span className="eduDate">{resumeData.education.date}</span>
             </div>
             <p className="eduDegree">
-              Bachelor of Science in Data Science and Business Analytics with a focus in FinTech
+              {resumeData.education.degree}
             </p>
-            <p className="eduGpa">GPA: 3.8/4.0 • John Martinson Honors Program</p>
+            <p className="eduGpa">{resumeData.education.gpa}</p>
           </div>
         </div>
 
@@ -42,7 +58,7 @@ const AboutTab = () => {
             <div className="skillCategory">
               <h3 className="categoryTitle">Languages</h3>
               <div className="skillTags">
-                {["Python", "TypeScript", "JavaScript", "SQL"].map((skill, i) => (
+                {resumeData.skills.languages.map((skill, i) => (
                   <span key={i} className="skillTag">
                     {skill}
                   </span>
@@ -52,21 +68,7 @@ const AboutTab = () => {
             <div className="skillCategory">
               <h3 className="categoryTitle">Tools & Libraries</h3>
               <div className="skillTags">
-                {[
-                  "pandas",
-                  "NumPy",
-                  "Matplotlib",
-                  "Scikit-learn",
-                  "Jupyter",
-                  "Keras",
-                  "Docker",
-                  "React",
-                  "Flask",
-                  "Express.js",
-                  "PyTorch",
-                  "Torchvision",
-                  "AWS S3"
-                ].map((skill, i) => (
+                {resumeData.skills.tools.map((skill, i) => (
                   <span key={i} className="skillTag">
                     {skill}
                   </span>
@@ -79,70 +81,22 @@ const AboutTab = () => {
         <div className="expSection">
           <h2 className="sectionHeader">Experience</h2>
           <div className="expGrid">
-            <div className="expBox">
-              <div className="expTop">
-                <div>
-                  <h3 className="expTitle">Facilitator</h3>
-                  <p className="expCompany">Rev (NU Student Club)</p>
+            {resumeData.experience.map((exp, index) => (
+              <div key={index} className="expBox">
+                <div className="expTop">
+                  <div>
+                    <h3 className="expTitle">{exp.title}</h3>
+                    <p className="expCompany">{exp.company}</p>
+                  </div>
+                  <span className="expDate">{exp.date}</span>
                 </div>
-                <span className="expDate">Aug 2025 – Present</span>
+                <ul className="expList">
+                  {exp.bullets.map((bullet, i) => (
+                    <li key={i}>{bullet}</li>
+                  ))}
+                </ul>
               </div>
-              <ul className="expList">
-                <li>
-                  Produced engaging social media videos that increased visibility and attendance at club
-                  information sessions
-                </li>
-                <li>Reviewed 30+ membership applications and identified top candidates for interviews</li>
-                <li>
-                  Led candidate evaluations and interviews, selecting members best positioned to contribute
-                  to Rev's mission
-                </li>
-              </ul>
-            </div>
-
-            <div className="expBox">
-              <div className="expTop">
-                <div>
-                  <h3 className="expTitle">Data Science Tutor</h3>
-                  <p className="expCompany">Knack</p>
-                </div>
-                <span className="expDate">Jan 2025 – Present</span>
-              </div>
-              <ul className="expList">
-                <li>
-                  Achieved a 5-star rating by guiding 10 students to improve their academic performance and
-                  strengthen Python programming
-                </li>
-                <li>
-                  Delivered personalized instruction in Pandas, NumPy, statistics, and EDA, enabling students
-                  to apply data science concepts
-                </li>
-              </ul>
-            </div>
-
-            <div className="expBox">
-              <div className="expTop">
-                <div>
-                  <h3 className="expTitle">Data Science Intern</h3>
-                  <p className="expCompany">Green Joules</p>
-                </div>
-                <span className="expDate">Jun 2023 – Sep 2023</span>
-              </div>
-              <ul className="expList">
-                <li>
-                  Assessed biofuel feasibility of 11 crops by analyzing production volumes, commodity prices,
-                  and food security considerations
-                </li>
-                <li>
-                  Researched crop by-products for potential biofuel applications and presented data-driven
-                  recommendations
-                </li>
-                <li>
-                  Developed visualizations that informed strategic decision-making on the potential
-                  establishment of a biorefinery in Texas
-                </li>
-              </ul>
-            </div>
+            ))}
           </div>
         </div>
       </div>

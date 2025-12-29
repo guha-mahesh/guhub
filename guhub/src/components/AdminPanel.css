@@ -1,0 +1,124 @@
+.adminPanel {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1000;
+}
+
+.adminPanelToggle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(107, 78, 113, 0.95);
+  border: 2px solid #ffc0cb;
+  color: #ffc0cb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(107, 78, 113, 0.5);
+}
+
+.adminPanelToggle:hover {
+  background: #ffc0cb;
+  color: #2f0a0a;
+  transform: scale(1.1);
+}
+
+.adminPanelToggle .spinning {
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.adminPanelMenu {
+  position: absolute;
+  bottom: 60px;
+  right: 0;
+  background: rgba(47, 10, 10, 0.98);
+  border: 2px solid #ffc0cb;
+  border-radius: 12px;
+  padding: 1rem;
+  min-width: 200px;
+  box-shadow: 0 8px 32px rgba(255, 192, 203, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.adminPanelHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.8rem;
+  margin-bottom: 0.8rem;
+  border-bottom: 1px solid rgba(255, 192, 203, 0.3);
+  color: #ffc0cb;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.adminLogoutButton {
+  background: none;
+  border: none;
+  color: #ffc0cb;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.3rem;
+  transition: all 0.3s ease;
+}
+
+.adminLogoutButton:hover {
+  color: #ff6b6b;
+  transform: scale(1.1);
+}
+
+.adminMenuItem {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.8rem;
+  background: transparent;
+  border: 1px solid rgba(255, 192, 203, 0.3);
+  border-radius: 8px;
+  color: #ffc0cb;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 0.5rem;
+}
+
+.adminMenuItem:last-child {
+  margin-bottom: 0;
+}
+
+.adminMenuItem:hover {
+  background: rgba(255, 192, 203, 0.1);
+  border-color: #ffc0cb;
+  transform: translateX(-4px);
+}
+
+@media (max-width: 768px) {
+  .adminPanel {
+    bottom: 1rem;
+    right: 1rem;
+  }
+
+  .adminPanelToggle {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+}

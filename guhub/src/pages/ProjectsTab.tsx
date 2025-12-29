@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { projects } from '../data/projects';
+import { useState, useEffect } from 'react';
+import { projects as initialProjects } from '../data/projects';
+import type { Project } from '../data/projects';
 import { galaxyArray, type GalaxyType } from '../data/galaxyData';
 import GalaxyBadge from '../components/GalaxyBadge';
 import { FaGithub } from 'react-icons/fa';
@@ -7,6 +8,19 @@ import './ProjectsTab.css';
 
 const ProjectsTab = () => {
   const [selectedGalaxy, setSelectedGalaxy] = useState<GalaxyType | null>(null);
+  const [projects, setProjects] = useState<Project[]>(initialProjects);
+
+  useEffect(() => {
+    // Load projects from localStorage if available (admin edits)
+    const saved = localStorage.getItem('projects');
+    if (saved) {
+      try {
+        setProjects(JSON.parse(saved));
+      } catch (e) {
+        console.error('Failed to load saved projects');
+      }
+    }
+  }, []);
 
   const filteredProjects = selectedGalaxy
     ? projects.filter(p => p.galaxies.includes(selectedGalaxy))
