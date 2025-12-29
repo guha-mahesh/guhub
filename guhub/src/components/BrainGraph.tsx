@@ -31,6 +31,14 @@ const BrainGraph = ({ externalHoveredGalaxy = null }: BrainGraphProps) => {
       // Camera settings - zoomed way out for full overview
       const distance = 1200;
       graphRef.current.cameraPosition({ z: distance });
+
+      // Let simulation run briefly then stop it to prevent constant movement
+      setTimeout(() => {
+        if (graphRef.current) {
+          graphRef.current.d3Force('charge').strength(0);
+          graphRef.current.d3Force('link').strength(0);
+        }
+      }, 3000);
     }
   }, []);
 
@@ -101,6 +109,9 @@ const BrainGraph = ({ externalHoveredGalaxy = null }: BrainGraphProps) => {
         enableNodeDrag={true}
         enableNavigationControls={true}
         controlType="orbit"
+        cooldownTime={3000}
+        d3AlphaDecay={0.02}
+        d3VelocityDecay={0.3}
       />
 
       <div className="zoomControls">
