@@ -1,15 +1,15 @@
 .galaxySelector {
-  position: fixed;
-  bottom: 6rem;
+  position: absolute;
+  bottom: 2rem;
   left: 50%;
   transform: translateX(-50%);
   z-index: 100;
-  background: rgba(47, 10, 10, 0.95);
+  background: rgba(47, 10, 10, 0.8);
   border: 2px solid rgba(255, 192, 203, 0.3);
   border-radius: 16px;
   padding: 1rem 2rem;
   backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(255, 192, 203, 0.2);
+  box-shadow: 0 4px 16px rgba(255, 192, 203, 0.15);
 }
 
 .galaxySelectorLabel {
@@ -55,7 +55,7 @@
 
 @media (max-width: 768px) {
   .galaxySelector {
-    bottom: 4rem;
+    bottom: 1.5rem;
     padding: 0.8rem 1.5rem;
     max-width: 90%;
   }
