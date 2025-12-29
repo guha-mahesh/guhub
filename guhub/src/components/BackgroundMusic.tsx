@@ -1,34 +1,47 @@
 import { useEffect, useRef, useState } from 'react';
-import { FaVolumeUp, FaVolumeMute } from 'react-icons/fa';
+import { FaVolumeUp, FaVolumeMute, FaPlay } from 'react-icons/fa';
 import './BackgroundMusic.css';
 
 const BackgroundMusic = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
-  const [isMuted, setIsMuted] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [needsInteraction, setNeedsInteraction] = useState(true);
 
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = 0.1; // 10% volume
-
-      // Try to autoplay (may be blocked by browser)
-      const playPromise = audioRef.current.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          // Autoplay was blocked, user needs to interact first
-          console.log('Autoplay blocked - waiting for user interaction');
-        });
-      }
     }
-  }, []);
 
-  const toggleMute = () => {
+    // Try to play on any click
+    const tryPlay = async () => {
+      if (audioRef.current && needsInteraction) {
+        try {
+          await audioRef.current.play();
+          setIsPlaying(true);
+          setNeedsInteraction(false);
+        } catch (e) {
+          // Still blocked
+        }
+      }
+    };
+
+    document.addEventListener('click', tryPlay, { once: true });
+    return () => document.removeEventListener('click', tryPlay);
+  }, [needsInteraction]);
+
+  const togglePlay = async () => {
     if (audioRef.current) {
-      if (isMuted) {
-        audioRef.current.play();
-        setIsMuted(false);
-      } else {
+      if (isPlaying) {
         audioRef.current.pause();
-        setIsMuted(true);
+        setIsPlaying(false);
+      } else {
+        try {
+          await audioRef.current.play();
+          setIsPlaying(true);
+          setNeedsInteraction(false);
+        } catch (e) {
+          console.log('Playback failed:', e);
+        }
       }
     }
   };
@@ -41,11 +54,11 @@ const BackgroundMusic = () => {
         loop
       />
       <button
-        onClick={toggleMute}
-        className="musicToggle"
-        title={isMuted ? 'Unmute Music' : 'Mute Music'}
+        onClick={togglePlay}
+        className={`musicToggle ${needsInteraction ? 'pulse' : ''}`}
+        title={isPlaying ? 'Pause Music' : 'Play Music'}
       >
-        {isMuted ? <FaVolumeMute /> : <FaVolumeUp />}
+        {isPlaying ? <FaVolumeUp /> : needsInteraction ? <FaPlay /> : <FaVolumeMute />}
       </button>
     </div>
   );
