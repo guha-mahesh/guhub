@@ -134,7 +134,15 @@ const BrainLanding = () => {
 
       {/* Graph Section */}
       <section className="graphSection">
-        <div className="wipBadge">🚧 WIP: Node graph visualization in progress</div>
+        <div className="wipBadge">
+          🚧 WIP: Node graph visualization in progress
+          <div className="wipTooltip">
+            <div className="tooltipContent">
+              Building an encoder that captures how concepts sit in the world: experiential appeal, not just semantics.
+              Training a model to predict my affinity for unfamiliar nouns based on how my preferences align with this vector space.
+            </div>
+          </div>
+        </div>
         <BrainGraph externalHoveredGalaxy={selectedGalaxy} />
         <GalaxySelector selectedGalaxy={selectedGalaxy} onGalaxyHover={setSelectedGalaxy} />
 

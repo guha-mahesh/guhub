@@ -246,6 +246,71 @@
   font-family: 'Courier New', monospace;
   backdrop-filter: blur(10px);
   letter-spacing: 0.05em;
+  cursor: help;
+  transition: all 0.3s ease;
+}
+
+.wipBadge:hover {
+  border-color: #ffc0cb;
+  background: rgba(255, 192, 203, 0.15);
+  transform: translateX(-50%) translateY(-2px);
+}
+
+.wipTooltip {
+  position: absolute;
+  top: calc(100% + 1rem);
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  z-index: 201;
+  width: 400px;
+  max-width: 90vw;
+}
+
+.wipBadge:hover .wipTooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+
+.tooltipContent {
+  background: rgba(47, 10, 10, 0.95);
+  border: 2px solid #ffc0cb;
+  border-radius: 8px;
+  padding: 1.2rem 1.5rem;
+  font-family: Georgia, serif;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: rgba(255, 192, 203, 0.95);
+  font-style: italic;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(255, 192, 203, 0.2);
+  position: relative;
+}
+
+.tooltipContent::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid #ffc0cb;
+}
+
+.tooltipContent::after {
+  content: '∿';
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.8rem;
+  font-size: 1.2rem;
+  color: rgba(255, 192, 203, 0.4);
+  font-style: normal;
 }
 
 .brainInstructions {
