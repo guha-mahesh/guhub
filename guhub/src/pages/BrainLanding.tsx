@@ -134,9 +134,10 @@ const BrainLanding = () => {
 
       {/* Graph Section */}
       <section className="graphSection">
+        <div className="wipBadge">🚧 WIP: Node graph visualization in progress</div>
         <BrainGraph externalHoveredGalaxy={selectedGalaxy} />
         <GalaxySelector selectedGalaxy={selectedGalaxy} onGalaxyHover={setSelectedGalaxy} />
-        
+
       </section>
 
       {/* Floating Social Links */}

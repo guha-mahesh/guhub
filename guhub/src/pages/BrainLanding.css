@@ -230,6 +230,24 @@
   width: 100vw;
 }
 
+.wipBadge {
+  position: absolute;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  background: rgba(255, 192, 203, 0.1);
+  border: 2px solid rgba(255, 192, 203, 0.5);
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  color: rgba(255, 192, 203, 0.9);
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: 'Courier New', monospace;
+  backdrop-filter: blur(10px);
+  letter-spacing: 0.05em;
+}
+
 .brainInstructions {
   position: fixed;
   bottom: 2rem;
