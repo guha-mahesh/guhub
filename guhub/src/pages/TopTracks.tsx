@@ -1,20 +1,40 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './TopTracks.css';
 
 const TopTracks = () => {
   const [showCarti, setShowCarti] = useState(true);
   const [hasSeenJoke, setHasSeenJoke] = useState(false);
+  const [cartiVisible, setCartiVisible] = useState(false);
+  const cartiRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Show Carti joke for 3 seconds, then reveal real #1
-    const timer = setTimeout(() => {
-      setShowCarti(false);
-      setHasSeenJoke(true);
-    }, 3000);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !cartiVisible) {
+            setCartiVisible(true);
+            // Show Carti joke for 3 seconds after it becomes visible
+            setTimeout(() => {
+              setShowCarti(false);
+              setHasSeenJoke(true);
+            }, 3000);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
 
-    return () => clearTimeout(timer);
-  }, []);
+    if (cartiRef.current) {
+      observer.observe(cartiRef.current);
+    }
+
+    return () => {
+      if (cartiRef.current) {
+        observer.unobserve(cartiRef.current);
+      }
+    };
+  }, [cartiVisible]);
 
   const albums = [
     {
@@ -130,7 +150,7 @@ const TopTracks = () => {
         ))}
 
         {/* #1 Spot with Carti Joke - AT THE BOTTOM */}
-        <div className={`albumCard rankOne ${showCarti ? 'cartiMode' : 'revealed'}`}>
+        <div ref={cartiRef} className={`albumCard rankOne ${showCarti ? 'cartiMode' : 'revealed'}`}>
           <div className="rankBadge">
             <span className="rankNumber">01</span>
           </div>
@@ -142,7 +162,16 @@ const TopTracks = () => {
                 <h3 className="artistName">Playboi Carti</h3>
               </div>
               <div className="jokePulse">
-                <span className="jokeEmoji">🧛</span>
+                <iframe
+                  data-testid="embed-iframe"
+                  style={{borderRadius: '12px'}}
+                  src="https://open.spotify.com/embed/album/0fSfkmx0tdPqFYkJuNX74a?utm_source=generator"
+                  width="100%"
+                  height="152"
+                  frameBorder="0"
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                  loading="lazy"
+                />
               </div>
             </div>
           ) : (

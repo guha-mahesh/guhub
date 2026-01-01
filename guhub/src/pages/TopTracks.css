@@ -212,11 +212,6 @@
   animation: pulse 1s ease infinite;
 }
 
-.jokeEmoji {
-  font-size: 5rem;
-  display: inline-block;
-}
-
 @keyframes fadeInPulse {
   0% {
     opacity: 0;
@@ -355,7 +350,4 @@
     font-size: 1.5rem;
   }
 
-  .jokeEmoji {
-    font-size: 4rem;
-  }
 }
