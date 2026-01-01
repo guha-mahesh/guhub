@@ -77,32 +77,28 @@ const TopTracks = () => {
       title: "Revengeseekerz",
       artist: "Jane remover",
       review: "I was CONFIDENT this would be my AOTY when i was listening to it when it came out. It's genuinely insane how good this album is & it's prolly her best. JRJRJR is lowkey one of the best rage songs ever made icel.",
-      spotifyEmbed: "https://open.spotify.com/embed/track/2AjTT2CBthpsIQtyxzhSr4?utm_source=generator",
-      embedHeight: "352"
+      spotifyEmbed: "https://open.spotify.com/embed/track/2AjTT2CBthpsIQtyxzhSr4?utm_source=generator"
     },
     {
       rank: 4,
       title: "Vanisher, horizon scraper",
       artist: "Quadeca",
       review: "Lowkey feel gross liking ts cus Quadeca is goated but popular amongst smellier folks. I was so ready to dislike this album when it came out but MAN Quadeca is on a crazy run. Scrapyard was good but this album is insane. Good for him.",
-      spotifyEmbed: "https://open.spotify.com/embed/track/7tJ8jCSe5XPIkRluGfZTu3?utm_source=generator",
-      embedHeight: "352"
+      spotifyEmbed: "https://open.spotify.com/embed/track/7tJ8jCSe5XPIkRluGfZTu3?utm_source=generator"
     },
     {
       rank: 3,
       title: "I love my computer",
       artist: "ninajirachi",
       review: "Hooooooooly peak this album is so so good thank u for the put on William 1!1! This album is sosososososos good and some of the best prod I've seen in a while. Nina is locked tf in and I genuinely think she has the potential to make a crazy t10 album in the future. All of this is coming from someone who also didn't even listen to the album more than maybe 3x lmao",
-      spotifyEmbed: "https://open.spotify.com/embed/track/5ZbztTcvj6QWWbeYsL4GTa?utm_source=generator",
-      embedHeight: "352"
+      spotifyEmbed: "https://open.spotify.com/embed/track/5ZbztTcvj6QWWbeYsL4GTa?utm_source=generator"
     },
     {
       rank: 2,
       title: "Cowards",
       artist: "Squid",
       review: "This album is lowk the only one here that isn't rated crazily on RYM & i'm not too sure why. I found this album from an instagram reel unrelated to music (it was just using a song from the album in the background) and checked it out. What you need to take away from this ranking is Squid > Geese > Swans. I love the lead singers voice soooo much and overall it's just such an interesting sound & concept.",
-      spotifyEmbed: "https://open.spotify.com/embed/track/6vM4E6mvhdKC5e4lR2tm40?utm_source=generator",
-      embedHeight: "352"
+      spotifyEmbed: "https://open.spotify.com/embed/track/6vM4E6mvhdKC5e4lR2tm40?utm_source=generator"
     }
   ];
 
@@ -178,7 +174,7 @@ const TopTracks = () => {
             <div className="realNumber1">
               {hasSeenJoke && (
                 <div className="jkTag">
-                  jk (but we all wish)
+                  nah unfortunately i have a no-slop policy
                 </div>
               )}
               <div className="albumHeader">
