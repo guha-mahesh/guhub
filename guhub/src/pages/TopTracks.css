@@ -324,14 +324,24 @@
 
   .albumCard {
     padding: 2rem 1.5rem;
+    padding-right: 5rem;
+  }
+
+  .rankBadge {
+    padding: 0.4rem 0.8rem;
+  }
+
+  .rankNumber {
+    font-size: 1.2rem;
   }
 
   .albumTitle {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
+    word-break: break-word;
   }
 
   .artistName {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   .albumReview {
