@@ -32,28 +32,38 @@ const CommentSection = ({ pageId }: CommentSectionProps) => {
 
   useEffect(() => {
     // Load comments from localStorage
-    const stored = localStorage.getItem(storageKey);
-    if (stored) {
-      const parsedComments = JSON.parse(stored);
-      // Load user votes
-      const storedVotes = localStorage.getItem(votesKey);
-      const votes = storedVotes ? JSON.parse(storedVotes) : {};
+    try {
+      const stored = localStorage.getItem(storageKey);
+      console.log('Loading comments for', pageId, ':', stored);
+      if (stored) {
+        const parsedComments = JSON.parse(stored);
+        // Load user votes
+        const storedVotes = localStorage.getItem(votesKey);
+        const votes = storedVotes ? JSON.parse(storedVotes) : {};
 
-      // Merge votes into comments
-      const commentsWithVotes = parsedComments.map((comment: Comment) => ({
-        ...comment,
-        userVote: votes[comment.id] || null
-      }));
+        // Merge votes into comments
+        const commentsWithVotes = parsedComments.map((comment: Comment) => ({
+          ...comment,
+          userVote: votes[comment.id] || null
+        }));
 
-      setComments(commentsWithVotes);
+        setComments(commentsWithVotes);
+      }
+    } catch (error) {
+      console.error('Error loading comments:', error);
     }
-  }, [storageKey, votesKey]);
+  }, [storageKey, votesKey, pageId]);
 
   const saveComments = (updatedComments: Comment[]) => {
-    // Save comments without userVote
-    const commentsToStore = updatedComments.map(({ userVote, ...rest }) => rest);
-    localStorage.setItem(storageKey, JSON.stringify(commentsToStore));
-    setComments(updatedComments);
+    try {
+      // Save comments without userVote
+      const commentsToStore = updatedComments.map(({ userVote, ...rest }) => rest);
+      localStorage.setItem(storageKey, JSON.stringify(commentsToStore));
+      console.log('Saved comments for', pageId, ':', JSON.stringify(commentsToStore));
+      setComments(updatedComments);
+    } catch (error) {
+      console.error('Error saving comments:', error);
+    }
   };
 
   const saveVote = (commentId: string, vote: 'like' | 'dislike' | null) => {
