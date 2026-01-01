@@ -113,7 +113,8 @@ const TopTracks = () => {
           <span className="headerLabel">[2024 in review]</span>
           <h1 className="tracksTitle">TOP ALBUMS</h1>
           <p className="tracksSubtitle">
-            ranked by vibes not objectivity / ordered by how much they live in my brain rent-free
+            ranked by vibes not objectivity
+
           </p>
         </div>
       </div>

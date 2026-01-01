@@ -324,7 +324,7 @@
 
   .albumCard {
     padding: 2rem 1.5rem;
-    padding-right: 5rem;
+    padding-right: 4.5rem;
   }
 
   .albumHeader,
@@ -333,7 +333,7 @@
   }
 
   .favTrack {
-    margin-right: -3.5rem;
+    margin-right: -3rem;
     padding-right: 0;
   }
 
