@@ -1,0 +1,212 @@
+.musicLanding {
+  min-height: 100vh;
+  background: #2f0a0a;
+  padding: 100px 3rem 3rem;
+}
+
+.musicHero {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.musicHeader {
+  margin-bottom: 4rem;
+  text-align: center;
+}
+
+.musicLabel {
+  display: inline-block;
+  color: rgba(255, 192, 203, 0.5);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-family: 'Courier New', monospace;
+  margin-bottom: 1rem;
+}
+
+.musicTitle {
+  font-size: clamp(3rem, 10vw, 6rem);
+  font-weight: 900;
+  color: transparent;
+  -webkit-text-stroke: 2px #ffc0cb;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  margin: 0.5rem 0;
+  line-height: 0.9;
+}
+
+.musicSubtitle {
+  color: rgba(255, 192, 203, 0.7);
+  font-size: 1.1rem;
+  font-style: italic;
+  font-family: Georgia, serif;
+  margin-top: 1rem;
+}
+
+.musicGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.musicCard {
+  background: rgba(255, 192, 203, 0.05);
+  border: 2px solid rgba(255, 192, 203, 0.3);
+  border-radius: 12px;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  text-decoration: none;
+  display: block;
+}
+
+.musicCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255, 192, 203, 0.1), transparent);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.musicCard:hover {
+  border-color: #ffc0cb;
+  background: rgba(255, 192, 203, 0.1);
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(255, 192, 203, 0.2);
+}
+
+.musicCard:hover::before {
+  opacity: 1;
+}
+
+.wipCard {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.wipCard:hover {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.cardNumber {
+  position: absolute;
+  top: -1rem;
+  right: 1rem;
+  font-size: 6rem;
+  font-weight: 900;
+  color: rgba(255, 192, 203, 0.1);
+  font-family: 'Courier New', monospace;
+  line-height: 1;
+  z-index: 0;
+}
+
+.cardContent {
+  position: relative;
+  z-index: 1;
+}
+
+.cardTitle {
+  color: #ffc0cb;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+.cardDescription {
+  color: rgba(255, 192, 203, 0.8);
+  font-size: 1rem;
+  line-height: 1.6;
+  font-family: Georgia, serif;
+  font-style: italic;
+  margin-bottom: 1.5rem;
+}
+
+.cardMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 192, 203, 0.2);
+}
+
+.cardCount {
+  color: rgba(255, 192, 203, 0.6);
+  font-size: 0.85rem;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.cardArrow {
+  color: #ffc0cb;
+  font-size: 2rem;
+  transition: transform 0.3s ease;
+}
+
+.musicCard:hover .cardArrow {
+  transform: translateX(5px);
+}
+
+.wipTag {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  background: rgba(255, 192, 203, 0.1);
+  border: 1px dashed rgba(255, 192, 203, 0.4);
+  border-radius: 6px;
+  color: rgba(255, 192, 203, 0.7);
+  font-size: 0.75rem;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 1.5rem;
+}
+
+.musicFooter {
+  margin-top: 6rem;
+  text-align: center;
+  padding: 2rem;
+  border-top: 2px dashed rgba(255, 192, 203, 0.2);
+}
+
+.footerQuote {
+  color: rgba(255, 192, 203, 0.5);
+  font-size: 0.95rem;
+  font-style: italic;
+  font-family: Georgia, serif;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .musicLanding {
+    padding: 80px 1.5rem 2rem;
+  }
+
+  .musicTitle {
+    font-size: clamp(2.5rem, 12vw, 4rem);
+  }
+
+  .musicGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .cardNumber {
+    font-size: 4rem;
+  }
+
+  .cardTitle {
+    font-size: 1.5rem;
+  }
+}

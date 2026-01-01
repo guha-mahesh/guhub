@@ -8,6 +8,8 @@ import AdminPanel from "./components/AdminPanel";
 import BrainLanding from "./pages/BrainLanding";
 import ProjectsTab from "./pages/ProjectsTab";
 import AboutTab from "./pages/AboutTab";
+import MusicLanding from "./pages/MusicLanding";
+import TopTracks from "./pages/TopTracks";
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
           <Route path="/" element={<BrainLanding />} />
           <Route path="/projects" element={<ProjectsTab />} />
           <Route path="/about" element={<AboutTab />} />
+          <Route path="/music" element={<MusicLanding />} />
+          <Route path="/music/:id" element={<TopTracks />} />
         </Routes>
       </Router>
     </AdminProvider>
