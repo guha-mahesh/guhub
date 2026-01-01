@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { FaDownload } from 'react-icons/fa';
 import { resumeData as initialResumeData, type ResumeData } from '../data/resumeData';
 import './AboutTab.css';
 
@@ -18,24 +17,11 @@ const AboutTab = () => {
     }
   }, []);
 
-  const handleResumeDownload = (e: React.MouseEvent) => {
-    e.preventDefault();
-    const link = document.createElement('a');
-    link.href = '/GuhaMaheshResumé.pdf';
-    link.download = 'GuhaMaheshResumé.pdf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
   return (
     <div className="aboutTab">
       <div className="aboutContainer">
         <div className="aboutHeader">
           <h1 className="aboutTitle">Guha Mahesh</h1>
-          <button onClick={handleResumeDownload} className="resumeButton">
-            <FaDownload /> Download Resume
-          </button>
         </div>
 
         <div className="eduSection">
