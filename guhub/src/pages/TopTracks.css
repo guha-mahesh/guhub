@@ -327,6 +327,16 @@
     padding-right: 5rem;
   }
 
+  .albumHeader,
+  .albumReview {
+    padding-right: 0;
+  }
+
+  .favTrack {
+    margin-right: -3.5rem;
+    padding-right: 0;
+  }
+
   .rankBadge {
     padding: 0.4rem 0.8rem;
   }
