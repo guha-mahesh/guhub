@@ -206,7 +206,7 @@ const TopTracks = () => {
 
       <div className="tracksFooter">
         <p className="footerNote">
-          * all opinions subject to change based on mood, weather, and how much coffee i've had
+          * all opinions subject to change if provided monetary compensation
         </p>
       </div>
 
