@@ -350,14 +350,37 @@
 
   .rankOne {
     min-height: 350px;
+    padding-top: 4rem;
+  }
+
+  .rankOne .rankBadge {
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+
+  .cartiJoke {
+    padding-top: 1rem;
   }
 
   .cartiJoke .albumTitle {
-    font-size: 3rem;
+    font-size: 2.5rem;
   }
 
   .cartiJoke .artistName {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
+  }
+
+  .jkTag {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.6rem;
+  }
+
+  .realNumber1 .albumTitle {
+    font-size: 1.3rem;
+  }
+
+  .realNumber1 .artistName {
+    font-size: 1rem;
   }
 
 }
