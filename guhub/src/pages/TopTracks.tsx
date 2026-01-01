@@ -102,7 +102,34 @@ const TopTracks = () => {
       </div>
 
       <div className="albumsList">
-        {/* #1 Spot with Carti Joke */}
+        {/* Albums 10-2 (reversed order) */}
+        {[...albums].reverse().map((album) => (
+          <div key={album.rank} className="albumCard">
+            <div className="rankBadge">
+              <span className="rankNumber">{album.rank.toString().padStart(2, '0')}</span>
+            </div>
+            <div className="albumHeader">
+              <h2 className="albumTitle">{album.title}</h2>
+              <h3 className="artistName">{album.artist}</h3>
+            </div>
+            <p className="albumReview">{album.review}</p>
+            <div className="favTrack">
+              <span className="trackLabel">fav track:</span>
+              <iframe
+                data-testid="embed-iframe"
+                style={{borderRadius: '12px'}}
+                src={album.spotifyEmbed}
+                width="100%"
+                height={album.embedHeight || "152"}
+                frameBorder="0"
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        ))}
+
+        {/* #1 Spot with Carti Joke - AT THE BOTTOM */}
         <div className={`albumCard rankOne ${showCarti ? 'cartiMode' : 'revealed'}`}>
           <div className="rankBadge">
             <span className="rankNumber">01</span>
@@ -148,33 +175,6 @@ const TopTracks = () => {
             </div>
           )}
         </div>
-
-        {/* Albums 2-10 */}
-        {albums.map((album) => (
-          <div key={album.rank} className="albumCard">
-            <div className="rankBadge">
-              <span className="rankNumber">{album.rank.toString().padStart(2, '0')}</span>
-            </div>
-            <div className="albumHeader">
-              <h2 className="albumTitle">{album.title}</h2>
-              <h3 className="artistName">{album.artist}</h3>
-            </div>
-            <p className="albumReview">{album.review}</p>
-            <div className="favTrack">
-              <span className="trackLabel">fav track:</span>
-              <iframe
-                data-testid="embed-iframe"
-                style={{borderRadius: '12px'}}
-                src={album.spotifyEmbed}
-                width="100%"
-                height={album.embedHeight || "152"}
-                frameBorder="0"
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                loading="lazy"
-              />
-            </div>
-          </div>
-        ))}
       </div>
 
       <div className="tracksFooter">
