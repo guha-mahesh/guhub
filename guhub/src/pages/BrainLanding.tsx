@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import BrainGraph from '../components/BrainGraph';
 import GalaxySelector from '../components/GalaxySelector';
-import { FaGithub, FaLinkedin } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaDownload, FaLaptop } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import type { GalaxyType } from '../data/galaxyData';
 import './BrainLanding.css';
@@ -23,78 +23,34 @@ const BrainLanding = () => {
     return () => window.removeEventListener('resize', checkIfMobile);
   }, []);
 
-  // const handleResumeDownload = (e: React.MouseEvent) => {
-  //   e.preventDefault();
-  //   const link = document.createElement('a');
-  //   link.href = '/GuhaMaheshResumé.pdf';
-  //   link.download = 'GuhaMaheshResumé.pdf';
-  //   document.body.appendChild(link);
-  //   link.click();
-  //   document.body.removeChild(link);
-  // };
+  const handleResumeDownload = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const link = document.createElement('a');
+    link.href = '/GuhaMaheshResumé.pdf';
+    link.download = 'GuhaMaheshResumé.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   if (isMobile) {
     return (
       <div className="mobileFallback">
         <div className="mobileContent">
-          <div className="mobileNameBlock">
-            <span className="mobileNameFirst">GUHA</span>
-            <span className="mobileNameLast">MAHESH</span>
+          <h1 className="mobileTitle">Guha Mahesh</h1>
+          <div className="mobileLaptopIcon">
+            <FaLaptop />
           </div>
-
-          <div className="mobileRoleStack">
-            <div className="mobileRoleItem">
-              <span className="mobileRoleLabel">[current]</span>
-              <span className="mobileRoleText">Human Memory AI Systems</span>
-              <span className="mobileRoleCompany">@ Memory Machines</span>
-            </div>
-            <div className="mobileRoleItem">
-              <span className="mobileRoleLabel">[studying]</span>
-              <span className="mobileRoleText">Data Science + FinTech</span>
-              <span className="mobileRoleCompany">@ Northeastern</span>
-            </div>
-          </div>
-
-          <div className="mobileInterestsGrid">
-            <span className="mobileInterestTag">ML/AI</span>
-            <span className="mobileInterestTag">ethics</span>
-            <span className="mobileInterestTag">culture</span>
-            <span className="mobileInterestTag">geography</span>
-            <span className="mobileInterestTag">sound</span>
-          </div>
-
-          <div className="mobileGalaxiesSection">
-            <h2 className="mobileGalaxiesTitle">explore the gu-niverse</h2>
-            <div className="mobileGalaxiesGrid">
-              <Link to="/music" className="mobileGalaxyCard musicCard">
-                <span className="galaxyCardTitle">Music</span>
-                <span className="galaxyCardIcon">♪</span>
-              </Link>
-              <Link to="/philosophy" className="mobileGalaxyCard philosophyCard">
-                <span className="galaxyCardTitle">Philosophy</span>
-                <span className="galaxyCardIcon">✦</span>
-              </Link>
-              <Link to="/geography" className="mobileGalaxyCard geographyCard">
-                <span className="galaxyCardTitle">Geography</span>
-                <span className="galaxyCardIcon">◈</span>
-              </Link>
-              <Link to="/animals" className="mobileGalaxyCard animalsCard">
-                <span className="galaxyCardTitle">Animals</span>
-                <span className="galaxyCardIcon">◉</span>
-              </Link>
-              <Link to="/culture" className="mobileGalaxyCard cultureCard">
-                <span className="galaxyCardTitle">Culture</span>
-                <span className="galaxyCardIcon">◆</span>
-              </Link>
-            </div>
-          </div>
+          <p className="mobileMessage">
+            For the full interactive experience, please open this site on a laptop or desktop computer.
+          </p>
 
           <div className="mobileLinks">
             <Link to="/about" className="mobileNavButton">
-              resumé & info
+              View Resume & Info
             </Link>
             <Link to="/projects" className="mobileNavButton">
-              projects
+              View Projects
             </Link>
           </div>
 
@@ -140,7 +96,7 @@ const BrainLanding = () => {
                 <span className="roleLabel">[current]</span>
                 <span className="roleText">Human Memory AI Systems</span>
                 <span className="roleCompany">@ Memory Machines</span>
-                <span className="roleNote">(Harvard AI spinout in San Francisco)</span>
+                <span className="roleNote">(Harvard AI spinout)</span>
               </div>
               <div className="roleItem">
                 <span className="roleLabel">[studying]</span>
