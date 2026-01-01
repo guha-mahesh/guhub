@@ -27,7 +27,10 @@ const BrainLanding = () => {
     return (
       <div className="mobileFallback">
         <div className="mobileContent">
-          <h1 className="mobileTitle">Guha Mahesh</h1>
+          <div className="mobileNameBlock">
+            <span className="mobileNameFirst">GUHA</span>
+            <span className="mobileNameLast">MAHESH</span>
+          </div>
 
           <div className="mobileRoleStack">
             <div className="mobileRoleItem">

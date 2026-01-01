@@ -387,10 +387,29 @@
   max-width: 400px;
 }
 
-.mobileTitle {
-  color: #ffc0cb;
-  font-size: 2.5rem;
+.mobileNameBlock {
+  display: flex;
+  flex-direction: column;
+  line-height: 0.85;
   margin-bottom: 1.5rem;
+}
+
+.mobileNameFirst {
+  font-size: clamp(3rem, 15vw, 4.5rem);
+  font-weight: 900;
+  color: #ffc0cb;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.mobileNameLast {
+  font-size: clamp(3rem, 15vw, 4.5rem);
+  font-weight: 900;
+  color: transparent;
+  -webkit-text-stroke: 2px #ffc0cb;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  margin-left: 0.5rem;
 }
 
 .mobileRoleStack {
