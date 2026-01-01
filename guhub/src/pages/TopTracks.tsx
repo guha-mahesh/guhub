@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import CommentSection from '../components/CommentSection';
 import './TopTracks.css';
 
 const TopTracks = () => {
@@ -209,8 +208,6 @@ const TopTracks = () => {
           * all opinions subject to change if provided monetary compensation
         </p>
       </div>
-
-      <CommentSection pageId="music-1" />
     </div>
   );
 };
