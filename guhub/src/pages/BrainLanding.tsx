@@ -116,10 +116,6 @@ const BrainLanding = () => {
               <Link to="/geography" className="interestTag">geography</Link>
               <Link to="/animals" className="interestTag">animals</Link>
             </div>
-
-            <Link to="/about" className="realTalkButton">
-              <span className="realTalkText">↓ ok let's be real, you're here for the resumé ↓</span>
-            </Link>
           </div>
 
           <div className="quoteBlock">
