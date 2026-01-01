@@ -54,7 +54,7 @@ const MusicLanding = () => {
 
       <div className="musicFooter">
         <p className="footerQuote">
-          "the only truth is music" — jack kerouac (probably too drunk to remember saying it)
+          "the only truth is music" — jack kerouac 
         </p>
       </div>
     </div>

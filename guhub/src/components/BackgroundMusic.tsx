@@ -6,6 +6,7 @@ const BackgroundMusic = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [needsInteraction, setNeedsInteraction] = useState(true);
+  const [isPausedByOtherMedia, setIsPausedByOtherMedia] = useState(false);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -28,6 +29,66 @@ const BackgroundMusic = () => {
     document.addEventListener('click', tryPlay, { once: true });
     return () => document.removeEventListener('click', tryPlay);
   }, [needsInteraction]);
+
+  // Auto-pause when Spotify or other audio plays
+  useEffect(() => {
+    let pauseTimeout: NodeJS.Timeout;
+    let resumeTimeout: NodeJS.Timeout;
+
+    const handleMouseEnterIframe = (e: Event) => {
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'IFRAME' && audioRef.current && isPlaying) {
+        // Pause after a short delay when user interacts with iframe
+        pauseTimeout = setTimeout(() => {
+          if (audioRef.current) {
+            audioRef.current.pause();
+            setIsPausedByOtherMedia(true);
+          }
+        }, 500);
+      }
+    };
+
+    const handleMouseLeaveIframe = (e: Event) => {
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'IFRAME' && audioRef.current && isPausedByOtherMedia) {
+        // Resume after user leaves iframe
+        clearTimeout(pauseTimeout);
+        resumeTimeout = setTimeout(() => {
+          if (audioRef.current) {
+            audioRef.current.play().catch(() => {});
+            setIsPausedByOtherMedia(false);
+          }
+        }, 1000);
+      }
+    };
+
+    // Add listeners to all iframes
+    const addIframeListeners = () => {
+      const iframes = document.querySelectorAll('iframe');
+      iframes.forEach((iframe) => {
+        iframe.addEventListener('mouseenter', handleMouseEnterIframe);
+        iframe.addEventListener('mouseleave', handleMouseLeaveIframe);
+      });
+    };
+
+    // Initial setup
+    addIframeListeners();
+
+    // Re-add listeners when DOM changes (for dynamic iframes)
+    const observer = new MutationObserver(addIframeListeners);
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    return () => {
+      clearTimeout(pauseTimeout);
+      clearTimeout(resumeTimeout);
+      observer.disconnect();
+      const iframes = document.querySelectorAll('iframe');
+      iframes.forEach((iframe) => {
+        iframe.removeEventListener('mouseenter', handleMouseEnterIframe);
+        iframe.removeEventListener('mouseleave', handleMouseLeaveIframe);
+      });
+    };
+  }, [isPlaying, isPausedByOtherMedia]);
 
   const togglePlay = async () => {
     if (audioRef.current) {
