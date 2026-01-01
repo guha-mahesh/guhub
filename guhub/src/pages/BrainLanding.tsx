@@ -100,7 +100,7 @@ const BrainLanding = () => {
                 <span className="roleLabel">[current]</span>
                 <span className="roleText">Human Memory AI Systems</span>
                 <span className="roleCompany">@ Memory Machines</span>
-                <span className="roleNote">(Harvard AI spinout)</span>
+                <span className="roleNote">(Harvard AI spinout in San Francisco)</span>
               </div>
               <div className="roleItem">
                 <span className="roleLabel">[studying]</span>
