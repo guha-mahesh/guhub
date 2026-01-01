@@ -71,9 +71,9 @@ const BrainLanding = () => {
             >
               <FaLinkedin />
             </a>
-            <a href="/GuhaMaheshResumé.pdf" onClick={handleResumeDownload} className="mobileSocialButton">
+            {/* <a href="/GuhaMaheshResumé.pdf" onClick={handleResumeDownload} className="mobileSocialButton">
               <FaDownload />
-            </a>
+            </a> */}
           </div>
         </div>
       </div>
@@ -168,14 +168,14 @@ const BrainLanding = () => {
         >
           <FaLinkedin />
         </a>
-        <a
+        {/* <a
           href="/GuhaMaheshResumé.pdf"
           onClick={handleResumeDownload}
           className="floatingButton"
           title="Download Resume"
         >
           <FaDownload />
-        </a>
+        </a> */}
       </div>
     </div>
   );

@@ -176,7 +176,7 @@ const TopTracks = () => {
             <div className="realNumber1">
               {hasSeenJoke && (
                 <div className="jkTag">
-                  nah unfortunately i have a no-slop policy
+                    just kidding  🥹 🥹
                 </div>
               )}
               <div className="albumHeader">
