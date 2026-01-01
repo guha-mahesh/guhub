@@ -10,6 +10,10 @@ import ProjectsTab from "./pages/ProjectsTab";
 import AboutTab from "./pages/AboutTab";
 import MusicLanding from "./pages/MusicLanding";
 import TopTracks from "./pages/TopTracks";
+import PhilosophyLanding from "./pages/PhilosophyLanding";
+import CultureLanding from "./pages/CultureLanding";
+import GeographyLanding from "./pages/GeographyLanding";
+import AnimalsLanding from "./pages/AnimalsLanding";
 
 function App() {
   return (
@@ -26,6 +30,10 @@ function App() {
           <Route path="/about" element={<AboutTab />} />
           <Route path="/music" element={<MusicLanding />} />
           <Route path="/music/:id" element={<TopTracks />} />
+          <Route path="/philosophy" element={<PhilosophyLanding />} />
+          <Route path="/culture" element={<CultureLanding />} />
+          <Route path="/geography" element={<GeographyLanding />} />
+          <Route path="/animals" element={<AnimalsLanding />} />
         </Routes>
       </Router>
     </AdminProvider>
