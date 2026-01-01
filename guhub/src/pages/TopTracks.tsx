@@ -102,8 +102,8 @@ const TopTracks = () => {
       </div>
 
       <div className="albumsList">
-        {/* Albums 10-2 (reversed order) */}
-        {[...albums].reverse().map((album) => (
+        {/* Albums 10-2 (descending order) */}
+        {[...albums].sort((a, b) => b.rank - a.rank).map((album) => (
           <div key={album.rank} className="albumCard">
             <div className="rankBadge">
               <span className="rankNumber">{album.rank.toString().padStart(2, '0')}</span>
