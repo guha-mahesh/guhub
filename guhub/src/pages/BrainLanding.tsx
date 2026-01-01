@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import BrainGraph from '../components/BrainGraph';
 import GalaxySelector from '../components/GalaxySelector';
-import { FaGithub, FaLinkedin, FaDownload, FaLaptop } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaLaptop } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import type { GalaxyType } from '../data/galaxyData';
 import './BrainLanding.css';
@@ -23,21 +23,25 @@ const BrainLanding = () => {
     return () => window.removeEventListener('resize', checkIfMobile);
   }, []);
 
-  const handleResumeDownload = (e: React.MouseEvent) => {
-    e.preventDefault();
-    const link = document.createElement('a');
-    link.href = '/GuhaMaheshResumé.pdf';
-    link.download = 'GuhaMaheshResumé.pdf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
   if (isMobile) {
     return (
       <div className="mobileFallback">
         <div className="mobileContent">
           <h1 className="mobileTitle">Guha Mahesh</h1>
+
+          <div className="mobileRoleStack">
+            <div className="mobileRoleItem">
+              <span className="mobileRoleLabel">[current]</span>
+              <span className="mobileRoleText">Human Memory AI Systems</span>
+              <span className="mobileRoleCompany">@ Memory Machines</span>
+            </div>
+            <div className="mobileRoleItem">
+              <span className="mobileRoleLabel">[studying]</span>
+              <span className="mobileRoleText">Data Science + FinTech</span>
+              <span className="mobileRoleCompany">@ Northeastern</span>
+            </div>
+          </div>
+
           <div className="mobileLaptopIcon">
             <FaLaptop />
           </div>
@@ -106,11 +110,11 @@ const BrainLanding = () => {
             </div>
 
             <div className="interestsGrid">
-              <span className="interestTag">ML/AI</span>
-              <span className="interestTag">ethics</span>
-              <span className="interestTag">culture</span>
-              <span className="interestTag">geography</span>
-              <span className="interestTag">sound</span>
+              <Link to="/music" className="interestTag">music</Link>
+              <Link to="/philosophy" className="interestTag">ethics</Link>
+              <Link to="/culture" className="interestTag">culture</Link>
+              <Link to="/geography" className="interestTag">geography</Link>
+              <Link to="/animals" className="interestTag">animals</Link>
             </div>
 
             <Link to="/about" className="realTalkButton">

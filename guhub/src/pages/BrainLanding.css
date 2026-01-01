@@ -7,11 +7,12 @@
 /* ===== HERO SECTION ===== */
 .heroSection {
   min-height: 100vh;
-  padding: 100px 3rem 2rem;
+  padding: 120px 3rem 2rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   position: relative;
+  z-index: 1;
 }
 
 .heroGrid {
@@ -111,6 +112,8 @@
   font-weight: 600;
   text-transform: lowercase;
   letter-spacing: 0.05em;
+  text-decoration: none;
+  display: inline-block;
   transition: all 0.3s ease;
 }
 
@@ -387,7 +390,41 @@
 .mobileTitle {
   color: #ffc0cb;
   font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.mobileRoleStack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   margin-bottom: 2rem;
+  font-family: 'Courier New', monospace;
+}
+
+.mobileRoleItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  border-left: 2px solid #ffc0cb;
+  padding-left: 0.8rem;
+}
+
+.mobileRoleLabel {
+  color: rgba(255, 192, 203, 0.5);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.mobileRoleText {
+  color: #ffc0cb;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.mobileRoleCompany {
+  color: rgba(255, 192, 203, 0.8);
+  font-size: 0.8rem;
 }
 
 .mobileLaptopIcon {
@@ -486,7 +523,7 @@
 
 @media (max-width: 768px) {
   .heroSection {
-    padding: 80px 1.5rem 2rem;
+    padding: 100px 1.5rem 2rem;
   }
 
   .heroGrid {
