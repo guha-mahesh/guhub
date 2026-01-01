@@ -19,7 +19,7 @@ const MusicLanding = () => {
             <div className="cardContent">
               <h2 className="cardTitle">Top Albums 2024</h2>
               <p className="cardDescription">
-                my year in sound: from shoegaze to glitch-slop to whatever the hell parannoul is doing
+                my year in sound
               </p>
               <div className="cardMeta">
                 <span className="cardCount">10 albums</span>
