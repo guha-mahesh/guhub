@@ -48,6 +48,17 @@ export const resumeData: ResumeData = {
   },
   experience: [
     {
+      title: "Software Engineer Co-op",
+      company: "Engramme",
+      date: "Dec 2025 – Sep 2026",
+      bullets: [
+        "Primary engineer across 5 production surfaces at a Harvard AI spinout backed by Mayfield Fund; demoed to Apple, Samsung, GitHub, and TripAdvisor",
+        "Rewrote the Chrome extension's content extraction from scratch: site-specific scrapers for 10+ surfaces (Gmail, Google Docs, LinkedIn, Reddit, etc.), compact 2-char metadata encoding for email threads, viewport-only extraction, and self-referential filtering so Gmail recalls don't surface the thread you're reading",
+        "Built the macOS menubar app: periodic screen capture via ScreenCaptureKit, Apple Vision OCR, Jaccard similarity gate to skip unchanged screens, and a global hotkey that grabs highlighted text from any app by simulating Cmd+C and restoring the original clipboard",
+        "Building entity resolution for the extension: clusters email addresses and display-name variants into canonical recipient identities using embedding-based classification with Tukey fence downsampling for label imbalance"
+      ]
+    },
+    {
       title: "Facilitator",
       company: "Rev (NU Student Club)",
       date: "Aug 2025 – Present",

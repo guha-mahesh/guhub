@@ -5,6 +5,7 @@ import Sidebar from "./components/Sidebar";
 import BackgroundMusic from "./components/BackgroundMusic";
 import AdminPasswordModal from "./components/AdminPasswordModal";
 import AdminPanel from "./components/AdminPanel";
+import CommandPalette from "./components/CommandPalette";
 import BrainLanding from "./pages/BrainLanding";
 import ProjectsTab from "./pages/ProjectsTab";
 import AboutTab from "./pages/AboutTab";
@@ -24,6 +25,7 @@ function App() {
         <BackgroundMusic />
         <AdminPasswordModal />
         <AdminPanel />
+        <CommandPalette />
         <Routes>
           <Route path="/" element={<BrainLanding />} />
           <Route path="/projects" element={<ProjectsTab />} />

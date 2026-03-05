@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import BrainGraph from '../components/BrainGraph';
 import GalaxySelector from '../components/GalaxySelector';
 import { FaGithub, FaLinkedin, FaLaptop } from 'react-icons/fa';
+import { WipIcon } from '../components/CustomIcons';
 import { Link } from 'react-router-dom';
 import type { GalaxyType } from '../data/galaxyData';
 import './BrainLanding.css';
@@ -36,7 +37,7 @@ const BrainLanding = () => {
             <div className="mobileRoleItem">
               <span className="mobileRoleLabel">[current]</span>
               <span className="mobileRoleText">Human Memory AI Systems</span>
-              <span className="mobileRoleCompany">@ Memory Machines</span>
+              <span className="mobileRoleCompany">@ Engramme</span>
             </div>
             <div className="mobileRoleItem">
               <span className="mobileRoleLabel">[studying]</span>
@@ -99,8 +100,8 @@ const BrainLanding = () => {
               <div className="roleItem">
                 <span className="roleLabel">[current]</span>
                 <span className="roleText">Human Memory AI Systems</span>
-                <span className="roleCompany">@ Memory Machines</span>
-                <span className="roleNote">(Harvard AI spinout in San Francisco)</span>
+                <span className="roleCompany">@ Engramme</span>
+                <span className="roleNote">(Harvard AI spinout · backed by Mayfield Fund · SF)</span>
               </div>
               <div className="roleItem">
                 <span className="roleLabel">[studying]</span>
@@ -139,7 +140,7 @@ const BrainLanding = () => {
       {/* Graph Section */}
       <section className="graphSection">
         <div className="wipBadge">
-          🚧 WIP: Node graph visualization in progress
+          <WipIcon size={16} /> WIP: Node graph visualization in progress
           <div className="wipTooltip">
             <div className="tooltipContent">
               Building an encoder that captures how concepts sit in the world: experiential appeal, not just semantics.

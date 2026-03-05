@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { TearIcon } from '../components/CustomIcons';
 import { Link } from 'react-router-dom';
 import './TopTracks.css';
 
@@ -175,7 +176,7 @@ const TopTracks = () => {
             <div className="realNumber1">
               {hasSeenJoke && (
                 <div className="jkTag">
-                    just kidding  🥹 🥹
+                    just kidding  <TearIcon size={18} /> <TearIcon size={18} />
                 </div>
               )}
               <div className="albumHeader">

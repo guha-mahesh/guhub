@@ -69,14 +69,20 @@ const ProjectsTab = () => {
                 ))}
               </div>
 
-              <a
-                href={project.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="githubLinkButton"
-              >
-                <FaGithub /> View on GitHub
-              </a>
+              {project.private ? (
+                <span className="githubLinkButton private">
+                  <FaGithub /> private repo
+                </span>
+              ) : (
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="githubLinkButton"
+                >
+                  <FaGithub /> View on GitHub
+                </a>
+              )}
             </div>
           ))}
         </div>

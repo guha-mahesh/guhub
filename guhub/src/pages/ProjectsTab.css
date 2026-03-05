@@ -141,3 +141,13 @@
     gap: 0.8rem;
   }
 }
+
+.githubLinkButton.private {
+  opacity: 0.4;
+  cursor: default;
+  pointer-events: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-style: italic;
+}

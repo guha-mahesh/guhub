@@ -46,7 +46,7 @@ const Sidebar = () => {
 
               <div className="dataLine">
                 <span className="dataKey">location:</span>
-                <span className="dataValue">Boston, MA</span>
+                <span className="dataValue">San Francisco, CA</span>
               </div>
 
               <div className="dataLine">
