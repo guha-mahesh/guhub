@@ -1,9 +1,6 @@
 import { useState, useEffect } from 'react';
 import './MemoryFeed.css';
 
-const API_KEY = 'qfXJw6okrhiUHXYs2FQCJNPB3zmziGtd';
-const BASE_URL = 'https://memorymachines-gateway-prod-btf57kda.uc.gateway.dev';
-
 interface Memory {
   headline: string;
   narrative: string;
@@ -11,123 +8,72 @@ interface Memory {
   source: string;
 }
 
-const SEED_QUERIES = [
-  'Engramme demo Apple Samsung GitHub',
-  'typing speed monkeytype record WPM',
-  'birding bird prediction machine learning',
-  'San Francisco Mission Dolores neighborhood',
-  'Belgium EU project Policy Playground',
-  'philosophy ethics effective altruism',
-  'shoegaze music MBV Cocteau Twins',
-  'iOS keyboard extension recall command',
+const QUERIES = [
+  { label: 'engramme', query: 'Engramme demo Apple Samsung GitHub' },
+  { label: 'typing', query: 'typing speed monkeytype record WPM' },
+  { label: 'birding', query: 'birding bird prediction machine learning' },
+  { label: 'sf life', query: 'San Francisco Mission Dolores neighborhood' },
+  { label: 'belgium', query: 'Belgium EU project Policy Playground' },
+  { label: 'ethics', query: 'philosophy ethics effective altruism' },
+  { label: 'music', query: 'shoegaze music MBV Cocteau Twins' },
+  { label: 'ios', query: 'iOS keyboard extension recall command' },
 ];
 
 async function recall(query: string): Promise<Memory[]> {
-  const form = new FormData();
-  form.append('text', query);
-  form.append('top_k', '3');
-  form.append('enable_llm_proxy_filter', 'false');
-  form.append('alpha', '0.5');
-  const res = await fetch(`${BASE_URL}/v1/memories/recall`, {
+  const r = await fetch('/api/recall', {
     method: 'POST',
-    headers: { 'x-api-key': API_KEY },
-    body: form,
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query }),
   });
-  const data = await res.json();
-  return (data.memories || []).map((m: any) => ({
-    headline: m.content?.headline || '',
-    narrative: m.content?.narrative || '',
-    date: m.content?.when?.event_start_time?.slice(0, 10) || '',
-    source: m.source || '',
-  }));
+  const data = await r.json();
+  return data.memories ?? [];
 }
 
 const MemoryFeed = () => {
   const [memories, setMemories] = useState<Memory[]>([]);
-  const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(true);
-  const [searching, setSearching] = useState(false);
-  const [activeQuery, setActiveQuery] = useState('');
+  const [activeIdx, setActiveIdx] = useState(0);
 
-  // load a random seed on mount
-  useEffect(() => {
-    const seed = SEED_QUERIES[Math.floor(Math.random() * SEED_QUERIES.length)];
-    setActiveQuery(seed);
-    recall(seed)
-      .then(mems => setMemories(mems.slice(0, 4)))
-      .finally(() => setLoading(false));
-  }, []);
-
-  const search = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!query.trim()) return;
-    setSearching(true);
-    setActiveQuery(query.trim());
+  const load = async (idx: number) => {
+    setActiveIdx(idx);
+    setLoading(true);
     try {
-      const mems = await recall(query.trim());
-      setMemories(mems.slice(0, 4));
+      const mems = await recall(QUERIES[idx].query);
+      setMemories(mems);
     } finally {
-      setSearching(false);
+      setLoading(false);
     }
   };
 
-  const pickSeed = async (q: string) => {
-    setSearching(true);
-    setActiveQuery(q);
-    setQuery('');
-    try {
-      const mems = await recall(q);
-      setMemories(mems.slice(0, 4));
-    } finally {
-      setSearching(false);
-    }
-  };
+  useEffect(() => { load(0); }, []);
 
   return (
     <div className="memoryFeed">
       <div className="memFeedHeader">
         <p className="memFeedLabel">&gt; memory recall</p>
         <p className="memFeedSub">
-          this site runs on{' '}
+          powered by{' '}
           <a href="https://engramme.com" target="_blank" rel="noopener noreferrer" className="memFeedLink">
             Engramme
           </a>
-          {' '}— search anything to pull memories
         </p>
       </div>
 
-      <form onSubmit={search} className="memFeedForm">
-        <div className="memFeedInputRow">
-          <span className="memFeedPrompt">recall</span>
-          <input
-            className="memFeedInput"
-            type="text"
-            value={query}
-            onChange={e => setQuery(e.target.value)}
-            placeholder="search my memory..."
-            disabled={searching}
-          />
-          <button type="submit" className="memFeedSubmit" disabled={!query.trim() || searching}>
-            {searching ? '...' : '→'}
-          </button>
-        </div>
-      </form>
-
       <div className="memFeedSeeds">
-        {SEED_QUERIES.slice(0, 5).map(q => (
+        {QUERIES.map((q, i) => (
           <button
-            key={q}
-            className={`memFeedSeed ${activeQuery === q ? 'active' : ''}`}
-            onClick={() => pickSeed(q)}
-            disabled={searching}
+            key={q.query}
+            className={`memFeedSeed ${activeIdx === i ? 'active' : ''}`}
+            onClick={() => load(i)}
+            disabled={loading}
           >
-            {q}
+            {q.label}
           </button>
         ))}
       </div>
 
       {loading ? (
-        <p className="memFeedEmpty">loading...</p>
+        <p className="memFeedEmpty">...</p>
       ) : memories.length === 0 ? (
         <p className="memFeedEmpty">// no memories found</p>
       ) : (
