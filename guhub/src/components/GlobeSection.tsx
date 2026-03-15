@@ -75,8 +75,8 @@ const LOCATIONS: GlobeLocation[] = [
   },
   {
     id: 'london',
-    name: 'London, UK',
-    lat: 51.5074, lng: -0.1278,
+    name: 'Dublin, Ireland',
+    lat: 53.3498, lng: -6.2603,
     queryKeywords: 'London UK philosophy music shoegaze',
     category: 'interest',
     description: 'My Bloody Valentine country.',
