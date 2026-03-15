@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback } from 'react';
+import { MEMORY_SPAN_KEYS } from './memoryKeys';
 import './MemorySpan.css';
 
 interface Memory {
@@ -20,6 +21,8 @@ export default function MemorySpan({ queryKey, children }: Props) {
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
   const [pos, setPos] = useState<'above' | 'below'>('above');
+  // apply styling immediately if we know this key has content
+  const hasKnownContent = MEMORY_SPAN_KEYS.has(queryKey);
   const spanRef = useRef<HTMLSpanElement>(null);
   const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -67,7 +70,7 @@ export default function MemorySpan({ queryKey, children }: Props) {
   return (
     <span
       ref={spanRef}
-      className={`memSpan ${hasContent ? 'memSpanActive' : ''}`}
+      className={`memSpan ${hasKnownContent ? 'memSpanActive' : ''}`}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
