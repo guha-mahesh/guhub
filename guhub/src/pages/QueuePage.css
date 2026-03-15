@@ -9,6 +9,70 @@
   font-family: 'IBM Plex Mono', 'Courier New', monospace;
 }
 
+.npBar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: #0a0a0a;
+  border: 1px solid #1a1a1a;
+  margin-bottom: 1.5rem;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1.5rem;
+}
+
+.npBarArt {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.npBarDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #1db954;
+  box-shadow: 0 0 6px #1db954;
+  flex-shrink: 0;
+  animation: npPulse 2s ease-in-out infinite;
+}
+
+@keyframes npPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.npBarTitle {
+  font-size: 0.78rem;
+  color: #d0d0d0;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.npBarSep { color: #333; font-size: 0.75rem; }
+
+.npBarArtist {
+  font-size: 0.72rem;
+  color: #555;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+
+.npBarLink {
+  color: #1db954;
+  text-decoration: none;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
 .queueLayout {
   display: grid;
   grid-template-columns: 1fr 1fr;

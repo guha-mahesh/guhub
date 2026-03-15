@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import './QueuePage.css';
-import NowPlaying from '../components/NowPlaying';
 
 interface TrackResult {
   id?: string;
@@ -33,7 +32,18 @@ export default function QueuePage() {
   const [queued, setQueued] = useState<TrackResult | null>(null);
   const [recent, setRecent] = useState<TrackResult[]>([]);
   const [recentLoading, setRecentLoading] = useState(true);
+  const [nowPlaying, setNowPlaying] = useState<TrackResult | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const fetchNP = () => fetch(`${API}/api/spotify/now-playing`)
+      .then(r => r.json())
+      .then(d => d.isPlaying ? setNowPlaying(d) : setNowPlaying(null))
+      .catch(() => {});
+    fetchNP();
+    const interval = setInterval(fetchNP, 30_000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     fetch(`${API}/api/spotify/recent?limit=15`)
@@ -94,7 +104,16 @@ export default function QueuePage() {
 
   return (
     <div className="queuePage">
-      <NowPlaying />
+      {nowPlaying && (
+        <div className="npBar">
+          {nowPlaying.albumArt && <img src={nowPlaying.albumArt} alt="" className="npBarArt" />}
+          <span className="npBarDot" />
+          <span className="npBarTitle">{nowPlaying.title}</span>
+          <span className="npBarSep">—</span>
+          <span className="npBarArtist">{nowPlaying.artist}</span>
+          <a href={nowPlaying.spotifyUrl} target="_blank" rel="noopener noreferrer" className="npBarLink">↗</a>
+        </div>
+      )}
       <div className="queueLayout">
 
         {/* ── left: queue ── */}
