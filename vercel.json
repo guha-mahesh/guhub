@@ -1,7 +1,6 @@
 {
-  "buildCommand": "cd guhub && npm run build",
-  "outputDirectory": "guhub/dist",
-
+  "rootDirectory": "guhub",
+  "outputDirectory": "dist",
   "rewrites": [
     { "source": "/api/spotify/:path*", "destination": "/api/spotify/:path*" },
     { "source": "/(.*)", "destination": "/index.html" }

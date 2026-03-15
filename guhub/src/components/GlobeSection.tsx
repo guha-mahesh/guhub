@@ -193,12 +193,11 @@ const GlobeSection = () => {
               .polygonAltitude((f: any) => f === hovered ? 0.016 : 0.006);
           })
           .pointsData(LOCATIONS)
-          .pointLat('lat')
-          .pointLng('lng')
+          .pointLat((d: any) => d.lat)
+          .pointLng((d: any) => d.lng)
           .pointColor((d: any) => CATEGORY_COLORS[d.category as Category] ?? '#739166')
-          .pointAltitude(0.04)
-          .pointRadius(0.55)
-          .pointsMerge(false)
+          .pointAltitude(() => 0.04)
+          .pointRadius(() => 0.55)
           .pointLabel((d: any) => `
             <div style="background:rgba(20,4,4,0.95);border:1.5px solid ${CATEGORY_COLORS[d.category as Category]};border-radius:8px;padding:10px 14px;font-family:'Courier New',monospace;max-width:220px">
               <div style="color:${CATEGORY_COLORS[d.category as Category]};font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px">[${d.category}]</div>
@@ -208,13 +207,12 @@ const GlobeSection = () => {
           `)
           .onPointClick(handlePointClick)
           .labelsData(LOCATIONS)
-          .labelLat('lat')
-          .labelLng('lng')
-          .labelText('name')
-          .labelSize(1.4)
+          .labelLat((d: any) => d.lat)
+          .labelLng((d: any) => d.lng)
+          .labelText((d: any) => d.name)
+          .labelSize(() => 1.4)
           .labelColor((d: any) => `${CATEGORY_COLORS[d.category as Category]}cc`)
-          .labelResolution(2)
-          .labelAltitude(0.055)
+          .labelAltitude(() => 0.055)
           (el);
 
         globeRef.current = globe;
@@ -231,7 +229,7 @@ const GlobeSection = () => {
           });
         }, 100);
 
-        const ctrl = globe.controls();
+        const ctrl = globe.controls() as any;
         ctrl.autoRotate = true;
         ctrl.autoRotateSpeed = 0.5;
         ctrl.enableZoom = true;
