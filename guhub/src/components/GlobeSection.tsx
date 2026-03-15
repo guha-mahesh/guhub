@@ -87,7 +87,7 @@ const LOCATIONS: GlobeLocation[] = [
     lat: 37.5665, lng: 126.9780,
     queryKeywords: 'Parannoul Seoul Korean shoegaze music',
     category: 'interest',
-    description: 'Parannoul. The best shoegaze record in years.',
+    description: 'Parannoul.',
   },
 ];
 
