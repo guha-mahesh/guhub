@@ -72,27 +72,31 @@ export default function MemorySpan({ queryKey, children }: Props) {
       onMouseLeave={onMouseLeave}
     >
       {children}
-      {visible && (
+      {visible && hasContent && (
         <span
           className={`memSpanCard ${pos}`}
           onMouseEnter={() => { if (hideTimer.current) clearTimeout(hideTimer.current); }}
           onMouseLeave={onMouseLeave}
         >
-          {loading && <span className="memSpanLoading">...</span>}
-          {!loading && !hasContent && (
-            <span className="memSpanEmpty">no memories</span>
-          )}
-          {!loading && hasContent && memories.map((m, i) => (
-            <span key={i} className="memSpanMemory">
-              <span className="memSpanMeta">
-                <span className="memSpanSource">{m.source}</span>
-                <span className="memSpanDate">{m.date}</span>
+          <span className="memSpanCardHeader">
+            <span className="memSpanCardHeaderDot" />
+            <span className="memSpanCardHeaderLabel">memory</span>
+            <span className="memSpanCardHeaderBrand">engramme</span>
+          </span>
+          <span className="memSpanCardBody">
+            {loading && <span className="memSpanLoading">...</span>}
+            {!loading && memories.map((m, i) => (
+              <span key={i} className="memSpanMemory">
+                <span className="memSpanMeta">
+                  <span className="memSpanSource">{m.source}</span>
+                  <span className="memSpanDate">{m.date}</span>
+                </span>
+                <span className="memSpanHeadline">{m.headline}</span>
+                <span className="memSpanNarrative">{m.narrative}</span>
+                {i < memories.length - 1 && <span className="memSpanDivider" />}
               </span>
-              <span className="memSpanHeadline">{m.headline}</span>
-              <span className="memSpanNarrative">{m.narrative}</span>
-              {i < memories.length - 1 && <span className="memSpanDivider" />}
-            </span>
-          ))}
+            ))}
+          </span>
         </span>
       )}
     </span>

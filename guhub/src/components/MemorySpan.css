@@ -4,10 +4,25 @@
   display: inline;
 }
 
-/* only show underline when there's actual content */
+/* Engramme-branded highlight — only when content exists */
 .memSpanActive {
-  border-bottom: 1px dashed #739166;
   cursor: help;
+  background: rgba(115, 145, 102, 0.12);
+  border-bottom: 1.5px solid #739166;
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+.memSpanActive::after {
+  content: 'e';
+  font-size: 0.5rem;
+  color: #739166;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 700;
+  vertical-align: super;
+  margin-left: 1px;
+  opacity: 0.7;
+  letter-spacing: 0;
 }
 
 /* ── card ────────────────────────────────────────────── */
@@ -15,57 +30,86 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  width: 280px;
-  background: #0a0a0a;
+  width: 300px;
+  background: #080808;
   border: 1px solid #739166;
-  padding: 0.9rem;
   z-index: 9999;
   display: flex;
   flex-direction: column;
-  gap: 0;
   font-family: 'IBM Plex Mono', 'Courier New', monospace;
   font-style: normal;
   font-weight: normal;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.6), 0 0 20px rgba(115,145,102,0.08);
-  animation: memCardIn 0.12s ease-out;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.8), 0 0 24px rgba(115,145,102,0.12);
+  animation: memCardIn 0.14s ease-out;
   pointer-events: all;
 }
 
-.memSpanCard.above {
-  bottom: calc(100% + 8px);
-}
-
-.memSpanCard.below {
-  top: calc(100% + 8px);
-}
+.memSpanCard.above { bottom: calc(100% + 10px); }
+.memSpanCard.below { top: calc(100% + 10px); }
 
 @keyframes memCardIn {
-  from { opacity: 0; transform: translateX(-50%) translateY(4px); }
+  from { opacity: 0; transform: translateX(-50%) translateY(6px); }
   to   { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
-
-.memSpanCard.above {
-  animation: memCardInAbove 0.12s ease-out;
-}
+.memSpanCard.above { animation: memCardInAbove 0.14s ease-out; }
 @keyframes memCardInAbove {
-  from { opacity: 0; transform: translateX(-50%) translateY(-4px); }
+  from { opacity: 0; transform: translateX(-50%) translateY(-6px); }
   to   { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
-/* ── states ──────────────────────────────────────────── */
+/* ── card header bar ─────────────────────────────────── */
+.memSpanCardHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.75rem;
+  background: rgba(115,145,102,0.08);
+  border-bottom: 1px solid #739166;
+}
+
+.memSpanCardHeaderDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #739166;
+  flex-shrink: 0;
+}
+
+.memSpanCardHeaderLabel {
+  font-size: 0.58rem;
+  color: #739166;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  flex: 1;
+}
+
+.memSpanCardHeaderBrand {
+  font-size: 0.55rem;
+  color: #3a5a30;
+  letter-spacing: 0.1em;
+}
+
+/* ── card body ───────────────────────────────────────── */
+.memSpanCardBody {
+  padding: 0.85rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
 .memSpanLoading,
 .memSpanEmpty {
   font-size: 0.65rem;
   color: #333;
-  padding: 0.2rem 0;
+  padding: 0.75rem 0.9rem;
+  font-family: 'IBM Plex Mono', monospace;
 }
 
-/* ── memory item ─────────────────────────────────────── */
 .memSpanMemory {
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
-  padding: 0.3rem 0;
+  padding: 0.55rem 0;
 }
 
 .memSpanMeta {
@@ -75,22 +119,21 @@
 }
 
 .memSpanSource {
-  font-size: 0.58rem;
+  font-size: 0.55rem;
   color: #739166;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  border: 1px solid #73916650;
-  padding: 0.08rem 0.35rem;
+  opacity: 0.6;
 }
 
 .memSpanDate {
   font-size: 0.55rem;
   color: #2a2a2a;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
 }
 
 .memSpanHeadline {
-  font-size: 0.75rem;
+  font-size: 0.73rem;
   color: #d0d0d0;
   font-weight: 700;
   line-height: 1.35;
@@ -98,11 +141,11 @@
 }
 
 .memSpanNarrative {
-  font-size: 0.65rem;
+  font-size: 0.63rem;
   color: #555;
   line-height: 1.6;
   display: -webkit-box;
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -111,5 +154,5 @@
   display: block;
   height: 1px;
   background: #111;
-  margin: 0.4rem 0;
+  margin: 0.3rem 0;
 }
