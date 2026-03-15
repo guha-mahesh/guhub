@@ -4,7 +4,7 @@
 // Adds the track to your active device queue.
 
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { getAccessToken } from './_token';
+import { getAccessToken } from './_token.js';
 
 const QUEUE_URL = 'https://api.spotify.com/v1/me/player/queue';
 

@@ -3,7 +3,7 @@
 // Returns recently played tracks.
 
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { getAccessToken } from './_token';
+import { getAccessToken } from './_token.js';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Origin', '*');

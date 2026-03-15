@@ -3,7 +3,7 @@
 // Returns the currently playing track or { isPlaying: false }.
 
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { getAccessToken } from './_token';
+import { getAccessToken } from './_token.js';
 
 const NOW_PLAYING_URL = 'https://api.spotify.com/v1/me/player/currently-playing';
 
