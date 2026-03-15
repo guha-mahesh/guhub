@@ -279,9 +279,12 @@
   transition: background 0.1s;
 }
 
+.recentLabelSpaced {
+  margin-top: 1.5rem;
+}
+
 .npNowRow {
   border-bottom: 1px solid #1a1a1a;
-  margin-bottom: 0.25rem;
 }
 
 .recentRow:last-child { border-bottom: none; }

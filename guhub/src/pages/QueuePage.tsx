@@ -182,22 +182,26 @@ export default function QueuePage() {
           )}
         </div>
 
-        {/* ── right: recently played ── */}
+        {/* ── right: now playing + recently played ── */}
         <div className="recentRight">
-          <p className="recentLabel">&gt; recently played</p>
           {nowPlaying && (
-            <a href={nowPlaying.spotifyUrl} target="_blank" rel="noopener noreferrer" className="recentRow npNowRow">
-              {nowPlaying.albumArt && <img src={nowPlaying.albumArt} alt="" className="recentArt" />}
-              <div className="recentText">
-                <span className="recentTitle">{nowPlaying.title}</span>
-                <span className="recentMeta">{nowPlaying.artist}</span>
-              </div>
-              <span className="npBarDot" />
-            </a>
+            <>
+              <p className="recentLabel">&gt; now playing</p>
+              <a href={nowPlaying.spotifyUrl} target="_blank" rel="noopener noreferrer" className="recentRow npNowRow">
+                {nowPlaying.albumArt && <img src={nowPlaying.albumArt} alt="" className="recentArt" />}
+                <div className="recentText">
+                  <span className="recentTitle">{nowPlaying.title}</span>
+                  <span className="recentMeta">{nowPlaying.artist}</span>
+                </div>
+                <span className="npBarDot" />
+              </a>
+              <p className="recentLabel recentLabelSpaced">&gt; recently played</p>
+            </>
           )}
+          {!nowPlaying && <p className="recentLabel">&gt; recently played</p>}
           {recentLoading ? (
             <p className="recentEmpty">loading...</p>
-          ) : recent.length === 0 && !nowPlaying ? (
+          ) : recent.length === 0 ? (
             <p className="recentEmpty">// nothing yet</p>
           ) : (
             <div className="recentList">
