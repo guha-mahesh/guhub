@@ -1,66 +1,68 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-const ENGRAMME_KEY = 'qfXJw6okrhiUHXYs2FQCJNPB3zmziGtd';
-const ENGRAMME_URL = 'https://memorymachines-gateway-prod-btf57kda.uc.gateway.dev';
+// Memories are pre-curated — recalled + judged at build time, hardcoded here.
+// No runtime LLM calls, no relevance filtering needed.
 
-export const ALLOWED_QUERIES: Record<string, { query: string; label: string }> = {
-  'engramme':          { query: 'Engramme demo Apple Samsung GitHub product chrome extension menubar', label: 'Engramme' },
-  'bioclock':          { query: 'BioClock satellite biodiversity CNN model accuracy', label: 'BioClock' },
-  'flightscope':       { query: 'FlightScope birdwatching bird species Poisson prediction', label: 'FlightScope' },
-  'earthborn':         { query: 'earthborn AI tells detector iMessage corpus linguistic', label: 'earthborn' },
-  'experiencevec':     { query: 'ExperienceVec sensorimotor word embedding phonology Lancaster', label: 'ExperienceVec' },
-  'meticulous':        { query: 'Meticulous Ableton Live DAW OSC natural language', label: 'Meticulous' },
-  'monkroyer':         { query: 'Monkroyer social bingo game league friends', label: 'Monkroyer' },
-  'arbor':             { query: 'Arbor cultural identity network embed profile', label: 'Arbor' },
-  'houston':           { query: 'Houston home family Texas grew up', label: 'Houston' },
-  'san-francisco':     { query: 'San Francisco Mission Dolores current life co-op neighborhood', label: 'San Francisco' },
-  'northeastern':      { query: 'Northeastern Boston university campus honors GPA', label: 'Northeastern' },
-  'belgium':           { query: 'Belgium EU project Policy Playground Brussels', label: 'Belgium' },
-  'shoegaze':          { query: 'shoegaze music MBV Cocteau Twins dream pop listening', label: 'shoegaze' },
-  'typing':            { query: 'typing speed monkeytype WPM record competitive', label: 'typing' },
-  'entity-resolution': { query: 'entity resolution email embeddings KNN classification', label: 'entity resolution' },
-  'ios-app':           { query: 'iOS keyboard extension recall command Engramme iPhone', label: 'iOS app' },
-  'macos-app':         { query: 'macOS menubar app ScreenCaptureKit OCR Swift periodic', label: 'macOS app' },
-  'ea':                { query: 'effective altruism ethics philosophy Singer animal', label: 'effective altruism' },
-  'birding':           { query: 'birding bird prediction machine learning birdwatching species', label: 'birding' },
-  'chicago':           { query: 'Chicago city visit favorite midwest', label: 'Chicago' },
-  'petra':             { query: 'Petra Jordan Middle East travel visit', label: 'Petra' },
-  'seoul':             { query: 'Seoul South Korea Parannoul shoegaze music', label: 'Seoul' },
+interface Memory { headline: string; narrative: string; date: string; source: string; }
+
+const MEMORIES: Record<string, Memory[]> = {
+  'engramme': [
+    { headline: 'Built Engramme iOS keyboard extension', narrative: 'Created an iOS keyboard extension bundled with the Engramme app. Extension supports /recall and /ask commands in any input box, letting users query their memory from anywhere on their phone.', date: '2026-02', source: 'claude_code' },
+    { headline: 'Engramme Extension v4.6.3 shipped', narrative: 'Shared download link for Engramme Extension v4.6.3 with the team. Version announcement marked a milestone in the Chrome extension release cycle.', date: '2026-01', source: 'email' },
+  ],
+  'bioclock': [
+    { headline: 'Trained biodiversity prediction ML model', narrative: 'Trained a machine learning model that scans satellite images and predicts local biodiversity levels. Reported prediction accuracy reached 85% after dataset augmentation.', date: '2025-08', source: 'stream' },
+  ],
+  'flightscope': [
+    { headline: 'Built bird-spotting prediction model', narrative: 'Trained a bird-spotting prediction model using weather, time of day, and location features. Goal was predicting sighting probability for specific species at specific conditions.', date: '2025-07', source: 'stream' },
+  ],
+  'meticulous': [
+    { headline: 'Makes beats on FL Studio', narrative: 'Said I need to make beats on FL Studio and described it as my art. The comment came up in context of Meticulous and what motivated building an AI agent for DAW control.', date: '2025-10', source: 'stream' },
+  ],
+  'arbor': [
+    { headline: 'Arbor vs linktr.ee positioning', narrative: 'Articulated how Arbor differs from linktr.ee — focused purely on taste and what you like, not links associated with you. Goal is bringing the card to your links, not the other way around.', date: '2025-11', source: 'stream' },
+    { headline: 'Demoed Arbor via Streamable video', narrative: 'Offered to make an Arbor account and demo it for someone. Made a public profile and sent a Streamable link to the demo video to show what the embeds look like in practice.', date: '2025-10', source: 'stream' },
+  ],
+  'houston': [
+    { headline: 'Room in Sugar Land, Texas', narrative: 'Nadia asked if an image was my room. Said the pictured room is back in Sugar Land, Texas — where I grew up before leaving for Boston and eventually SF.', date: '2026-01', source: 'stream' },
+    { headline: 'Drove 150 miles around Houston thrifting', narrative: 'Went thrifting and drove 150 miles total across the Houston area in one day. Described Houston driving as ridiculous and stupid — the city is genuinely that spread out.', date: '2025-06', source: 'stream' },
+  ],
+  'san-francisco': [
+    { headline: 'Planning SF housing — Airbnb first month', narrative: 'Planning to Airbnb the first month in SF while figuring out longer-term housing. Talking to three other Northeastern students about splitting a place. Estimated $1600–2000/month.', date: '2025-10', source: 'stream' },
+    { headline: 'Emailed Oakland campus about co-op housing', narrative: 'Emailed about Oakland campus housing options for the SF co-op starting December. Asked about availability, application process, and next steps.', date: '2025-10', source: 'email' },
+  ],
+  'northeastern': [
+    { headline: 'Landed in Boston from Houston', narrative: 'Said I just landed from Houston and would grab baggage then head to Northeastern. The move back to campus after summer break.', date: '2025-08', source: 'stream' },
+    { headline: 'Northeastern went up 7 spots in US News', narrative: 'Northeastern went up 7 spots in this year\'s US News rankings. Made note of it in conversation.', date: '2025-09', source: 'stream' },
+  ],
+  'belgium': [
+    { headline: 'Built Policy Playground in Belgium for EU', narrative: 'Went to Belgium for a project with the EU around May and June. Built Policy Playground there — regression models for forecasting financial markets paired with a policy recommender system.', date: '2025-07', source: 'stream' },
+  ],
+  'shoegaze': [
+    { headline: 'Searched meaning of Cocteau Twins song', narrative: 'Searched Google about "Ella Megalast Burls Forever" meaning — looking into the Blue Bell Knoll album context and the involvement of Elizabeth Fraser and Robin Guthrie. Classic Cocteau Twins rabbit hole.', date: '2026-02', source: 'stream' },
+  ],
+  'typing': [
+    { headline: '147 WPM at 15 seconds on Monkeytype', narrative: 'Shared a 15-second record score of 147 WPM on Monkeytype during a chat with Aditi. Also mentioned a 2-minute competition with friends.', date: '2026-01', source: 'stream' },
+  ],
+  'ea': [
+    { headline: 'Did math on slaughterhouse ethical justification', narrative: 'Told Ott I did math on what it would take to justify slaughterhouses under utilitarianism. Conclusion: animals would need to be valued at 1/2.433 millionth of a human life for the math to work out. Framed as a reductio.', date: '2025-11', source: 'stream' },
+    { headline: 'Eating meat is ethically wrong for non-religious philosophers', narrative: 'Claimed eating meat is ethically indefensible for non-religious philosophers. Said religious thinkers can justify it since animals lack god\'s image in their framework, but that excuse isn\'t available to secular ethicists.', date: '2025-11', source: 'stream' },
+  ],
+  'birding': [
+    { headline: 'Working on bird prediction ML model', narrative: 'Working on a machine learning model that uses rough location and weather data to predict bird counts for a given area. Said current models were weak because data quality wasn\'t great yet.', date: '2025-07', source: 'stream' },
+  ],
+  'ios-app': [
+    { headline: 'Built Engramme iOS keyboard extension', narrative: 'Created an iOS keyboard extension bundled with the Engramme app. Supports /recall and /ask commands in any input field — lets you query memory from anywhere without switching apps.', date: '2026-02', source: 'claude_code' },
+  ],
+  'macos-app': [
+    { headline: 'Menubar app: periodic screen capture + OCR', narrative: 'Built the macOS menubar app to run periodic screen captures using ScreenCaptureKit. Apple Vision OCR runs on each frame. A Jaccard similarity gate skips unchanged screens to avoid redundant API calls.', date: '2026-01', source: 'claude_code' },
+    { headline: 'Configured hotkeys and clipboard capture', narrative: 'Registered hotkeys in the menubar app. Periodic 30s OCR timer resets on hotkey. Enabled clipboard saving — app grabs highlighted text from any app by simulating Cmd+C and restoring the original clipboard.', date: '2026-01', source: 'claude_code' },
+  ],
 };
 
-async function isRelevant(term: string, headline: string, narrative: string): Promise<boolean> {
-  try {
-    const r = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': process.env.ANTHROPIC_API_KEY!,
-        'anthropic-version': '2023-06-01',
-      },
-      body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 10,
-        messages: [{
-          role: 'user',
-          content: `Hover term: "${term}"\nMemory headline: "${headline}"\nMemory: "${narrative.slice(0, 300)}"\n\nIs this memory genuinely about or directly related to the hover term? Reply YES or NO only.`,
-        }],
-      }),
-    });
-    const data = await r.json();
-    const answer = data.content?.[0]?.text?.trim().toUpperCase() ?? 'NO';
-    return answer.startsWith('YES');
-  } catch {
-    return false;
-  }
-}
+export const ALLOWED_QUERY_KEYS = new Set(Object.keys(MEMORIES));
 
-function isSafe(narrative: string): boolean {
-  const lower = narrative.toLowerCase();
-  return !['password', 'ssn', 'credit card', 'salary', 'nadia', 'aditi',
-    'girlfriend', 'date', 'relationship', 'medical', 'rejected', 'breakup'].some(s => lower.includes(s));
-}
-
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -68,47 +70,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const { queryKey } = req.body ?? {};
-  const entry = ALLOWED_QUERIES[queryKey];
-  if (!entry) return res.status(400).json({ error: 'Invalid query key' });
-
-  const form = new FormData();
-  form.append('text', entry.query);
-  form.append('top_k', '8');
-  form.append('enable_llm_proxy_filter', 'false');
-  form.append('alpha', '0.5');
-
-  try {
-    const r = await fetch(`${ENGRAMME_URL}/v1/memories/recall`, {
-      method: 'POST',
-      headers: { 'x-api-key': ENGRAMME_KEY },
-      body: form,
-    });
-    const data = await r.json();
-    const candidates = (data.memories || [])
-      .filter((m: any) => isSafe(m.content?.narrative || '') && (m.content?.narrative || '').length > 80)
-      .slice(0, 6);
-
-    // cross-reference each candidate against the term via Claude
-    const checked = await Promise.all(
-      candidates.map(async (m: any) => {
-        const relevant = await isRelevant(entry.label, m.content?.headline || '', m.content?.narrative || '');
-        return relevant ? m : null;
-      })
-    );
-
-    const memories = checked
-      .filter(Boolean)
-      .slice(0, 2)
-      .map((m: any) => ({
-        headline: m.content?.headline || '',
-        narrative: m.content?.narrative || '',
-        date: m.content?.when?.event_start_time?.slice(0, 10) || '',
-        source: m.source || '',
-      }));
-
-    res.setHeader('Cache-Control', 's-maxage=600, stale-while-revalidate=120');
-    return res.json({ memories });
-  } catch (e: any) {
-    return res.status(500).json({ error: e.message });
+  if (!queryKey || !ALLOWED_QUERY_KEYS.has(queryKey)) {
+    return res.status(400).json({ error: 'Invalid query key' });
   }
+
+  res.setHeader('Cache-Control', 's-maxage=86400');
+  return res.json({ memories: MEMORIES[queryKey] ?? [] });
 }
