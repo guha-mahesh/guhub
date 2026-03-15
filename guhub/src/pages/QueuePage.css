@@ -277,9 +277,11 @@
   border-bottom: 1px solid #0d0d0d;
   text-decoration: none;
   transition: background 0.1s;
-  margin: 0 -0.5rem;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
+}
+
+.npNowRow {
+  border-bottom: 1px solid #1a1a1a;
+  margin-bottom: 0.25rem;
 }
 
 .recentRow:last-child { border-bottom: none; }
