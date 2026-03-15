@@ -1,11 +1,7 @@
 {
   "buildCommand": "cd guhub && npm run build",
   "outputDirectory": "guhub/dist",
-  "functions": {
-    "api/**/*.ts": {
-      "runtime": "@vercel/node@3"
-    }
-  },
+
   "rewrites": [
     { "source": "/api/spotify/:path*", "destination": "/api/spotify/:path*" },
     { "source": "/(.*)", "destination": "/index.html" }
