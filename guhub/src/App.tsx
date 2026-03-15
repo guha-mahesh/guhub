@@ -42,8 +42,8 @@ function App() {
           <Route path="/geography" element={<GeographyLanding />} />
           <Route path="/animals" element={<AnimalsLanding />} />
           <Route path="/blog" element={<BlogPage />} />
-          <Route path="/listening" element={<MusicPage />} />
-          <Route path="/queue" element={<QueuePage />} />
+          <Route path="/listening" element={<QueuePage />} />
+          <Route path="/music" element={<MusicPage />} />
         </Routes>
       </Router>
     </AdminProvider>

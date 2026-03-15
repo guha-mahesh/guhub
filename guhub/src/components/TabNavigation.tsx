@@ -10,7 +10,6 @@ const TabNavigation = () => {
     { path: '/about',     label: 'RÉSUMÉ'     },
     { path: '/blog',      label: 'BLOG'       },
     { path: '/listening', label: 'LISTENING'  },
-    { path: '/queue',     label: 'QUEUE ↝'    },
   ];
 
   return (
