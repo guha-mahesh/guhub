@@ -206,13 +206,6 @@ const GlobeSection = () => {
             </div>
           `)
           .onPointClick(handlePointClick)
-          .labelsData(LOCATIONS)
-          .labelLat((d: any) => d.lat)
-          .labelLng((d: any) => d.lng)
-          .labelText((d: any) => d.name)
-          .labelSize(() => 1.4)
-          .labelColor((d: any) => `${CATEGORY_COLORS[d.category as Category]}cc`)
-          .labelAltitude(() => 0.055)
           (el);
 
         globeRef.current = globe;
