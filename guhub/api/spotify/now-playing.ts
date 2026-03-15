@@ -22,7 +22,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (r.status === 204 || r.status > 400) return res.json({ isPlaying: false });
     const data = await r.json();
     if (!data?.item) return res.json({ isPlaying: false });
-    res.setHeader('Cache-Control', 's-maxage=30, stale-while-revalidate=30');
+    res.setHeader('Cache-Control', 'no-store');
     return res.json({
       isPlaying: data.is_playing,
       title: data.item.name,
