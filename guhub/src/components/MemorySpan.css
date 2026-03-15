@@ -1,0 +1,115 @@
+.memSpan {
+  position: relative;
+  cursor: default;
+  display: inline;
+}
+
+/* only show underline when there's actual content */
+.memSpanActive {
+  border-bottom: 1px dashed #739166;
+  cursor: help;
+}
+
+/* ── card ────────────────────────────────────────────── */
+.memSpanCard {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 280px;
+  background: #0a0a0a;
+  border: 1px solid #739166;
+  padding: 0.9rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-style: normal;
+  font-weight: normal;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.6), 0 0 20px rgba(115,145,102,0.08);
+  animation: memCardIn 0.12s ease-out;
+  pointer-events: all;
+}
+
+.memSpanCard.above {
+  bottom: calc(100% + 8px);
+}
+
+.memSpanCard.below {
+  top: calc(100% + 8px);
+}
+
+@keyframes memCardIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(4px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+.memSpanCard.above {
+  animation: memCardInAbove 0.12s ease-out;
+}
+@keyframes memCardInAbove {
+  from { opacity: 0; transform: translateX(-50%) translateY(-4px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* ── states ──────────────────────────────────────────── */
+.memSpanLoading,
+.memSpanEmpty {
+  font-size: 0.65rem;
+  color: #333;
+  padding: 0.2rem 0;
+}
+
+/* ── memory item ─────────────────────────────────────── */
+.memSpanMemory {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.3rem 0;
+}
+
+.memSpanMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.memSpanSource {
+  font-size: 0.58rem;
+  color: #739166;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: 1px solid #73916650;
+  padding: 0.08rem 0.35rem;
+}
+
+.memSpanDate {
+  font-size: 0.55rem;
+  color: #2a2a2a;
+  letter-spacing: 0.06em;
+}
+
+.memSpanHeadline {
+  font-size: 0.75rem;
+  color: #d0d0d0;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+
+.memSpanNarrative {
+  font-size: 0.65rem;
+  color: #555;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.memSpanDivider {
+  display: block;
+  height: 1px;
+  background: #111;
+  margin: 0.4rem 0;
+}

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { resumeData as initialResumeData, type ResumeData } from '../data/resumeData';
+import MemorySpan from '../components/MemorySpan';
 import './AboutTab.css';
 
 const AboutTab = () => {
@@ -43,7 +44,7 @@ const AboutTab = () => {
 
             <section className="resumeLeftSection">
               <p className="leftLabel">education</p>
-              <p className="leftSchool">{resumeData.education.school}</p>
+              <p className="leftSchool"><MemorySpan queryKey="northeastern">{resumeData.education.school}</MemorySpan></p>
               <p className="leftDegreeText">{resumeData.education.degree}</p>
               <p className="leftMeta">{resumeData.education.gpa}</p>
               <p className="leftMeta">exp. {resumeData.education.date}</p>
@@ -60,7 +61,9 @@ const AboutTab = () => {
 
             <section className="resumeLeftSection">
               <p className="leftLabel">interests</p>
-              <p className="skillsInline">shoegaze, competitive typing, metaethics, effective altruism, animal welfare, geopolitics</p>
+              <p className="skillsInline">
+                <MemorySpan queryKey="shoegaze">shoegaze</MemorySpan>, <MemorySpan queryKey="typing">competitive typing</MemorySpan>, metaethics, <MemorySpan queryKey="ea">effective altruism</MemorySpan>, <MemorySpan queryKey="birding">animal welfare</MemorySpan>, geopolitics
+              </p>
             </section>
 
           </aside>
@@ -80,7 +83,13 @@ const AboutTab = () => {
                 <div key={i} className="expEntry">
                   <div className="expEntryHeader">
                     <div className="expEntryLeft">
-                      <span className="expEntryCompany">{exp.company}</span>
+                      <span className="expEntryCompany">
+                {exp.company.includes('Engramme')
+                  ? <MemorySpan queryKey="engramme">{exp.company}</MemorySpan>
+                  : exp.company.includes('Knack')
+                  ? <MemorySpan queryKey="typing">{exp.company}</MemorySpan>
+                  : exp.company}
+              </span>
                       <span className="expEntryTitle">{exp.title}</span>
                     </div>
                     <span className="expEntryDate">{exp.date}</span>

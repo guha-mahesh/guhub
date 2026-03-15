@@ -3,6 +3,7 @@ import { projects as allProjects } from '../data/projects';
 import type { Project } from '../data/projects';
 import { galaxyArray, type GalaxyType } from '../data/galaxyData';
 import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
+import MemorySpan from '../components/MemorySpan';
 import './ProjectsTab.css';
 
 const W = 900;
@@ -204,7 +205,11 @@ export default function ProjectsTab() {
               }}
             >
               <button className="treeCardClose" onClick={() => setActiveIdx(null)}>×</button>
-              <h2 className="treeCardTitle">{activeProject.title}</h2>
+              <h2 className="treeCardTitle">
+                  <MemorySpan queryKey={activeProject.title.toLowerCase().replace(/[^a-z]/g, '-').replace(/-+/g,'-')}>
+                    {activeProject.title}
+                  </MemorySpan>
+                </h2>
               <p className="treeCardDesc">{activeProject.description}</p>
               <div className="treeCardTech">
                 {activeProject.tech.map((t, i) => (
