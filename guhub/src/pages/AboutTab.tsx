@@ -86,8 +86,6 @@ const AboutTab = () => {
                       <span className="expEntryCompany">
                 {exp.company.includes('Engramme')
                   ? <MemorySpan queryKey="engramme">{exp.company}</MemorySpan>
-                  : exp.company.includes('Knack')
-                  ? <MemorySpan queryKey="typing">{exp.company}</MemorySpan>
                   : exp.company}
               </span>
                       <span className="expEntryTitle">{exp.title}</span>
