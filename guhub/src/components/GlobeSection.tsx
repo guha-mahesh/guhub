@@ -115,11 +115,11 @@ const LOCATIONS: GlobeLocation[] = [
   },
   {
     id: 'luxembourg',
-    name: 'Luxembourg / Trier',
+    name: 'Luxembourg',
     lat: 49.6117, lng: 6.1319,
-    queryKeywords: 'Luxembourg Trier Europe travel',
+    queryKeywords: 'Luxembourg Europe travel',
     category: 'interest',
-    description: 'Visited Luxembourg and Trier across the border.',
+    description: 'Visited.',
   },
   {
     id: 'petra',

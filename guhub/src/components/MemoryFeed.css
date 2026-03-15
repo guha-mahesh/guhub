@@ -1,0 +1,175 @@
+.memoryFeed {
+  padding: 4rem 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+}
+
+.memFeedHeader {
+  margin-bottom: 2rem;
+}
+
+.memFeedLabel {
+  font-size: 0.65rem;
+  color: #739166;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin: 0 0 0.5rem 0;
+}
+
+.memFeedSub {
+  font-size: 0.75rem;
+  color: #444;
+  margin: 0;
+}
+
+.memFeedLink {
+  color: #739166;
+  text-decoration: none;
+}
+.memFeedLink:hover { text-decoration: underline; }
+
+/* ── input ───────────────────────────────────────────── */
+.memFeedForm { margin-bottom: 1rem; }
+
+.memFeedInputRow {
+  display: flex;
+  align-items: center;
+  border: 1px solid #1a1a1a;
+  background: #0a0a0a;
+  transition: border-color 0.1s;
+  max-width: 600px;
+}
+.memFeedInputRow:focus-within { border-color: #333; }
+
+.memFeedPrompt {
+  font-size: 0.65rem;
+  color: #739166;
+  letter-spacing: 0.1em;
+  padding: 0 0.85rem;
+  flex-shrink: 0;
+  user-select: none;
+  text-transform: uppercase;
+  border-right: 1px solid #1a1a1a;
+}
+
+.memFeedInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #f0f0f0;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.8rem;
+  padding: 0.75rem 0.85rem;
+  caret-color: #739166;
+}
+.memFeedInput::placeholder { color: #2a2a2a; }
+.memFeedInput:disabled { opacity: 0.4; }
+
+.memFeedSubmit {
+  background: transparent;
+  border: none;
+  border-left: 1px solid #1a1a1a;
+  color: #739166;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: color 0.1s, background 0.1s;
+}
+.memFeedSubmit:hover:not(:disabled) { background: #111; }
+.memFeedSubmit:disabled { opacity: 0.3; cursor: default; }
+
+/* ── seed chips ──────────────────────────────────────── */
+.memFeedSeeds {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 2rem;
+  max-width: 700px;
+}
+
+.memFeedSeed {
+  background: transparent;
+  border: 1px solid #181818;
+  color: #3a3a3a;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  padding: 0.25rem 0.65rem;
+  cursor: pointer;
+  transition: border-color 0.1s, color 0.1s;
+}
+.memFeedSeed:hover:not(:disabled) { border-color: #333; color: #888; }
+.memFeedSeed.active { border-color: #739166; color: #739166; }
+.memFeedSeed:disabled { opacity: 0.3; cursor: default; }
+
+/* ── cards ───────────────────────────────────────────── */
+.memCards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0;
+  border-top: 1px solid #111;
+  border-left: 1px solid #111;
+}
+
+.memCard {
+  border-right: 1px solid #111;
+  border-bottom: 1px solid #111;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: background 0.1s;
+}
+.memCard:hover { background: #0a0a0a; }
+
+.memCardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.memCardSource {
+  font-size: 0.58rem;
+  color: #739166;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: 1px solid #739166;
+  padding: 0.1rem 0.4rem;
+}
+
+.memCardDate {
+  font-size: 0.58rem;
+  color: #2a2a2a;
+  letter-spacing: 0.06em;
+}
+
+.memCardHeadline {
+  font-size: 0.82rem;
+  color: #d0d0d0;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+
+.memCardNarrative {
+  font-size: 0.7rem;
+  color: #555;
+  line-height: 1.65;
+  margin: 0;
+}
+
+.memFeedEmpty {
+  font-size: 0.72rem;
+  color: #2a2a2a;
+  padding: 2rem 0;
+}
+
+@media (max-width: 600px) {
+  .memCards { grid-template-columns: 1fr; }
+  .memFeedSeeds { flex-wrap: wrap; }
+}

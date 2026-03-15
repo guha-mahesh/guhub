@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import GlobeSection from '../components/GlobeSection';
+import MemoryFeed from '../components/MemoryFeed';
 import { FaGithub, FaLinkedin, FaLaptop } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import './BrainLanding.css';
@@ -109,6 +110,8 @@ const BrainLanding = () => {
         <a href="https://github.com/guha-mahesh" target="_blank" rel="noopener noreferrer" className="floatingButton" title="GitHub"><FaGithub /></a>
         <a href="https://linkedin.com/in/guhamahesh" target="_blank" rel="noopener noreferrer" className="floatingButton" title="LinkedIn"><FaLinkedin /></a>
       </div>
+
+      <MemoryFeed />
     </div>
   );
 };
