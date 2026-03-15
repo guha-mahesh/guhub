@@ -17,7 +17,7 @@ export const galaxies: Record<GalaxyType, Galaxy> = {
   philosophy: {
     id: 'philosophy',
     name: 'Philosophy',
-    color: '#6b4e71', // blackberry purple
+    color: '#6b4e71',
     description: 'Ethics, epistemology, and existential questions'
   },
   geography: {

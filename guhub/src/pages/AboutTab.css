@@ -1,248 +1,285 @@
+@import '@fontsource/ibm-plex-mono/400.css';
+@import '@fontsource/ibm-plex-mono/700.css';
+
 .aboutTab {
-  min-height: calc(100vh - 60px);
-  margin-top: 60px;
-  background: #2f0a0a;
-  padding: 3rem 2rem;
+  min-height: calc(100vh - 52px);
+  margin-top: 52px;
+  background: #080808;
+  padding: 4rem 2rem 6rem;
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
 }
 
 .aboutContainer {
-  max-width: 1000px;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
-.aboutHeader {
+/* ── header ──────────────────────────────────────────── */
+.resumeHeader {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 3rem;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-}
-
-.aboutTitle {
-  font-size: 3rem;
-  color: #ffc0cb;
-  margin: 0;
-}
-
-.resumeButton {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.7rem;
-  background: transparent;
-  border: 2px solid #ffc0cb;
-  color: #ffc0cb;
-  padding: 0.8rem 1.5rem;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.resumeButton:hover {
-  background: #ffc0cb;
-  color: #2f0a0a;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 192, 203, 0.3);
-}
-
-.sectionHeader {
-  color: #ffc0cb;
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid rgba(255, 192, 203, 0.3);
-}
-
-.eduSection,
-.skillsSection,
-.expSection {
-  margin-bottom: 3rem;
-}
-
-.eduBox {
-  background: rgba(255, 192, 203, 0.05);
-  border: 2px solid rgba(255, 192, 203, 0.2);
-  border-radius: 12px;
-  padding: 2rem;
-}
-
-.eduTop {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.8rem;
+  align-items: flex-end;
+  padding-bottom: 1.5rem;
   flex-wrap: wrap;
   gap: 1rem;
 }
 
-.eduTop h3 {
-  color: #ffc0cb;
-  font-size: 1.5rem;
+.resumeNameBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.resumeName {
+  font-size: 2.8rem;
+  color: #f0f0f0;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin: 0;
+  line-height: 1;
+}
+
+.resumeTagline {
+  font-size: 0.7rem;
+  color: #444;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.resumeHeaderMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding-bottom: 0.3rem;
+}
+
+.resumeMetaLink {
+  font-size: 0.7rem;
+  color: #555;
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  transition: color 0.1s;
+}
+
+.resumeMetaLink:hover { color: #f0f0f0; }
+
+.resumeDownload {
+  color: #739166;
+}
+
+.resumeDownload:hover { color: #8aaa7a; }
+
+.resumeMetaDot {
+  width: 2px;
+  height: 2px;
+  background: #333;
+  border-radius: 50%;
+}
+
+/* ── rules ───────────────────────────────────────────── */
+.resumeRule {
+  height: 1px;
+  background: #1a1a1a;
   margin: 0;
 }
 
-.eduDate {
-  color: rgba(255, 192, 203, 0.7);
-  font-weight: 600;
+.leftRule {
+  height: 1px;
+  background: #141414;
+  margin: 1.5rem 0;
 }
 
-.eduDegree,
-.eduGpa {
-  color: rgba(255, 192, 203, 0.8);
-  margin: 0.5rem 0;
+.expRule {
+  height: 1px;
+  background: #111;
+  margin: 2rem 0;
+}
+
+/* ── two-column body ─────────────────────────────────── */
+.resumeBody {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 0;
+  padding: 2.5rem 0;
+}
+
+/* ── left column ─────────────────────────────────────── */
+.resumeLeft {
+  padding-right: 2.5rem;
+  border-right: 1px solid #111;
+}
+
+.resumeLeftSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.leftLabel {
+  font-size: 0.6rem;
+  color: #739166;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin: 0 0 0.5rem 0;
+}
+
+.leftSchool {
+  font-size: 0.8rem;
+  color: #d0d0d0;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.leftDegreeText {
+  font-size: 0.7rem;
+  color: #666;
   line-height: 1.6;
+  margin: 0;
 }
 
-.skillsGrid {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+.leftMeta {
+  font-size: 0.65rem;
+  color: #444;
+  margin: 0;
+  letter-spacing: 0.04em;
 }
 
-.skillCategory {
-  background: rgba(255, 192, 203, 0.05);
-  border: 2px solid rgba(255, 192, 203, 0.2);
-  border-radius: 12px;
-  padding: 1.5rem;
+.skillsInline {
+  font-size: 0.68rem;
+  color: #666;
+  line-height: 1.7;
+  margin: 0;
 }
 
-.categoryTitle {
-  color: #ffc0cb;
-  font-size: 1.2rem;
-  margin: 0 0 1rem 0;
+/* ── right column ────────────────────────────────────── */
+.resumeRight {
+  padding-left: 2.5rem;
 }
 
-.skillTags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.7rem;
+.rightLabel {
+  font-size: 0.6rem;
+  color: #739166;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin: 0 0 2rem 0;
 }
 
-.skillTag {
-  background: rgba(107, 78, 113, 0.3);
-  color: rgba(255, 192, 203, 0.9);
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  font-weight: 500;
+/* ── experience entry ────────────────────────────────── */
+.expEntry {
+  /* each entry */
 }
 
-.expGrid {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
-.expBox {
-  background: rgba(255, 192, 203, 0.05);
-  border: 2px solid rgba(255, 192, 203, 0.2);
-  border-radius: 12px;
-  padding: 2rem;
-  transition: all 0.3s ease;
-}
-
-.expBox:hover {
-  border-color: #ffc0cb;
-  transform: translateX(4px);
-}
-
-.expTop {
+.expEntryHeader {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
+  align-items: baseline;
+  margin-bottom: 0.9rem;
   gap: 1rem;
+  flex-wrap: wrap;
 }
 
-.expTitle {
-  color: #ffc0cb;
-  font-size: 1.3rem;
-  margin: 0 0 0.3rem 0;
+.expEntryLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
 }
 
-.expCompany {
-  color: rgba(255, 192, 203, 0.7);
+.expEntryCompany {
+  font-size: 1rem;
+  color: #e0e0e0;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.expEntryTitle {
+  font-size: 0.7rem;
+  color: #555;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.expEntryDate {
+  font-size: 0.65rem;
+  color: #333;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── bullets ─────────────────────────────────────────── */
+.expEntryBullets {
+  list-style: none;
+  padding: 0;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.expBullet {
+  font-size: 0.78rem;
+  color: #777;
+  line-height: 1.65;
+  padding-left: 1rem;
+  position: relative;
+}
+
+.expBullet::before {
+  content: '›';
+  position: absolute;
+  left: 0;
+  color: #333;
+}
+
+/* ── context line (last bullet for Engramme) ─────────── */
+.expContext {
+  font-size: 0.65rem;
+  color: #3a3a3a;
+  margin: 0.75rem 0 0 1rem;
+  line-height: 1.6;
   font-style: italic;
 }
 
-.expList {
-  color: rgba(255, 192, 203, 0.8);
-  line-height: 1.7;
-  padding-left: 1.5rem;
-  margin: 0;
-}
-
-.expList li {
-  margin-bottom: 0.5rem;
-}
-
+/* ── arbor section ───────────────────────────────────── */
 .arborSection {
-  margin-top: 3rem;
-  padding-top: 3rem;
-  border-top: 2px solid rgba(255, 192, 203, 0.2);
-}
-
-.arborHeader {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-}
-
-.arborIcon {
-  height: 2.5rem;
-  vertical-align: middle;
+  padding: 2.5rem 0 0;
 }
 
 .arborContainer {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 2rem;
+  justify-content: flex-start;
 }
 
 .arborFrame {
-  border-radius: 12px;
-  box-shadow: 0 8px 25px rgba(255, 192, 203, 0.3);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  max-width: 100%;
-  border: 2px solid rgba(255, 192, 203, 0.2);
+  border-radius: 0;
+  border: 1px solid #1a1a1a;
+  transition: border-color 0.2s;
 }
 
 .arborFrame:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 35px rgba(255, 192, 203, 0.5);
-  border-color: #ffc0cb;
+  border-color: #739166;
 }
 
+/* ── responsive ──────────────────────────────────────── */
 @media (max-width: 768px) {
-  .aboutTab {
-    padding: 2rem 1rem;
+  .aboutTab { padding: 2rem 1rem 4rem; }
+
+  .resumeBody {
+    grid-template-columns: 1fr;
+    gap: 2rem;
   }
 
-  .aboutTitle {
-    font-size: 2rem;
+  .resumeLeft {
+    padding-right: 0;
+    border-right: none;
+    border-bottom: 1px solid #111;
+    padding-bottom: 2rem;
   }
 
-  .sectionHeader {
-    font-size: 1.5rem;
-  }
+  .resumeRight { padding-left: 0; }
 
-  .aboutHeader {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+  .resumeName { font-size: 2rem; }
 
-  .arborFrame {
-    width: 100%;
-    height: 500px;
-  }
-
-  .arborIcon {
-    height: 2rem;
-  }
+  .arborFrame { width: 100% !important; height: 500px !important; }
 }

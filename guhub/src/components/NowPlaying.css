@@ -1,0 +1,162 @@
+.nowPlayingWidget {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 900;
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  cursor: pointer;
+  user-select: none;
+}
+
+.npPill {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #0d0d0d;
+  border: 1px solid #222;
+  padding: 0.5rem 0.85rem;
+  max-width: 280px;
+  transition: border-color 0.15s;
+}
+
+.nowPlayingWidget:hover .npPill {
+  border-color: #444;
+}
+
+.npDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.npDot.playing {
+  background: #1db954;
+  box-shadow: 0 0 6px #1db954;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.npDot.paused {
+  background: #333;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.npLabel {
+  font-size: 0.68rem;
+  color: #888;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.npTitle {
+  color: #ccc;
+}
+
+.npSep {
+  color: #444;
+}
+
+.npArtist {
+  color: #666;
+}
+
+.npIdle {
+  color: #333;
+  font-style: italic;
+}
+
+/* expanded panel */
+.npExpanded {
+  background: #0d0d0d;
+  border: 1px solid #222;
+  border-top: none;
+  animation: npSlideIn 0.12s ease-out;
+}
+
+@keyframes npSlideIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.npExpandedInner {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  align-items: flex-start;
+}
+
+.npAlbumArt {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  flex-shrink: 0;
+  image-rendering: auto;
+}
+
+.npMeta {
+  flex: 1;
+  min-width: 0;
+}
+
+.npExpandedTitle {
+  font-size: 0.78rem;
+  color: #f0f0f0;
+  margin: 0 0 0.2rem 0;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.npExpandedArtist {
+  font-size: 0.7rem;
+  color: #888;
+  margin: 0 0 0.15rem 0;
+}
+
+.npExpandedAlbum {
+  font-size: 0.65rem;
+  color: #555;
+  margin: 0 0 0.75rem 0;
+  font-style: italic;
+}
+
+.npProgress {
+  height: 2px;
+  background: #1a1a1a;
+  width: 100%;
+  margin-bottom: 0.75rem;
+}
+
+.npProgressBar {
+  height: 100%;
+  background: #1db954;
+  transition: width 1s linear;
+}
+
+.npSpotifyLink {
+  font-size: 0.65rem;
+  color: #1db954;
+  text-decoration: none;
+  letter-spacing: 0.05em;
+}
+
+.npSpotifyLink:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .nowPlayingWidget {
+    bottom: 1rem;
+    right: 1rem;
+  }
+
+  .npPill {
+    max-width: 200px;
+  }
+}

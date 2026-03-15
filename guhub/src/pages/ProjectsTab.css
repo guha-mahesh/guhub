@@ -1,153 +1,304 @@
+@import '@fontsource/ibm-plex-mono/400.css';
+@import '@fontsource/ibm-plex-mono/700.css';
+
 .projectsTab {
-  min-height: calc(100vh - 60px);
-  margin-top: 60px;
-  background: #2f0a0a;
-  padding: 3rem 2rem;
+  min-height: calc(100vh - 52px);
+  margin-top: 52px;
+  background: #080808;
+  padding: 0;
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
 }
 
 .projectsContainer {
-  max-width: 1200px;
+  max-width: 1100px;
   margin: 0 auto;
+  padding: 3rem 2rem 5rem;
+}
+
+/* ── header ──────────────────────────────────────────── */
+.projectsHeader {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #1a1a1a;
+  padding-bottom: 1.25rem;
 }
 
 .projectsPageTitle {
-  font-size: 3rem;
-  color: #ffc0cb;
-  text-align: center;
-  margin-bottom: 2rem;
+  font-size: 0.68rem;
+  color: #444;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin: 0 0 0.4rem 0;
 }
+.projectsPageTitle::before { content: '> '; color: #333; }
 
+.projectsPageCount {
+  font-size: 2.2rem;
+  color: #f0f0f0;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.projectsPageCount span { color: #2a2a2a; }
+
+/* ── filter ──────────────────────────────────────────── */
 .galaxyFilters {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  margin-bottom: 3rem;
-  flex-wrap: wrap;
+  gap: 0;
+  margin-bottom: 1rem;
+  border: 1px solid #151515;
+  overflow: hidden;
 }
 
 .filterLabel {
-  color: rgba(255, 192, 203, 0.8);
-  font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.65rem;
+  color: #333;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.55rem 0.85rem;
+  border-right: 1px solid #151515;
+  background: #0a0a0a;
+  white-space: nowrap;
 }
 
-.filterBadges {
-  display: flex;
-  gap: 0.8rem;
-  flex-wrap: wrap;
-  justify-content: center;
+.filterBadges { display: flex; flex-wrap: wrap; }
+
+.filterBtn {
+  background: #0a0a0a;
+  border: none;
+  border-right: 1px solid #151515;
+  color: #444;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.55rem 0.85rem;
+  cursor: pointer;
+  transition: background 0.1s, color 0.1s;
+}
+.filterBtn:hover { background: #111; color: #aaa; }
+.filterBtn.active { background: #f0f0f0; color: #080808; }
+
+/* ── tree wrapper ────────────────────────────────────── */
+.treeWrap {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
 }
 
-.projectsGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
+.treeSvg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
 }
 
-.projectBox {
-  background: rgba(255, 192, 203, 0.05);
-  border: 2px solid rgba(255, 192, 203, 0.2);
-  border-radius: 12px;
-  padding: 2rem;
-  transition: all 0.3s ease;
+/* ── trunk ───────────────────────────────────────────── */
+.trunkPath {
+  fill: none;
+  stroke: #1e1e1e;
+  stroke-width: 7;
+  stroke-linecap: round;
 }
 
-.projectBox:hover {
-  border-color: #ffc0cb;
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(255, 192, 203, 0.2);
+/* ── branches ────────────────────────────────────────── */
+.branchPath {
+  fill: none;
+  stroke: #1a1a1a;
+  stroke-width: 2.5;
+  stroke-linecap: round;
 }
 
-.projectTitle {
-  color: #ffc0cb;
-  font-size: 1.8rem;
-  margin: 0 0 1rem 0;
-}
-
-.projectDescription {
-  color: rgba(255, 192, 203, 0.8);
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
-}
-
-.projectGalaxies {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  margin-bottom: 1rem;
-}
-
-.projectTech {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  margin-bottom: 1.5rem;
-}
-
-.techTag {
-  background: rgba(107, 78, 113, 0.3);
-  color: rgba(255, 192, 203, 0.9);
-  padding: 0.3rem 0.8rem;
-  border-radius: 4px;
-  font-size: 0.85rem;
-  font-weight: 500;
-}
-
-.githubLinkButton {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: transparent;
-  border: 2px solid #ffc0cb;
-  color: #ffc0cb;
-  padding: 0.7rem 1.5rem;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-.githubLinkButton:hover {
-  background: #ffc0cb;
-  color: #2f0a0a;
-  transform: translateX(4px);
-}
-
-.noProjects {
-  text-align: center;
-  color: rgba(255, 192, 203, 0.6);
-  font-size: 1.2rem;
-  margin-top: 3rem;
-}
-
-@media (max-width: 768px) {
-  .projectsTab {
-    padding: 2rem 1rem;
-  }
-
-  .projectsPageTitle {
-    font-size: 2rem;
-  }
-
-  .projectsGrid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-
-  .galaxyFilters {
-    flex-direction: column;
-    gap: 0.8rem;
-  }
-}
-
-.githubLinkButton.private {
+.branchGlow {
+  fill: none;
+  stroke: #739166;
+  stroke-width: 2.5;
+  stroke-linecap: round;
   opacity: 0.4;
-  cursor: default;
-  pointer-events: none;
-  display: inline-flex;
+  filter: url(#glow);
+}
+
+/* ── nodes ───────────────────────────────────────────── */
+.nodeCircle {
+  fill: url(#nodeGrad);
+  stroke: #2a2a2a;
+  stroke-width: 1.5;
+  cursor: pointer;
+  opacity: 0;
+  animation: nodeAppear 0.4s ease forwards;
+  transition: r 0.2s ease, filter 0.2s ease;
+}
+.nodeCircle:hover { filter: url(#glowBig); }
+.active .nodeCircle { fill: url(#nodeActive); filter: url(#glow); }
+
+@keyframes nodeAppear {
+  from { opacity: 0; transform-origin: center; transform: scale(0.3); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.nodePulse {
+  fill: none;
+  stroke: #739166;
+  stroke-width: 1;
+  opacity: 0;
+  cursor: pointer;
+  animation: pulseRing 2.8s ease-out infinite;
+}
+@keyframes pulseRing {
+  0%   { opacity: 0; r: 9px; }
+  15%  { opacity: 0.5; }
+  100% { opacity: 0; r: 22px; }
+}
+
+/* ── node labels ─────────────────────────────────────── */
+.nodeLabel {
+  fill: #444;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  opacity: 0;
+  animation: labelAppear 0.4s ease forwards;
+  transition: fill 0.15s;
+  pointer-events: all;
+  user-select: none;
+}
+.nodeLabel:hover, .active .nodeLabel { fill: #c0c0c0; }
+
+@keyframes labelAppear {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── dimmed (filtered out) ───────────────────────────── */
+.projectGroup.dimmed .branchPath { stroke: #0f0f0f; }
+.projectGroup.dimmed .nodeCircle { fill: #141414; stroke: #1a1a1a; filter: none; }
+.projectGroup.dimmed .nodePulse  { display: none; }
+.projectGroup.dimmed .nodeLabel  { fill: #222; }
+
+/* ── project card ────────────────────────────────────── */
+.treeCard {
+  position: absolute;
+  background: #0a0a0a;
+  border: 1px solid #739166;
+  padding: 1.25rem 1.25rem 1rem;
+  width: 260px;
+  z-index: 20;
+  animation: cardPop 0.18s ease-out;
+  box-shadow: 0 0 30px rgba(115,145,102,0.15);
+}
+
+@keyframes cardPop {
+  from { opacity: 0; transform: scale(0.92) translateY(6px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.treeCardClose {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.6rem;
+  background: none;
+  border: none;
+  color: #555;
+  font-size: 1rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  font-family: 'IBM Plex Mono', monospace;
+}
+.treeCardClose:hover { color: #f0f0f0; }
+
+.treeCardTitle {
+  font-size: 0.95rem;
+  color: #f0f0f0;
+  font-weight: 700;
+  margin: 0 0 0.6rem 0;
+  letter-spacing: -0.01em;
+  padding-right: 1rem;
+}
+
+.treeCardDesc {
+  font-size: 0.68rem;
+  color: #666;
+  line-height: 1.65;
+  margin: 0 0 0.85rem 0;
+  max-height: 120px;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.treeCardDesc::-webkit-scrollbar { display: none; }
+
+.treeCardTech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-bottom: 0.85rem;
+}
+
+.treeCardTag {
+  font-size: 0.6rem;
+  color: #444;
+  border: 1px solid #1e1e1e;
+  padding: 0.1rem 0.4rem;
+  letter-spacing: 0.06em;
+}
+
+.treeCardLinks {
+  display: flex;
+  gap: 0.75rem;
   align-items: center;
-  gap: 6px;
+}
+
+.treeCardLink {
+  font-size: 0.65rem;
+  color: #739166;
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: color 0.1s;
+}
+.treeCardLink:hover { color: #8aaa7a; }
+
+.treeCardPrivate {
+  font-size: 0.65rem;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
   font-style: italic;
+}
+
+/* ── arbor embed ─────────────────────────────────────── */
+.arborEmbed {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid #111;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.arborEmbedLabel {
+  font-size: 0.6rem;
+  color: #739166;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin: 0 0 1.5rem 0;
+}
+
+.arborEmbedFrame {
+  border: 1px solid #1a1a1a;
+  display: block;
+  max-width: 100%;
+  transition: border-color 0.2s;
+}
+.arborEmbedFrame:hover { border-color: #739166; }
+
+/* ── responsive ──────────────────────────────────────── */
+@media (max-width: 600px) {
+  .treeCard { width: 200px; font-size: 0.8em; }
+  .nodeLabel { font-size: 7.5px; }
 }

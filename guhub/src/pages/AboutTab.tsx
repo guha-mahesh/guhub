@@ -6,100 +6,102 @@ const AboutTab = () => {
   const [resumeData, setResumeData] = useState<ResumeData>(initialResumeData);
 
   useEffect(() => {
-    // Load resume data from localStorage if available (admin edits)
     const saved = localStorage.getItem('resumeData');
     if (saved) {
-      try {
-        setResumeData(JSON.parse(saved));
-      } catch (e) {
-        console.error('Failed to load saved resume data');
-      }
+      try { setResumeData(JSON.parse(saved)); } catch {}
     }
   }, []);
+
+  const allSkills = [...resumeData.skills.languages, ...resumeData.skills.tools];
 
   return (
     <div className="aboutTab">
       <div className="aboutContainer">
-        <div className="aboutHeader">
-          <h1 className="aboutTitle">Guha Mahesh</h1>
-        </div>
 
-        <div className="eduSection">
-          <h2 className="sectionHeader">Education</h2>
-          <div className="eduBox">
-            <div className="eduTop">
-              <h3>{resumeData.education.school}</h3>
-              <span className="eduDate">{resumeData.education.date}</span>
-            </div>
-            <p className="eduDegree">
-              {resumeData.education.degree}
-            </p>
-            <p className="eduGpa">{resumeData.education.gpa}</p>
+        {/* ── header ── */}
+        <header className="resumeHeader">
+          <div className="resumeNameBlock">
+            <h1 className="resumeName">Guha Mahesh</h1>
+            <span className="resumeTagline">Data Science &amp; Engineering</span>
           </div>
-        </div>
-
-        <div className="skillsSection">
-          <h2 className="sectionHeader">Technical Skills</h2>
-          <div className="skillsGrid">
-            <div className="skillCategory">
-              <h3 className="categoryTitle">Languages</h3>
-              <div className="skillTags">
-                {resumeData.skills.languages.map((skill, i) => (
-                  <span key={i} className="skillTag">
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div className="skillCategory">
-              <h3 className="categoryTitle">Tools & Libraries</h3>
-              <div className="skillTags">
-                {resumeData.skills.tools.map((skill, i) => (
-                  <span key={i} className="skillTag">
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
+          <div className="resumeHeaderMeta">
+            <a href="https://github.com/guha-mahesh" target="_blank" rel="noopener noreferrer" className="resumeMetaLink">github</a>
+            <span className="resumeMetaDot" />
+            <a href="https://linkedin.com/in/guha-mahesh" target="_blank" rel="noopener noreferrer" className="resumeMetaLink">linkedin</a>
+            <span className="resumeMetaDot" />
+            <a href="/GuhaMaheshResumé.pdf" download className="resumeMetaLink resumeDownload">download pdf</a>
           </div>
-        </div>
+        </header>
 
-        <div className="expSection">
-          <h2 className="sectionHeader">Experience</h2>
-          <div className="expGrid">
-            {resumeData.experience.map((exp, index) => (
-              <div key={index} className="expBox">
-                <div className="expTop">
-                  <div>
-                    <h3 className="expTitle">{exp.title}</h3>
-                    <p className="expCompany">{exp.company}</p>
+        <div className="resumeRule" />
+
+        {/* ── body: two columns ── */}
+        <div className="resumeBody">
+
+          {/* ── left col ── */}
+          <aside className="resumeLeft">
+
+            <section className="resumeLeftSection">
+              <p className="leftLabel">education</p>
+              <p className="leftSchool">{resumeData.education.school}</p>
+              <p className="leftDegreeText">{resumeData.education.degree}</p>
+              <p className="leftMeta">{resumeData.education.gpa}</p>
+              <p className="leftMeta">exp. {resumeData.education.date}</p>
+            </section>
+
+            <div className="leftRule" />
+
+            <section className="resumeLeftSection">
+              <p className="leftLabel">skills</p>
+              <p className="skillsInline">{allSkills.join(', ')}</p>
+            </section>
+
+            <div className="leftRule" />
+
+            <section className="resumeLeftSection">
+              <p className="leftLabel">interests</p>
+              <p className="skillsInline">shoegaze, competitive typing, metaethics, effective altruism, animal welfare, geopolitics</p>
+            </section>
+
+          </aside>
+
+          {/* ── right col: experience ── */}
+          <main className="resumeRight">
+            <p className="rightLabel">experience</p>
+
+            {resumeData.experience.map((exp, i) => {
+              const isLast = i === resumeData.experience.length - 1;
+              // last bullet is context line, style it differently
+              const contextBullet = exp.bullets[exp.bullets.length - 1];
+              const mainBullets = exp.bullets.slice(0, -1);
+              const hasContext = exp.company === 'Engramme (fka. Memory Machines)';
+
+              return (
+                <div key={i} className="expEntry">
+                  <div className="expEntryHeader">
+                    <div className="expEntryLeft">
+                      <span className="expEntryCompany">{exp.company}</span>
+                      <span className="expEntryTitle">{exp.title}</span>
+                    </div>
+                    <span className="expEntryDate">{exp.date}</span>
                   </div>
-                  <span className="expDate">{exp.date}</span>
+                  <ul className="expEntryBullets">
+                    {(hasContext ? mainBullets : exp.bullets).map((bullet, j) => (
+                      <li key={j} className="expBullet">{bullet}</li>
+                    ))}
+                  </ul>
+                  {hasContext && (
+                    <p className="expContext">{contextBullet}</p>
+                  )}
+                  {!isLast && <div className="expRule" />}
                 </div>
-                <ul className="expList">
-                  {exp.bullets.map((bullet, i) => (
-                    <li key={i}>{bullet}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
+              );
+            })}
+          </main>
         </div>
 
-        <div className="arborSection">
-          <h2 className="sectionHeader arborHeader">
-            Check out Arbor <img className="arborIcon" src="https://arbor-blue.vercel.app/logo.png" alt="Arbor logo" />
-          </h2>
-          <div className="arborContainer">
-            <iframe
-              src="https://arbor-blue.vercel.app/embeds/guha"
-              width="450"
-              height="680"
-              className="arborFrame"
-              title="Arbor Profile"
-            />
-          </div>
-        </div>
+
+
       </div>
     </div>
   );

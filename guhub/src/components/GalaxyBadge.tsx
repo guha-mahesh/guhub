@@ -16,7 +16,7 @@ const GalaxyBadge = ({ galaxyId, onClick, active = false }: GalaxyBadgeProps) =>
       style={{
         backgroundColor: active ? galaxy.color : 'transparent',
         borderColor: galaxy.color,
-        color: active ? '#2f0a0a' : galaxy.color,
+        color: active ? '#080808' : galaxy.color,
       }}
       onClick={onClick}
     >

@@ -48,14 +48,17 @@ export const resumeData: ResumeData = {
   },
   experience: [
     {
-      title: "Software Engineer Co-op",
-      company: "Engramme",
+      title: "Engineering & Research Co-op",
+      company: "Engramme (fka. Memory Machines)",
       date: "Dec 2025 – Sep 2026",
       bullets: [
-        "Primary engineer across 5 production surfaces at a Harvard AI spinout backed by Mayfield Fund; demoed to Apple, Samsung, GitHub, and TripAdvisor",
-        "Rewrote the Chrome extension's content extraction from scratch: site-specific scrapers for 10+ surfaces (Gmail, Google Docs, LinkedIn, Reddit, etc.), compact 2-char metadata encoding for email threads, viewport-only extraction, and self-referential filtering so Gmail recalls don't surface the thread you're reading",
-        "Built the macOS menubar app: periodic screen capture via ScreenCaptureKit, Apple Vision OCR, Jaccard similarity gate to skip unchanged screens, and a global hotkey that grabs highlighted text from any app by simulating Cmd+C and restoring the original clipboard",
-        "Building entity resolution for the extension: clusters email addresses and display-name variants into canonical recipient identities using embedding-based classification with Tukey fence downsampling for label imbalance"
+        "Built entity resolution for the core memory API: a KNN classifier that identifies who appears in a memory without their name being mentioned, running 353x better than random chance; shipping to production",
+        "Contributed to a research blog post grounded in a real study on what people need to recall in daily life; helped collect and analyze a 1,940-question dataset from a 134-person Prolific study across 18 memory categories",
+        "Built the macOS and iOS apps end-to-end in Swift: wrote an algorithm that detects to-do items from screen context and cross-references them with active work to passively track task progress; cut API costs by 75% through smart batching and deduplication",
+        "Built a speaker-detection pipeline using on-device voiceprints (no cloud processing, GDPR/SOC2 compliant) for passive transcription across surfaces including Google Meet",
+        "Rebuilt the Chrome extension's content extraction across 289 commits; the main surface demoed to Apple, Samsung, GitHub, and TripAdvisor",
+        "Managed beta tester onboarding and feedback cycles; ran competitive evaluations against other memory products",
+        "Human memory lab; Mayfield-backed at pre-seed, currently in active conversations with top-tier investors. Founded by Gabriel Kreiman (Harvard Medical School) and Spandan Madan (Harvard CS PhD)"
       ]
     },
     {

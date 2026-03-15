@@ -32,7 +32,7 @@
     width: 0;
     border-top: 50vh solid transparent;
     border-bottom: 50vh solid transparent;
-    border-left: 10vw solid #123524;
+    border-left: 10vw solid #3d5235;
 }
 
 .Title {
@@ -107,28 +107,28 @@
     justify-content: center;
     align-items: center;
     position: relative;
-    color: #123524;
+    color: #3d5235;
     border-radius: 3vw;
     width: 10vw;
     height: 10vh;
     font-size: 2rem;
-    border: 3px solid #123524;
+    border: 3px solid #3d5235;
     background-color: black;
     transition: transform .3s ease-out;
 }
 
 
 .linkButton svg {
-    fill: #123524;
+    fill: #3d5235;
 }
 
 .linkButton:hover {
-    border: 3px solid #268356;
+    border: 3px solid #739166;
     transform: translateY(-12px);
 }
 
 .linkButton:hover svg {
-    fill: #268356;
+    fill: #739166;
 }
 
 .tooltip {
@@ -261,13 +261,13 @@
 }
 
 .transitioner {
-    color: #123524;
+    color: #3d5235;
     font-size: 3rem;
     cursor: pointer;
 }
 
 .transitioner:hover {
-    color: #268356;
+    color: #739166;
 }
 
 .linkButtons.hidden {
@@ -356,7 +356,7 @@
     text-align: center;
     font-size: 2.5rem;
     margin-bottom: 2rem;
-    color: #268356;
+    color: #739166;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -607,13 +607,13 @@ body {
 .arborFrame {
 
     border-radius: 12px;
-    box-shadow: 0 8px 25px rgba(38, 131, 86, 0.3);
+    box-shadow: 0 8px 25px rgba(115, 145, 102, 0.3);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .arborFrame:hover {
     transform: translateY(-5px);
-    box-shadow: 0 12px 35px rgba(38, 131, 86, 0.5);
+    box-shadow: 0 12px 35px rgba(115, 145, 102, 0.5);
 }
 
 .arborIcon {

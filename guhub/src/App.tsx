@@ -6,6 +6,7 @@ import BackgroundMusic from "./components/BackgroundMusic";
 import AdminPasswordModal from "./components/AdminPasswordModal";
 import AdminPanel from "./components/AdminPanel";
 import CommandPalette from "./components/CommandPalette";
+import NowPlaying from "./components/NowPlaying";
 import BrainLanding from "./pages/BrainLanding";
 import ProjectsTab from "./pages/ProjectsTab";
 import AboutTab from "./pages/AboutTab";
@@ -15,6 +16,9 @@ import PhilosophyLanding from "./pages/PhilosophyLanding";
 import CultureLanding from "./pages/CultureLanding";
 import GeographyLanding from "./pages/GeographyLanding";
 import AnimalsLanding from "./pages/AnimalsLanding";
+import BlogPage from "./pages/BlogPage";
+import MusicPage from "./pages/MusicPage";
+import QueuePage from "./pages/QueuePage";
 
 function App() {
   return (
@@ -26,6 +30,7 @@ function App() {
         <AdminPasswordModal />
         <AdminPanel />
         <CommandPalette />
+        <NowPlaying />
         <Routes>
           <Route path="/" element={<BrainLanding />} />
           <Route path="/projects" element={<ProjectsTab />} />
@@ -36,6 +41,9 @@ function App() {
           <Route path="/culture" element={<CultureLanding />} />
           <Route path="/geography" element={<GeographyLanding />} />
           <Route path="/animals" element={<AnimalsLanding />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/listening" element={<MusicPage />} />
+          <Route path="/queue" element={<QueuePage />} />
         </Routes>
       </Router>
     </AdminProvider>

@@ -17,7 +17,7 @@ const GalaxySelector = ({ selectedGalaxy, onGalaxyHover }: GalaxySelectorProps) 
             className={`galaxyButton ${selectedGalaxy === galaxy.id ? 'active' : ''}`}
             style={{
               borderColor: galaxy.color,
-              color: selectedGalaxy === galaxy.id ? '#2f0a0a' : galaxy.color,
+              color: selectedGalaxy === galaxy.id ? '#080808' : galaxy.color,
               backgroundColor: selectedGalaxy === galaxy.id ? galaxy.color : 'transparent',
             }}
             onMouseEnter={() => onGalaxyHover(galaxy.id)}

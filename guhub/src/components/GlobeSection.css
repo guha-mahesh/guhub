@@ -1,0 +1,269 @@
+.globeSection {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: #06010f;
+  overflow: hidden;
+}
+
+.globeCanvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* Legend */
+.globeLegend {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  z-index: 10;
+  background: rgba(6, 1, 15, 0.75);
+  border: 1.5px solid rgba(115, 145, 102, 0.2);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  backdrop-filter: blur(12px);
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.legendDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legendLabel {
+  color: rgba(115, 145, 102, 0.75);
+  font-size: 0.78rem;
+  font-family: 'Courier New', monospace;
+  text-transform: lowercase;
+  letter-spacing: 0.06em;
+}
+
+/* Hint */
+.globeHint {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  pointer-events: none;
+}
+
+.globeHint span {
+  color: rgba(115, 145, 102, 0.5);
+  font-size: 0.8rem;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.12em;
+  animation: pulseHint 3s ease-in-out infinite;
+}
+
+@keyframes pulseHint {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.9; }
+}
+
+/* Memory Panel */
+.memoryPanel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 400px;
+  height: 100%;
+  background: rgba(8, 2, 2, 0.92);
+  border-left: 2px solid rgba(115, 145, 102, 0.25);
+  backdrop-filter: blur(20px);
+  z-index: 20;
+  transform: translateX(100%);
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.memoryPanel::-webkit-scrollbar { display: none; }
+
+.memoryPanel.open {
+  transform: translateX(0);
+}
+
+.panelHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 2rem 1.75rem 1.25rem;
+  border-bottom: 1px solid rgba(115, 145, 102, 0.1);
+}
+
+.panelCat {
+  font-family: 'Courier New', monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+.panelName {
+  color: #739166;
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 0 0 0.4rem;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.panelDesc {
+  color: rgba(115, 145, 102, 0.6);
+  font-size: 0.88rem;
+  margin: 0;
+  font-style: italic;
+  font-family: Georgia, serif;
+}
+
+.panelClose {
+  background: none;
+  border: 1.5px solid rgba(115, 145, 102, 0.3);
+  color: rgba(115, 145, 102, 0.7);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s;
+  margin-top: 0.2rem;
+}
+
+.panelClose:hover {
+  border-color: #739166;
+  color: #739166;
+  background: rgba(115, 145, 102, 0.08);
+}
+
+.panelDivider { height: 1px; background: rgba(115, 145, 102, 0.08); }
+
+.panelMemLabel {
+  color: rgba(115, 145, 102, 0.4);
+  font-size: 0.65rem;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin: 1.25rem 1.75rem 1rem;
+}
+
+/* Loading dots */
+.memLoading {
+  display: flex;
+  gap: 0.5rem;
+  padding: 1rem 1.75rem;
+  align-items: center;
+}
+
+.memLoading span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #739166;
+  animation: dotPulse 1.2s ease-in-out infinite;
+}
+
+.memLoading span:nth-child(2) { animation-delay: 0.2s; }
+.memLoading span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dotPulse {
+  0%, 80%, 100% { opacity: 0.2; transform: scale(0.8); }
+  40% { opacity: 1; transform: scale(1.1); }
+}
+
+.memEmpty {
+  color: rgba(115, 145, 102, 0.4);
+  font-size: 0.85rem;
+  font-style: italic;
+  font-family: Georgia, serif;
+  padding: 0.5rem 1.75rem;
+  margin: 0;
+}
+
+/* Memory cards */
+.memList {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding-bottom: 3rem;
+}
+
+.memCard {
+  padding: 1.25rem 1.75rem;
+  border-bottom: 1px solid rgba(115, 145, 102, 0.08);
+  transition: background 0.2s;
+}
+
+.memCard:hover {
+  background: rgba(115, 145, 102, 0.03);
+}
+
+.memMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.memSource {
+  font-family: 'Courier New', monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: lowercase;
+  letter-spacing: 0.05em;
+}
+
+.memDate {
+  color: rgba(115, 145, 102, 0.35);
+  font-size: 0.72rem;
+  font-family: 'Courier New', monospace;
+}
+
+.memHeadline {
+  color: #739166;
+  font-size: 0.92rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+  line-height: 1.4;
+}
+
+.memNarrative {
+  color: rgba(115, 145, 102, 0.6);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  margin: 0;
+  font-family: Georgia, serif;
+}
+
+@media (max-width: 768px) {
+  .memoryPanel {
+    width: 100%;
+    top: auto;
+    bottom: 0;
+    height: 55%;
+    transform: translateY(100%);
+    border-left: none;
+    border-top: 2px solid rgba(115, 145, 102, 0.25);
+  }
+
+  .memoryPanel.open {
+    transform: translateY(0);
+  }
+
+  .globeLegend { display: none; }
+}

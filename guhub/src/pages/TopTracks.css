@@ -1,6 +1,6 @@
 .topTracks {
   min-height: 100vh;
-  background: #2f0a0a;
+  background: #080808;
   padding: 100px 3rem 3rem;
 }
 
@@ -13,7 +13,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  color: rgba(255, 192, 203, 0.6);
+  color: rgba(115, 145, 102, 0.6);
   text-decoration: none;
   font-family: 'Courier New', monospace;
   font-size: 0.85rem;
@@ -24,7 +24,7 @@
 }
 
 .backButton:hover {
-  color: #ffc0cb;
+  color: #739166;
   transform: translateX(-5px);
 }
 
@@ -34,7 +34,7 @@
 
 .headerLabel {
   display: inline-block;
-  color: rgba(255, 192, 203, 0.5);
+  color: rgba(115, 145, 102, 0.5);
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.2em;
@@ -45,7 +45,7 @@
 .tracksTitle {
   font-size: clamp(3rem, 10vw, 5rem);
   font-weight: 900;
-  color: #ffc0cb;
+  color: #739166;
   letter-spacing: -0.02em;
   text-transform: uppercase;
   margin: 0.5rem 0;
@@ -53,7 +53,7 @@
 }
 
 .tracksSubtitle {
-  color: rgba(255, 192, 203, 0.7);
+  color: rgba(115, 145, 102, 0.7);
   font-size: 1rem;
   font-style: italic;
   font-family: Georgia, serif;
@@ -72,8 +72,8 @@
 }
 
 .albumCard {
-  background: rgba(255, 192, 203, 0.03);
-  border: 2px solid rgba(255, 192, 203, 0.3);
+  background: rgba(115, 145, 102, 0.03);
+  border: 2px solid rgba(115, 145, 102, 0.3);
   border-radius: 16px;
   padding: 2.5rem;
   position: relative;
@@ -82,19 +82,19 @@
 }
 
 .albumCard:hover {
-  border-color: rgba(255, 192, 203, 0.6);
-  background: rgba(255, 192, 203, 0.05);
+  border-color: rgba(115, 145, 102, 0.6);
+  background: rgba(115, 145, 102, 0.05);
   transform: translateY(-4px);
-  box-shadow: 0 8px 32px rgba(255, 192, 203, 0.15);
+  box-shadow: 0 8px 32px rgba(115, 145, 102, 0.15);
 }
 
 .rankBadge {
   position: absolute;
   top: 1rem;
   right: 2rem;
-  background: #2f0a0a;
+  background: #080808;
   padding: 0.5rem 1.2rem;
-  border: 2px solid #ffc0cb;
+  border: 2px solid #739166;
   border-radius: 8px;
   backdrop-filter: blur(10px);
 }
@@ -102,7 +102,7 @@
 .rankNumber {
   font-size: 1.5rem;
   font-weight: 900;
-  color: #ffc0cb;
+  color: #739166;
   font-family: 'Courier New', monospace;
 }
 
@@ -113,7 +113,7 @@
 .albumTitle {
   font-size: 2rem;
   font-weight: 700;
-  color: #ffc0cb;
+  color: #739166;
   margin-bottom: 0.5rem;
   text-transform: uppercase;
   letter-spacing: -0.01em;
@@ -121,14 +121,14 @@
 
 .artistName {
   font-size: 1.3rem;
-  color: rgba(255, 192, 203, 0.7);
+  color: rgba(115, 145, 102, 0.7);
   font-weight: 400;
   font-style: italic;
   font-family: Georgia, serif;
 }
 
 .albumReview {
-  color: rgba(255, 192, 203, 0.85);
+  color: rgba(115, 145, 102, 0.85);
   font-size: 1.05rem;
   line-height: 1.7;
   margin-bottom: 2rem;
@@ -141,7 +141,7 @@
 
 .trackLabel {
   display: block;
-  color: rgba(255, 192, 203, 0.6);
+  color: rgba(115, 145, 102, 0.6);
   font-size: 0.85rem;
   text-transform: lowercase;
   font-family: 'Courier New', monospace;
@@ -152,7 +152,7 @@
 /* #1 RANK SPECIAL STYLING */
 .rankOne {
   border-width: 3px;
-  background: rgba(255, 192, 203, 0.08);
+  background: rgba(115, 145, 102, 0.08);
   position: relative;
   overflow: hidden;
   min-height: 400px;
@@ -167,19 +167,19 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, rgba(255, 192, 203, 0.15), transparent);
+  background: linear-gradient(135deg, rgba(115, 145, 102, 0.15), transparent);
   opacity: 0.5;
   pointer-events: none;
 }
 
 .rankOne .rankBadge {
-  background: #ffc0cb;
-  border-color: #ffc0cb;
-  box-shadow: 0 4px 20px rgba(255, 192, 203, 0.4);
+  background: #739166;
+  border-color: #739166;
+  box-shadow: 0 4px 20px rgba(115, 145, 102, 0.4);
 }
 
 .rankOne .rankBadge .rankNumber {
-  color: #2f0a0a;
+  color: #080808;
 }
 
 /* CARTI JOKE ANIMATION */
@@ -275,10 +275,10 @@
 .jkTag {
   display: inline-block;
   padding: 0.4rem 0.8rem;
-  background: rgba(255, 192, 203, 0.15);
-  border: 1px dashed rgba(255, 192, 203, 0.5);
+  background: rgba(115, 145, 102, 0.15);
+  border: 1px dashed rgba(115, 145, 102, 0.5);
   border-radius: 6px;
-  color: rgba(255, 192, 203, 0.8);
+  color: rgba(115, 145, 102, 0.8);
   font-size: 0.75rem;
   font-family: 'Courier New', monospace;
   text-transform: lowercase;
@@ -301,12 +301,12 @@
   max-width: 900px;
   margin: 4rem auto 0;
   padding-top: 2rem;
-  border-top: 2px dashed rgba(255, 192, 203, 0.2);
+  border-top: 2px dashed rgba(115, 145, 102, 0.2);
   text-align: center;
 }
 
 .footerNote {
-  color: rgba(255, 192, 203, 0.5);
+  color: rgba(115, 145, 102, 0.5);
   font-size: 0.85rem;
   font-style: italic;
   font-family: Georgia, serif;

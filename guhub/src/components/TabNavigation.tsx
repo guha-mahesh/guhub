@@ -5,9 +5,12 @@ const TabNavigation = () => {
   const location = useLocation();
 
   const tabs = [
-    { path: '/', label: 'GU-NIVERSE' },
-    { path: '/projects', label: 'PROJECTS' },
-    { path: '/about', label: 'RESUMÉ' },
+    { path: '/',          label: 'GU-NIVERSE' },
+    { path: '/projects',  label: 'PROJECTS'   },
+    { path: '/about',     label: 'RÉSUMÉ'     },
+    { path: '/blog',      label: 'BLOG'       },
+    { path: '/listening', label: 'LISTENING'  },
+    { path: '/queue',     label: 'QUEUE ↝'    },
   ];
 
   return (

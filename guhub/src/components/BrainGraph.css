@@ -11,18 +11,18 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: #2f0a0a;
-  border: 2px solid #ffc0cb;
+  background: #080808;
+  border: 2px solid #739166;
   border-radius: 12px;
   padding: 2rem;
   max-width: 500px;
   width: 90%;
   z-index: 2000;
-  box-shadow: 0 8px 32px rgba(255, 192, 203, 0.3);
+  box-shadow: 0 8px 32px rgba(115, 145, 102, 0.3);
 }
 
 .nodeModal h2 {
-  color: #ffc0cb;
+  color: #739166;
   margin: 0 0 0.5rem 0;
   font-size: 1.8rem;
 }
@@ -36,7 +36,7 @@
 }
 
 .nodeDescription {
-  color: rgba(255, 192, 203, 0.8);
+  color: rgba(115, 145, 102, 0.8);
   line-height: 1.6;
   margin: 0;
 }
@@ -47,7 +47,7 @@
   right: 1rem;
   background: none;
   border: none;
-  color: #ffc0cb;
+  color: #739166;
   font-size: 2rem;
   cursor: pointer;
   width: 32px;
@@ -87,9 +87,9 @@
 .zoomButton {
   width: 50px;
   height: 50px;
-  background: rgba(47, 10, 10, 0.95);
-  border: 2px solid #ffc0cb;
-  color: #ffc0cb;
+  background: rgba(8, 8, 8, 0.95);
+  border: 2px solid #739166;
+  color: #739166;
   font-size: 1.8rem;
   font-weight: 700;
   cursor: pointer;
@@ -102,10 +102,10 @@
 }
 
 .zoomButton:hover {
-  background: #ffc0cb;
-  color: #2f0a0a;
+  background: #739166;
+  color: #080808;
   transform: scale(1.1);
-  box-shadow: 0 4px 20px rgba(255, 192, 203, 0.4);
+  box-shadow: 0 4px 20px rgba(115, 145, 102, 0.4);
 }
 
 .zoomButton:active {

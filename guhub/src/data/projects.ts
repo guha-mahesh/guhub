@@ -9,10 +9,69 @@ export interface Project {
   color: string;
   image: string;
   github: string;
+  url?: string;
+  embedUrl?: string;
   private?: boolean;
+  wip?: boolean;
 }
 
 export const projects: Project[] = [
+  {
+    id: 11,
+    title: "earthborn",
+    description: "Research project on AI de-telltization — the hypothesis that removing detectable AI linguistic tells (hedging, hollow affirmations, bullet-point addiction, sycophancy) is the foundational lever for chatbot likability. Ships a TellDetector class that scores text for AI markers and a MessagesDBParser for Apple's chat.db. Parsed ~190k iMessages as a naturalistic human conversation corpus for grounding the detector.",
+    tech: ["Python", "NLP", "Apple chat.db", "Corpus Linguistics"],
+    galaxies: ['philosophy'],
+    color: "purpleGradient",
+    image: "earthborn.png",
+    github: "https://github.com/guha-mahesh/earthborn",
+    private: true
+  },
+
+  {
+    id: 11,
+    title: "ExperienceVec",
+    description: "Multi-task model trained to predict how words register in human experience across 89 dimensions: sensorimotor (Lancaster), conceptual (Binder), affective (Warriner VAD), and iconicity (Winter). Input is BERT embeddings + phonological features. r=0.520 on Lancaster norms with phonology. The point is a vector space where distance tracks felt similarity, not semantic overlap.",
+    tech: ["Python", "PyTorch", "BERT", "HuggingFace", "NumPy"],
+    galaxies: ['philosophy'],
+    color: "purpleGradient",
+    image: "experiencevec.png",
+    github: "https://github.com/guha-mahesh/ExperienceVec",
+    private: true
+  },
+  {
+    id: 10,
+    title: "Meticulous",
+    description: "AI agent that controls Ableton Live from natural language. Tell it to make something sound like Magdalena Bay or add more punch to the kick and it does it, via an OSC bridge to Max for Live. Built because nobody wants AI to generate music, they want help producing their own.",
+    tech: ["Python", "Claude API", "Max for Live", "OSC", "Ableton Live"],
+    galaxies: ['music'],
+    color: "orangeGradient",
+    image: "meticulous.png",
+    github: "https://github.com/guha-mahesh/meticulous",
+    private: true
+  },
+  {
+    id: 6,
+    title: "Arbor",
+    description: "Cultural identity network built around aesthetic houses and shared interests. Profiles are embeddable anywhere, including GitHub READMEs. Has a friend graph and Chrome extension.",
+    tech: ["Next.js", "TypeScript", "PostgreSQL", "Vercel"],
+    galaxies: ['culture', 'philosophy'],
+    color: "purpleGradient",
+    image: "arbor.png",
+    github: "https://arbor-blue.vercel.app",
+    url: "https://arbor-blue.vercel.app",
+
+  },
+  {
+    id: 5,
+    title: "Monkroyer",
+    description: "Social bingo game built around real-money leagues. Friends submit bingo items about each other, vote on completions, and compete on leaderboards. JWT auth, AWS S3, full league management.",
+    tech: ["React", "TypeScript", "Flask", "PostgreSQL", "AWS S3", "JWT"],
+    galaxies: ['culture'],
+    color: "greenGradient",
+    image: "monkroyer.png",
+    github: "https://github.com/guha-mahesh/monkroyer"
+  },
   {
     id: 1,
     title: "BioClock",
@@ -53,46 +112,4 @@ export const projects: Project[] = [
     image: "ClubStop.png",
     github: "https://github.com/guha-mahesh/ClubStop"
   },
-  {
-    id: 5,
-    title: "Monkroyer",
-    description: "Social bingo game built around real-money leagues. Friends submit bingo items about each other, vote on completions, and compete on leaderboards. JWT auth, AWS S3, full league management.",
-    tech: ["React", "TypeScript", "Flask", "PostgreSQL", "AWS S3", "JWT"],
-    galaxies: ['culture'],
-    color: "greenGradient",
-    image: "monkroyer.png",
-    github: "https://github.com/guha-mahesh/monkroyer"
-  },
-  {
-    id: 6,
-    title: "Arbor",
-    description: "Cultural identity network built around aesthetic houses and shared interests. Profiles are embeddable anywhere, including GitHub READMEs. Has a friend graph and Chrome extension.",
-    tech: ["Next.js", "TypeScript", "PostgreSQL", "Vercel"],
-    galaxies: ['culture', 'philosophy'],
-    color: "purpleGradient",
-    image: "arbor.png",
-    github: "https://arbor-blue.vercel.app"
-  },
-  {
-    id: 11,
-    title: "ExperienceVec",
-    description: "Multi-task model trained to predict how words register in human experience across 89 dimensions: sensorimotor (Lancaster), conceptual (Binder), affective (Warriner VAD), and iconicity (Winter). Input is BERT embeddings + phonological features. The point is a vector space where distance tracks felt similarity, not semantic overlap.",
-    tech: ["Python", "PyTorch", "BERT", "HuggingFace", "NumPy"],
-    galaxies: ['philosophy'],
-    color: "purpleGradient",
-    image: "experiencevec.png",
-    github: "https://github.com/guha-mahesh/ExperienceVec",
-    private: true
-  },
-  {
-    id: 10,
-    title: "Meticulous",
-    description: "AI agent that controls Ableton Live from natural language. Tell it to make something sound like Magdalena Bay or add more punch to the kick and it does it, via an OSC bridge to Max for Live. Built because nobody wants AI to generate music, they want help producing their own.",
-    tech: ["Python", "Claude API", "Max for Live", "OSC", "Ableton Live"],
-    galaxies: ['music'],
-    color: "orangeGradient",
-    image: "meticulous.png",
-    github: "https://github.com/guha-mahesh/meticulous",
-    private: true
-  }
 ];

@@ -1,0 +1,419 @@
+.musicPage {
+  min-height: calc(100vh - 52px);
+  margin-top: 52px;
+  background: #080808;
+  padding: 4rem 2rem;
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+}
+
+.musicContainer {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* ── header ──────────────────────────────────────────── */
+.musicLabel {
+  font-size: 0.7rem;
+  color: #444;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin: 0 0 0.5rem 0;
+}
+
+.musicTitle {
+  font-size: 2.5rem;
+  color: #f0f0f0;
+  margin: 0 0 2rem 0;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* ── tabs ────────────────────────────────────────────── */
+.musicTabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 2.5rem;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.musicTab {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: #444;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.6rem 1.25rem 0.75rem 1.25rem;
+  cursor: pointer;
+  transition: color 0.1s;
+  margin-bottom: -1px;
+}
+
+.musicTab:hover {
+  color: #aaa;
+}
+
+.musicTab.active {
+  color: #f0f0f0;
+  border-bottom-color: #f0f0f0;
+}
+
+/* ── review list ─────────────────────────────────────── */
+.reviewList {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid #1a1a1a;
+}
+
+.reviewRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid #111;
+  background: transparent;
+  border-left: none;
+  border-right: none;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.1s;
+  width: 100%;
+}
+
+.reviewRow:hover {
+  background: #0a0a0a;
+}
+
+.reviewRow:hover .reviewArrow {
+  color: #f0f0f0;
+  transform: translateX(4px);
+}
+
+.reviewRowLeft {
+  flex: 1;
+  min-width: 0;
+}
+
+.reviewRowMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.reviewRowYear {
+  font-size: 0.65rem;
+  color: #333;
+  letter-spacing: 0.1em;
+}
+
+.reviewRowAlbum {
+  font-size: 1.05rem;
+  color: #d0d0d0;
+  margin: 0 0 0.25rem 0;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.reviewRowArtist {
+  font-size: 0.75rem;
+  color: #555;
+  margin: 0;
+}
+
+.reviewRowRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.reviewArrow {
+  color: #333;
+  font-size: 0.9rem;
+  transition: color 0.1s, transform 0.15s;
+}
+
+/* ── star rating (block chars) ───────────────────────── */
+.starRating {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.65rem;
+  color: #555;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.starNum {
+  color: #888;
+  font-size: 0.7rem;
+  margin-left: 0.25rem;
+}
+
+/* ── genre tags ──────────────────────────────────────── */
+.reviewGenres {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.genreTag {
+  font-size: 0.62rem;
+  color: #333;
+  letter-spacing: 0.06em;
+}
+
+.genreTag::before {
+  content: '[';
+  color: #222;
+}
+
+.genreTag::after {
+  content: ']';
+  color: #222;
+}
+
+/* ── full review ─────────────────────────────────────── */
+.musicBack {
+  background: transparent;
+  border: none;
+  color: #555;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 2.5rem;
+  display: block;
+  transition: color 0.1s;
+}
+
+.musicBack:hover { color: #f0f0f0; }
+
+.reviewFull { max-width: 640px; }
+
+.reviewFullHeader {
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.reviewFullMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.reviewFullAlbum {
+  font-size: 1.6rem;
+  color: #f0f0f0;
+  margin: 0 0 0.3rem 0;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.reviewFullArtist {
+  font-size: 0.85rem;
+  color: #888;
+  margin: 0 0 0.15rem 0;
+}
+
+.reviewFullYear {
+  font-size: 0.7rem;
+  color: #444;
+  margin: 0 0 0.75rem 0;
+}
+
+.standouts {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.standoutsLabel {
+  font-size: 0.65rem;
+  color: #333;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+  padding-top: 0.1rem;
+}
+
+.standoutsList {
+  font-size: 0.72rem;
+  color: #666;
+}
+
+.reviewBody {
+  color: #888;
+  font-size: 0.85rem;
+  line-height: 1.8;
+  margin-bottom: 2rem;
+}
+
+.reviewBody p { margin: 0 0 1.2rem 0; }
+
+.spotifyBtn {
+  font-size: 0.7rem;
+  color: #1db954;
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  border: 1px solid #1db95430;
+  padding: 0.5rem 0.85rem;
+  transition: background 0.1s;
+  display: inline-block;
+}
+
+.spotifyBtn:hover {
+  background: #0d150f;
+}
+
+/* ── lists grid ──────────────────────────────────────── */
+.listGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 0;
+  border-top: 1px solid #1a1a1a;
+  border-left: 1px solid #1a1a1a;
+}
+
+.listCard {
+  background: transparent;
+  border: none;
+  border-right: 1px solid #1a1a1a;
+  border-bottom: 1px solid #1a1a1a;
+  padding: 1.75rem 1.5rem;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.1s;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.listCard:hover { background: #0a0a0a; }
+
+.listCardTitle {
+  font-size: 0.88rem;
+  color: #d0d0d0;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+
+.listCardDesc {
+  font-size: 0.72rem;
+  color: #555;
+  line-height: 1.55;
+  margin: 0;
+  flex: 1;
+}
+
+.listCardCount {
+  font-size: 0.65rem;
+  color: #444;
+  letter-spacing: 0.08em;
+  margin-top: 0.5rem;
+}
+
+/* ── full list ───────────────────────────────────────── */
+.listFull { max-width: 640px; }
+
+.listFullHeader {
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.listFullTitle {
+  font-size: 1.4rem;
+  color: #f0f0f0;
+  font-weight: 700;
+  margin: 0 0 0.75rem 0;
+  letter-spacing: -0.02em;
+}
+
+.listFullDesc {
+  font-size: 0.78rem;
+  color: #555;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.listItems {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.listItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid #111;
+}
+
+.listNum {
+  font-size: 0.65rem;
+  color: #333;
+  letter-spacing: 0.1em;
+  padding-top: 0.15rem;
+  flex-shrink: 0;
+  width: 2rem;
+}
+
+.listItemBody {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.listItemTitle {
+  font-size: 0.85rem;
+  color: #d0d0d0;
+  font-weight: 700;
+}
+
+.listItemArtist {
+  font-size: 0.72rem;
+  color: #666;
+}
+
+.listItemNote {
+  font-size: 0.7rem;
+  color: #444;
+  font-style: italic;
+  margin-top: 0.2rem;
+  line-height: 1.5;
+}
+
+.listSpotify {
+  color: #1db954;
+  font-size: 0.75rem;
+  text-decoration: none;
+  flex-shrink: 0;
+  padding-top: 0.1rem;
+}
+
+@media (max-width: 480px) {
+  .musicPage { padding: 2rem 1rem; }
+  .musicTitle { font-size: 1.8rem; }
+  .reviewRow { flex-direction: column; gap: 0.75rem; }
+  .reviewRowRight { align-items: flex-start; }
+  .listGrid { grid-template-columns: 1fr; }
+}

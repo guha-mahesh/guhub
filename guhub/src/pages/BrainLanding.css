@@ -1,7 +1,7 @@
 .brainLanding {
   width: 100vw;
   overflow-x: hidden;
-  background: #2f0a0a;
+  background: #080808;
 }
 
 /* ===== HERO SECTION ===== */
@@ -41,7 +41,7 @@
 .nameFirst {
   font-size: clamp(4rem, 12vw, 8rem);
   font-weight: 900;
-  color: #ffc0cb;
+  color: #739166;
   letter-spacing: -0.03em;
   text-transform: uppercase;
 }
@@ -50,7 +50,7 @@
   font-size: clamp(4rem, 12vw, 8rem);
   font-weight: 900;
   color: transparent;
-  -webkit-text-stroke: 2px #ffc0cb;
+  -webkit-text-stroke: 2px #739166;
   letter-spacing: -0.03em;
   text-transform: uppercase;
   margin-left: 1rem;
@@ -68,30 +68,30 @@
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
-  border-left: 3px solid #ffc0cb;
+  border-left: 3px solid #739166;
   padding-left: 1rem;
 }
 
 .roleLabel {
-  color: rgba(255, 192, 203, 0.5);
+  color: rgba(115, 145, 102, 0.5);
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
 
 .roleText {
-  color: #ffc0cb;
+  color: #739166;
   font-size: 1.1rem;
   font-weight: 600;
 }
 
 .roleCompany {
-  color: rgba(255, 192, 203, 0.8);
+  color: rgba(115, 145, 102, 0.8);
   font-size: 0.95rem;
 }
 
 .roleNote {
-  color: rgba(255, 192, 203, 0.6);
+  color: rgba(115, 145, 102, 0.6);
   font-size: 0.85rem;
   font-style: italic;
 }
@@ -106,8 +106,8 @@
 .interestTag {
   padding: 0.5rem 1rem;
   background: transparent;
-  border: 2px solid #ffc0cb;
-  color: #ffc0cb;
+  border: 2px solid #739166;
+  color: #739166;
   font-size: 0.85rem;
   font-weight: 600;
   text-transform: lowercase;
@@ -118,8 +118,8 @@
 }
 
 .interestTag:hover {
-  background: #ffc0cb;
-  color: #2f0a0a;
+  background: #739166;
+  color: #080808;
   transform: skew(-5deg);
 }
 
@@ -129,8 +129,8 @@
   margin-top: 2rem;
   padding: 1rem 1.5rem;
   background: transparent;
-  border: 2px dashed rgba(255, 192, 203, 0.4);
-  color: rgba(255, 192, 203, 0.7);
+  border: 2px dashed rgba(115, 145, 102, 0.4);
+  color: rgba(115, 145, 102, 0.7);
   text-decoration: none;
   font-family: 'Courier New', monospace;
   font-size: 0.85rem;
@@ -151,9 +151,9 @@
 
 .realTalkButton:hover {
   border-style: solid;
-  border-color: #ffc0cb;
-  background: rgba(255, 192, 203, 0.05);
-  color: #ffc0cb;
+  border-color: #739166;
+  background: rgba(115, 145, 102, 0.05);
+  color: #739166;
   transform: translateX(10px);
 }
 
@@ -176,9 +176,9 @@
 .quoteContent {
   position: relative;
   padding: 2rem;
-  border: 3px solid rgba(255, 192, 203, 0.3);
+  border: 3px solid rgba(115, 145, 102, 0.3);
   transform: rotate(2deg);
-  background: rgba(47, 10, 10, 0.8);
+  background: rgba(8, 8, 8, 0.8);
 }
 
 .quoteContent::before {
@@ -187,13 +187,13 @@
   top: -2rem;
   left: -1rem;
   font-size: 8rem;
-  color: rgba(255, 192, 203, 0.2);
+  color: rgba(115, 145, 102, 0.2);
   font-family: Georgia, serif;
   line-height: 1;
 }
 
 .quoteText {
-  color: rgba(255, 192, 203, 0.9);
+  color: rgba(115, 145, 102, 0.9);
   font-size: 1.1rem;
   line-height: 1.6;
   font-style: italic;
@@ -212,7 +212,7 @@
 }
 
 .scrollIndicator span {
-  color: rgba(255, 192, 203, 0.6);
+  color: rgba(115, 145, 102, 0.6);
   font-size: 0.9rem;
   text-transform: lowercase;
   letter-spacing: 0.1em;
@@ -240,11 +240,11 @@
   left: 50%;
   transform: translateX(-50%);
   z-index: 200;
-  background: rgba(255, 192, 203, 0.1);
-  border: 2px solid rgba(255, 192, 203, 0.5);
+  background: rgba(115, 145, 102, 0.1);
+  border: 2px solid rgba(115, 145, 102, 0.5);
   border-radius: 8px;
   padding: 0.6rem 1.2rem;
-  color: rgba(255, 192, 203, 0.9);
+  color: rgba(115, 145, 102, 0.9);
   font-size: 0.85rem;
   font-weight: 600;
   font-family: 'Courier New', monospace;
@@ -255,8 +255,8 @@
 }
 
 .wipBadge:hover {
-  border-color: #ffc0cb;
-  background: rgba(255, 192, 203, 0.15);
+  border-color: #739166;
+  background: rgba(115, 145, 102, 0.15);
   transform: translateX(-50%) translateY(-2px);
 }
 
@@ -280,17 +280,17 @@
 }
 
 .tooltipContent {
-  background: rgba(47, 10, 10, 0.95);
-  border: 2px solid #ffc0cb;
+  background: rgba(8, 8, 8, 0.95);
+  border: 2px solid #739166;
   border-radius: 8px;
   padding: 1.2rem 1.5rem;
   font-family: Georgia, serif;
   font-size: 0.9rem;
   line-height: 1.7;
-  color: rgba(255, 192, 203, 0.95);
+  color: rgba(115, 145, 102, 0.95);
   font-style: italic;
   backdrop-filter: blur(20px);
-  box-shadow: 0 8px 32px rgba(255, 192, 203, 0.2);
+  box-shadow: 0 8px 32px rgba(115, 145, 102, 0.2);
   position: relative;
 }
 
@@ -304,7 +304,7 @@
   height: 0;
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
-  border-bottom: 8px solid #ffc0cb;
+  border-bottom: 8px solid #739166;
 }
 
 .tooltipContent::after {
@@ -313,7 +313,7 @@
   bottom: 0.5rem;
   right: 0.8rem;
   font-size: 1.2rem;
-  color: rgba(255, 192, 203, 0.4);
+  color: rgba(115, 145, 102, 0.4);
   font-style: normal;
 }
 
@@ -323,8 +323,8 @@
   left: 50%;
   transform: translateX(-50%);
   z-index: 100;
-  background: rgba(47, 10, 10, 0.9);
-  border: 2px solid #ffc0cb;
+  background: rgba(8, 8, 8, 0.9);
+  border: 2px solid #739166;
   border-radius: 30px;
   padding: 0.8rem 1.5rem;
   backdrop-filter: blur(10px);
@@ -332,7 +332,7 @@
 
 .brainInstructions p {
   margin: 0;
-  color: #ffc0cb;
+  color: #739166;
   font-size: 0.9rem;
   font-weight: 500;
   text-align: center;
@@ -353,9 +353,9 @@
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background: rgba(47, 10, 10, 0.9);
-  border: 2px solid #ffc0cb;
-  color: #ffc0cb;
+  background: rgba(8, 8, 8, 0.9);
+  border: 2px solid #739166;
+  color: #739166;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -367,16 +367,16 @@
 }
 
 .floatingButton:hover {
-  background: #ffc0cb;
-  color: #2f0a0a;
+  background: #739166;
+  color: #080808;
   transform: scale(1.1);
-  box-shadow: 0 4px 20px rgba(255, 192, 203, 0.4);
+  box-shadow: 0 4px 20px rgba(115, 145, 102, 0.4);
 }
 
 /* ===== MOBILE FALLBACK ===== */
 .mobileFallback {
   min-height: 100vh;
-  background: #2f0a0a;
+  background: #080808;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -399,7 +399,7 @@
 .mobileNameFirst {
   font-size: clamp(3rem, 15vw, 4.5rem);
   font-weight: 900;
-  color: #ffc0cb;
+  color: #739166;
   letter-spacing: -0.03em;
   text-transform: uppercase;
 }
@@ -408,7 +408,7 @@
   font-size: clamp(3rem, 15vw, 4.5rem);
   font-weight: 900;
   color: transparent;
-  -webkit-text-stroke: 2px #ffc0cb;
+  -webkit-text-stroke: 2px #739166;
   letter-spacing: -0.03em;
   text-transform: uppercase;
   margin-left: 0.5rem;
@@ -426,31 +426,31 @@
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
-  border-left: 2px solid #ffc0cb;
+  border-left: 2px solid #739166;
   padding-left: 0.8rem;
 }
 
 .mobileRoleLabel {
-  color: rgba(255, 192, 203, 0.5);
+  color: rgba(115, 145, 102, 0.5);
   font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
 
 .mobileRoleText {
-  color: #ffc0cb;
+  color: #739166;
   font-size: 0.9rem;
   font-weight: 600;
 }
 
 .mobileRoleCompany {
-  color: rgba(255, 192, 203, 0.8);
+  color: rgba(115, 145, 102, 0.8);
   font-size: 0.8rem;
 }
 
 .mobileLaptopIcon {
   font-size: 5rem;
-  color: #ffc0cb;
+  color: #739166;
   margin-bottom: 2rem;
   animation: pulse 2s ease-in-out infinite;
 }
@@ -465,7 +465,7 @@
 }
 
 .mobileMessage {
-  color: rgba(255, 192, 203, 0.8);
+  color: rgba(115, 145, 102, 0.8);
   font-size: 1.1rem;
   line-height: 1.6;
   margin-bottom: 2rem;
@@ -480,8 +480,8 @@
 
 .mobileNavButton {
   background: transparent;
-  border: 2px solid #ffc0cb;
-  color: #ffc0cb;
+  border: 2px solid #739166;
+  color: #739166;
   padding: 1rem 1.5rem;
   border-radius: 8px;
   text-decoration: none;
@@ -490,8 +490,8 @@
 }
 
 .mobileNavButton:hover {
-  background: #ffc0cb;
-  color: #2f0a0a;
+  background: #739166;
+  color: #080808;
 }
 
 .mobileSocial {
@@ -504,9 +504,9 @@
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background: rgba(47, 10, 10, 0.9);
-  border: 2px solid #ffc0cb;
-  color: #ffc0cb;
+  background: rgba(8, 8, 8, 0.9);
+  border: 2px solid #739166;
+  color: #739166;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -516,8 +516,8 @@
 }
 
 .mobileSocialButton:hover {
-  background: #ffc0cb;
-  color: #2f0a0a;
+  background: #739166;
+  color: #080808;
   transform: scale(1.1);
 }
 

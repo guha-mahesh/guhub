@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #2f0a0a;
+  background: #080808;
 }
 
 .galaxyContent {
@@ -15,7 +15,7 @@
 .galaxyTitle {
   font-size: 3rem;
   margin-bottom: 1rem;
-  background: linear-gradient(135deg, #ffc0cb, #fff);
+  background: linear-gradient(135deg, #739166, #fff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -23,17 +23,17 @@
 
 .comingSoon {
   font-size: 1.5rem;
-  color: rgba(255, 192, 203, 0.6);
+  color: rgba(115, 145, 102, 0.6);
   font-style: italic;
 }
 
 /* Galaxy-specific gradients */
 .musicGalaxy .galaxyTitle {
-  background: linear-gradient(135deg, #ffc0cb, #ff8fab);
+  background: linear-gradient(135deg, #739166, #ff8fab);
 }
 
 .philosophyGalaxy .galaxyTitle {
-  background: linear-gradient(135deg, #6b4e71, #9b6fa0);
+  background: linear-gradient(135deg, #739166, #739166);
 }
 
 .geographyGalaxy .galaxyTitle {

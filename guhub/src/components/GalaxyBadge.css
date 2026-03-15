@@ -14,10 +14,10 @@
 
 .galaxyBadge:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 192, 203, 0.3);
+  box-shadow: 0 4px 12px rgba(115, 145, 102, 0.3);
 }
 
 .galaxyBadge.active {
   font-weight: 700;
-  box-shadow: 0 4px 12px rgba(255, 192, 203, 0.4);
+  box-shadow: 0 4px 12px rgba(115, 145, 102, 0.4);
 }

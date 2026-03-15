@@ -4,9 +4,9 @@
   bottom: 2rem;
   left: 2rem;
   padding: 0.6rem 1.2rem;
-  background-color: #2f0a0a;
-  border: 2px solid #ffc0cb;
-  color: #ffc0cb;
+  background-color: #080808;
+  border: 2px solid #739166;
+  color: #739166;
   font-family: 'Courier New', monospace;
   font-size: 0.9rem;
   font-weight: 600;
@@ -23,15 +23,15 @@
 }
 
 .sidebarToggle:hover {
-  background-color: #ffc0cb;
-  color: #2f0a0a;
+  background-color: #739166;
+  color: #080808;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 192, 203, 0.4);
+  box-shadow: 0 4px 12px rgba(115, 145, 102, 0.4);
 }
 
 .sidebarToggle.open {
-  background-color: #ffc0cb;
-  color: #2f0a0a;
+  background-color: #739166;
+  color: #080808;
 }
 
 /* Sidebar - Terminal Window */
@@ -42,12 +42,12 @@
   width: 420px;
   max-height: calc(100vh - 200px);
   background-color: #1a0505;
-  border: 3px solid #ffc0cb;
+  border: 3px solid #739166;
   border-radius: 8px;
   z-index: 1000;
   transition: left 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   overflow: hidden;
-  box-shadow: 0 8px 32px rgba(255, 192, 203, 0.3);
+  box-shadow: 0 8px 32px rgba(115, 145, 102, 0.3);
 }
 
 .sidebar.open {
@@ -56,9 +56,9 @@
 
 /* Terminal Header */
 .terminalHeader {
-  background: linear-gradient(180deg, #3a1515 0%, #2f0a0a 100%);
+  background: linear-gradient(180deg, #3a1515 0%, #080808 100%);
   padding: 0.8rem 1rem;
-  border-bottom: 2px solid #ffc0cb;
+  border-bottom: 2px solid #739166;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -85,7 +85,7 @@
 
 .terminalTitle {
   margin-left: auto;
-  color: rgba(255, 192, 203, 0.6);
+  color: rgba(115, 145, 102, 0.6);
   font-family: 'Courier New', monospace;
   font-size: 0.85rem;
   text-transform: lowercase;
@@ -107,25 +107,25 @@
   display: flex;
   gap: 0.5rem;
   margin-bottom: 1rem;
-  color: rgba(255, 192, 203, 0.7);
+  color: rgba(115, 145, 102, 0.7);
   font-size: 0.9rem;
 }
 
 .terminalPrompt {
-  color: #ffc0cb;
+  color: #739166;
   font-weight: bold;
 }
 
 .terminalCommand {
-  color: rgba(255, 192, 203, 0.8);
+  color: rgba(115, 145, 102, 0.8);
 }
 
 /* Contact Data */
 .contactData {
   margin: 1.5rem 0;
   padding: 1rem;
-  background: rgba(255, 192, 203, 0.03);
-  border-left: 3px solid #ffc0cb;
+  background: rgba(115, 145, 102, 0.03);
+  border-left: 3px solid #739166;
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
@@ -139,18 +139,18 @@
 }
 
 .dataKey {
-  color: rgba(255, 192, 203, 0.6);
+  color: rgba(115, 145, 102, 0.6);
   min-width: 80px;
   text-align: right;
 }
 
 .dataValue {
-  color: #ffc0cb;
+  color: #739166;
   flex: 1;
 }
 
 .dataValue.link {
-  color: #ffc0cb;
+  color: #739166;
   text-decoration: none;
   transition: all 0.3s ease;
   position: relative;
@@ -163,7 +163,7 @@
   left: 0;
   width: 0;
   height: 1px;
-  background: #ffc0cb;
+  background: #739166;
   transition: width 0.3s ease;
 }
 
@@ -220,7 +220,7 @@
 }
 
 .sidebarContent::-webkit-scrollbar-thumb {
-  background: #ffc0cb;
+  background: #739166;
   border-radius: 4px;
 }
 

@@ -1,52 +1,77 @@
+@import '@fontsource/ibm-plex-mono/400.css';
+@import '@fontsource/ibm-plex-mono/700.css';
+
 .tabNavigation {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  background: #2f0a0a;
-  border-bottom: 2px solid #ffc0cb;
+  background: #050505;
+  border-bottom: 1px solid #181818;
   z-index: 1000;
-  padding: 0.5rem 0;
+  height: 52px;
+  display: flex;
+  align-items: center;
 }
 
 .tabContainer {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 2rem;
-  flex-wrap: wrap;
+  align-items: stretch;
+  height: 100%;
+  width: 100%;
+  padding: 0 1rem;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
+
+.tabContainer::-webkit-scrollbar { display: none; }
 
 .tab {
-  color: #ffc0cb;
+  color: #3a3a3a;
   text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  transition: all 0.3s ease;
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-size: 0.68rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  border-right: 1px solid #111;
+  transition: color 0.1s, background 0.1s;
   white-space: nowrap;
+  height: 100%;
 }
+
+.tab:first-child { border-left: 1px solid #111; }
 
 .tab:hover {
-  background: rgba(255, 192, 203, 0.1);
-  color: #fff;
+  color: #999;
+  background: #0d0d0d;
 }
 
-/* Removed active state highlighting */
+.tab.active {
+  color: #f0f0f0;
+  background: #0d0d0d;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+/* queue tab gets a subtle green tint */
+.tab:last-child {
+  color: #1db95455;
+}
+
+.tab:last-child:hover,
+.tab:last-child.active {
+  color: #1db954;
+  background: #0a0f0a;
+  border-bottom-color: #1db954;
+}
 
 @media (max-width: 768px) {
-  .tabContainer {
-    gap: 0.5rem;
-    padding: 0 1rem;
-  }
-
   .tab {
-    font-size: 0.75rem;
-    padding: 0.4rem 0.7rem;
+    font-size: 0.6rem;
+    padding: 0 0.65rem;
+    letter-spacing: 0.08em;
   }
 }

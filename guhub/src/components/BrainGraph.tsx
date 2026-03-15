@@ -104,7 +104,7 @@ const BrainGraph = ({ externalHoveredGalaxy = null }: BrainGraphProps) => {
         }}
         linkWidth={1}
         linkOpacity={1}
-        backgroundColor="#2f0a0a"
+        backgroundColor="#080808"
         showNavInfo={false}
         enableNodeDrag={false}
         enableNavigationControls={true}

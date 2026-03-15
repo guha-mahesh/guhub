@@ -42,7 +42,7 @@
     height: 30%;
     border-top: 30vh solid transparent;
     border-bottom: 30vh solid transparent;
-    border-right: 8vw solid #123524;
+    border-right: 8vw solid #3d5235;
     opacity: 0.7;
     z-index: 1;
 }
@@ -60,7 +60,7 @@
     color: white;
     margin-bottom: 3rem;
     text-align: center;
-    text-shadow: 0 0 20px rgba(38, 131, 86, 0.3);
+    text-shadow: 0 0 20px rgba(115, 145, 102, 0.3);
 }
 
 .portfolioGrid {
@@ -94,39 +94,39 @@
     position: relative;
     width: 22rem;
     height: 20rem;
-    border: 3px solid rgba(38, 131, 86, 0.4);
+    border: 3px solid rgba(115, 145, 102, 0.4);
     border-radius: 1.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: visible;
     transition: all 0.4s ease;
-    background: rgba(18, 53, 36, 0.1);
+    background: rgba(61, 82, 53, 0.1);
 }
 
 .deckContainer:hover {
-    border-color: #268356;
-    box-shadow: 0 0 30px rgba(38, 131, 86, 0.2);
+    border-color: #739166;
+    box-shadow: 0 0 30px rgba(115, 145, 102, 0.2);
     transform: translateY(-5px);
 }
 
 .selectedContainer {
     width: 22rem;
     height: 20rem;
-    border: 3px solid rgba(38, 131, 86, 0.4);
+    border: 3px solid rgba(115, 145, 102, 0.4);
     border-radius: 1.5rem;
     padding: 1.5rem;
     display: flex;
     align-items: flex-start;
     justify-content: center;
     transition: all 0.4s ease;
-    background: rgba(18, 53, 36, 0.15);
+    background: rgba(61, 82, 53, 0.15);
     backdrop-filter: blur(10px);
 }
 
 .selectedContainer:hover {
-    border-color: #268356;
-    box-shadow: 0 0 30px rgba(38, 131, 86, 0.2);
+    border-color: #739166;
+    box-shadow: 0 0 30px rgba(115, 145, 102, 0.2);
     transform: translateY(-5px);
 }
 
@@ -144,14 +144,14 @@
     font-weight: bold;
     color: #8dd688;
     margin: 0;
-    text-shadow: 0 2px 10px rgba(38, 131, 86, 0.3);
+    text-shadow: 0 2px 10px rgba(115, 145, 102, 0.3);
 }
 
 .projectDescription {
     margin-top: 3rem;
     padding: 2rem;
-    background: rgba(18, 53, 36, 0.2);
-    border: 2px solid rgba(38, 131, 86, 0.4);
+    background: rgba(61, 82, 53, 0.2);
+    border: 2px solid rgba(115, 145, 102, 0.4);
     border-radius: 1.5rem;
     backdrop-filter: blur(10px);
     max-width: 800px;
@@ -164,7 +164,7 @@
     font-size: 1.5rem;
     font-weight: bold;
     margin-bottom: 1rem;
-    text-shadow: 0 2px 10px rgba(38, 131, 86, 0.3);
+    text-shadow: 0 2px 10px rgba(115, 145, 102, 0.3);
 }
 
 .projectDescription p {
@@ -197,12 +197,12 @@
     width: 19rem;
     height: 16rem;
     border-radius: 1.5rem;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(38, 131, 86, 0.1);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(115, 145, 102, 0.1);
     cursor: grab;
     transform: translateZ(0);
     transition: all 0.3s ease;
-    background: linear-gradient(145deg, #1a2e22, #123524);
-    border: 2px solid rgba(38, 131, 86, 0.3);
+    background: linear-gradient(145deg, #0d110b, #3d5235);
+    border: 2px solid rgba(115, 145, 102, 0.3);
 }
 
 .projectCard:active {
@@ -211,8 +211,8 @@
 
 .projectCard:hover {
     transform: scale(1.05) translateY(-10px);
-    border-color: #268356;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(38, 131, 86, 0.2);
+    border-color: #739166;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(115, 145, 102, 0.2);
 }
 
 .projectCard.dragging {
@@ -252,25 +252,25 @@
 
 .techTag {
     padding: 0.4rem 1rem;
-    background: linear-gradient(135deg, #268356, #3da66b);
+    background: linear-gradient(135deg, #739166, #739166);
     border: 1px solid rgba(141, 214, 136, 0.3);
     border-radius: 25px;
     font-size: 0.85rem;
     font-weight: 600;
     color: white;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(38, 131, 86, 0.2);
+    box-shadow: 0 2px 8px rgba(115, 145, 102, 0.2);
 }
 
 .techTag:hover {
     transform: translateY(-2px) scale(1.05);
-    background: linear-gradient(135deg, #3da66b, #4fb57d);
-    box-shadow: 0 4px 15px rgba(38, 131, 86, 0.4);
+    background: linear-gradient(135deg, #739166, #4fb57d);
+    box-shadow: 0 4px 15px rgba(115, 145, 102, 0.4);
 }
 
 .selectedTechTag {
     padding: 0.4rem 0.8rem;
-    background: linear-gradient(135deg, #268356, #3da66b);
+    background: linear-gradient(135deg, #739166, #739166);
     border: 1px solid rgba(141, 214, 136, 0.3);
     border-radius: 20px;
     font-size: 0.8rem;
@@ -291,9 +291,9 @@
     right: -0.75rem;
     width: 2rem;
     height: 2rem;
-    background: linear-gradient(135deg, #2d1b20, #123524);
+    background: linear-gradient(135deg, #2d1b20, #3d5235);
     color: #8dd688;
-    border: 2px solid #268356;
+    border: 2px solid #739166;
     border-radius: 50%;
     opacity: 0;
     transition: all 0.3s ease;
@@ -308,10 +308,10 @@
 }
 
 .removeButton:hover {
-    background: linear-gradient(135deg, #268356, #3da66b);
+    background: linear-gradient(135deg, #739166, #739166);
     color: white;
     transform: scale(1.1) rotate(90deg);
-    box-shadow: 0 6px 20px rgba(38, 131, 86, 0.4);
+    box-shadow: 0 6px 20px rgba(115, 145, 102, 0.4);
 }
 
 .selectedProjectDetails:hover .removeButton {
@@ -323,7 +323,7 @@
 .greenGradient,
 .purpleGradient,
 .orangeGradient {
-    background: linear-gradient(135deg, #1a2e22, #123524);
+    background: linear-gradient(135deg, #0d110b, #3d5235);
 }
 
 .projectCard.blueGradient,
@@ -331,13 +331,13 @@
 .projectCard.greenGradient,
 .projectCard.purpleGradient,
 .projectCard.orangeGradient {
-    background: linear-gradient(145deg, #1a2e22, #123524);
+    background: linear-gradient(145deg, #0d110b, #3d5235);
 }
 
 .projectLive {
     padding: 2rem;
-    background: rgba(18, 53, 36, 0.15);
-    border: 3px solid rgba(38, 131, 86, 0.4);
+    background: rgba(61, 82, 53, 0.15);
+    border: 3px solid rgba(115, 145, 102, 0.4);
     border-radius: 1.5rem;
     backdrop-filter: blur(10px);
     color: white;
@@ -355,14 +355,14 @@
     line-height: 1.7;
     opacity: 0.9;
     transition: all 0.4s ease;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(38, 131, 86, 0.1);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(115, 145, 102, 0.1);
 }
 
 .projectLive:hover {
-    border-color: #268356;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 0 30px rgba(38, 131, 86, 0.2);
+    border-color: #739166;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 0 30px rgba(115, 145, 102, 0.2);
     transform: translateY(-5px);
-    background: rgba(18, 53, 36, 0.25);
+    background: rgba(61, 82, 53, 0.25);
 }
 
 
@@ -374,7 +374,7 @@
     }
 
     .HomeScreen::before {
-        border-left: 15vw solid #123524;
+        border-left: 15vw solid #3d5235;
     }
 
     .flip {
@@ -400,7 +400,7 @@
     }
 
     .portfolioSection::after {
-        border-right: 15vw solid #123524;
+        border-right: 15vw solid #3d5235;
     }
 
     .portfolioTitle {
@@ -572,7 +572,7 @@
     color: white;
     margin-bottom: 2rem;
     text-align: center;
-    text-shadow: 0 0 20px rgba(38, 131, 86, 0.3);
+    text-shadow: 0 0 20px rgba(115, 145, 102, 0.3);
 }
 
 .mobileProjectsGrid {
@@ -583,8 +583,8 @@
 }
 
 .mobileProjectCard {
-    background: linear-gradient(145deg, #1a2e22, #123524);
-    border: 2px solid rgba(38, 131, 86, 0.3);
+    background: linear-gradient(145deg, #0d110b, #3d5235);
+    border: 2px solid rgba(115, 145, 102, 0.3);
     border-radius: 1rem;
     padding: 1.5rem;
     color: white;
@@ -593,8 +593,8 @@
 }
 
 .mobileProjectCard:hover {
-    border-color: #268356;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(38, 131, 86, 0.2);
+    border-color: #739166;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(115, 145, 102, 0.2);
     transform: translateY(-2px);
 }
 
@@ -603,7 +603,7 @@
     font-weight: bold;
     color: #8dd688;
     margin: 0 0 1rem 0;
-    text-shadow: 0 2px 10px rgba(38, 131, 86, 0.3);
+    text-shadow: 0 2px 10px rgba(115, 145, 102, 0.3);
 }
 
 .mobileCardDescription {
@@ -622,13 +622,13 @@
 
 .mobileTechTag {
     padding: 0.4rem 0.8rem;
-    background: linear-gradient(135deg, #268356, #3da66b);
+    background: linear-gradient(135deg, #739166, #739166);
     border: 1px solid rgba(141, 214, 136, 0.3);
     border-radius: 20px;
     font-size: 0.8rem;
     font-weight: 500;
     color: white;
-    box-shadow: 0 2px 8px rgba(38, 131, 86, 0.2);
+    box-shadow: 0 2px 8px rgba(115, 145, 102, 0.2);
 }
 
 .mobileGithubLink {
@@ -636,20 +636,20 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.8rem 1.5rem;
-    background: linear-gradient(135deg, #123524, #268356);
+    background: linear-gradient(135deg, #3d5235, #739166);
     color: white;
     text-decoration: none;
     border-radius: 25px;
     font-weight: 600;
     transition: all 0.3s ease;
-    border: 2px solid rgba(38, 131, 86, 0.4);
+    border: 2px solid rgba(115, 145, 102, 0.4);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .mobileGithubLink:hover {
-    background: linear-gradient(135deg, #268356, #3da66b);
+    background: linear-gradient(135deg, #739166, #739166);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(38, 131, 86, 0.4);
+    box-shadow: 0 6px 20px rgba(115, 145, 102, 0.4);
     border-color: #8dd688;
 }
 

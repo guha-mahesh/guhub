@@ -1,0 +1,283 @@
+@import '@fontsource/ibm-plex-mono/400.css';
+@import '@fontsource/ibm-plex-mono/700.css';
+
+.queuePage {
+  min-height: calc(100vh - 52px);
+  margin-top: 52px;
+  background: #080808;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 4rem 2rem;
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+}
+
+.queueContainer {
+  width: 100%;
+  max-width: 680px;
+}
+
+/* ── header ──────────────────────────────────────────── */
+.queueHeader {
+  margin-bottom: 3rem;
+  border-bottom: 1px solid #1a1a1a;
+  padding-bottom: 2rem;
+}
+
+.queueLabel {
+  font-size: 0.7rem;
+  color: #444;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin: 0 0 0.5rem 0;
+}
+
+.queueTitle {
+  font-size: 2.2rem;
+  color: #f0f0f0;
+  margin: 0 0 1rem 0;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.queueSub {
+  font-size: 0.8rem;
+  color: #555;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ── input form ──────────────────────────────────────── */
+.queueForm {
+  margin-bottom: 2rem;
+}
+
+.queueInputRow {
+  display: flex;
+  align-items: center;
+  border: 1px solid #222;
+  background: #0d0d0d;
+  transition: border-color 0.1s;
+}
+
+.queueInputRow:focus-within {
+  border-color: #444;
+}
+
+.queuePrompt {
+  color: #1db954;
+  font-size: 1rem;
+  padding: 0 0.75rem;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.queueInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #f0f0f0;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.85rem;
+  padding: 0.9rem 0;
+  caret-color: #1db954;
+}
+
+.queueInput::placeholder {
+  color: #333;
+}
+
+.queueInput:disabled {
+  opacity: 0.4;
+}
+
+.queueSubmit {
+  background: transparent;
+  border: none;
+  border-left: 1px solid #222;
+  color: #666;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.9rem 1rem;
+  cursor: pointer;
+  transition: color 0.1s, background 0.1s;
+  flex-shrink: 0;
+}
+
+.queueSubmit:hover:not(:disabled) {
+  color: #f0f0f0;
+  background: #141414;
+}
+
+.queueSubmit:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+/* ── error ───────────────────────────────────────────── */
+.queueError {
+  font-size: 0.75rem;
+  color: #c0392b;
+  margin: 0 0 1.5rem 0;
+  letter-spacing: 0.05em;
+}
+
+/* ── results ─────────────────────────────────────────── */
+.queueResults {
+  border: 1px solid #1a1a1a;
+  overflow: hidden;
+}
+
+.queueResultRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid #111;
+  gap: 1rem;
+  transition: background 0.1s;
+}
+
+.queueResultRow:last-child {
+  border-bottom: none;
+}
+
+.queueResultRow:hover {
+  background: #0d0d0d;
+}
+
+.resultInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.resultArt {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.resultText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.resultTitle {
+  font-size: 0.82rem;
+  color: #e0e0e0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.resultMeta {
+  font-size: 0.7rem;
+  color: #555;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 0.15rem;
+}
+
+.resultQueue {
+  background: transparent;
+  border: 1px solid #2a2a2a;
+  color: #666;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  padding: 0.4rem 0.75rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: border-color 0.1s, color 0.1s, background 0.1s;
+}
+
+.resultQueue:hover:not(:disabled) {
+  border-color: #1db954;
+  color: #1db954;
+}
+
+.resultQueue:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+/* ── success state ───────────────────────────────────── */
+.queueSuccess {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.successTrack {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem;
+  border: 1px solid #1db95430;
+  background: #0d150f;
+}
+
+.successArt {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+}
+
+.successTitle {
+  font-size: 0.95rem;
+  color: #f0f0f0;
+  margin: 0 0 0.25rem 0;
+  font-weight: 700;
+}
+
+.successArtist {
+  font-size: 0.78rem;
+  color: #888;
+  margin: 0;
+}
+
+.successMsg {
+  font-size: 0.75rem;
+  color: #1db954;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.queueAgain {
+  background: transparent;
+  border: 1px solid #222;
+  color: #777;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.7rem 1rem;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: border-color 0.1s, color 0.1s;
+}
+
+.queueAgain:hover {
+  border-color: #555;
+  color: #ccc;
+}
+
+@media (max-width: 480px) {
+  .queuePage {
+    padding: 2rem 1rem;
+  }
+
+  .queueTitle {
+    font-size: 1.6rem;
+  }
+}
