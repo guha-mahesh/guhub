@@ -104,16 +104,6 @@ export default function QueuePage() {
 
   return (
     <div className="queuePage">
-      {nowPlaying && (
-        <div className="npBar">
-          {nowPlaying.albumArt && <img src={nowPlaying.albumArt} alt="" className="npBarArt" />}
-          <span className="npBarDot" />
-          <span className="npBarTitle">{nowPlaying.title}</span>
-          <span className="npBarSep">—</span>
-          <span className="npBarArtist">{nowPlaying.artist}</span>
-          <a href={nowPlaying.spotifyUrl} target="_blank" rel="noopener noreferrer" className="npBarLink">↗</a>
-        </div>
-      )}
       <div className="queueLayout">
 
         {/* ── left: queue ── */}
@@ -195,6 +185,17 @@ export default function QueuePage() {
         {/* ── right: recently played ── */}
         <div className="recentRight">
           <p className="recentLabel">&gt; recently played</p>
+          {nowPlaying && (
+            <div className="npBar">
+              {nowPlaying.albumArt && <img src={nowPlaying.albumArt} alt="" className="npBarArt" />}
+              <span className="npBarDot" />
+              <div className="npBarText">
+                <span className="npBarTitle">{nowPlaying.title}</span>
+                <span className="npBarArtist">{nowPlaying.artist}</span>
+              </div>
+              <a href={nowPlaying.spotifyUrl} target="_blank" rel="noopener noreferrer" className="npBarLink">↗</a>
+            </div>
+          )}
           {recentLoading ? (
             <p className="recentEmpty">loading...</p>
           ) : recent.length === 0 ? (
