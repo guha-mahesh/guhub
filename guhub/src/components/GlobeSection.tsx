@@ -126,7 +126,8 @@ const GlobeSection = () => {
   const [memories, setMemories] = useState<Memory[]>([]);
   const [loading, setLoading] = useState(false);
   const [panelOpen, setPanelOpen] = useState(false);
-  const [hoveredPolygon, setHoveredPolygon] = useState<any>(null);
+  const [, _setHoveredPolygon] = useState<any>(null);
+  const setHoveredPolygon = _setHoveredPolygon;
 
   const handlePointClick = useCallback(async (point: object) => {
     const loc = point as GlobeLocation;
@@ -173,7 +174,7 @@ const GlobeSection = () => {
         let hovered: any = null;
 
         const globe = Globe({ animateIn: true, waitForGlobeReady: true })
-          .width(el.clientWidth)
+          .width(el.clientWidth as any)
           .height(el.clientHeight)
           .backgroundColor('rgba(0,0,0,0)')
           .showAtmosphere(true)
