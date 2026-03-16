@@ -6,6 +6,7 @@ import './BrainLanding.css';
 
 const BrainLanding = () => {
   const [isMobile, setIsMobile] = useState(false);
+  const [globePanelOpen, setGlobePanelOpen] = useState(false);
 
   useEffect(() => {
     const check = () => {
@@ -102,10 +103,10 @@ const BrainLanding = () => {
       </section>
 
       {/* Globe */}
-      <GlobeSection />
+      <GlobeSection onPanelChange={setGlobePanelOpen} />
 
       {/* Floating Social */}
-      <div className="floatingActions">
+      <div className={`floatingActions ${globePanelOpen ? 'hidden' : ''}`}>
         <a href="https://github.com/guha-mahesh" target="_blank" rel="noopener noreferrer" className="floatingButton" title="GitHub"><FaGithub /></a>
         <a href="https://linkedin.com/in/guhamahesh" target="_blank" rel="noopener noreferrer" className="floatingButton" title="LinkedIn"><FaLinkedin /></a>
       </div>

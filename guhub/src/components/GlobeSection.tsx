@@ -120,7 +120,7 @@ async function fetchMemories(keywords: string): Promise<Memory[]> {
   }));
 }
 
-const GlobeSection = () => {
+const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => void }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const globeRef = useRef<any>(null);
   const [selected, setSelected] = useState<GlobeLocation | null>(null);
@@ -134,6 +134,7 @@ const GlobeSection = () => {
   const spinToLocation = useCallback((loc: GlobeLocation) => {
     setSelected(loc);
     setPanelOpen(true);
+    onPanelChange?.(true);
     setLoading(true);
     setMemories([]);
     if (globeRef.current) {
@@ -153,6 +154,7 @@ const GlobeSection = () => {
   const closePanel = useCallback(() => {
     setPanelOpen(false);
     setSelected(null);
+    onPanelChange?.(false);
     if (globeRef.current) globeRef.current.controls().autoRotate = true;
     // clear pin param
     const url = new URL(window.location.href);
