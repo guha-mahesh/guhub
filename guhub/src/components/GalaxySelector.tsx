@@ -9,7 +9,7 @@ interface GalaxySelectorProps {
 const GalaxySelector = ({ selectedGalaxy, onGalaxyHover }: GalaxySelectorProps) => {
   return (
     <div className="galaxySelector">
-      <p className="galaxySelectorLabel">Explore Gu-Laxies</p>
+      <p className="galaxySelectorLabel">of-sorts</p>
       <div className="galaxyButtons">
         {galaxyArray.map((galaxy) => (
           <button

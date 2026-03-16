@@ -20,14 +20,14 @@ const CommandPalette = () => {
 
   const commands: Command[] = [
     // Navigation
-    { id: 'nav-home', label: 'Go to GUHA', sublabel: 'brain graph + landing', action: () => navigate('/'), category: 'navigate' },
+    { id: 'nav-home', label: 'Go to guha of-sorts', sublabel: 'brain graph + landing', action: () => navigate('/'), category: 'navigate' },
     { id: 'nav-projects', label: 'Go to Projects', sublabel: 'full project list', action: () => navigate('/projects'), category: 'navigate' },
     { id: 'nav-resume', label: 'Go to Resumé', sublabel: 'education, experience, skills', action: () => navigate('/about'), category: 'navigate' },
-    { id: 'nav-music', label: 'Go to Music Galaxy', action: () => navigate('/music'), category: 'navigate' },
-    { id: 'nav-philosophy', label: 'Go to Ethics Galaxy', action: () => navigate('/philosophy'), category: 'navigate' },
-    { id: 'nav-animals', label: 'Go to Animals Galaxy', action: () => navigate('/animals'), category: 'navigate' },
-    { id: 'nav-geography', label: 'Go to Geography Galaxy', action: () => navigate('/geography'), category: 'navigate' },
-    { id: 'nav-culture', label: 'Go to Culture Galaxy', action: () => navigate('/culture'), category: 'navigate' },
+    { id: 'nav-music', label: 'Go to music of-sorts', action: () => navigate('/music'), category: 'navigate' },
+    { id: 'nav-philosophy', label: 'Go to ethics of-sorts', action: () => navigate('/philosophy'), category: 'navigate' },
+    { id: 'nav-animals', label: 'Go to animals of-sorts', action: () => navigate('/animals'), category: 'navigate' },
+    { id: 'nav-geography', label: 'Go to geography of-sorts', action: () => navigate('/geography'), category: 'navigate' },
+    { id: 'nav-culture', label: 'Go to culture of-sorts', action: () => navigate('/culture'), category: 'navigate' },
     { id: 'nav-albums', label: 'Top Albums 2024', action: () => navigate('/music/1'), category: 'navigate' },
     // Projects
     { id: 'proj-bioclock', label: 'BioClock', sublabel: 'CNN · satellite · biodiversity prediction', action: () => window.open('https://github.com/guha-mahesh/BioClock', '_blank'), category: 'project' },

@@ -9,8 +9,8 @@ const GeographyLanding = () => {
           ← back to home
         </Link>
         <div className="headerContent">
-          <span className="headerLabel">[galaxy]</span>
-          <h1 className="galaxyTitle">GEOGRAPHY</h1>
+          <span className="headerLabel">[of-sorts]</span>
+          <h1 className="galaxyTitle">geography of-sorts</h1>
           <p className="galaxySubtitle">
             mapping places, spaces, and territories
           </p>

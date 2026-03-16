@@ -107,7 +107,7 @@ const TopTracks = () => {
     <div className="topTracks">
       <div className="tracksHeader">
         <Link to="/music" className="backButton">
-          ← back to music galaxy
+          ← back to music of-sorts
         </Link>
         <div className="headerContent">
           <span className="headerLabel">[2024 in review]</span>

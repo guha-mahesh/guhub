@@ -9,8 +9,8 @@ const CultureLanding = () => {
           ← back to home
         </Link>
         <div className="headerContent">
-          <span className="headerLabel">[galaxy]</span>
-          <h1 className="galaxyTitle">CULTURE</h1>
+          <span className="headerLabel">[of-sorts]</span>
+          <h1 className="galaxyTitle">culture of-sorts</h1>
           <p className="galaxySubtitle">
             examining cultural phenomena and social dynamics
           </p>

@@ -7,7 +7,7 @@ const MusicLanding = () => {
       <div className="musicHero">
         <div className="musicHeader">
           <span className="musicLabel">[sound]</span>
-          <h1 className="musicTitle">MUSIC GALAXY</h1>
+          <h1 className="musicTitle">music of-sorts</h1>
           <p className="musicSubtitle">
             where noise becomes meaning / where taste reveals topology
           </p>

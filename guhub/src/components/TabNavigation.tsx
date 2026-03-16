@@ -5,7 +5,7 @@ const TabNavigation = () => {
   const location = useLocation();
 
   const tabs = [
-    { path: '/',          label: 'GUHA'       },
+    { path: '/',          label: 'guha of-sorts' },
     { path: '/projects',  label: 'PROJECTS'   },
     { path: '/about',     label: 'RÉSUMÉ'     },
     { path: '/blog',      label: 'BLOG'       },
