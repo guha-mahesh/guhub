@@ -172,6 +172,7 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
   const setHoveredPolygon = _setHoveredPolygon;
   const [allLocations, setAllLocations] = useState<GlobeLocation[]>(LOCATIONS);
   const navigate = useNavigate();
+  const spinToLocationRef = useRef<(loc: GlobeLocation) => void>(() => {});
 
   useEffect(() => {
     fetch('/api/spotify/top-artists')
@@ -190,7 +191,7 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
 
   useEffect(() => {
     if (globeRef.current) {
-      globeRef.current.pointsData(allLocations);
+      globeRef.current.htmlElementsData(allLocations);
     }
   }, [allLocations]);
 
@@ -210,9 +211,6 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
       .finally(() => setLoading(false));
   }, []);
 
-  const handlePointClick = useCallback((point: object) => {
-    spinToLocation(point as GlobeLocation);
-  }, [spinToLocation]);
 
   const closePanel = useCallback(() => {
     setPanelOpen(false);
@@ -323,7 +321,7 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
               (el.firstElementChild as HTMLElement).style.transform = '';
               (el as any)._tipCleanup?.();
             });
-            el.addEventListener('click', () => spinToLocation(d));
+            el.addEventListener('click', () => spinToLocationRef.current(d));
             return el;
           })
           (el);
@@ -356,7 +354,12 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
       });
     });
     return () => { if (globeRef.current?._destructor) globeRef.current._destructor(); };
-  }, [handlePointClick, spinToLocation]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Keep the ref fresh so globe click handlers always call the latest version
+  useEffect(() => {
+    spinToLocationRef.current = spinToLocation;
+  }, [spinToLocation]);
 
   const sourceColor: Record<string, string> = {
     stream: '#ffd700', email: '#87ceeb', claude_code: '#7fff98', codex: '#6b4e71',
