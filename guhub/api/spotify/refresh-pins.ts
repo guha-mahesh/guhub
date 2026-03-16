@@ -1,15 +1,9 @@
-// api/spotify/refresh-pins.ts
-// Called async (fire-and-forget) from top-artists.ts when cache is stale.
-// Does the slow MusicBrainz + Nominatim work and writes to Supabase.
-// Also callable manually: POST /api/spotify/refresh-pins
-
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 const MB_UA = 'guha.one/1.0 (guhamaheshv@gmail.com)';
 const NOM_UA = 'guha.one/1.0 (guhamaheshv@gmail.com)';
 const SUPABASE_URL = 'https://lfgoungeysgkwvbjhueq.supabase.co';
-// Service key for writes — add SUPABASE_SERVICE_KEY to Vercel env vars
-// Anon key already exists as VITE_SUPABASE_ANON_KEY
+const CHUNK = 8; // artists per invocation to stay under 10s Vercel timeout
 
 async function getSpotifyToken(): Promise<string> {
   const basic = Buffer.from(`${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`).toString('base64');
@@ -37,13 +31,11 @@ async function mbArtistCity(name: string): Promise<{ city: string; country: stri
     ) ?? artists[0];
     if (!match) return null;
     const city = match['begin-area']?.name ?? match['area']?.name ?? null;
-    const country = match.country ?? null;
-    if (!city) return null;
-    return { city, country };
+    return city ? { city, country: match.country ?? '' } : null;
   } catch { return null; }
 }
 
-async function geocode(city: string, country?: string | null): Promise<{ lat: number; lng: number } | null> {
+async function geocode(city: string, country: string): Promise<{ lat: number; lng: number } | null> {
   try {
     const q = country ? `${city}, ${country}` : city;
     const r = await fetch(
@@ -57,65 +49,52 @@ async function geocode(city: string, country?: string | null): Promise<{ lat: nu
   } catch { return null; }
 }
 
-async function sleep(ms: number) { return new Promise(r => setTimeout(r, ms)); }
-
 const KNOWN_OVERRIDES: Record<string, { lat: number; lng: number; city: string } | null> = {
   'Cigarettes After Sex': { lat: 31.7619, lng: -106.4850, city: 'El Paso, TX' },
 };
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // Basic secret check
   const secret = req.headers['x-refresh-secret'];
   if (secret !== (process.env.REFRESH_SECRET ?? 'guha-refresh')) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
-  // Respond immediately — work happens after
-  res.status(202).json({ message: 'Refresh started' });
+  const serviceKey = process.env.SUPABASE_SERVICE_KEY!;
+  const offset = parseInt((req.query.offset as string) ?? '0');
 
   try {
-    const serviceKey = process.env.SUPABASE_SERVICE_KEY!;
     const token = await getSpotifyToken();
-
     const r = await fetch(
       'https://api.spotify.com/v1/me/top/artists?limit=50&time_range=medium_term',
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    const data = await r.json();
-    const artists: any[] = data.items ?? [];
+    const artists: any[] = (await r.json()).items ?? [];
+    const chunk = artists.slice(offset, offset + CHUNK);
+
+    if (chunk.length === 0) {
+      // Done — clean up pins no longer in top artists
+      const currentIds = artists.map(a => `music-${a.id}`);
+      await fetch(
+        `${SUPABASE_URL}/rest/v1/artist_pins?id=not.in.(${currentIds.map(id => `"${id}"`).join(',')})`,
+        { method: 'DELETE', headers: { apikey: serviceKey, Authorization: `Bearer ${serviceKey}` } }
+      );
+      return res.json({ done: true, total: artists.length });
+    }
 
     const pins: any[] = [];
-    const seenCoords = new Set<string>();
-    const geocodeCache = new Map<string, { lat: number; lng: number } | null>();
-
-    // Process sequentially with small delays to respect rate limits
-    for (const artist of artists) {
+    for (const artist of chunk) {
       try {
         let loc: { lat: number; lng: number; city: string } | null = null;
-
         if (artist.name in KNOWN_OVERRIDES) {
           loc = KNOWN_OVERRIDES[artist.name];
         } else {
           const cityData = await mbArtistCity(artist.name);
-          await sleep(100); // ~10 req/s to MB
-
           if (cityData) {
-            const cacheKey = `${cityData.city}|${cityData.country}`;
-            if (!geocodeCache.has(cacheKey)) {
-              const geo = await geocode(cityData.city, cityData.country);
-              geocodeCache.set(cacheKey, geo);
-              await sleep(1100); // Nominatim: max 1 req/s
-            }
-            const geo = geocodeCache.get(cacheKey);
+            const geo = await geocode(cityData.city, cityData.country);
             if (geo) loc = { ...geo, city: cityData.city };
           }
         }
-
         if (!loc) continue;
-        const key = `${loc.lat.toFixed(1)},${loc.lng.toFixed(1)}`;
-        if (seenCoords.has(key)) continue;
-        seenCoords.add(key);
-
         pins.push({
           id: `music-${artist.id}`,
           name: loc.city,
@@ -130,30 +109,31 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       } catch { continue; }
     }
 
-    if (!pins.length) return;
+    // Upsert this chunk
+    if (pins.length > 0) {
+      await fetch(`${SUPABASE_URL}/rest/v1/artist_pins`, {
+        method: 'POST',
+        headers: {
+          apikey: serviceKey,
+          Authorization: `Bearer ${serviceKey}`,
+          'Content-Type': 'application/json',
+          Prefer: 'resolution=merge-duplicates',
+        },
+        body: JSON.stringify(pins),
+      });
+    }
 
-    // Upsert all pins into Supabase
-    await fetch(`${SUPABASE_URL}/rest/v1/artist_pins`, {
+    // Chain next chunk
+    const nextOffset = offset + CHUNK;
+    const proto = req.headers['x-forwarded-proto'] ?? 'https';
+    const host = req.headers.host;
+    fetch(`${proto}://${host}/api/spotify/refresh-pins?offset=${nextOffset}`, {
       method: 'POST',
-      headers: {
-        apikey: serviceKey,
-        Authorization: `Bearer ${serviceKey}`,
-        'Content-Type': 'application/json',
-        Prefer: 'resolution=merge-duplicates',
-      },
-      body: JSON.stringify(pins),
-    });
+      headers: { 'x-refresh-secret': process.env.REFRESH_SECRET ?? 'guha-refresh' },
+    }).catch(() => {});
 
-    // Remove any pins no longer in top artists
-    const currentIds = pins.map(p => p.id);
-    await fetch(`${SUPABASE_URL}/rest/v1/artist_pins?id=not.in.(${currentIds.map(id => `"${id}"`).join(',')})`, {
-      method: 'DELETE',
-      headers: {
-        apikey: serviceKey,
-        Authorization: `Bearer ${serviceKey}`,
-      },
-    });
-  } catch (e) {
-    console.error('refresh-pins error:', e);
+    return res.json({ processed: pins.length, offset, nextOffset });
+  } catch (e: any) {
+    return res.status(500).json({ error: e.message });
   }
 }
