@@ -40,20 +40,18 @@ const LOCATIONS: GlobeLocation[] = [
     description: 'Born here.' },
   { id: 'houston', name: 'Houston, TX', lat: 29.7604, lng: -95.3698,
     queryKeywords: 'Houston home family Texas', category: 'home',
-    description: 'Grew up here.',
-    siteLink: { path: '/about', label: 'résumé' } },
+    description: 'Grew up here.' },
   { id: 'sf', name: 'San Francisco, CA', lat: 37.7749, lng: -122.4194,
     queryKeywords: 'San Francisco Engramme co-op Mission Dolores', category: 'work',
     description: 'Current base. Building at Engramme.',
-    siteLink: { path: '/about', label: 'résumé' } },
+    siteLink: { path: '/about', label: 'see résumé → Engramme' } },
   { id: 'boston', name: 'Boston / Northeastern', lat: 42.3601, lng: -71.0589,
     queryKeywords: 'Northeastern Boston university campus co-op', category: 'school',
     description: 'Data Science + FinTech, Martinson Honors Program.',
-    siteLink: { path: '/about', label: 'résumé' } },
+    siteLink: { path: '/about', label: 'see résumé → Northeastern' } },
   { id: 'cambridge', name: 'Cambridge, MA', lat: 42.3736, lng: -71.1097,
     queryKeywords: 'Harvard Engramme spinout Mayfield Fund AI', category: 'work',
-    description: 'Where Engramme was founded.',
-    siteLink: { path: '/projects', label: 'projects' } },
+    description: 'Where Engramme was founded.' },
   { id: 'chicago', name: 'Chicago, IL', lat: 41.8781, lng: -87.6298,
     queryKeywords: 'Chicago city visit', category: 'interest',
     description: 'Favorite city in the US.' },
@@ -66,7 +64,7 @@ const LOCATIONS: GlobeLocation[] = [
   { id: 'belgium', name: 'Brussels, Belgium', lat: 50.8503, lng: 4.3517,
     queryKeywords: 'Belgium Policy Playground EU financial markets', category: 'project',
     description: 'Built Policy Playground here for an EU project.',
-    siteLink: { path: '/projects', label: 'projects' } },
+    siteLink: { path: '/projects', label: 'see project → Policy Playground' } },
   { id: 'amsterdam', name: 'Amsterdam, Netherlands', lat: 52.3676, lng: 4.9041,
     queryKeywords: 'Amsterdam Netherlands Europe travel', category: 'interest',
     description: 'Visited.' },
@@ -79,19 +77,19 @@ const LOCATIONS: GlobeLocation[] = [
   { id: 'seoul', name: 'Seoul, South Korea', lat: 37.5665, lng: 126.9780,
     queryKeywords: 'Parannoul Seoul Korean shoegaze music', category: 'interest',
     description: 'Parannoul.',
-    siteLink: { path: '/listening', label: 'listening' } },
+    siteLink: { path: '/listening', label: 'see review → Parannoul' } },
   { id: 'manchester', name: 'Manchester, UK', lat: 53.4808, lng: -2.2426,
     queryKeywords: 'My Bloody Valentine shoegaze UK music', category: 'interest',
     description: 'My Bloody Valentine formed here.',
-    siteLink: { path: '/listening', label: 'listening' } },
+    siteLink: { path: '/listening', label: 'see review → MBV' } },
   { id: 'edinburgh', name: 'Edinburgh, Scotland', lat: 55.9533, lng: -3.1883,
     queryKeywords: 'Cocteau Twins Scotland dream pop music', category: 'interest',
     description: 'Cocteau Twins are from here.',
-    siteLink: { path: '/listening', label: 'listening' } },
+    siteLink: { path: '/listening', label: 'see review → Cocteau Twins' } },
   { id: 'sacramento', name: 'Sacramento, CA', lat: 38.5816, lng: -121.4944,
     queryKeywords: 'Death Grips Sacramento experimental hip hop', category: 'interest',
     description: 'Death Grips.',
-    siteLink: { path: '/listening', label: 'listening' } },
+    siteLink: { path: '/listening', label: 'see review → Death Grips' } },
 ];
 
 async function fetchMemories(keywords: string): Promise<Memory[]> {
@@ -297,9 +295,7 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
             <p className="panelMemLabel">ENGRAMME RECALL</p>
 
             {loading && <div className="memLoading"><span /><span /><span /></div>}
-            {!loading && memories.length === 0 && (
-              <p className="memEmpty">no memories surfaced for this location</p>
-            )}
+            {!loading && memories.length === 0 && null}
 
             <div className="memList">
               {memories.map((m, i) => (
