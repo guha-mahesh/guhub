@@ -22,6 +22,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await r.json();
+    if (data.error) return res.status(r.status).json({ error: data.error.message, tracks: [] });
     const tracks = (data.tracks?.items ?? []).map((t: any) => ({
       id: t.id, title: t.name,
       artist: t.artists.map((a: any) => a.name).join(', '),
