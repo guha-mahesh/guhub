@@ -1,6 +1,49 @@
 import { useState, useEffect, useRef } from 'react';
 import './QueuePage.css';
 
+const previewCache: Record<string, string> = {};
+
+function PreviewBtn({ uri }: { uri: string }) {
+  const [playing, setPlaying] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const API = import.meta.env.VITE_API_BASE ?? '';
+
+  const toggle = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (playing) {
+      audioRef.current?.pause();
+      setPlaying(false);
+      return;
+    }
+    const id = uri.replace('spotify:track:', '');
+    setLoading(true);
+    try {
+      if (!previewCache[id]) {
+        const data = await fetch(`${API}/api/spotify/preview?id=${id}`).then(r => r.json());
+        if (!data.previewUrl) { setLoading(false); return; }
+        previewCache[id] = data.previewUrl;
+      }
+      if (!audioRef.current) audioRef.current = new Audio();
+      audioRef.current.src = previewCache[id];
+      audioRef.current.volume = 0.6;
+      audioRef.current.onended = () => setPlaying(false);
+      await audioRef.current.play();
+      setPlaying(true);
+    } catch {}
+    setLoading(false);
+  };
+
+  useEffect(() => () => { audioRef.current?.pause(); }, []);
+
+  return (
+    <button className={`previewBtn ${playing ? 'playing' : ''}`} onClick={toggle} title={playing ? 'stop' : 'preview'}>
+      {loading ? '·' : playing ? '■' : '▶'}
+    </button>
+  );
+}
+
 interface TrackResult {
   id?: string;
   title: string;
@@ -169,6 +212,7 @@ export default function QueuePage() {
                           <span className="resultMeta">{track.artist} — {track.album}</span>
                         </div>
                       </div>
+                      <PreviewBtn uri={track.uri ?? ''} />
                       <button
                         className="resultQueue"
                         onClick={() => queue(track)}
@@ -195,6 +239,7 @@ export default function QueuePage() {
                   <a href={nowPlaying.spotifyUrl} target="_blank" rel="noopener noreferrer" className="recentTitleLink">{nowPlaying.title}</a>
                   <span className="recentMeta">{nowPlaying.artist}</span>
                 </div>
+                <PreviewBtn uri={nowPlaying.uri ?? ''} />
                 <span className="npBarDot" />
               </div>
               <p className="recentLabel recentLabelSpaced">&gt; recently played</p>
@@ -214,6 +259,7 @@ export default function QueuePage() {
                     <a href={track.spotifyUrl} target="_blank" rel="noopener noreferrer" className="recentTitleLink">{track.title}</a>
                     <span className="recentMeta">{track.artist}</span>
                   </div>
+                  <PreviewBtn uri={track.uri} />
                   {track.playedAt && (
                     <span className="recentTime">{timeAgo(track.playedAt)}</span>
                   )}
