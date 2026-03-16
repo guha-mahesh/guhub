@@ -33,6 +33,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       album: data.item.album.name,
       albumArt: data.item.album.images[0]?.url ?? null,
       spotifyUrl: data.item.external_urls.spotify,
+      uri: data.item.uri,
       previewUrl: data.item.preview_url ?? null,
       progressMs: data.progress_ms,
       durationMs: data.item.duration_ms,
