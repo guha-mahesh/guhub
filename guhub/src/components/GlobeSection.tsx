@@ -59,7 +59,7 @@ const LOCATIONS: GlobeLocation[] = [
       { name: 'Houston proper', description: 'The city itself — Uptown, Greenway Plaza, downtown.' },
     ],
   },
-  { id: 'sf', name: 'San Francisco, CA', lat: 37.7749, lng: -122.4194, queryKeywords: 'San Francisco Engramme co-op WeWork California Street Mission Dolores Golden Gate', category: 'work', description: 'Current base. Co-op at Engramme.', siteLink: { path: '/about', label: 'résumé → Engramme', scrollTo: 'engramme' }, wikiQuery: 'San_Francisco',
+  { id: 'sf', name: 'San Francisco, CA', lat: 37.7749, lng: -122.4194, queryKeywords: 'San Francisco Engramme co-op WeWork California Street Mission Dolores Golden Gate', category: 'work', description: 'Current base. Co-op at Engramme.', siteLink: { path: '/about', label: 'résumé → Engramme', scrollTo: 'engramme' }, wikiQuery: 'San_Francisco,Engramme_(neuroscience)',
     subLocations: [
       { name: '650 California St', description: "Engramme's WeWork office. 7th floor happy hours.", siteLink: { path: '/about', label: 'résumé → Engramme', scrollTo: 'engramme' } },
       { name: 'Golden Gate Park', description: 'DeYoung Museum, Cal Academy, biking.' },
@@ -67,7 +67,7 @@ const LOCATIONS: GlobeLocation[] = [
       { name: 'Clement St (home)', description: 'Where I live. Richmond district.' },
     ],
   },
-  { id: 'boston', name: 'Boston, MA', lat: 42.3601, lng: -71.0589, queryKeywords: 'Northeastern Boston university campus Cambridge Harvard Engramme', category: 'school', description: 'Northeastern + where Engramme was founded.', siteLink: { path: '/about', label: 'résumé → Northeastern', scrollTo: 'education' }, wikiQuery: 'Boston',
+  { id: 'boston', name: 'Boston, MA', lat: 42.3601, lng: -71.0589, queryKeywords: 'Northeastern Boston university campus Cambridge Harvard Engramme', category: 'school', description: 'Northeastern + where Engramme was founded.', siteLink: { path: '/about', label: 'résumé → Northeastern', scrollTo: 'education' }, wikiQuery: 'Boston,Northeastern_University',
     subLocations: [
       { name: 'Northeastern University', description: "Data Science + FinTech, Martinson Honors. Class of '28.", siteLink: { path: '/about', label: 'résumé → Northeastern', scrollTo: 'education' } },
       { name: 'Cambridge', description: 'Harvard Medical School — where Engramme was spun out.' },
@@ -76,8 +76,8 @@ const LOCATIONS: GlobeLocation[] = [
   },
   { id: 'chicago', name: 'Chicago, IL', lat: 41.8781, lng: -87.6298, queryKeywords: 'Chicago city visit', category: 'interest', description: 'Favorite city in the US.', wikiQuery: 'Chicago' },
   { id: 'la', name: 'Los Angeles, CA', lat: 34.0522, lng: -118.2437, queryKeywords: 'Los Angeles LA visit', category: 'interest', description: 'Visited.', wikiQuery: 'Los_Angeles' },
-  { id: 'pacific-nw', name: 'Pacific Northwest', lat: 47.7511, lng: -120.7401, queryKeywords: 'Washington Pacific Northwest dream state', category: 'interest', description: 'Dream region.', wikiQuery: 'Pacific_Northwest' },
-  { id: 'belgium', name: 'Belgium', lat: 50.7503, lng: 4.5000, queryKeywords: 'Belgium Policy Playground EU Leuven Brussels exchange basketball', category: 'project', description: 'Exchange semester. Built Policy Playground.', siteLink: { path: '/projects', label: 'projects → Policy Playground', scrollTo: 'project-leuven' }, wikiQuery: 'Leuven',
+  { id: 'pacific-nw', name: 'Pacific Northwest', lat: 47.7511, lng: -120.7401, queryKeywords: 'Washington Pacific Northwest dream state', category: 'interest', description: 'Dream region.', wikiQuery: 'Pacific_Northwest,Olympic_National_Park' },
+  { id: 'belgium', name: 'Belgium', lat: 50.7503, lng: 4.5000, queryKeywords: 'Belgium Policy Playground EU Leuven Brussels exchange basketball', category: 'project', description: 'Exchange semester. Built Policy Playground.', siteLink: { path: '/projects', label: 'projects → Policy Playground', scrollTo: 'project-leuven' }, wikiQuery: 'Leuven,KU_Leuven',
     subLocations: [
       { name: 'Leuven', description: 'Lived here during the exchange. Refugehof basketball, Cafe Belge.', siteLink: { path: '/projects', label: 'projects → Policy Playground', scrollTo: 'project-leuven' } },
       { name: 'Brussels', description: 'Policy Playground was built for an EU markets project.' },
@@ -86,14 +86,14 @@ const LOCATIONS: GlobeLocation[] = [
     ],
   },
   { id: 'petra', name: 'Petra, Jordan', lat: 30.3285, lng: 35.4444, queryKeywords: 'Petra Jordan Middle East travel', category: 'interest', description: 'Visited.', wikiQuery: 'Petra,_Jordan' },
-  { id: 'british-isles', name: 'British Isles', lat: 54.0, lng: -3.5, queryKeywords: 'Dublin My Bloody Valentine Cocteau Twins Scotland Ireland shoegaze', category: 'interest', description: 'Home of some of my favorite bands.', wikiQuery: 'British_Isles',
+  { id: 'british-isles', name: 'British Isles', lat: 54.0, lng: -3.5, queryKeywords: 'Dublin My Bloody Valentine Cocteau Twins Scotland Ireland shoegaze', category: 'interest', description: 'Home of some of my favorite bands.', wikiQuery: 'British_Isles,My_Bloody_Valentine_(band)',
     subLocations: [
       { name: 'Dublin, Ireland', description: 'My Bloody Valentine formed here.', siteLink: { path: '/listening', label: 'listening → MBV' } },
       { name: 'Grangemouth, Scotland', description: 'Cocteau Twins are from here.', siteLink: { path: '/listening', label: 'listening → Cocteau Twins' } },
     ],
   },
-  { id: 'seoul', name: 'Seoul, South Korea', lat: 37.5665, lng: 126.9780, queryKeywords: 'Parannoul Seoul Korean shoegaze music', category: 'interest', description: 'Parannoul.', siteLink: { path: '/listening', label: 'listening → Parannoul' }, wikiQuery: 'Seoul' },
-  { id: 'sacramento', name: 'Sacramento, CA', lat: 38.5816, lng: -121.4944, queryKeywords: 'Death Grips Sacramento experimental hip hop', category: 'interest', description: 'Death Grips.', siteLink: { path: '/listening', label: 'listening → Death Grips' }, wikiQuery: 'Sacramento,_California' },
+  { id: 'seoul', name: 'Seoul, South Korea', lat: 37.5665, lng: 126.9780, queryKeywords: 'Parannoul Seoul Korean shoegaze music', category: 'interest', description: 'Parannoul.', siteLink: { path: '/listening', label: 'listening → Parannoul' }, wikiQuery: 'Seoul,Parannoul' },
+  { id: 'sacramento', name: 'Sacramento, CA', lat: 38.5816, lng: -121.4944, queryKeywords: 'Death Grips Sacramento experimental hip hop', category: 'interest', description: 'Death Grips.', siteLink: { path: '/listening', label: 'listening → Death Grips' }, wikiQuery: 'Sacramento,_California,Death_Grips' },
 ];
 
 async function fetchMemories(keywords: string): Promise<Memory[]> {
