@@ -170,6 +170,82 @@
   background: rgba(115, 145, 102, 0.08);
 }
 
+/* Wiki hero image */
+.wikiHero {
+  position: relative;
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  flex-shrink: 0;
+}
+
+.wikiHeroOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(8,2,2,0.95) 0%, rgba(8,2,2,0.4) 60%, rgba(8,2,2,0.1) 100%);
+}
+
+.wikiHeroText {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.25rem 1.75rem;
+}
+
+.panelCloseHero {
+  position: absolute !important;
+  top: 0.75rem;
+  right: 0.75rem;
+}
+
+.wikiDesc {
+  color: rgba(240,240,240,0.7);
+  font-size: 0.78rem;
+  font-style: italic;
+  margin: 4px 0 0;
+  font-family: Georgia, serif;
+}
+
+.panelMeta {
+  padding: 0.75rem 1.75rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Wiki extract */
+.wikiExtract {
+  padding: 1rem 1.75rem;
+}
+
+.wikiExtractLabel {
+  font-size: 0.6rem;
+  color: rgba(115,145,102,0.4);
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin: 0 0 0.6rem;
+}
+
+.wikiExtractText {
+  color: rgba(200,200,200,0.7);
+  font-size: 0.82rem;
+  line-height: 1.65;
+  font-family: Georgia, serif;
+  margin: 0 0 0.5rem;
+}
+
+.wikiLink {
+  font-size: 0.68rem;
+  color: rgba(115,145,102,0.6);
+  font-family: 'IBM Plex Mono', monospace;
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  transition: color 0.15s;
+}
+.wikiLink:hover { color: #739166; }
+
 .panelDivider { height: 1px; background: rgba(115, 145, 102, 0.08); margin: 0; }
 
 /* Sub-locations */
