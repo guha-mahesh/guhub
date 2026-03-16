@@ -94,12 +94,8 @@ const LOCATIONS: GlobeLocation[] = [
     ],
   },
   { id: 'petra', name: 'Petra, Jordan', lat: 30.3285, lng: 35.4444, queryKeywords: 'Petra Jordan Middle East travel', category: 'interest', description: 'Visited.', wikiQuery: 'Petra,_Jordan' },
-  { id: 'british-isles', name: 'British Isles', lat: 54.0, lng: -3.5, queryKeywords: 'Dublin My Bloody Valentine Cocteau Twins Scotland Ireland shoegaze', category: 'interest', description: 'Home of some of my favorite bands.', wikiQuery: 'British_Isles,My_Bloody_Valentine_(band)',
-    subLocations: [
-      { name: 'Dublin, Ireland', description: 'My Bloody Valentine formed here.', siteLink: { path: '/listening', label: 'listening → MBV' } },
-      { name: 'Grangemouth, Scotland', description: 'Cocteau Twins are from here.', siteLink: { path: '/listening', label: 'listening → Cocteau Twins' } },
-    ],
-  },
+  { id: 'dublin', name: 'Dublin, Ireland', lat: 53.3497, lng: -6.2603, queryKeywords: 'My Bloody Valentine Dublin Ireland shoegaze', category: 'interest', description: 'My Bloody Valentine formed here.', wikiQuery: 'Dublin,My_Bloody_Valentine_(band)', siteLink: { path: '/listening', label: 'listening → MBV' } },
+  { id: 'grangemouth', name: 'Grangemouth, Scotland', lat: 56.0119, lng: -3.7164, queryKeywords: 'Cocteau Twins Grangemouth Scotland dream pop', category: 'interest', description: 'Cocteau Twins are from here.', wikiQuery: 'Grangemouth,Cocteau_Twins', siteLink: { path: '/listening', label: 'listening → Cocteau Twins' } },
   { id: 'seoul', name: 'Seoul, South Korea', lat: 37.5665, lng: 126.9780, queryKeywords: 'Parannoul Seoul Korean shoegaze music', category: 'interest', description: 'Parannoul.', siteLink: { path: '/listening', label: 'listening → Parannoul' }, wikiQuery: 'Seoul,Parannoul' },
   { id: 'sacramento', name: 'Sacramento, CA', lat: 38.5816, lng: -121.4944, queryKeywords: 'Death Grips Sacramento experimental hip hop', category: 'interest', description: 'Death Grips.', siteLink: { path: '/listening', label: 'listening → Death Grips' }, wikiQuery: 'Sacramento,_California,Death_Grips' },
 ];
@@ -222,7 +218,7 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
           .pointsData(LOCATIONS)
           .pointLat((d: any) => d.lat).pointLng((d: any) => d.lng)
           .pointColor((d: any) => CATEGORY_COLORS[d.category as Category] ?? '#739166')
-          .pointAltitude(0.015).pointRadius(0.4).pointResolution(12)
+          .pointAltitude(0.06).pointRadius(0.4).pointResolution(12)
           .pointLabel((d: any) => {
             const c = CATEGORY_COLORS[d.category as Category] ?? '#739166';
             return `<div style="background:rgba(8,8,8,0.95);border:1px solid ${c};padding:5px 9px;font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:#f0f0f0;white-space:nowrap;border-radius:2px">${d.name}</div>`;
@@ -345,8 +341,9 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
               const items: MediaItem[] = [
                 ...(selected.media ?? []),
                 // Dynamic Spotify pins auto-get an artist embed
-                ...(selected.spotifyArtistId && !selected.media
-                  ? [{ type: 'spotify_artist' as const, id: selected.spotifyArtistId, label: selected.description }]
+                // Dynamic Spotify pins: derive artist ID from pin id (music-{artistId})
+                ...(selected.id.startsWith('music-') && !selected.media
+                  ? [{ type: 'spotify_artist' as const, id: selected.id.replace('music-', ''), label: selected.description }]
                   : []),
               ];
               if (!items.length) return null;

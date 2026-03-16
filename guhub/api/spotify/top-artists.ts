@@ -1,5 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
+const WD_UA = 'guha.one/1.0 (guhamaheshv@gmail.com)';
+
 async function getAccessToken(): Promise<string> {
   const basic = Buffer.from(`${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`).toString('base64');
   const res = await fetch('https://accounts.spotify.com/api/token', {
@@ -11,44 +13,64 @@ async function getAccessToken(): Promise<string> {
   return data.access_token as string;
 }
 
-async function wikidataCoords(artistName: string): Promise<{ lat: number; lng: number; city: string } | null> {
+// Search Wikidata for a single artist, return QID
+async function searchWikidata(name: string): Promise<string | null> {
   try {
-    // Search for entity
-    const searchRes = await fetch(
-      `https://www.wikidata.org/w/api.php?action=wbsearchentities&search=${encodeURIComponent(artistName)}&language=en&format=json&limit=1&type=item`
+    const r = await fetch(
+      `https://www.wikidata.org/w/api.php?action=wbsearchentities&search=${encodeURIComponent(name)}&language=en&format=json&limit=1&type=item`,
+      { headers: { 'User-Agent': WD_UA } }
     );
-    const searchData = await searchRes.json();
-    const qid = searchData.search?.[0]?.id;
-    if (!qid) return null;
+    const d = await r.json();
+    return d.search?.[0]?.id ?? null;
+  } catch { return null; }
+}
 
-    // Get claims
-    const entityRes = await fetch(
-      `https://www.wikidata.org/w/api.php?action=wbgetentities&ids=${qid}&props=claims&format=json`
+// Fetch claims for up to 50 QIDs in one request
+async function fetchClaims(qids: string[]): Promise<Record<string, any>> {
+  if (!qids.length) return {};
+  try {
+    const r = await fetch(
+      `https://www.wikidata.org/w/api.php?action=wbgetentities&ids=${qids.join('|')}&props=claims&format=json`,
+      { headers: { 'User-Agent': WD_UA } }
     );
-    const entityData = await entityRes.json();
-    const claims = entityData.entities?.[qid]?.claims ?? {};
+    const d = await r.json();
+    return d.entities ?? {};
+  } catch { return {}; }
+}
 
-    // Try P740 (location of formation) then P159 (headquarters)
-    for (const prop of ['P740', 'P159', 'P17']) {
-      const val = claims[prop]?.[0]?.mainsnak?.datavalue?.value;
-      if (!val?.id) continue;
-
-      // Resolve that location entity's coords (P625)
-      const locRes = await fetch(
-        `https://www.wikidata.org/w/api.php?action=wbgetentities&ids=${val.id}&props=claims|labels&format=json&languages=en`
-      );
-      const locData = await locRes.json();
-      const locEntity = locData.entities?.[val.id];
-      const coords = locEntity?.claims?.P625?.[0]?.mainsnak?.datavalue?.value;
+// Fetch labels+coords for up to 50 location QIDs in one request
+async function fetchLocations(qids: string[]): Promise<Record<string, { lat: number; lng: number; city: string }>> {
+  if (!qids.length) return {};
+  try {
+    const r = await fetch(
+      `https://www.wikidata.org/w/api.php?action=wbgetentities&ids=${qids.join('|')}&props=claims|labels&format=json&languages=en`,
+      { headers: { 'User-Agent': WD_UA } }
+    );
+    const d = await r.json();
+    const out: Record<string, { lat: number; lng: number; city: string }> = {};
+    for (const [qid, entity] of Object.entries(d.entities ?? {}) as [string, any][]) {
+      const coords = entity?.claims?.P625?.[0]?.mainsnak?.datavalue?.value;
       if (coords?.latitude) {
-        const city = locEntity?.labels?.en?.value ?? artistName;
-        return { lat: coords.latitude, lng: coords.longitude, city };
+        out[qid] = {
+          lat: coords.latitude,
+          lng: coords.longitude,
+          city: entity?.labels?.en?.value ?? qid,
+        };
       }
     }
-    return null;
-  } catch {
-    return null;
+    return out;
+  } catch { return {}; }
+}
+
+// Run in batches with concurrency limit
+async function batch<T, R>(items: T[], size: number, fn: (item: T) => Promise<R>): Promise<R[]> {
+  const results: R[] = [];
+  for (let i = 0; i < items.length; i += size) {
+    const chunk = items.slice(i, i + size);
+    const chunkResults = await Promise.all(chunk.map(fn));
+    results.push(...chunkResults);
   }
+  return results;
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -64,11 +86,46 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const data = await r.json();
     const artists: any[] = data.items ?? [];
 
-    // Resolve locations in parallel (with concurrency limit)
-    const results = await Promise.all(
-      artists.map(async (artist) => {
-        const loc = await wikidataCoords(artist.name);
+    // Step 1: Search Wikidata for all artists in batches of 5 concurrent
+    const qids = await batch(artists, 5, async (artist) => {
+      const qid = await searchWikidata(artist.name);
+      return { artist, qid };
+    });
+
+    const validQids = qids.filter(x => x.qid) as { artist: any; qid: string }[];
+
+    // Step 2: Fetch all claims in one bulk request (max 50)
+    const claimsMap = await fetchClaims(validQids.map(x => x.qid!));
+
+    // Step 3: Extract location QIDs from P740/P159
+    const locationNeeded = new Map<string, string>(); // locQid -> artistQid
+    for (const { artist, qid } of validQids) {
+      const claims = claimsMap[qid!]?.claims ?? {};
+      for (const prop of ['P740', 'P159']) {
+        const locQid = claims[prop]?.[0]?.mainsnak?.datavalue?.value?.id;
+        if (locQid) { locationNeeded.set(locQid, qid!); break; }
+      }
+    }
+
+    // Step 4: Fetch all location coords in one bulk request
+    const locData = await fetchLocations([...locationNeeded.keys()]);
+
+    // Step 5: Build artist -> location map
+    const artistLocMap = new Map<string, { lat: number; lng: number; city: string }>();
+    for (const [locQid, artistQid] of locationNeeded.entries()) {
+      const loc = locData[locQid];
+      if (loc) artistLocMap.set(artistQid, loc);
+    }
+
+    // Step 6: Build pins
+    const seen = new Set<string>();
+    const pins = validQids
+      .map(({ artist, qid }) => {
+        const loc = artistLocMap.get(qid!);
         if (!loc) return null;
+        const key = `${loc.lat.toFixed(1)},${loc.lng.toFixed(1)}`;
+        if (seen.has(key)) return null;
+        seen.add(key);
         return {
           id: `music-${artist.id}`,
           name: loc.city,
@@ -81,19 +138,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           wikiQuery: loc.city,
         };
       })
-    );
+      .filter(Boolean);
 
-    // Deduplicate by rounding coords to 1 decimal (nearby cities merge)
-    const seen = new Set<string>();
-    const pins = results.filter((p): p is NonNullable<typeof p> => {
-      if (!p) return false;
-      const key = `${p.lat.toFixed(1)},${p.lng.toFixed(1)}`;
-      if (seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    });
-
-    res.setHeader('Cache-Control', 's-maxage=43200, stale-while-revalidate=3600'); // 12hr cache
+    res.setHeader('Cache-Control', 's-maxage=43200, stale-while-revalidate=3600');
     return res.json({ pins });
   } catch (e: any) {
     return res.status(500).json({ error: e.message });
