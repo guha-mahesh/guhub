@@ -2,123 +2,39 @@
   position: fixed;
   bottom: 2rem;
   right: 8rem;
-  z-index: 1000;
+  z-index: 1500;
+  opacity: 0.15;
+  transition: opacity 0.25s ease;
+}
+
+.adminPanel:hover {
+  opacity: 1;
 }
 
 .adminPanelToggle {
-  width: 50px;
-  height: 50px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  background: rgba(115, 145, 102, 0.95);
-  border: 2px solid #739166;
+  background: rgba(115, 145, 102, 0.15);
+  border: 1px solid rgba(115, 145, 102, 0.4);
   color: #739166;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+  font-size: 0.85rem;
   cursor: pointer;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 20px rgba(115, 145, 102, 0.5);
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
 }
 
 .adminPanelToggle:hover {
-  background: #739166;
-  color: #080808;
-  transform: scale(1.1);
-}
-
-.adminPanelToggle .spinning {
-  animation: spin 2s linear infinite;
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.adminPanelMenu {
-  position: absolute;
-  bottom: 60px;
-  right: 0;
-  background: rgba(8, 8, 8, 0.98);
-  border: 2px solid #739166;
-  border-radius: 12px;
-  padding: 1rem;
-  min-width: 200px;
-  box-shadow: 0 8px 32px rgba(115, 145, 102, 0.3);
-  backdrop-filter: blur(10px);
-}
-
-.adminPanelHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 0.8rem;
-  margin-bottom: 0.8rem;
-  border-bottom: 1px solid rgba(115, 145, 102, 0.3);
-  color: #739166;
-  font-family: 'Courier New', monospace;
-  font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
-.adminLogoutButton {
-  background: none;
-  border: none;
-  color: #739166;
-  cursor: pointer;
-  font-size: 1rem;
-  padding: 0.3rem;
-  transition: all 0.3s ease;
-}
-
-.adminLogoutButton:hover {
-  color: #ff6b6b;
-  transform: scale(1.1);
-}
-
-.adminMenuItem {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  padding: 0.8rem;
-  background: transparent;
-  border: 1px solid rgba(115, 145, 102, 0.3);
-  border-radius: 8px;
-  color: #739166;
-  font-family: 'Courier New', monospace;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-bottom: 0.5rem;
-}
-
-.adminMenuItem:last-child {
-  margin-bottom: 0;
-}
-
-.adminMenuItem:hover {
-  background: rgba(115, 145, 102, 0.1);
+  background: rgba(115, 145, 102, 0.25);
   border-color: #739166;
-  transform: translateX(-4px);
+  color: #c0635a;
 }
 
 @media (max-width: 768px) {
   .adminPanel {
     bottom: 1rem;
     right: 1rem;
-  }
-
-  .adminPanelToggle {
-    width: 40px;
-    height: 40px;
-    font-size: 1rem;
   }
 }

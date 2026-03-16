@@ -80,6 +80,7 @@ export default function BlogEditor({ onClose }: Props) {
                     checked={!!editing.published}
                     onChange={e => setEditing({ ...editing, published: e.target.checked })}
                   />
+                  <span className="be-toggle-track" />
                   <span className={editing.published ? 'be-pub' : 'be-draft'}>
                     {editing.published ? 'live' : 'draft'}
                   </span>

@@ -94,13 +94,46 @@
 .be-toggle {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   cursor: pointer;
+  user-select: none;
 }
 .be-toggle input { display: none; }
-.be-live { color: #739166; font-size: 0.75rem; font-family: 'Courier New', monospace; letter-spacing: 0.06em; }
+
+/* pill track */
+.be-toggle-track {
+  width: 36px;
+  height: 20px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.12);
+  position: relative;
+  transition: background 0.2s, border-color 0.2s;
+  flex-shrink: 0;
+}
+.be-toggle input:checked + .be-toggle-track {
+  background: rgba(115,145,102,0.35);
+  border-color: rgba(115,145,102,0.6);
+}
+/* knob */
+.be-toggle-track::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.35);
+  transition: transform 0.2s, background 0.2s;
+}
+.be-toggle input:checked + .be-toggle-track::after {
+  transform: translateX(16px);
+  background: #739166;
+}
+
+.be-pub  { color: #739166; font-size: 0.75rem; font-family: 'Courier New', monospace; letter-spacing: 0.06em; }
 .be-draft { color: rgba(255,255,255,0.3); font-size: 0.75rem; font-family: 'Courier New', monospace; letter-spacing: 0.06em; }
-.be-pub { color: #739166; font-size: 0.75rem; font-family: 'Courier New', monospace; letter-spacing: 0.06em; }
 
 .be-close {
   background: none;
