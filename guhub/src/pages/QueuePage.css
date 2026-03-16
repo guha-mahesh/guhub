@@ -350,8 +350,20 @@
 
 /* ── responsive ──────────────────────────────────────── */
 @media (max-width: 768px) {
-  .queuePage { padding: 2rem 1rem; }
-  .queueLayout { grid-template-columns: 1fr; }
-  .queueLeft { border-right: none; border-bottom: 1px solid #111; }
-  .queueTitle { font-size: 1.4rem; }
+  .queuePage { padding: 1.5rem 1rem 4rem; }
+  .queueLayout {
+    grid-template-columns: 1fr;
+    border: none;
+    gap: 2rem;
+  }
+  .queueLeft {
+    padding: 0;
+    border-right: none;
+    border-bottom: 1px solid #111;
+    padding-bottom: 2rem;
+  }
+  .recentRight { padding: 0; }
+  .queueTitle { font-size: 1.3rem; }
+  .queueResultRow { flex-wrap: wrap; gap: 0.5rem; }
+  .resultInfo { min-width: 0; flex: 1; }
 }

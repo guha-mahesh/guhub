@@ -68,7 +68,19 @@
   border-bottom-color: #1db954;
 }
 
-@media (max-width: 768px) {
+.tabShort { display: none; }
+
+@media (max-width: 600px) {
+  .tabFull { display: none; }
+  .tabShort { display: inline; }
+  .tab {
+    font-size: 0.6rem;
+    padding: 0 0.6rem;
+    letter-spacing: 0.06em;
+  }
+}
+
+@media (max-width: 768px) and (min-width: 601px) {
   .tab {
     font-size: 0.6rem;
     padding: 0 0.65rem;

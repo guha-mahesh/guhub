@@ -17,6 +17,7 @@ const BackgroundMusic = () => {
   const [needsInteraction, setNeedsInteraction] = useState(true);
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
   const [showToast, setShowToast] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hasClickedRef = useRef(false);
   const queueRef = useRef<Track[]>([]);
@@ -39,6 +40,7 @@ const BackgroundMusic = () => {
   };
 
   const showTrackToast = () => {
+    setDismissed(false);
     setShowToast(true);
     if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
     toastTimerRef.current = setTimeout(() => setShowToast(false), 5000);
@@ -118,6 +120,7 @@ const BackgroundMusic = () => {
   const dismissToast = (e: React.MouseEvent) => {
     e.stopPropagation();
     setShowToast(false);
+    setDismissed(true);
     if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
   };
 
@@ -131,14 +134,17 @@ const BackgroundMusic = () => {
         {isPlaying ? <FaVolumeUp /> : needsInteraction ? <FaPlay /> : <FaVolumeMute />}
       </button>
 
-      {currentTrack && isPlaying && (
+      {currentTrack && isPlaying && !dismissed && (
         <div className={`musicToast ${showToast ? 'visible' : 'faded'}`}>
-          {currentTrack.albumArt && <img src={currentTrack.albumArt} alt="" className="toastArt" />}
-          <div className="toastText">
-            <span className="toastTitle">{currentTrack.title}</span>
-            <span className="toastArtist">{currentTrack.artist}</span>
+          <span className="toastStatus">♫ listening</span>
+          <div className="toastTrack">
+            {currentTrack.albumArt && <img src={currentTrack.albumArt} alt="" className="toastArt" />}
+            <div className="toastText">
+              <span className="toastTitle">{currentTrack.title}</span>
+              <span className="toastArtist">{currentTrack.artist}</span>
+            </div>
           </div>
-          <button className="toastClose" onClick={dismissToast}><FaTimes /></button>
+          <button className="toastClose" onClick={dismissToast} title="dismiss"><FaTimes /></button>
         </div>
       )}
     </div>

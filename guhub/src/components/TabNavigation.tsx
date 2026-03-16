@@ -5,11 +5,11 @@ const TabNavigation = () => {
   const location = useLocation();
 
   const tabs = [
-    { path: '/',          label: 'guha of-sorts'     },
-    { path: '/projects',  label: 'projects of-sorts' },
-    { path: '/about',     label: 'resume of-sorts'   },
-    { path: '/blog',      label: 'blog of-sorts'     },
-    { path: '/listening', label: 'listening of-sorts'},
+    { path: '/',          label: 'guha of-sorts',     short: 'guha'      },
+    { path: '/projects',  label: 'projects of-sorts', short: 'projects'  },
+    { path: '/about',     label: 'resume of-sorts',   short: 'resume'    },
+    { path: '/blog',      label: 'blog of-sorts',     short: 'blog'      },
+    { path: '/listening', label: 'listening of-sorts',short: 'listening' },
   ];
 
   return (
@@ -21,7 +21,8 @@ const TabNavigation = () => {
             to={tab.path}
             className={`tab ${location.pathname === tab.path ? 'active' : ''}`}
           >
-            {tab.label}
+            <span className="tabFull">{tab.label}</span>
+            <span className="tabShort">{tab.short}</span>
           </Link>
         ))}
       </div>
