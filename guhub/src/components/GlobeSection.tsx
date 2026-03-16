@@ -126,6 +126,7 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
   }, []);
 
   const spinToLocation = useCallback((loc: GlobeLocation) => {
+    console.log('[Globe] spinToLocation called:', loc.name);
     setSelected(loc);
     setPanelOpen(true);
     onPanelChange?.(true);
@@ -173,21 +174,6 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
         if (!el) return;
         let hovered: any = null;
 
-        const makePin = (d: GlobeLocation) => {
-          const color = CATEGORY_COLORS[d.category] ?? '#739166';
-          const div = document.createElement('div');
-          div.style.cssText = 'width:14px;height:14px;position:relative;cursor:pointer;display:flex;align-items:center;justify-content:center;';
-          div.innerHTML = `
-            <div style="width:8px;height:8px;border-radius:50%;background:${color};box-shadow:0 0 0 2px rgba(0,0,0,0.9),0 0 10px ${color}99;transition:transform 0.15s;flex-shrink:0;"></div>
-            <div style="position:absolute;inset:-3px;border-radius:50%;border:1.5px solid ${color}55;animation:pinPulse 2.5s ease-out infinite;pointer-events:none;"></div>
-          `;
-          const dot = div.firstElementChild as HTMLElement;
-          div.addEventListener('mouseenter', () => { dot.style.transform = 'scale(1.8)'; });
-          div.addEventListener('mouseleave', () => { dot.style.transform = ''; });
-          div.addEventListener('click', (e) => { e.stopPropagation(); spinRef.current(d); });
-          return div;
-        };
-
         // Inject keyframe
         if (!document.getElementById('globe-pin-style')) {
           const s = document.createElement('style');
@@ -223,7 +209,10 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
             const color = CATEGORY_COLORS[d.category as Category] ?? '#739166';
             return `<div style="background:rgba(8,8,8,0.95);border:1px solid ${color};padding:5px 9px;font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:#f0f0f0;white-space:nowrap;border-radius:2px">${d.name}</div>`;
           })
-          .onPointClick((point: any) => { spinRef.current(point as GlobeLocation); })
+          .onPointClick((point: any) => {
+            console.log('[Globe] onPointClick fired:', (point as any)?.name);
+            spinRef.current(point as GlobeLocation);
+          })
           (el);
 
         globeRef.current = globe;
