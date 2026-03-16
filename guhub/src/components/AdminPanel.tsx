@@ -3,12 +3,14 @@ import { useAdmin } from '../contexts/AdminContext';
 import { FaCog, FaSignOutAlt, FaEdit } from 'react-icons/fa';
 import ProjectEditor from './ProjectEditor';
 import ResumeEditor from './ResumeEditor';
+import BlogEditor from './BlogEditor';
 import './AdminPanel.css';
 
 const AdminPanel = () => {
   const { isAdminMode, logout } = useAdmin();
   const [showProjectEditor, setShowProjectEditor] = useState(false);
   const [showResumeEditor, setShowResumeEditor] = useState(false);
+  const [showBlogEditor, setShowBlogEditor] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
 
   if (!isAdminMode) return null;
@@ -54,6 +56,17 @@ const AdminPanel = () => {
               <FaEdit />
               <span>Edit Resume</span>
             </button>
+
+            <button
+              className="adminMenuItem"
+              onClick={() => {
+                setShowBlogEditor(true);
+                setIsExpanded(false);
+              }}
+            >
+              <FaEdit />
+              <span>Edit Blog</span>
+            </button>
           </div>
         )}
       </div>
@@ -64,6 +77,10 @@ const AdminPanel = () => {
 
       {showResumeEditor && (
         <ResumeEditor onClose={() => setShowResumeEditor(false)} />
+      )}
+
+      {showBlogEditor && (
+        <BlogEditor onClose={() => setShowBlogEditor(false)} />
       )}
     </>
   );
