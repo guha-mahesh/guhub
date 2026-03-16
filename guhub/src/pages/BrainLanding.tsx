@@ -98,7 +98,7 @@ const BrainLanding = () => {
           </div>
         </div>
         <div className="scrollIndicator">
-          <span>↓ explore the gu-niverse ↓</span>
+          <span>↓ explore ↓</span>
         </div>
       </section>
 

@@ -20,7 +20,7 @@ const CommandPalette = () => {
 
   const commands: Command[] = [
     // Navigation
-    { id: 'nav-home', label: 'Go to Gu-niverse', sublabel: 'brain graph + landing', action: () => navigate('/'), category: 'navigate' },
+    { id: 'nav-home', label: 'Go to GUHA', sublabel: 'brain graph + landing', action: () => navigate('/'), category: 'navigate' },
     { id: 'nav-projects', label: 'Go to Projects', sublabel: 'full project list', action: () => navigate('/projects'), category: 'navigate' },
     { id: 'nav-resume', label: 'Go to Resumé', sublabel: 'education, experience, skills', action: () => navigate('/about'), category: 'navigate' },
     { id: 'nav-music', label: 'Go to Music Galaxy', action: () => navigate('/music'), category: 'navigate' },

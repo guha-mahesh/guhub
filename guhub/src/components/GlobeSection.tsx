@@ -16,7 +16,7 @@ interface GlobeLocation {
   queryKeywords: string;
   category: Category;
   description: string;
-  siteLink?: { path: string; label: string };
+  siteLink?: { path: string; label: string; external?: boolean };
 }
 
 interface Memory {
@@ -44,7 +44,7 @@ const LOCATIONS: GlobeLocation[] = [
   { id: 'sf', name: 'San Francisco, CA', lat: 37.7749, lng: -122.4194,
     queryKeywords: 'San Francisco Engramme co-op Mission Dolores', category: 'work',
     description: 'Current base. Building at Engramme.',
-    siteLink: { path: '/about', label: 'see résumé → Engramme' } },
+    siteLink: { path: 'https://engramme.com', label: 'engramme.com', external: true } },
   { id: 'boston', name: 'Boston / Northeastern', lat: 42.3601, lng: -71.0589,
     queryKeywords: 'Northeastern Boston university campus co-op', category: 'school',
     description: 'Data Science + FinTech, Martinson Honors Program.',
@@ -78,14 +78,15 @@ const LOCATIONS: GlobeLocation[] = [
     queryKeywords: 'Parannoul Seoul Korean shoegaze music', category: 'interest',
     description: 'Parannoul.',
     siteLink: { path: '/listening', label: 'see review → Parannoul' } },
-  { id: 'manchester', name: 'Manchester, UK', lat: 53.4808, lng: -2.2426,
-    queryKeywords: 'My Bloody Valentine shoegaze UK music', category: 'interest',
+  { id: 'dublin', name: 'Dublin, Ireland', lat: 53.3497, lng: -6.2603,
+    queryKeywords: 'My Bloody Valentine shoegaze music Dublin',  category: 'interest',
     description: 'My Bloody Valentine formed here.',
     siteLink: { path: '/listening', label: 'see review → MBV' } },
-  { id: 'edinburgh', name: 'Edinburgh, Scotland', lat: 55.9533, lng: -3.1883,
+  { id: 'grangemouth', name: 'Grangemouth, Scotland', lat: 56.0119, lng: -3.7164,
     queryKeywords: 'Cocteau Twins Scotland dream pop music', category: 'interest',
     description: 'Cocteau Twins are from here.',
     siteLink: { path: '/listening', label: 'see review → Cocteau Twins' } },
+
   { id: 'sacramento', name: 'Sacramento, CA', lat: 38.5816, lng: -121.4944,
     queryKeywords: 'Death Grips Sacramento experimental hip hop', category: 'interest',
     description: 'Death Grips.',
@@ -280,12 +281,9 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
                 <h2 className="panelName">{selected.name}</h2>
                 <p className="panelDesc">{selected.description}</p>
                 {selected.siteLink && (
-                  <button
-                    className="panelSiteLink"
-                    onClick={() => navigate(selected.siteLink!.path)}
-                  >
-                    → {selected.siteLink.label}
-                  </button>
+                  selected.siteLink.external
+                    ? <a href={selected.siteLink.path} target="_blank" rel="noopener noreferrer" className="panelSiteLink">→ {selected.siteLink.label}</a>
+                    : <button className="panelSiteLink" onClick={() => navigate(selected.siteLink!.path)}>→ {selected.siteLink.label}</button>
                 )}
               </div>
               <button className="panelClose" onClick={closePanel}>✕</button>
