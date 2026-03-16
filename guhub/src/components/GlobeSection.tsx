@@ -143,6 +143,7 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
     setLoading(true);
     setMemories([]);
     setWikiData(null);
+    setWikiLoading(true);
     // Scroll globe section into view so panel is visible
     if (containerRef.current) {
       containerRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -286,22 +287,26 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
       <div className={`memoryPanel ${panelOpen ? 'open' : ''}`}>
         {selected && (
           <>
-            {/* Hero — wiki image if available, else category gradient */}
-            <div
-              className="wikiHero"
-              style={wikiData?.image
-                ? { backgroundImage: `url(${wikiData.image})` }
-                : { background: `linear-gradient(135deg, ${CATEGORY_COLORS[selected.category]}22 0%, #0a0a0a 100%)` }
-              }
-            >
-              <div className="wikiHeroOverlay" />
-              <div className="wikiHeroText">
-                <span className="panelCat" style={{ color: CATEGORY_COLORS[selected.category] }}>[{selected.category}]</span>
-                <h2 className="panelName">{selected.name}</h2>
-                {wikiData?.description && <p className="wikiDesc">{wikiData.description}</p>}
+            {/* Hero — only shown when wiki image exists */}
+            {wikiData?.image ? (
+              <div className="wikiHero" style={{ backgroundImage: `url(${wikiData.image})` }}>
+                <div className="wikiHeroOverlay" />
+                <div className="wikiHeroText">
+                  <span className="panelCat" style={{ color: CATEGORY_COLORS[selected.category] }}>[{selected.category}]</span>
+                  <h2 className="panelName">{selected.name}</h2>
+                  {wikiData.description && <p className="wikiDesc">{wikiData.description}</p>}
+                </div>
+                <button className="panelClose panelCloseHero" onClick={closePanel}>✕</button>
               </div>
-              <button className="panelClose panelCloseHero" onClick={closePanel}>✕</button>
-            </div>
+            ) : (
+              <div className="panelHeader">
+                <div>
+                  <span className="panelCat" style={{ color: CATEGORY_COLORS[selected.category] }}>[{selected.category}]</span>
+                  <h2 className="panelName">{selected.name}</h2>
+                </div>
+                <button className="panelClose" onClick={closePanel}>✕</button>
+              </div>
+            )}
 
             {/* WHY I'M HERE — prominent personal reason */}
             <div className="panelWhyBlock" style={{ borderLeftColor: CATEGORY_COLORS[selected.category] }}>

@@ -143,6 +143,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       .map(({ artist, qid }) => {
         const loc = artistLocMap.get(qid);
         if (!loc) return null;
+        // Drop if city name matches artist name — almost always a wrong Wikidata mapping
+        // (e.g. band "El Paso" resolving to the city "El Paso, Illinois")
+        if (loc.city.toLowerCase().startsWith(artist.name.toLowerCase())) return null;
         const key = `${loc.lat.toFixed(1)},${loc.lng.toFixed(1)}`;
         if (seen.has(key)) return null;
         seen.add(key);
