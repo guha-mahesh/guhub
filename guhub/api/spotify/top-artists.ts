@@ -137,15 +137,26 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       if (loc) artistLocMap.set(artistQid, loc);
     }
 
+    // Known bad Wikidata mappings — artist name -> correct coords to use instead, or null to skip
+    const KNOWN_BAD: Record<string, { lat: number; lng: number; city: string } | null> = {
+      'Cigarettes After Sex': { lat: 31.7619, lng: -106.4850, city: 'El Paso, TX' },
+    };
+
     // Step 6: Build deduplicated pins
     const seen = new Set<string>();
     const pins = validQids
       .map(({ artist, qid }) => {
+        // Check known bad mappings first
+        if (artist.name in KNOWN_BAD) {
+          const override = KNOWN_BAD[artist.name];
+          if (!override) return null; // explicitly skipped
+          const key = `${override.lat.toFixed(1)},${override.lng.toFixed(1)}`;
+          if (seen.has(key)) return null;
+          seen.add(key);
+          return { id: `music-${artist.id}`, name: override.city, lat: override.lat, lng: override.lng, category: 'interest', description: artist.name, queryKeywords: `${artist.name} music`, spotifyArtistId: artist.id, wikiQuery: override.city };
+        }
         const loc = artistLocMap.get(qid);
         if (!loc) return null;
-        // Drop if city name matches artist name — almost always a wrong Wikidata mapping
-        // (e.g. band "El Paso" resolving to the city "El Paso, Illinois")
-        if (loc.city.toLowerCase().startsWith(artist.name.toLowerCase())) return null;
         const key = `${loc.lat.toFixed(1)},${loc.lng.toFixed(1)}`;
         if (seen.has(key)) return null;
         seen.add(key);
