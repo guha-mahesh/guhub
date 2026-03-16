@@ -28,17 +28,21 @@ const BackgroundMusic = () => {
       const tracks: Track[] = [];
       try {
         const np = await fetch(`${API}/api/spotify/now-playing`).then(r => r.json());
+        console.log('[BGMusic] now-playing:', np);
         if (np.isPlaying && np.previewUrl) tracks.push({ title: np.title, artist: np.artist, albumArt: np.albumArt, previewUrl: np.previewUrl });
-      } catch {}
+        else console.log('[BGMusic] now-playing skipped: isPlaying=', np.isPlaying, 'previewUrl=', np.previewUrl);
+      } catch(e) { console.error('[BGMusic] now-playing fetch error:', e); }
       try {
         const recent = await fetch(`${API}/api/spotify/recent?limit=20`).then(r => r.json());
+        console.log('[BGMusic] recent tracks:', recent.tracks?.length, 'with previews:', recent.tracks?.filter((t: any) => t.previewUrl).length);
         for (const t of (recent.tracks ?? [])) {
           if (t.previewUrl) tracks.push({ title: t.title, artist: t.artist, albumArt: t.albumArt, previewUrl: t.previewUrl });
         }
-      } catch {}
+      } catch(e) { console.error('[BGMusic] recent fetch error:', e); }
+      console.log('[BGMusic] queue built, total tracks with previews:', tracks.length);
       queueRef.current = tracks;
-      // If user already clicked before queue loaded, start now
       if (hasClickedRef.current && tracks.length) {
+        console.log('[BGMusic] user already clicked, starting playback');
         playIndex(0, tracks);
       }
     };
@@ -46,9 +50,11 @@ const BackgroundMusic = () => {
   }, []);
 
   const playIndex = useCallback((idx: number, tracks: Track[]) => {
-    if (!tracks.length) return;
+    console.log('[BGMusic] playIndex called, idx=', idx, 'tracks=', tracks.length);
+    if (!tracks.length) { console.warn('[BGMusic] playIndex: no tracks'); return; }
     const i = idx % tracks.length;
     const track = tracks[i];
+    console.log('[BGMusic] playing:', track.title, 'previewUrl=', track.previewUrl);
     if (!track.previewUrl) { playIndex(i + 1, tracks); return; }
 
     if (!audioRef.current) audioRef.current = new Audio();
@@ -58,7 +64,9 @@ const BackgroundMusic = () => {
       setQueueIndex(i + 1);
       playIndex(i + 1, tracks);
     };
-    audioRef.current.play().catch(() => {});
+    audioRef.current.play()
+      .then(() => console.log('[BGMusic] play() succeeded'))
+      .catch(e => console.error('[BGMusic] play() failed:', e));
     setCurrentTrack(track);
     setQueueIndex(i);
     setIsPlaying(true);
@@ -72,10 +80,13 @@ const BackgroundMusic = () => {
   // Try to play on first click
   useEffect(() => {
     const tryPlay = () => {
+      console.log('[BGMusic] first click detected, queueRef.length=', queueRef.current.length);
       hasClickedRef.current = true;
       setNeedsInteraction(false);
       if (queueRef.current.length) {
         playIndex(0, queueRef.current);
+      } else {
+        console.warn('[BGMusic] click fired but queue is empty — will start when queue loads');
       }
     };
     document.addEventListener('click', tryPlay, { once: true });
