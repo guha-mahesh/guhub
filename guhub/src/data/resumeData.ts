@@ -3,6 +3,7 @@ export interface Education {
   degree: string;
   gpa: string;
   date: string;
+  globePinId?: string;
 }
 
 export interface Experience {
@@ -10,6 +11,7 @@ export interface Experience {
   company: string;
   date: string;
   bullets: string[];
+  globePinId?: string;
 }
 
 export interface ResumeData {
@@ -26,7 +28,8 @@ export const resumeData: ResumeData = {
     school: "Northeastern University",
     degree: "Bachelor of Science in Data Science and Business Analytics with a focus in FinTech",
     gpa: "GPA: 3.8/4.0 • John Martinson Honors Program",
-    date: "May 2028"
+    date: "May 2028",
+    globePinId: "boston"
   },
   skills: {
     languages: ["Python", "TypeScript", "JavaScript", "SQL"],
@@ -51,6 +54,7 @@ export const resumeData: ResumeData = {
       title: "Engineering & Research Co-op",
       company: "Engramme (fka. Memory Machines)",
       date: "Dec 2025 – Sep 2026",
+      globePinId: "sf",
       bullets: [
         "Built entity resolution for the core memory API: a KNN classifier that identifies who appears in a memory without their name being mentioned, running 353x better than random chance; shipping to production",
         "Contributed to a research blog post grounded in a real study on what people need to recall in daily life; helped collect and analyze a 1,940-question dataset from a 134-person Prolific study across 18 memory categories",

@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { resumeData as initialResumeData, type ResumeData } from '../data/resumeData';
 import MemorySpan from '../components/MemorySpan';
-import GlobePin from '../components/GlobePin';
 import './AboutTab.css';
 
 const AboutTab = () => {
@@ -45,7 +44,7 @@ const AboutTab = () => {
 
             <section className="resumeLeftSection">
               <p className="leftLabel">education</p>
-              <p className="leftSchool"><MemorySpan queryKey="northeastern">{resumeData.education.school}</MemorySpan><GlobePin pinId="boston" /></p>
+              <p className="leftSchool" id="education"><MemorySpan queryKey="northeastern">{resumeData.education.school}</MemorySpan></p>
               <p className="leftDegreeText">{resumeData.education.degree}</p>
               <p className="leftMeta">{resumeData.education.gpa}</p>
               <p className="leftMeta">exp. {resumeData.education.date}</p>
@@ -86,7 +85,7 @@ const AboutTab = () => {
                     <div className="expEntryLeft">
                       <span className="expEntryCompany">
                 {exp.company.includes('Engramme')
-                  ? <><MemorySpan queryKey="engramme">{exp.company}</MemorySpan><GlobePin pinId="sf" /></>
+                  ? <span id="engramme"><MemorySpan queryKey="engramme">{exp.company}</MemorySpan></span>
                   : exp.company}
               </span>
                       <span className="expEntryTitle">{exp.title}</span>

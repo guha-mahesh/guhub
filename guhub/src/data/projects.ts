@@ -13,6 +13,7 @@ export interface Project {
   embedUrl?: string;
   private?: boolean;
   wip?: boolean;
+  globePinId?: string; // links this project to a globe pin
 }
 
 export const projects: Project[] = [
@@ -100,7 +101,8 @@ export const projects: Project[] = [
     galaxies: ['philosophy'],
     color: "purpleGradient",
     image: "PolicyPlayground.png",
-    github: "https://github.com/guha-mahesh/PolicyPlayground"
+    github: "https://github.com/guha-mahesh/PolicyPlayground",
+    globePinId: 'leuven'
   },
   {
     id: 4,

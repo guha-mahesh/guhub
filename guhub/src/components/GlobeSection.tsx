@@ -16,7 +16,7 @@ interface GlobeLocation {
   queryKeywords: string;
   category: Category;
   description: string;
-  siteLink?: { path: string; label: string; external?: boolean };
+  siteLink?: { path: string; label: string; external?: boolean; scrollTo?: string };
 }
 
 interface Memory {
@@ -44,11 +44,11 @@ const LOCATIONS: GlobeLocation[] = [
   { id: 'sf', name: 'San Francisco, CA', lat: 37.7749, lng: -122.4194,
     queryKeywords: 'San Francisco Engramme co-op Mission Dolores', category: 'work',
     description: 'Current base. Building at Engramme.',
-    siteLink: { path: 'https://engramme.com', label: 'engramme.com', external: true } },
+    siteLink: { path: '/about', label: 'résumé → Engramme', scrollTo: 'engramme' } },
   { id: 'boston', name: 'Boston / Northeastern', lat: 42.3601, lng: -71.0589,
     queryKeywords: 'Northeastern Boston university campus co-op', category: 'school',
     description: 'Data Science + FinTech, Martinson Honors Program.',
-    siteLink: { path: '/about', label: 'see résumé → Northeastern' } },
+    siteLink: { path: '/about', label: 'résumé → Northeastern', scrollTo: 'education' } },
   { id: 'cambridge', name: 'Cambridge, MA', lat: 42.3736, lng: -71.1097,
     queryKeywords: 'Harvard Engramme spinout Mayfield Fund AI', category: 'work',
     description: 'Where Engramme was founded.' },
@@ -64,7 +64,7 @@ const LOCATIONS: GlobeLocation[] = [
   { id: 'belgium', name: 'Brussels, Belgium', lat: 50.8503, lng: 4.3517,
     queryKeywords: 'Belgium Policy Playground EU financial markets', category: 'project',
     description: 'Built Policy Playground here for an EU project.',
-    siteLink: { path: '/projects', label: 'see project → Policy Playground' } },
+    siteLink: { path: '/projects', label: 'projects → Policy Playground', scrollTo: 'policy-playground' } },
   { id: 'amsterdam', name: 'Amsterdam, Netherlands', lat: 52.3676, lng: 4.9041,
     queryKeywords: 'Amsterdam Netherlands Europe travel', category: 'interest',
     description: 'Visited.' },
@@ -96,7 +96,7 @@ const LOCATIONS: GlobeLocation[] = [
   { id: 'leuven', name: 'Leuven, Belgium', lat: 50.8798, lng: 4.7005,
     queryKeywords: 'Leuven Belgium basketball Refugehof cafe belge students', category: 'project',
     description: 'Lived here during the Belgium exchange. Built Policy Playground.',
-    siteLink: { path: '/projects', label: 'see project → Policy Playground' } },
+    siteLink: { path: '/projects', label: 'projects → Policy Playground', scrollTo: 'project-leuven' } },
   { id: 'mountain-view', name: 'Mountain View, CA', lat: 37.3861, lng: -122.0839,
     queryKeywords: 'Mountain View Caltrain parents pickup visit', category: 'interest',
     description: 'Day trips from SF.' },
@@ -297,7 +297,12 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
 
   return (
     <div className="globeSection">
-      <div className="globeCanvas" ref={containerRef} />
+      <div
+        className="globeCanvas"
+        ref={containerRef}
+        onMouseEnter={() => { if (globeRef.current && !panelOpen) globeRef.current.controls().autoRotate = false; }}
+        onMouseLeave={() => { if (globeRef.current && !panelOpen) globeRef.current.controls().autoRotate = true; }}
+      />
 
       <div className="globeLegend">
         {(Object.entries(CATEGORY_COLORS) as [Category, string][]).map(([cat, color]) => (
@@ -323,36 +328,46 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
                 {selected.siteLink && (
                   selected.siteLink.external
                     ? <a href={selected.siteLink.path} target="_blank" rel="noopener noreferrer" className="panelSiteLink">→ {selected.siteLink.label}</a>
-                    : <button className="panelSiteLink" onClick={() => navigate(selected.siteLink!.path)}>→ {selected.siteLink.label}</button>
+                    : <button className="panelSiteLink" onClick={() => {
+                        navigate(selected.siteLink!.path);
+                        if (selected.siteLink!.scrollTo) {
+                          setTimeout(() => {
+                            const el = document.getElementById(selected.siteLink!.scrollTo!);
+                            el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                          }, 300);
+                        }
+                      }}>→ {selected.siteLink.label}</button>
                 )}
               </div>
               <button className="panelClose" onClick={closePanel}>✕</button>
             </div>
 
             <div className="panelDivider" />
-            <p className="panelMemLabel">ENGRAMME RECALL</p>
 
             {loading && <div className="memLoading"><span /><span /><span /></div>}
-            {!loading && memories.length === 0 && null}
-
-            <div className="memList">
-              {memories.map((m, i) => (
-                <div key={i} className="memCard">
-                  <div className="memMeta">
-                    <span className="memSource" style={{ color: sourceColor[m.source] ?? '#739166' }}>
-                      [{m.source}]
-                    </span>
-                    <span className="memDate">{m.date}</span>
-                  </div>
-                  <p className="memHeadline">{m.headline}</p>
-                  {m.narrative && (
-                    <p className="memNarrative">
-                      {m.narrative.length > 280 ? m.narrative.slice(0, 280) + '…' : m.narrative}
-                    </p>
-                  )}
+            {!loading && memories.length > 0 && (
+              <>
+                <p className="panelMemLabel">ENGRAMME RECALL</p>
+                <div className="memList">
+                  {memories.map((m, i) => (
+                    <div key={i} className="memCard">
+                      <div className="memMeta">
+                        <span className="memSource" style={{ color: sourceColor[m.source] ?? '#739166' }}>
+                          [{m.source}]
+                        </span>
+                        <span className="memDate">{m.date}</span>
+                      </div>
+                      <p className="memHeadline">{m.headline}</p>
+                      {m.narrative && (
+                        <p className="memNarrative">
+                          {m.narrative.length > 280 ? m.narrative.slice(0, 280) + '…' : m.narrative}
+                        </p>
+                      )}
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </>
+            )}
           </>
         )}
       </div>
