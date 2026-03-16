@@ -156,7 +156,7 @@ export default function BlogEditor({ onClose }: Props) {
                 value={editing.body ?? ''}
                 onChange={v => setEditing({ ...editing, body: v ?? '' })}
                 height="100%"
-                preview="edit"
+                preview="live"
                 hideToolbar={false}
                 style={{ flex: 1, minHeight: 0 }}
               />
