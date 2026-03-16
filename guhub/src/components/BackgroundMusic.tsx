@@ -15,7 +15,6 @@ const BackgroundMusic = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [needsInteraction, setNeedsInteraction] = useState(true);
-  const [queue, setQueue] = useState<Track[]>([]);
   const [queueIndex, setQueueIndex] = useState(0);
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
   const [showToast, setShowToast] = useState(false);
@@ -37,7 +36,6 @@ const BackgroundMusic = () => {
           if (t.previewUrl) tracks.push({ title: t.title, artist: t.artist, albumArt: t.albumArt, previewUrl: t.previewUrl });
         }
       } catch {}
-      setQueue(tracks);
       queueRef.current = tracks;
       // If user already clicked before queue loaded, start now
       if (hasClickedRef.current && tracks.length) {
