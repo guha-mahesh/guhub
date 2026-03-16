@@ -123,6 +123,7 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
   const [, _setHoveredPolygon] = useState<any>(null);
   const setHoveredPolygon = _setHoveredPolygon;
   const [allLocations, setAllLocations] = useState<GlobeLocation[]>(LOCATIONS);
+  const allLocationsRef = useRef<GlobeLocation[]>(LOCATIONS);
   const navigate = useNavigate();
   const spinRef = useRef<(loc: GlobeLocation) => void>(() => {});
 
@@ -131,7 +132,9 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
       if (data.pins?.length) {
         setAllLocations(prev => {
           const seen = new Set(prev.map(l => l.id));
-          return [...prev, ...data.pins.filter((p: GlobeLocation) => !seen.has(p.id))];
+          const next = [...prev, ...data.pins.filter((p: GlobeLocation) => !seen.has(p.id))];
+          allLocationsRef.current = next;
+          return next;
         });
       }
     }).catch(() => {});
@@ -215,7 +218,7 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
             globe.polygonCapColor((f: any) => f === hovered ? '#1a2a14' : '#0e1a0a')
                  .polygonAltitude((f: any) => f === hovered ? 0.016 : 0.006);
           })
-          .pointsData(LOCATIONS)
+          .pointsData(allLocationsRef.current)
           .pointLat((d: any) => d.lat)
           .pointLng((d: any) => d.lng)
           .pointColor((d: any) => CATEGORY_COLORS[d.category as Category] ?? '#739166')
@@ -255,7 +258,10 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
     return () => { if (globeRef.current?._destructor) globeRef.current._destructor(); };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  useEffect(() => { if (globeRef.current) globeRef.current.pointsData(allLocations); }, [allLocations]);
+  useEffect(() => {
+    if (globeRef.current) globeRef.current.pointsData(allLocations);
+    else allLocationsRef.current = allLocations; // store for when globe inits
+  }, [allLocations]);
 
   const handleSiteLink = (link: NonNullable<GlobeLocation['siteLink']>) => {
     if (link.external) { window.open(link.path, '_blank'); return; }
