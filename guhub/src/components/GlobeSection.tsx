@@ -255,7 +255,7 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
       Promise.all([fetch(GEOJSON_URL).then(r => r.json())]).then(([{ features: countries }]) => {
         if (!el) return;
         let hovered: any = null;
-        const globe = Globe({ animateIn: true, waitForGlobeReady: true })
+        const globe = Globe({ animateIn: true, waitForGlobeReady: true }) as any;
           .width(el.clientWidth as any).height(el.clientHeight)
           .backgroundColor('rgba(0,0,0,0)')
           .showAtmosphere(true)
