@@ -20,6 +20,8 @@ const BackgroundMusic = () => {
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
   const [showToast, setShowToast] = useState(false);
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hasClickedRef = useRef(false);
+  const queueRef = useRef<Track[]>([]);
 
   // Build preview queue from now-playing + recent
   useEffect(() => {
@@ -36,6 +38,11 @@ const BackgroundMusic = () => {
         }
       } catch {}
       setQueue(tracks);
+      queueRef.current = tracks;
+      // If user already clicked before queue loaded, start now
+      if (hasClickedRef.current && tracks.length) {
+        playIndex(0, tracks);
+      }
     };
     build();
   }, []);
@@ -67,14 +74,15 @@ const BackgroundMusic = () => {
   // Try to play on first click
   useEffect(() => {
     const tryPlay = () => {
-      if (needsInteraction && queue.length) {
-        setNeedsInteraction(false);
-        playIndex(0, queue);
+      hasClickedRef.current = true;
+      setNeedsInteraction(false);
+      if (queueRef.current.length) {
+        playIndex(0, queueRef.current);
       }
     };
     document.addEventListener('click', tryPlay, { once: true });
     return () => document.removeEventListener('click', tryPlay);
-  }, [needsInteraction, queue, playIndex]);
+  }, [playIndex]);
 
   const togglePlay = async () => {
     if (!audioRef.current) return;
@@ -82,8 +90,8 @@ const BackgroundMusic = () => {
       audioRef.current.pause();
       setIsPlaying(false);
     } else {
-      if (!audioRef.current.src && queue.length) {
-        playIndex(queueIndex, queue);
+      if (!audioRef.current.src && queueRef.current.length) {
+        playIndex(queueIndex, queueRef.current);
       } else {
         await audioRef.current.play().catch(() => {});
         setIsPlaying(true);
