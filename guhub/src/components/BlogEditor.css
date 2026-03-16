@@ -281,6 +281,15 @@
 }
 
 /* Override MDEditor to match dark theme */
+.be-mde-wrap .w-md-editor-preview { display: none !important; }
+.be-mde-wrap .w-md-editor-text { width: 100% !important; }
+/* Hide the view-toggle buttons (edit/live/preview switchers) */
+.be-mde-wrap .w-md-editor-toolbar-divider ~ li,
+.be-mde-wrap li button[data-name="preview"],
+.be-mde-wrap li button[data-name="live"],
+.be-mde-wrap li button[data-name="edit"],
+.be-mde-wrap .w-md-editor-toolbar > ul:last-child { display: none !important; }
+
 .be-mde-wrap .w-md-editor {
   background: transparent !important;
   border: none !important;
