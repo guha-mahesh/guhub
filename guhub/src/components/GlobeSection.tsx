@@ -94,10 +94,8 @@ const LOCATIONS: GlobeLocation[] = [
     ],
   },
   { id: 'petra', name: 'Petra, Jordan', lat: 30.3285, lng: 35.4444, queryKeywords: 'Petra Jordan Middle East travel', category: 'interest', description: 'Visited.', wikiQuery: 'Petra,_Jordan' },
-  { id: 'dublin', name: 'Dublin, Ireland', lat: 53.3497, lng: -6.2603, queryKeywords: 'My Bloody Valentine Dublin Ireland shoegaze', category: 'interest', description: 'My Bloody Valentine formed here.', wikiQuery: 'Dublin,My_Bloody_Valentine_(band)', siteLink: { path: '/listening', label: 'listening → MBV' } },
-  { id: 'grangemouth', name: 'Grangemouth, Scotland', lat: 56.0119, lng: -3.7164, queryKeywords: 'Cocteau Twins Grangemouth Scotland dream pop', category: 'interest', description: 'Cocteau Twins are from here.', wikiQuery: 'Grangemouth,Cocteau_Twins', siteLink: { path: '/listening', label: 'listening → Cocteau Twins' } },
-  { id: 'seoul', name: 'Seoul, South Korea', lat: 37.5665, lng: 126.9780, queryKeywords: 'Parannoul Seoul Korean shoegaze music', category: 'interest', description: 'Parannoul.', siteLink: { path: '/listening', label: 'listening → Parannoul' }, wikiQuery: 'Seoul,Parannoul' },
-  { id: 'sacramento', name: 'Sacramento, CA', lat: 38.5816, lng: -121.4944, queryKeywords: 'Death Grips Sacramento experimental hip hop', category: 'interest', description: 'Death Grips.', siteLink: { path: '/listening', label: 'listening → Death Grips' }, wikiQuery: 'Sacramento,_California,Death_Grips' },
+
+
 ];
 
 async function fetchMemories(keywords: string): Promise<Memory[]> {
