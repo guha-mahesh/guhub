@@ -53,7 +53,8 @@ export default function BlogPage() {
 
   // ── LIST ──
   return (
-    <div className="blogPage">
+    <>
+      <div className="blogPage">
       <div className="blogContainer">
         <div className="blogHeader">
           <div className="blogHeaderRow">
@@ -92,5 +93,6 @@ export default function BlogPage() {
       </div>
     </div>
     {showEditor && <BlogEditor onClose={() => { setShowEditor(false); loadPosts(); }} />}
+  </>
   );
 }
