@@ -40,12 +40,21 @@
 }
 
 .nameFirst {
-  font-size: clamp(2.2rem, 6vw, 5rem);
+  font-size: clamp(4rem, 12vw, 8rem);
   font-weight: 900;
   color: #739166;
   letter-spacing: -0.03em;
-  text-transform: lowercase;
-  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.nameLast {
+  font-size: clamp(4rem, 12vw, 8rem);
+  font-weight: 900;
+  color: transparent;
+  -webkit-text-stroke: 2px #739166;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  margin-left: 1rem;
 }
 
 /* Role Stack - Terminal Style */
@@ -395,12 +404,21 @@
 }
 
 .mobileNameFirst {
-  font-size: clamp(1.8rem, 8vw, 3rem);
+  font-size: clamp(3rem, 15vw, 4.5rem);
   font-weight: 900;
   color: #739166;
   letter-spacing: -0.03em;
-  text-transform: lowercase;
-  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.mobileNameLast {
+  font-size: clamp(3rem, 15vw, 4.5rem);
+  font-weight: 900;
+  color: transparent;
+  -webkit-text-stroke: 2px #739166;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  margin-left: 0.5rem;
 }
 
 .mobileRoleStack {

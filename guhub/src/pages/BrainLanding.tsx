@@ -25,7 +25,8 @@ const BrainLanding = () => {
       <div className="mobileFallback">
         <div className="mobileContent">
           <div className="mobileNameBlock">
-            <span className="mobileNameFirst">guha of-sorts</span>
+            <span className="mobileNameFirst">GUHA</span>
+            <span className="mobileNameLast">MAHESH</span>
           </div>
           <div className="mobileRoleStack">
             <div className="mobileRoleItem">
@@ -61,7 +62,8 @@ const BrainLanding = () => {
         <div className="heroGrid">
           <div className="heroMain">
             <div className="nameBlock">
-              <span className="nameFirst">guha of-sorts</span>
+              <span className="nameFirst">GUHA</span>
+              <span className="nameLast">MAHESH</span>
             </div>
             <div className="roleStack">
               <div className="roleItem">
