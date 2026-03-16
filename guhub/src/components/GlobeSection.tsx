@@ -199,6 +199,7 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
       fetch(GEOJSON_URL).then(r => r.json()).then(({ features: countries }) => {
         if (!el) return;
         let hovered: any = null;
+        let hoveredPoint: any = null;
         const globe = (Globe({ animateIn: true, waitForGlobeReady: true }) as any)
           .width(el.clientWidth).height(el.clientHeight)
           .backgroundColor('rgba(0,0,0,0)')
@@ -213,30 +214,28 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
             globe.polygonCapColor((f: any) => f === hovered ? '#1a2a14' : '#0e1a0a')
                  .polygonAltitude((f: any) => f === hovered ? 0.016 : 0.006);
           })
-          .htmlElementsData(LOCATIONS)
-          .htmlLat((d: any) => d.lat)
-          .htmlLng((d: any) => d.lng)
-          .htmlAltitude(0.06)
-          .htmlElement((d: any) => {
-            const color = CATEGORY_COLORS[d.category as Category] ?? '#739166';
-            const wrap = document.createElement('div');
-            wrap.style.cssText = 'position:relative;width:32px;height:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;';
-            const dot = document.createElement('div');
-            dot.style.cssText = `width:9px;height:9px;border-radius:50%;background:${color};box-shadow:0 0 0 2px rgba(0,0,0,0.85),0 0 8px ${color}88;pointer-events:none;transition:transform 0.15s;`;
-            wrap.appendChild(dot);
-            // tooltip
-            const tip = document.createElement('div');
-            tip.style.cssText = `display:none;position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:rgba(8,8,8,0.95);border:1px solid ${color};padding:4px 8px;font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:#f0f0f0;white-space:nowrap;border-radius:2px;pointer-events:none;z-index:9999;`;
-            tip.textContent = d.name;
-            wrap.appendChild(tip);
-            wrap.addEventListener('mouseenter', () => { dot.style.transform = 'scale(1.7)'; tip.style.display = 'block'; });
-            wrap.addEventListener('mouseleave', () => { dot.style.transform = ''; tip.style.display = 'none'; });
-            wrap.addEventListener('click', (e) => { e.stopPropagation(); spinRef.current(d); });
-            return wrap;
+          .pointsData(LOCATIONS)
+          .pointLat((d: any) => d.lat)
+          .pointLng((d: any) => d.lng)
+          .pointColor((d: any) => CATEGORY_COLORS[d.category as Category] ?? '#739166')
+          .pointAltitude(0.06).pointRadius(0.5).pointResolution(16)
+          .pointLabel((d: any) => {
+            const c = CATEGORY_COLORS[d.category as Category] ?? '#739166';
+            return `<div style="background:rgba(8,8,8,0.95);border:1px solid ${c};padding:5px 9px;font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:#f0f0f0;white-space:nowrap;border-radius:2px;cursor:pointer">${d.name}</div>`;
           })
+          .onPointHover((point: any) => {
+            hoveredPoint = point;
+            el.style.cursor = point ? 'pointer' : 'default';
+          })
+          .onPointClick((point: any) => { if (point) spinRef.current(point as GlobeLocation); })
           (el);
 
         globeRef.current = globe;
+
+        // Fire on hoveredPoint when canvas clicked — tooltip hover area >> raycast area
+        el.addEventListener('click', () => {
+          if (hoveredPoint) spinRef.current(hoveredPoint as GlobeLocation);
+        });
         setTimeout(() => {
           globe.scene().traverse((obj: any) => {
             if (obj.isMesh && obj.geometry?.parameters?.radius > 50) {
@@ -255,7 +254,7 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
     return () => { if (globeRef.current?._destructor) globeRef.current._destructor(); };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  useEffect(() => { if (globeRef.current) globeRef.current.htmlElementsData(allLocations); }, [allLocations]);
+  useEffect(() => { if (globeRef.current) globeRef.current.pointsData(allLocations); }, [allLocations]);
 
   const handleSiteLink = (link: NonNullable<GlobeLocation['siteLink']>) => {
     if (link.external) { window.open(link.path, '_blank'); return; }
