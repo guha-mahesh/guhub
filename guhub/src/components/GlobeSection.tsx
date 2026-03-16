@@ -143,7 +143,6 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
     setLoading(true);
     setMemories([]);
     setWikiData(null);
-    setWikiLoading(true);
     // Scroll globe section into view so panel is visible
     if (containerRef.current) {
       containerRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
