@@ -15,6 +15,12 @@ interface SubLocation {
   siteLink?: { path: string; label: string; external?: boolean; scrollTo?: string };
 }
 
+interface MediaItem {
+  type: 'spotify_artist' | 'spotify_track' | 'youtube';
+  id: string;   // Spotify artist/track ID or YouTube video ID
+  label?: string;
+}
+
 interface GlobeLocation {
   id: string;
   name: string;
@@ -26,6 +32,8 @@ interface GlobeLocation {
   subLocations?: SubLocation[];
   siteLink?: { path: string; label: string; external?: boolean; scrollTo?: string };
   wikiQuery?: string;
+  spotifyArtistId?: string; // for dynamic Spotify pins
+  media?: MediaItem[];      // explicit embeds you want to show
 }
 
 interface WikiData {
@@ -88,13 +96,21 @@ const LOCATIONS: GlobeLocation[] = [
   { id: 'petra', name: 'Petra, Jordan', lat: 30.3285, lng: 35.4444, queryKeywords: 'Petra Jordan Middle East travel', category: 'interest', description: 'Visited.', wikiQuery: 'Petra,_Jordan' },
   { id: 'reykjavik', name: 'Reykjavik, Iceland', lat: 64.1355, lng: -21.8954, queryKeywords: 'Reykjavik Iceland music', category: 'interest', description: 'Listening to a lot of Icelandic music.', wikiQuery: 'Reykjavik,Sigur_Rós' },
   { id: 'british-isles', name: 'British Isles', lat: 54.0, lng: -3.5, queryKeywords: 'Dublin My Bloody Valentine Cocteau Twins Scotland Ireland shoegaze', category: 'interest', description: 'Home of some of my favorite bands.', wikiQuery: 'British_Isles,My_Bloody_Valentine_(band)',
+    media: [
+      { type: 'spotify_artist', id: '2UOVgpgiNTC6KK0oNDXDzN', label: 'My Bloody Valentine' },
+      { type: 'spotify_artist', id: '6FMqaRFCqpRbIiGoY7iGx1', label: 'Cocteau Twins' },
+    ],
     subLocations: [
       { name: 'Dublin, Ireland', description: 'My Bloody Valentine formed here.', siteLink: { path: '/listening', label: 'listening → MBV' } },
       { name: 'Grangemouth, Scotland', description: 'Cocteau Twins are from here.', siteLink: { path: '/listening', label: 'listening → Cocteau Twins' } },
     ],
   },
-  { id: 'seoul', name: 'Seoul, South Korea', lat: 37.5665, lng: 126.9780, queryKeywords: 'Parannoul Seoul Korean shoegaze music', category: 'interest', description: 'Parannoul.', siteLink: { path: '/listening', label: 'listening → Parannoul' }, wikiQuery: 'Seoul,Parannoul' },
-  { id: 'sacramento', name: 'Sacramento, CA', lat: 38.5816, lng: -121.4944, queryKeywords: 'Death Grips Sacramento experimental hip hop', category: 'interest', description: 'Death Grips.', siteLink: { path: '/listening', label: 'listening → Death Grips' }, wikiQuery: 'Sacramento,_California,Death_Grips' },
+  { id: 'seoul', name: 'Seoul, South Korea', lat: 37.5665, lng: 126.9780, queryKeywords: 'Parannoul Seoul Korean shoegaze music', category: 'interest', description: 'Parannoul.', siteLink: { path: '/listening', label: 'listening → Parannoul' }, wikiQuery: 'Seoul,Parannoul',
+    media: [{ type: 'spotify_artist', id: '4yvcSjfu4PC0CYQyLy4wSq', label: 'Parannoul' }],
+  },
+  { id: 'sacramento', name: 'Sacramento, CA', lat: 38.5816, lng: -121.4944, queryKeywords: 'Death Grips Sacramento experimental hip hop', category: 'interest', description: 'Death Grips.', siteLink: { path: '/listening', label: 'listening → Death Grips' }, wikiQuery: 'Sacramento,_California,Death_Grips',
+    media: [{ type: 'spotify_artist', id: '1Ffb6ejR6Fe5IamqA5oRUF', label: 'Death Grips' }],
+  },
 ];
 
 async function fetchMemories(keywords: string): Promise<Memory[]> {
@@ -333,6 +349,73 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
             )}
 
             <div className="panelDivider" />
+            {/* Media embeds — Spotify, YouTube, etc. */}
+            {(() => {
+              const items: MediaItem[] = [
+                ...(selected.media ?? []),
+                // Dynamic Spotify pins auto-get an artist embed
+                ...(selected.spotifyArtistId && !selected.media
+                  ? [{ type: 'spotify_artist' as const, id: selected.spotifyArtistId, label: selected.description }]
+                  : []),
+              ];
+              if (!items.length) return null;
+              return (
+                <>
+                  <div className="mediaSection">
+                    {items.map((item, i) => {
+                      if (item.type === 'spotify_artist') {
+                        return (
+                          <div key={i} className="mediaEmbed">
+                            {item.label && <p className="mediaLabel">♫ {item.label}</p>}
+                            <iframe
+                              src={`https://open.spotify.com/embed/artist/${item.id}?utm_source=generator&theme=0`}
+                              width="100%" height="152"
+                              frameBorder="0"
+                              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                              loading="lazy"
+                              style={{ borderRadius: '6px' }}
+                            />
+                          </div>
+                        );
+                      }
+                      if (item.type === 'spotify_track') {
+                        return (
+                          <div key={i} className="mediaEmbed">
+                            {item.label && <p className="mediaLabel">♫ {item.label}</p>}
+                            <iframe
+                              src={`https://open.spotify.com/embed/track/${item.id}?utm_source=generator&theme=0`}
+                              width="100%" height="80"
+                              frameBorder="0"
+                              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                              loading="lazy"
+                              style={{ borderRadius: '6px' }}
+                            />
+                          </div>
+                        );
+                      }
+                      if (item.type === 'youtube') {
+                        return (
+                          <div key={i} className="mediaEmbed">
+                            {item.label && <p className="mediaLabel">▶ {item.label}</p>}
+                            <iframe
+                              src={`https://www.youtube.com/embed/${item.id}`}
+                              width="100%" height="180"
+                              frameBorder="0"
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowFullScreen
+                              loading="lazy"
+                              style={{ borderRadius: '6px' }}
+                            />
+                          </div>
+                        );
+                      }
+                      return null;
+                    })}
+                  </div>
+                  <div className="panelDivider" />
+                </>
+              );
+            })()}
             {loading && <div className="memLoading"><span /><span /><span /></div>}
             {!loading && memories.length > 0 && (
               <>

@@ -77,6 +77,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           category: 'interest',
           description: artist.name,
           queryKeywords: `${artist.name} music`,
+          spotifyArtistId: artist.id,
+          wikiQuery: loc.city,
         };
       })
     );

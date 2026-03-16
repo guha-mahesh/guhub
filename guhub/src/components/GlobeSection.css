@@ -170,6 +170,28 @@
   background: rgba(115, 145, 102, 0.08);
 }
 
+/* Media embeds */
+.mediaSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 1rem 1.75rem;
+}
+
+.mediaEmbed {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mediaLabel {
+  font-size: 0.65rem;
+  color: rgba(115,145,102,0.6);
+  font-family: 'IBM Plex Mono', monospace;
+  letter-spacing: 0.06em;
+  margin: 0;
+}
+
 /* Why I'm here block */
 .panelWhyBlock {
   margin: 1.25rem 1.75rem;
