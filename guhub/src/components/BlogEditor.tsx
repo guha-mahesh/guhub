@@ -17,6 +17,7 @@ export default function BlogEditor({ onClose }: Props) {
   const [view, setView] = useState<View>('list');
   const [posts, setPosts] = useState<Post[]>([]);
   const [editing, setEditing] = useState<Partial<Post>>(empty());
+  const [tagsRaw, setTagsRaw] = useState('');
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState('');
 
@@ -34,8 +35,9 @@ export default function BlogEditor({ onClose }: Props) {
     setSaving(true);
     const slug = editing.slug?.trim() ||
       editing.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    const tags = tagsRaw.split(',').map(t => t.trim()).filter(Boolean);
     const now = new Date().toISOString();
-    const payload = { ...editing, slug, updated_at: now };
+    const payload = { ...editing, slug, tags, updated_at: now };
     if (editing.id) {
       await supabase.from('posts').update(payload).eq('id', editing.id);
     } else {
@@ -54,8 +56,8 @@ export default function BlogEditor({ onClose }: Props) {
     load();
   };
 
-  const newPost = () => { setEditing(empty()); setView('edit'); };
-  const editPost = (p: Post) => { setEditing(p); setView('edit'); };
+  const newPost = () => { setEditing(empty()); setTagsRaw(''); setView('edit'); };
+  const editPost = (p: Post) => { setEditing(p); setTagsRaw((p.tags ?? []).join(', ')); setView('edit'); };
 
   return (
     <div className="be-overlay" data-color-mode="dark">
@@ -137,11 +139,8 @@ export default function BlogEditor({ onClose }: Props) {
                 <input
                   className="be-input"
                   placeholder="tags, comma, separated"
-                  value={(editing.tags ?? []).join(', ')}
-                  onChange={e => setEditing({
-                    ...editing,
-                    tags: e.target.value.split(',').map(t => t.trim()).filter(Boolean)
-                  })}
+                  value={tagsRaw}
+                  onChange={e => setTagsRaw(e.target.value)}
                 />
               </div>
               <input
