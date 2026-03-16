@@ -1,10 +1,4 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_KEY!
-);
 
 async function getAccessToken(): Promise<string> {
   const basic = Buffer.from(`${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`).toString('base64');
@@ -29,18 +23,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const r = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
       headers: { Authorization: `Bearer ${token}` },
     });
-    if (r.status === 204 || r.status > 400) {
-      // Fall back to cron cache
-      const { data: cached } = await supabase.from('now_playing_cache').select('*').eq('id', 'current').single();
-      if (cached) return res.json({ isPlaying: false, cached: true, ...cached });
-      return res.json({ isPlaying: false });
-    }
+    if (r.status === 204 || r.status > 400) return res.json({ isPlaying: false });
     const data = await r.json();
-    if (!data?.item) {
-      const { data: cached } = await supabase.from('now_playing_cache').select('*').eq('id', 'current').single();
-      if (cached) return res.json({ isPlaying: false, cached: true, ...cached });
-      return res.json({ isPlaying: false });
-    }
+    if (!data?.item) return res.json({ isPlaying: false });
     return res.json({
       isPlaying: data.is_playing,
       title: data.item.name,
