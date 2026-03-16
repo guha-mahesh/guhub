@@ -86,6 +86,7 @@ const LOCATIONS: GlobeLocation[] = [
     ],
   },
   { id: 'petra', name: 'Petra, Jordan', lat: 30.3285, lng: 35.4444, queryKeywords: 'Petra Jordan Middle East travel', category: 'interest', description: 'Visited.', wikiQuery: 'Petra,_Jordan' },
+  { id: 'reykjavik', name: 'Reykjavik, Iceland', lat: 64.1355, lng: -21.8954, queryKeywords: 'Reykjavik Iceland music', category: 'interest', description: 'Listening to a lot of Icelandic music.', wikiQuery: 'Reykjavik,Sigur_Rós' },
   { id: 'british-isles', name: 'British Isles', lat: 54.0, lng: -3.5, queryKeywords: 'Dublin My Bloody Valentine Cocteau Twins Scotland Ireland shoegaze', category: 'interest', description: 'Home of some of my favorite bands.', wikiQuery: 'British_Isles,My_Bloody_Valentine_(band)',
     subLocations: [
       { name: 'Dublin, Ireland', description: 'My Bloody Valentine formed here.', siteLink: { path: '/listening', label: 'listening → MBV' } },
@@ -151,7 +152,15 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
     }
     fetchMemories(loc.queryKeywords).then(setMemories).catch(() => {}).finally(() => setLoading(false));
     if (loc.wikiQuery) {
-      fetch(`/api/wiki?q=${encodeURIComponent(loc.wikiQuery)}`)
+      // Encode each query separately to preserve commas as separators
+      const encoded = loc.wikiQuery.split(',').map(s => encodeURIComponent(s.trim())).join(',');
+      fetch(`/api/wiki?q=${encoded}`)
+        .then(r => r.json())
+        .then(d => { if (!d.error) setWikiData(d); })
+        .catch(() => {});
+    } else {
+      // For dynamic pins (Spotify artists etc), try the location name directly
+      fetch(`/api/wiki?q=${encodeURIComponent(loc.name)}`)
         .then(r => r.json())
         .then(d => { if (!d.error) setWikiData(d); })
         .catch(() => {});
