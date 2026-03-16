@@ -196,7 +196,7 @@ export default function QueuePage() {
                 </div>
               </form>
 
-              {queueState === 'error' && <p className="queueError">// {message}</p>}
+              {queueState === 'error' && <p className="queueError">{message}</p>}
               {queueState === 'results' && results.length === 0 && (
                 <p className="queueError">// no results for "{query}"</p>
               )}

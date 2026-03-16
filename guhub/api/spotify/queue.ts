@@ -27,9 +27,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (r.status === 204) return res.json({ ok: true });
-    if (r.status === 403) return res.status(403).json({ error: 'No active Spotify device — open Spotify first.' });
-    const body = await r.text();
-    return res.status(r.status).json({ error: body });
+    const body = await r.json().catch(() => ({}));
+    if (r.status === 404 && body?.error?.reason === 'NO_ACTIVE_DEVICE')
+      return res.status(404).json({ error: "Guha isn't listening right now" });
+    if (r.status === 403)
+      return res.status(403).json({ error: "Guha isn't listening right now" });
+    return res.status(r.status).json({ error: body?.error?.message ?? 'queue failed' });
   } catch (e: any) {
     return res.status(500).json({ error: e.message });
   }
