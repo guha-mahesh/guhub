@@ -92,6 +92,21 @@ const LOCATIONS: GlobeLocation[] = [
     description: 'Death Grips.',
     siteLink: { path: '/listening', label: 'see review → Death Grips' } },
 
+  // Memory-derived pins
+  { id: 'leuven', name: 'Leuven, Belgium', lat: 50.8798, lng: 4.7005,
+    queryKeywords: 'Leuven Belgium basketball Refugehof cafe belge students', category: 'project',
+    description: 'Lived here during the Belgium exchange. Built Policy Playground.',
+    siteLink: { path: '/projects', label: 'see project → Policy Playground' } },
+  { id: 'mountain-view', name: 'Mountain View, CA', lat: 37.3861, lng: -122.0839,
+    queryKeywords: 'Mountain View Caltrain parents pickup visit', category: 'interest',
+    description: 'Day trips from SF.' },
+  { id: 'golden-gate', name: 'Golden Gate Park, SF', lat: 37.7694, lng: -122.4862,
+    queryKeywords: 'Golden Gate Park DeYoung Museum Cal Academy bike', category: 'interest',
+    description: 'DeYoung, Cal Academy, biking.' },
+  { id: 'wework-sf', name: '650 California St, SF', lat: 37.7929, lng: -122.4058,
+    queryKeywords: 'WeWork 650 California Engramme office 7th floor', category: 'work',
+    description: 'Engramme HQ — where the work actually happens.' },
+
 ];
 
 async function fetchMemories(keywords: string): Promise<Memory[]> {
