@@ -13,6 +13,10 @@ async function getAccessToken(): Promise<string> {
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+  res.removeHeader('ETag');
   if (req.method === 'OPTIONS') return res.status(200).end();
   try {
     const token = await getAccessToken();
@@ -22,7 +26,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (r.status === 204 || r.status > 400) return res.json({ isPlaying: false });
     const data = await r.json();
     if (!data?.item) return res.json({ isPlaying: false });
-    res.setHeader('Cache-Control', 'no-store');
     return res.json({
       isPlaying: data.is_playing,
       title: data.item.name,
