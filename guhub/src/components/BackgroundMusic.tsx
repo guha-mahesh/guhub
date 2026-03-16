@@ -1,119 +1,104 @@
-import { useEffect, useRef, useState } from 'react';
-import { FaVolumeUp, FaVolumeMute, FaPlay } from 'react-icons/fa';
+import { useEffect, useRef, useState, useCallback } from 'react';
+import { FaVolumeUp, FaVolumeMute, FaPlay, FaTimes } from 'react-icons/fa';
 import './BackgroundMusic.css';
 
+const API = import.meta.env.VITE_API_BASE ?? '';
+
+interface Track {
+  title: string;
+  artist: string;
+  albumArt: string | null;
+  previewUrl: string | null;
+}
+
 const BackgroundMusic = () => {
-  const audioRef = useRef<HTMLAudioElement>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [needsInteraction, setNeedsInteraction] = useState(true);
-  const [isPausedByOtherMedia, setIsPausedByOtherMedia] = useState(false);
+  const [queue, setQueue] = useState<Track[]>([]);
+  const [queueIndex, setQueueIndex] = useState(0);
+  const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
+  const [showToast, setShowToast] = useState(false);
+  const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // Build preview queue from now-playing + recent
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = 0.1; // 10% volume
-    }
-
-    // Try to play on any click
-    const tryPlay = async () => {
-      if (audioRef.current && needsInteraction) {
-        try {
-          await audioRef.current.play();
-          setIsPlaying(true);
-          setNeedsInteraction(false);
-        } catch (e) {
-          // Still blocked
+    const build = async () => {
+      const tracks: Track[] = [];
+      try {
+        const np = await fetch(`${API}/api/spotify/now-playing`).then(r => r.json());
+        if (np.isPlaying && np.previewUrl) tracks.push({ title: np.title, artist: np.artist, albumArt: np.albumArt, previewUrl: np.previewUrl });
+      } catch {}
+      try {
+        const recent = await fetch(`${API}/api/spotify/recent?limit=20`).then(r => r.json());
+        for (const t of (recent.tracks ?? [])) {
+          if (t.previewUrl) tracks.push({ title: t.title, artist: t.artist, albumArt: t.albumArt, previewUrl: t.previewUrl });
         }
+      } catch {}
+      setQueue(tracks);
+    };
+    build();
+  }, []);
+
+  const playIndex = useCallback((idx: number, tracks: Track[]) => {
+    if (!tracks.length) return;
+    const i = idx % tracks.length;
+    const track = tracks[i];
+    if (!track.previewUrl) { playIndex(i + 1, tracks); return; }
+
+    if (!audioRef.current) audioRef.current = new Audio();
+    audioRef.current.src = track.previewUrl;
+    audioRef.current.volume = 0.1;
+    audioRef.current.onended = () => {
+      setQueueIndex(i + 1);
+      playIndex(i + 1, tracks);
+    };
+    audioRef.current.play().catch(() => {});
+    setCurrentTrack(track);
+    setQueueIndex(i);
+    setIsPlaying(true);
+
+    // Show toast for 5s
+    setShowToast(true);
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    toastTimerRef.current = setTimeout(() => setShowToast(false), 5000);
+  }, []);
+
+  // Try to play on first click
+  useEffect(() => {
+    const tryPlay = () => {
+      if (needsInteraction && queue.length) {
+        setNeedsInteraction(false);
+        playIndex(0, queue);
       }
     };
-
     document.addEventListener('click', tryPlay, { once: true });
     return () => document.removeEventListener('click', tryPlay);
-  }, [needsInteraction]);
-
-  // Auto-pause when Spotify or other audio plays
-  useEffect(() => {
-    let pauseTimeout: NodeJS.Timeout;
-    let resumeTimeout: NodeJS.Timeout;
-
-    const handleMouseEnterIframe = (e: Event) => {
-      const target = e.target as HTMLElement;
-      if (target.tagName === 'IFRAME' && audioRef.current && isPlaying) {
-        // Pause after a short delay when user interacts with iframe
-        pauseTimeout = setTimeout(() => {
-          if (audioRef.current) {
-            audioRef.current.pause();
-            setIsPausedByOtherMedia(true);
-          }
-        }, 500);
-      }
-    };
-
-    const handleMouseLeaveIframe = (e: Event) => {
-      const target = e.target as HTMLElement;
-      if (target.tagName === 'IFRAME' && audioRef.current && isPausedByOtherMedia) {
-        // Resume after user leaves iframe
-        clearTimeout(pauseTimeout);
-        resumeTimeout = setTimeout(() => {
-          if (audioRef.current) {
-            audioRef.current.play().catch(() => {});
-            setIsPausedByOtherMedia(false);
-          }
-        }, 1000);
-      }
-    };
-
-    // Add listeners to all iframes
-    const addIframeListeners = () => {
-      const iframes = document.querySelectorAll('iframe');
-      iframes.forEach((iframe) => {
-        iframe.addEventListener('mouseenter', handleMouseEnterIframe);
-        iframe.addEventListener('mouseleave', handleMouseLeaveIframe);
-      });
-    };
-
-    // Initial setup
-    addIframeListeners();
-
-    // Re-add listeners when DOM changes (for dynamic iframes)
-    const observer = new MutationObserver(addIframeListeners);
-    observer.observe(document.body, { childList: true, subtree: true });
-
-    return () => {
-      clearTimeout(pauseTimeout);
-      clearTimeout(resumeTimeout);
-      observer.disconnect();
-      const iframes = document.querySelectorAll('iframe');
-      iframes.forEach((iframe) => {
-        iframe.removeEventListener('mouseenter', handleMouseEnterIframe);
-        iframe.removeEventListener('mouseleave', handleMouseLeaveIframe);
-      });
-    };
-  }, [isPlaying, isPausedByOtherMedia]);
+  }, [needsInteraction, queue, playIndex]);
 
   const togglePlay = async () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-        setIsPlaying(false);
+    if (!audioRef.current) return;
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      if (!audioRef.current.src && queue.length) {
+        playIndex(queueIndex, queue);
       } else {
-        try {
-          await audioRef.current.play();
-          setIsPlaying(true);
-          setNeedsInteraction(false);
-        } catch (e) {
-          console.log('Playback failed:', e);
-        }
+        await audioRef.current.play().catch(() => {});
+        setIsPlaying(true);
       }
     }
   };
 
+  const dismissToast = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowToast(false);
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+  };
+
   return (
     <div className="backgroundMusicControl">
-      <audio
-        ref={audioRef}
-        src="/Faster Than Light soundtrack - Space Cruiser (Title).mp3"
-        loop
-      />
       <button
         onClick={togglePlay}
         className={`musicToggle ${needsInteraction ? 'pulse' : ''}`}
@@ -121,6 +106,19 @@ const BackgroundMusic = () => {
       >
         {isPlaying ? <FaVolumeUp /> : needsInteraction ? <FaPlay /> : <FaVolumeMute />}
       </button>
+
+      {showToast && currentTrack && (
+        <div className="musicToast">
+          {currentTrack.albumArt && (
+            <img src={currentTrack.albumArt} alt="" className="toastArt" />
+          )}
+          <div className="toastText">
+            <span className="toastTitle">{currentTrack.title}</span>
+            <span className="toastArtist">{currentTrack.artist}</span>
+          </div>
+          <button className="toastClose" onClick={dismissToast}><FaTimes /></button>
+        </div>
+      )}
     </div>
   );
 };

@@ -3,6 +3,10 @@
   top: 80px;
   left: 2rem;
   z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
 }
 
 .musicToggle {
@@ -19,6 +23,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
+  flex-shrink: 0;
 }
 
 .musicToggle:hover {
@@ -28,34 +33,91 @@
   box-shadow: 0 4px 20px rgba(115, 145, 102, 0.4);
 }
 
-.musicToggle:active {
-  transform: scale(0.95);
-}
+.musicToggle:active { transform: scale(0.95); }
 
 .musicToggle.pulse {
   animation: pulse 2s ease-in-out infinite;
 }
 
 @keyframes pulse {
-  0%, 100% {
-    box-shadow: 0 0 0 0 rgba(115, 145, 102, 0.7);
-    transform: scale(1);
-  }
-  50% {
-    box-shadow: 0 0 0 10px rgba(115, 145, 102, 0);
-    transform: scale(1.05);
-  }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(115, 145, 102, 0.7); transform: scale(1); }
+  50% { box-shadow: 0 0 0 10px rgba(115, 145, 102, 0); transform: scale(1.05); }
 }
 
-@media (max-width: 768px) {
-  .backgroundMusicControl {
-    top: 70px;
-    left: 1rem;
-  }
+/* ── toast ── */
+.musicToast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(10, 10, 10, 0.96);
+  border: 1px solid rgba(115, 145, 102, 0.3);
+  border-radius: 6px;
+  padding: 8px 10px 8px 8px;
+  width: 220px;
+  backdrop-filter: blur(12px);
+  animation: toastIn 0.25s ease, toastOut 0.4s ease 4.6s forwards;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
 
-  .musicToggle {
-    width: 40px;
-    height: 40px;
-    font-size: 1rem;
-  }
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(-10px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes toastOut {
+  from { opacity: 1; }
+  to   { opacity: 0; pointer-events: none; }
+}
+
+.toastArt {
+  width: 36px;
+  height: 36px;
+  object-fit: cover;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.toastText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.toastTitle {
+  font-size: 0.72rem;
+  color: #e0e0e0;
+  font-family: 'IBM Plex Mono', monospace;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 600;
+}
+
+.toastArtist {
+  font-size: 0.62rem;
+  color: #555;
+  font-family: 'IBM Plex Mono', monospace;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 2px;
+}
+
+.toastClose {
+  background: none;
+  border: none;
+  color: #444;
+  font-size: 0.65rem;
+  cursor: pointer;
+  padding: 2px;
+  flex-shrink: 0;
+  line-height: 1;
+  transition: color 0.15s;
+}
+.toastClose:hover { color: #aaa; }
+
+@media (max-width: 768px) {
+  .backgroundMusicControl { top: 70px; left: 1rem; }
+  .musicToggle { width: 40px; height: 40px; font-size: 1rem; }
+  .musicToast { width: 180px; }
 }
