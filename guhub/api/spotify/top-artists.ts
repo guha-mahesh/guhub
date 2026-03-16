@@ -122,10 +122,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const locationNeeded = new Map<string, string>(); // locQid -> artistQid
     for (const { qid } of validQids) {
       const claims = claimsMap[qid]?.claims ?? {};
-      // P740 = location of formation (bands), P19 = place of birth (solo), P159 = headquarters
+      // P740 = formation, P19 = birthplace, P159 = HQ, P27 = country of citizenship (last resort)
       const locQid = claims.P740?.[0]?.mainsnak?.datavalue?.value?.id
                   ?? claims.P19?.[0]?.mainsnak?.datavalue?.value?.id
-                  ?? claims.P159?.[0]?.mainsnak?.datavalue?.value?.id;
+                  ?? claims.P159?.[0]?.mainsnak?.datavalue?.value?.id
+                  ?? claims.P27?.[0]?.mainsnak?.datavalue?.value?.id;
       if (locQid) locationNeeded.set(locQid, qid);
     }
 
@@ -152,7 +153,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         const claims = claimsMap[qid]?.claims ?? {};
         const usedLocQid = claims.P740?.[0]?.mainsnak?.datavalue?.value?.id
                         ?? claims.P19?.[0]?.mainsnak?.datavalue?.value?.id
-                        ?? claims.P159?.[0]?.mainsnak?.datavalue?.value?.id;
+                        ?? claims.P159?.[0]?.mainsnak?.datavalue?.value?.id
+                        ?? claims.P27?.[0]?.mainsnak?.datavalue?.value?.id;
         // Check if this location QID is a known bad mapping
         if (usedLocQid && usedLocQid in KNOWN_BAD_LOC_QIDS) {
           const override = KNOWN_BAD_LOC_QIDS[usedLocQid];
