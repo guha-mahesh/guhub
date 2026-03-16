@@ -135,10 +135,10 @@ const BackgroundMusic = () => {
 
   return (
     <div className="backgroundMusicControl">
-      {/* Hidden Spotify embed */}
+      {/* Spotify embed — must be rendered (not display:none) for autoplay */}
       <iframe
         ref={iframeRef}
-        style={{ display: 'none' }}
+        style={{ position: 'absolute', width: '1px', height: '1px', opacity: 0, pointerEvents: 'none' }}
         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
         title="spotify-preview"
       />
