@@ -106,15 +106,6 @@ const LOCATIONS: GlobeLocation[] = [
   { id: 'wework-sf', name: '650 California St, SF', lat: 37.7929, lng: -122.4058,
     queryKeywords: 'WeWork 650 California Engramme office 7th floor', category: 'work',
     description: 'Engramme HQ — where the work actually happens.' },
-  { id: 'sausalito', name: 'Sausalito, CA', lat: 37.8591, lng: -122.4853,
-    queryKeywords: 'Sausalito ebike Golden Gate Bridge ride SF', category: 'interest',
-    description: 'Ebiked here from SF across the Golden Gate. Hour ride.' },
-  { id: 'plymouth-ma', name: 'Plymouth, MA', lat: 41.9584, lng: -70.6673,
-    queryKeywords: 'Plymouth hacker house f25 trip group December', category: 'interest',
-    description: 'Hacker house trip — 22 Summer St.' },
-  { id: 'sugar-land', name: 'Sugar Land, TX', lat: 29.6197, lng: -95.6349,
-    queryKeywords: 'Sugar Land Houston Texas First Colony Mall', category: 'home',
-    description: 'Houston suburb — grew up nearby.' },
 
 ];
 
