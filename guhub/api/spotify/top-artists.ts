@@ -58,7 +58,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     const token = await getAccessToken();
     const r = await fetch(
-      'https://api.spotify.com/v1/me/top/artists?limit=30&time_range=medium_term',
+      'https://api.spotify.com/v1/me/top/artists?limit=50&time_range=medium_term',
       { headers: { Authorization: `Bearer ${token}` } }
     );
     const data = await r.json();

@@ -95,21 +95,13 @@ const LOCATIONS: GlobeLocation[] = [
   },
   { id: 'petra', name: 'Petra, Jordan', lat: 30.3285, lng: 35.4444, queryKeywords: 'Petra Jordan Middle East travel', category: 'interest', description: 'Visited.', wikiQuery: 'Petra,_Jordan' },
   { id: 'british-isles', name: 'British Isles', lat: 54.0, lng: -3.5, queryKeywords: 'Dublin My Bloody Valentine Cocteau Twins Scotland Ireland shoegaze', category: 'interest', description: 'Home of some of my favorite bands.', wikiQuery: 'British_Isles,My_Bloody_Valentine_(band)',
-    media: [
-      { type: 'spotify_artist', id: '2UOVgpgiNTC6KK0oNDXDzN', label: 'My Bloody Valentine' },
-      { type: 'spotify_artist', id: '6FMqaRFCqpRbIiGoY7iGx1', label: 'Cocteau Twins' },
-    ],
     subLocations: [
       { name: 'Dublin, Ireland', description: 'My Bloody Valentine formed here.', siteLink: { path: '/listening', label: 'listening → MBV' } },
       { name: 'Grangemouth, Scotland', description: 'Cocteau Twins are from here.', siteLink: { path: '/listening', label: 'listening → Cocteau Twins' } },
     ],
   },
-  { id: 'seoul', name: 'Seoul, South Korea', lat: 37.5665, lng: 126.9780, queryKeywords: 'Parannoul Seoul Korean shoegaze music', category: 'interest', description: 'Parannoul.', siteLink: { path: '/listening', label: 'listening → Parannoul' }, wikiQuery: 'Seoul,Parannoul',
-    media: [{ type: 'spotify_artist', id: '4yvcSjfu4PC0CYQyLy4wSq', label: 'Parannoul' }],
-  },
-  { id: 'sacramento', name: 'Sacramento, CA', lat: 38.5816, lng: -121.4944, queryKeywords: 'Death Grips Sacramento experimental hip hop', category: 'interest', description: 'Death Grips.', siteLink: { path: '/listening', label: 'listening → Death Grips' }, wikiQuery: 'Sacramento,_California,Death_Grips',
-    media: [{ type: 'spotify_artist', id: '1Ffb6ejR6Fe5IamqA5oRUF', label: 'Death Grips' }],
-  },
+  { id: 'seoul', name: 'Seoul, South Korea', lat: 37.5665, lng: 126.9780, queryKeywords: 'Parannoul Seoul Korean shoegaze music', category: 'interest', description: 'Parannoul.', siteLink: { path: '/listening', label: 'listening → Parannoul' }, wikiQuery: 'Seoul,Parannoul' },
+  { id: 'sacramento', name: 'Sacramento, CA', lat: 38.5816, lng: -121.4944, queryKeywords: 'Death Grips Sacramento experimental hip hop', category: 'interest', description: 'Death Grips.', siteLink: { path: '/listening', label: 'listening → Death Grips' }, wikiQuery: 'Sacramento,_California,Death_Grips' },
 ];
 
 async function fetchMemories(keywords: string): Promise<Memory[]> {
