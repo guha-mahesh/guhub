@@ -4,6 +4,7 @@ import type { Project } from '../data/projects';
 import { galaxyArray, type GalaxyType } from '../data/galaxyData';
 import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
 import MemorySpan from '../components/MemorySpan';
+import GlobePin from '../components/GlobePin';
 import './ProjectsTab.css';
 
 const W = 900;
@@ -209,6 +210,7 @@ export default function ProjectsTab() {
                   <MemorySpan queryKey={activeProject.title.toLowerCase().replace(/[^a-z]/g, '-').replace(/-+/g,'-')}>
                     {activeProject.title}
                   </MemorySpan>
+                  {activeProject.id === 3 && <GlobePin pinId="belgium" />}
                 </h2>
               <p className="treeCardDesc">{activeProject.description}</p>
               <div className="treeCardTech">

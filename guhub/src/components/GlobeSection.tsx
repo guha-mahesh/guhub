@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './GlobeSection.css';
 
 const ENGRAMME_API = 'https://memorymachines-gateway-prod-btf57kda.uc.gateway.dev/v1/memories/recall';
@@ -15,6 +16,7 @@ interface GlobeLocation {
   queryKeywords: string;
   category: Category;
   description: string;
+  siteLink?: { path: string; label: string };
 }
 
 interface Memory {
@@ -33,134 +35,63 @@ const CATEGORY_COLORS: Record<Category, string> = {
 };
 
 const LOCATIONS: GlobeLocation[] = [
-  {
-    id: 'bangalore',
-    name: 'Bengaluru, India',
-    lat: 12.9716, lng: 77.5946,
-    queryKeywords: 'India Bangalore born family origins',
-    category: 'home',
-    description: 'Born here.',
-  },
-  {
-    id: 'houston',
-    name: 'Houston, TX',
-    lat: 29.7604, lng: -95.3698,
-    queryKeywords: 'Houston home family Texas',
-    category: 'home',
+  { id: 'bangalore', name: 'Bengaluru, India', lat: 12.9716, lng: 77.5946,
+    queryKeywords: 'India Bangalore born family origins', category: 'home',
+    description: 'Born here.' },
+  { id: 'houston', name: 'Houston, TX', lat: 29.7604, lng: -95.3698,
+    queryKeywords: 'Houston home family Texas', category: 'home',
     description: 'Grew up here.',
-  },
-  {
-    id: 'sf',
-    name: 'San Francisco, CA',
-    lat: 37.7749, lng: -122.4194,
-    queryKeywords: 'San Francisco Engramme co-op Mission Dolores',
-    category: 'work',
+    siteLink: { path: '/about', label: 'résumé' } },
+  { id: 'sf', name: 'San Francisco, CA', lat: 37.7749, lng: -122.4194,
+    queryKeywords: 'San Francisco Engramme co-op Mission Dolores', category: 'work',
     description: 'Current base. Building at Engramme.',
-  },
-  {
-    id: 'boston',
-    name: 'Boston / Northeastern',
-    lat: 42.3601, lng: -71.0589,
-    queryKeywords: 'Northeastern Boston university campus co-op',
-    category: 'school',
+    siteLink: { path: '/about', label: 'résumé' } },
+  { id: 'boston', name: 'Boston / Northeastern', lat: 42.3601, lng: -71.0589,
+    queryKeywords: 'Northeastern Boston university campus co-op', category: 'school',
     description: 'Data Science + FinTech, Martinson Honors Program.',
-  },
-  {
-    id: 'cambridge',
-    name: 'Cambridge, MA',
-    lat: 42.3736, lng: -71.1097,
-    queryKeywords: 'Harvard Engramme spinout Mayfield Fund AI',
-    category: 'work',
+    siteLink: { path: '/about', label: 'résumé' } },
+  { id: 'cambridge', name: 'Cambridge, MA', lat: 42.3736, lng: -71.1097,
+    queryKeywords: 'Harvard Engramme spinout Mayfield Fund AI', category: 'work',
     description: 'Where Engramme was founded.',
-  },
-  {
-    id: 'chicago',
-    name: 'Chicago, IL',
-    lat: 41.8781, lng: -87.6298,
-    queryKeywords: 'Chicago city visit',
-    category: 'interest',
-    description: 'Favorite city in the US.',
-  },
-  {
-    id: 'la',
-    name: 'Los Angeles, CA',
-    lat: 34.0522, lng: -118.2437,
-    queryKeywords: 'Los Angeles LA visit',
-    category: 'interest',
-    description: 'Visited.',
-  },
-  {
-    id: 'washington',
-    name: 'Pacific Northwest',
-    lat: 47.7511, lng: -120.7401,
-    queryKeywords: 'Washington Pacific Northwest dream state',
-    category: 'interest',
-    description: 'Dream region.',
-  },
-  {
-    id: 'belgium',
-    name: 'Brussels, Belgium',
-    lat: 50.8503, lng: 4.3517,
-    queryKeywords: 'Belgium Policy Playground EU financial markets',
-    category: 'project',
+    siteLink: { path: '/projects', label: 'projects' } },
+  { id: 'chicago', name: 'Chicago, IL', lat: 41.8781, lng: -87.6298,
+    queryKeywords: 'Chicago city visit', category: 'interest',
+    description: 'Favorite city in the US.' },
+  { id: 'la', name: 'Los Angeles, CA', lat: 34.0522, lng: -118.2437,
+    queryKeywords: 'Los Angeles LA visit', category: 'interest',
+    description: 'Visited.' },
+  { id: 'washington', name: 'Pacific Northwest', lat: 47.7511, lng: -120.7401,
+    queryKeywords: 'Washington Pacific Northwest dream state', category: 'interest',
+    description: 'Dream region.' },
+  { id: 'belgium', name: 'Brussels, Belgium', lat: 50.8503, lng: 4.3517,
+    queryKeywords: 'Belgium Policy Playground EU financial markets', category: 'project',
     description: 'Built Policy Playground here for an EU project.',
-  },
-  {
-    id: 'amsterdam',
-    name: 'Amsterdam, Netherlands',
-    lat: 52.3676, lng: 4.9041,
-    queryKeywords: 'Amsterdam Netherlands Europe travel',
-    category: 'interest',
-    description: 'Visited.',
-  },
-  {
-    id: 'luxembourg',
-    name: 'Luxembourg',
-    lat: 49.6117, lng: 6.1319,
-    queryKeywords: 'Luxembourg Europe travel',
-    category: 'interest',
-    description: 'Visited.',
-  },
-  {
-    id: 'petra',
-    name: 'Petra, Jordan',
-    lat: 30.3285, lng: 35.4444,
-    queryKeywords: 'Petra Jordan Middle East travel',
-    category: 'interest',
-    description: 'Visited Petra.',
-  },
-  {
-    id: 'seoul',
-    name: 'Seoul, South Korea',
-    lat: 37.5665, lng: 126.9780,
-    queryKeywords: 'Parannoul Seoul Korean shoegaze music',
-    category: 'interest',
+    siteLink: { path: '/projects', label: 'projects' } },
+  { id: 'amsterdam', name: 'Amsterdam, Netherlands', lat: 52.3676, lng: 4.9041,
+    queryKeywords: 'Amsterdam Netherlands Europe travel', category: 'interest',
+    description: 'Visited.' },
+  { id: 'luxembourg', name: 'Luxembourg', lat: 49.6117, lng: 6.1319,
+    queryKeywords: 'Luxembourg Europe travel', category: 'interest',
+    description: 'Visited.' },
+  { id: 'petra', name: 'Petra, Jordan', lat: 30.3285, lng: 35.4444,
+    queryKeywords: 'Petra Jordan Middle East travel', category: 'interest',
+    description: 'Visited Petra.' },
+  { id: 'seoul', name: 'Seoul, South Korea', lat: 37.5665, lng: 126.9780,
+    queryKeywords: 'Parannoul Seoul Korean shoegaze music', category: 'interest',
     description: 'Parannoul.',
-  },
-  {
-    id: 'manchester',
-    name: 'Manchester, UK',
-    lat: 53.4808, lng: -2.2426,
-    queryKeywords: 'My Bloody Valentine shoegaze UK music',
-    category: 'interest',
+    siteLink: { path: '/listening', label: 'listening' } },
+  { id: 'manchester', name: 'Manchester, UK', lat: 53.4808, lng: -2.2426,
+    queryKeywords: 'My Bloody Valentine shoegaze UK music', category: 'interest',
     description: 'My Bloody Valentine formed here.',
-  },
-  {
-    id: 'edinburgh',
-    name: 'Edinburgh, Scotland',
-    lat: 55.9533, lng: -3.1883,
-    queryKeywords: 'Cocteau Twins Scotland dream pop music',
-    category: 'interest',
+    siteLink: { path: '/listening', label: 'listening' } },
+  { id: 'edinburgh', name: 'Edinburgh, Scotland', lat: 55.9533, lng: -3.1883,
+    queryKeywords: 'Cocteau Twins Scotland dream pop music', category: 'interest',
     description: 'Cocteau Twins are from here.',
-  },
-  {
-    id: 'sacramento',
-    name: 'Sacramento, CA',
-    lat: 38.5816, lng: -121.4944,
-    queryKeywords: 'Death Grips Sacramento experimental hip hop',
-    category: 'interest',
+    siteLink: { path: '/listening', label: 'listening' } },
+  { id: 'sacramento', name: 'Sacramento, CA', lat: 38.5816, lng: -121.4944,
+    queryKeywords: 'Death Grips Sacramento experimental hip hop', category: 'interest',
     description: 'Death Grips.',
-  },
+    siteLink: { path: '/listening', label: 'listening' } },
 ];
 
 async function fetchMemories(keywords: string): Promise<Memory[]> {
@@ -169,13 +100,11 @@ async function fetchMemories(keywords: string): Promise<Memory[]> {
   form.append('top_k', '8');
   form.append('enable_llm_proxy_filter', 'false');
   form.append('alpha', '0.5');
-
   const res = await fetch(ENGRAMME_API, {
     method: 'POST',
     headers: { 'x-api-key': API_KEY },
     body: form,
   });
-
   const data = await res.json();
   const mems: any[] = data.memories || [];
   mems.sort((a, b) => {
@@ -200,36 +129,53 @@ const GlobeSection = () => {
   const [panelOpen, setPanelOpen] = useState(false);
   const [, _setHoveredPolygon] = useState<any>(null);
   const setHoveredPolygon = _setHoveredPolygon;
+  const navigate = useNavigate();
 
-  const handlePointClick = useCallback(async (point: object) => {
-    const loc = point as GlobeLocation;
+  const spinToLocation = useCallback((loc: GlobeLocation) => {
     setSelected(loc);
     setPanelOpen(true);
     setLoading(true);
     setMemories([]);
-
     if (globeRef.current) {
       globeRef.current.controls().autoRotate = false;
       globeRef.current.pointOfView({ lat: loc.lat, lng: loc.lng, altitude: 1.8 }, 1200);
     }
-
-    try {
-      const mems = await fetchMemories(loc.queryKeywords);
-      setMemories(mems);
-    } catch (e) {
-      console.error('Engramme fetch failed', e);
-    } finally {
-      setLoading(false);
-    }
+    fetchMemories(loc.queryKeywords)
+      .then(mems => setMemories(mems))
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, []);
+
+  const handlePointClick = useCallback((point: object) => {
+    spinToLocation(point as GlobeLocation);
+  }, [spinToLocation]);
 
   const closePanel = useCallback(() => {
     setPanelOpen(false);
     setSelected(null);
-    if (globeRef.current) {
-      globeRef.current.controls().autoRotate = true;
-    }
+    if (globeRef.current) globeRef.current.controls().autoRotate = true;
+    // clear pin param
+    const url = new URL(window.location.href);
+    url.searchParams.delete('pin');
+    window.history.replaceState({}, '', url.toString());
   }, []);
+
+  // Read ?pin= param on mount and spin to that location
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const pinId = params.get('pin');
+    if (!pinId) return;
+    const loc = LOCATIONS.find(l => l.id === pinId);
+    if (!loc) return;
+    // wait for globe to be ready
+    const tryPin = setInterval(() => {
+      if (globeRef.current) {
+        clearInterval(tryPin);
+        spinToLocation(loc);
+      }
+    }, 200);
+    return () => clearInterval(tryPin);
+  }, [spinToLocation]);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -237,17 +183,11 @@ const GlobeSection = () => {
 
     import('globe.gl').then(({ default: Globe }) => {
       if (!el) return;
-
-      Promise.all([
-        fetch(GEOJSON_URL).then(r => r.json()),
-      ]).then(([{ features: countries }]) => {
+      Promise.all([fetch(GEOJSON_URL).then(r => r.json())]).then(([{ features: countries }]) => {
         if (!el) return;
-
         let hovered: any = null;
-
         const globe = Globe({ animateIn: true, waitForGlobeReady: true })
-          .width(el.clientWidth as any)
-          .height(el.clientHeight)
+          .width(el.clientWidth as any).height(el.clientHeight)
           .backgroundColor('rgba(0,0,0,0)')
           .showAtmosphere(true)
           .atmosphereColor('rgba(115,145,102,0.35)')
@@ -271,10 +211,10 @@ const GlobeSection = () => {
           .pointAltitude(() => 0.04)
           .pointRadius(() => 0.55)
           .pointLabel((d: any) => `
-            <div style="background:rgba(20,4,4,0.95);border:1.5px solid ${CATEGORY_COLORS[d.category as Category]};border-radius:8px;padding:10px 14px;font-family:'Courier New',monospace;max-width:220px">
-              <div style="color:${CATEGORY_COLORS[d.category as Category]};font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px">[${d.category}]</div>
-              <div style="color:#739166;font-weight:700;font-size:0.95rem;margin-bottom:4px">${d.name}</div>
-              <div style="color:rgba(115,145,102,0.7);font-size:0.82rem">${d.description}</div>
+            <div style="background:rgba(8,8,8,0.95);border:1px solid ${CATEGORY_COLORS[d.category as Category]};padding:8px 12px;font-family:'IBM Plex Mono',monospace;max-width:200px">
+              <div style="color:${CATEGORY_COLORS[d.category as Category]};font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:3px">${d.category}</div>
+              <div style="color:#f0f0f0;font-weight:700;font-size:0.85rem;margin-bottom:3px">${d.name}</div>
+              <div style="color:#666;font-size:0.72rem">${d.description}</div>
             </div>
           `)
           .onPointClick(handlePointClick)
@@ -282,7 +222,6 @@ const GlobeSection = () => {
 
         globeRef.current = globe;
 
-        // Style the globe sphere itself (ocean = near-black deep maroon)
         setTimeout(() => {
           globe.scene().traverse((obj: any) => {
             if (obj.isMesh && obj.geometry?.parameters?.radius > 50) {
@@ -303,34 +242,22 @@ const GlobeSection = () => {
         ctrl.minDistance = 150;
         ctrl.maxDistance = 550;
 
-        const onResize = () => {
-          if (el && globe) {
-            globe.width(el.clientWidth).height(el.clientHeight);
-          }
-        };
+        const onResize = () => { if (el && globe) globe.width(el.clientWidth).height(el.clientHeight); };
         window.addEventListener('resize', onResize);
         return () => window.removeEventListener('resize', onResize);
       });
     });
-
-    return () => {
-      if (globeRef.current?._destructor) globeRef.current._destructor();
-    };
+    return () => { if (globeRef.current?._destructor) globeRef.current._destructor(); };
   }, [handlePointClick]);
 
   const sourceColor: Record<string, string> = {
-    stream:      '#ffd700',
-    email:       '#87ceeb',
-    claude_code: '#7fff98',
-    codex:       '#6b4e71',
+    stream: '#ffd700', email: '#87ceeb', claude_code: '#7fff98', codex: '#6b4e71',
   };
 
   return (
     <div className="globeSection">
-      {/* Globe canvas */}
       <div className="globeCanvas" ref={containerRef} />
 
-      {/* Legend */}
       <div className="globeLegend">
         {(Object.entries(CATEGORY_COLORS) as [Category, string][]).map(([cat, color]) => (
           <div key={cat} className="legendItem">
@@ -340,14 +267,8 @@ const GlobeSection = () => {
         ))}
       </div>
 
-      {/* Hint */}
-      {!panelOpen && (
-        <div className="globeHint">
-          <span>click a pin to pull memories</span>
-        </div>
-      )}
+      {!panelOpen && <div className="globeHint"><span>click a pin to pull memories</span></div>}
 
-      {/* Memory panel */}
       <div className={`memoryPanel ${panelOpen ? 'open' : ''}`}>
         {selected && (
           <>
@@ -358,20 +279,22 @@ const GlobeSection = () => {
                 </span>
                 <h2 className="panelName">{selected.name}</h2>
                 <p className="panelDesc">{selected.description}</p>
+                {selected.siteLink && (
+                  <button
+                    className="panelSiteLink"
+                    onClick={() => navigate(selected.siteLink!.path)}
+                  >
+                    → {selected.siteLink.label}
+                  </button>
+                )}
               </div>
               <button className="panelClose" onClick={closePanel}>✕</button>
             </div>
 
             <div className="panelDivider" />
-
             <p className="panelMemLabel">ENGRAMME RECALL</p>
 
-            {loading && (
-              <div className="memLoading">
-                <span /><span /><span />
-              </div>
-            )}
-
+            {loading && <div className="memLoading"><span /><span /><span /></div>}
             {!loading && memories.length === 0 && (
               <p className="memEmpty">no memories surfaced for this location</p>
             )}

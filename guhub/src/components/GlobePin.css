@@ -1,0 +1,18 @@
+.globePin {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: transparent;
+  border: none;
+  color: #3a3a3a;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.1s;
+  vertical-align: middle;
+  margin-left: 0.6rem;
+}
+.globePin:hover { color: #739166; }
