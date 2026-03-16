@@ -16,6 +16,7 @@ import CultureLanding from "./pages/CultureLanding";
 import GeographyLanding from "./pages/GeographyLanding";
 import AnimalsLanding from "./pages/AnimalsLanding";
 import BlogPage from "./pages/BlogPage";
+import AdminBlog from "./pages/AdminBlog";
 import MusicPage from "./pages/MusicPage";
 import QueuePage from "./pages/QueuePage";
 
@@ -40,6 +41,7 @@ function App() {
           <Route path="/geography" element={<GeographyLanding />} />
           <Route path="/animals" element={<AnimalsLanding />} />
           <Route path="/blog" element={<BlogPage />} />
+          <Route path="/admin" element={<AdminBlog />} />
           <Route path="/listening" element={<QueuePage />} />
           <Route path="/music" element={<MusicPage />} />
         </Routes>
