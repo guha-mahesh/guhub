@@ -32,8 +32,9 @@ interface GlobeLocation {
   subLocations?: SubLocation[];
   siteLink?: { path: string; label: string; external?: boolean; scrollTo?: string };
   wikiQuery?: string;
-  spotifyArtistId?: string; // for dynamic Spotify pins
-  media?: MediaItem[];      // explicit embeds you want to show
+  spotifyArtistId?: string;
+  artists?: { name: string; spotifyArtistId: string }[]; // multiple artists per city
+  media?: MediaItem[];
 }
 
 interface WikiData {
@@ -353,9 +354,12 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
             {(() => {
               const items: MediaItem[] = [
                 ...(selected.media ?? []),
-                // Dynamic Spotify pins auto-get an artist embed
-                // Dynamic Spotify pins: derive artist ID from pin id (music-{artistId})
-                ...(selected.id.startsWith('music-') && !selected.media
+                // Multi-artist city pins — embed each artist
+                ...(selected.artists?.length && !selected.media
+                  ? selected.artists.map(a => ({ type: 'spotify_artist' as const, id: a.spotifyArtistId, label: a.name }))
+                  : []),
+                // Legacy single-artist dynamic pins
+                ...(!selected.media && !selected.artists?.length && selected.id.startsWith('music-')
                   ? [{ type: 'spotify_artist' as const, id: selected.id.replace('music-', ''), label: selected.description }]
                   : []),
               ];

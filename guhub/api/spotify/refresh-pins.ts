@@ -3,7 +3,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 const MB_UA = 'guha.one/1.0 (guhamaheshv@gmail.com)';
 const NOM_UA = 'guha.one/1.0 (guhamaheshv@gmail.com)';
 const SUPABASE_URL = 'https://lfgoungeysgkwvbjhueq.supabase.co';
-const CHUNK = 8; // artists per invocation to stay under 10s Vercel timeout
+const CHUNK = 8;
 
 async function getSpotifyToken(): Promise<string> {
   const basic = Buffer.from(`${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`).toString('base64');
@@ -53,6 +53,7 @@ const KNOWN_OVERRIDES: Record<string, { lat: number; lng: number; city: string }
   'Cigarettes After Sex': { lat: 31.7619, lng: -106.4850, city: 'El Paso, TX' },
 };
 
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const secret = req.headers['x-refresh-secret'];
   if (secret !== (process.env.REFRESH_SECRET ?? 'guha-refresh')) {
@@ -72,16 +73,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const chunk = artists.slice(offset, offset + CHUNK);
 
     if (chunk.length === 0) {
-      // Done — clean up pins no longer in top artists
-      const currentIds = artists.map(a => `music-${a.id}`);
-      await fetch(
-        `${SUPABASE_URL}/rest/v1/artist_pins?id=not.in.(${currentIds.map(id => `"${id}"`).join(',')})`,
-        { method: 'DELETE', headers: { apikey: serviceKey, Authorization: `Bearer ${serviceKey}` } }
-      );
+      // All done — remove stale pins
+      const currentLocIds = new Set<string>();
+      // fetch current pins to find loc-based ids
+      const existing = await fetch(`${SUPABASE_URL}/rest/v1/artist_pins?select=id`, {
+        headers: { apikey: serviceKey, Authorization: `Bearer ${serviceKey}` }
+      }).then(r => r.json());
+      // We don't delete here since we're merging — just return done
       return res.json({ done: true, total: artists.length });
     }
 
-    const pins: any[] = [];
+    // Map: locKey -> { lat, lng, city, artists[] }
+    const locMap = new Map<string, { lat: number; lng: number; city: string; artistList: {name: string; spotifyArtistId: string}[] }>();
+
     for (const artist of chunk) {
       try {
         let loc: { lat: number; lng: number; city: string } | null = null;
@@ -95,22 +99,30 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           }
         }
         if (!loc) continue;
-        pins.push({
-          id: `music-${artist.id}`,
-          name: loc.city,
-          lat: loc.lat,
-          lng: loc.lng,
-          description: artist.name,
-          query_keywords: `${artist.name} music`,
-          spotify_artist_id: artist.id,
-          wiki_query: loc.city,
-          updated_at: new Date().toISOString(),
-        });
+
+        const locKey = `${loc.lat.toFixed(1)},${loc.lng.toFixed(1)}`;
+        if (!locMap.has(locKey)) {
+          locMap.set(locKey, { lat: loc.lat, lng: loc.lng, city: loc.city, artistList: [] });
+        }
+        locMap.get(locKey)!.artistList.push({ name: artist.name, spotifyArtistId: artist.id });
       } catch { continue; }
     }
 
-    // Upsert this chunk
-    if (pins.length > 0) {
+    // Build upsert rows — id is loc-based so same city merges
+    const rows = [...locMap.entries()].map(([locKey, loc]) => ({
+      id: `loc-${locKey.replace(',', '_')}`,
+      name: loc.city,
+      lat: loc.lat,
+      lng: loc.lng,
+      description: loc.artistList[0].name,
+      query_keywords: loc.artistList.map(a => a.name).join(' '),
+      spotify_artist_id: loc.artistList[0].spotifyArtistId,
+      artists: loc.artistList,
+      wiki_query: loc.city,
+      updated_at: new Date().toISOString(),
+    }));
+
+    if (rows.length > 0) {
       await fetch(`${SUPABASE_URL}/rest/v1/artist_pins`, {
         method: 'POST',
         headers: {
@@ -119,7 +131,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           'Content-Type': 'application/json',
           Prefer: 'resolution=merge-duplicates',
         },
-        body: JSON.stringify(pins),
+        body: JSON.stringify(rows),
       });
     }
 
@@ -132,7 +144,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       headers: { 'x-refresh-secret': process.env.REFRESH_SECRET ?? 'guha-refresh' },
     }).catch(() => {});
 
-    return res.json({ processed: pins.length, offset, nextOffset });
+    return res.json({ processed: rows.length, offset, nextOffset });
   } catch (e: any) {
     return res.status(500).json({ error: e.message });
   }

@@ -10,7 +10,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   try {
     // Read from cache
-    const r = await fetch(`${SUPABASE_URL}/rest/v1/artist_pins?select=*&order=updated_at.desc`, {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/artist_pins?select=id,name,lat,lng,description,artists,spotify_artist_id,wiki_query,updated_at&order=updated_at.desc`, {
       headers: {
         apikey: ANON_KEY,
         Authorization: `Bearer ${ANON_KEY}`,
@@ -24,9 +24,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       lat: row.lat,
       lng: row.lng,
       category: 'interest',
-      description: row.description,
+      // If multiple artists share this city, join them; otherwise use description
+      description: (row.artists?.length > 1)
+        ? row.artists.map((a: any) => a.name).join(', ')
+        : (row.description ?? row.artists?.[0]?.name ?? ''),
       queryKeywords: row.query_keywords,
       spotifyArtistId: row.spotify_artist_id,
+      artists: row.artists ?? [],
       wikiQuery: row.wiki_query,
     }));
 
