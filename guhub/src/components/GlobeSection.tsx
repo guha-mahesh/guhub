@@ -91,6 +91,7 @@ const LOCATIONS: GlobeLocation[] = [
     queryKeywords: 'Death Grips Sacramento experimental hip hop', category: 'interest',
     description: 'Death Grips.',
     siteLink: { path: '/listening', label: 'see review → Death Grips' } },
+
 ];
 
 async function fetchMemories(keywords: string): Promise<Memory[]> {
@@ -128,7 +129,31 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
   const [panelOpen, setPanelOpen] = useState(false);
   const [, _setHoveredPolygon] = useState<any>(null);
   const setHoveredPolygon = _setHoveredPolygon;
+  const [allLocations, setAllLocations] = useState<GlobeLocation[]>(LOCATIONS);
   const navigate = useNavigate();
+
+  // Fetch dynamic music pins from Spotify top artists
+  useEffect(() => {
+    fetch('/api/spotify/top-artists')
+      .then(r => r.json())
+      .then(data => {
+        if (data.pins?.length) {
+          setAllLocations(prev => {
+            const existingIds = new Set(prev.map(l => l.id));
+            const newPins = data.pins.filter((p: GlobeLocation) => !existingIds.has(p.id));
+            return [...prev, ...newPins];
+          });
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  // Update globe points when dynamic pins load
+  useEffect(() => {
+    if (globeRef.current) {
+      globeRef.current.pointsData(allLocations);
+    }
+  }, [allLocations]);
 
   const spinToLocation = useCallback((loc: GlobeLocation) => {
     setSelected(loc);
@@ -166,7 +191,7 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
     const params = new URLSearchParams(window.location.search);
     const pinId = params.get('pin');
     if (!pinId) return;
-    const loc = LOCATIONS.find(l => l.id === pinId);
+    const loc = allLocations.find(l => l.id === pinId);
     if (!loc) return;
     // wait for globe to be ready
     const tryPin = setInterval(() => {
@@ -205,7 +230,7 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
               .polygonCapColor((f: any) => f === hovered ? '#1a2a14' : '#0e1a0a')
               .polygonAltitude((f: any) => f === hovered ? 0.016 : 0.006);
           })
-          .pointsData(LOCATIONS)
+          .pointsData(allLocations)
           .pointLat((d: any) => d.lat)
           .pointLng((d: any) => d.lng)
           .pointColor((d: any) => CATEGORY_COLORS[d.category as Category] ?? '#739166')
