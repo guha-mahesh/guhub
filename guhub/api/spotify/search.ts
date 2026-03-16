@@ -13,6 +13,10 @@ async function getAccessToken(): Promise<string> {
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+  res.removeHeader('ETag');
   if (req.method === 'OPTIONS') return res.status(200).end();
   const { q } = req.query;
   if (!q || typeof q !== 'string') return res.status(400).json({ error: 'Missing q' });
