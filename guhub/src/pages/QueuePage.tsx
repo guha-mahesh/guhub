@@ -59,7 +59,7 @@ export default function QueuePage() {
     setQueueState('searching');
     setResults([]);
     try {
-      const r = await fetch(`${API}/api/spotify/search?q=${encodeURIComponent(query)}`);
+      const r = await fetch(`${API}/api/spotify/search?q=${encodeURIComponent(query)}&_=${Date.now()}`);
       const data = await r.json();
       setResults(data.tracks ?? []);
       setQueueState('results');
