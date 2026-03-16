@@ -118,11 +118,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Step 2: Bulk fetch claims for all verified artist QIDs
     const claimsMap = await fetchClaims(validQids.map(x => x.qid));
 
-    // Step 3: Extract P740 (location of formation) QIDs
+    // Step 3: Extract location QID — P740 (formation) for groups, P19 (birthplace) for solo artists
     const locationNeeded = new Map<string, string>(); // locQid -> artistQid
     for (const { qid } of validQids) {
       const claims = claimsMap[qid]?.claims ?? {};
+      // P740 = location of formation (bands), P19 = place of birth (solo), P159 = headquarters
       const locQid = claims.P740?.[0]?.mainsnak?.datavalue?.value?.id
+                  ?? claims.P19?.[0]?.mainsnak?.datavalue?.value?.id
                   ?? claims.P159?.[0]?.mainsnak?.datavalue?.value?.id;
       if (locQid) locationNeeded.set(locQid, qid);
     }
@@ -137,19 +139,24 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       if (loc) artistLocMap.set(artistQid, loc);
     }
 
-    // Known bad Wikidata mappings — artist name -> correct coords to use instead, or null to skip
-    const KNOWN_BAD: Record<string, { lat: number; lng: number; city: string } | null> = {
-      'Cigarettes After Sex': { lat: 31.7619, lng: -106.4850, city: 'El Paso, TX' },
+    // Known bad Wikidata location QIDs -> correct coords override, or null to skip entirely
+    const KNOWN_BAD_LOC_QIDS: Record<string, { lat: number; lng: number; city: string } | null> = {
+      'Q575590': { lat: 31.7619, lng: -106.4850, city: 'El Paso, TX' }, // CAS: WD maps to El Paso IL, override to TX
     };
 
     // Step 6: Build deduplicated pins
     const seen = new Set<string>();
     const pins = validQids
       .map(({ artist, qid }) => {
-        // Check known bad mappings first
-        if (artist.name in KNOWN_BAD) {
-          const override = KNOWN_BAD[artist.name];
-          if (!override) return null; // explicitly skipped
+        // Find the location QID used for this artist
+        const claims = claimsMap[qid]?.claims ?? {};
+        const usedLocQid = claims.P740?.[0]?.mainsnak?.datavalue?.value?.id
+                        ?? claims.P19?.[0]?.mainsnak?.datavalue?.value?.id
+                        ?? claims.P159?.[0]?.mainsnak?.datavalue?.value?.id;
+        // Check if this location QID is a known bad mapping
+        if (usedLocQid && usedLocQid in KNOWN_BAD_LOC_QIDS) {
+          const override = KNOWN_BAD_LOC_QIDS[usedLocQid];
+          if (!override) return null;
           const key = `${override.lat.toFixed(1)},${override.lng.toFixed(1)}`;
           if (seen.has(key)) return null;
           seen.add(key);
