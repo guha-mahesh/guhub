@@ -131,8 +131,8 @@ const BackgroundMusic = () => {
         {isPlaying ? <FaVolumeUp /> : needsInteraction ? <FaPlay /> : <FaVolumeMute />}
       </button>
 
-      {showToast && currentTrack && (
-        <div className="musicToast">
+      {currentTrack && isPlaying && (
+        <div className={`musicToast ${showToast ? 'visible' : 'faded'}`}>
           {currentTrack.albumArt && <img src={currentTrack.albumArt} alt="" className="toastArt" />}
           <div className="toastText">
             <span className="toastTitle">{currentTrack.title}</span>
