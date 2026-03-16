@@ -5,12 +5,16 @@
   z-index: 2000;
   display: flex;
   align-items: stretch;
+  justify-content: flex-end;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
 }
 
 .be-modal {
-  width: 100%;
+  width: min(1400px, 100vw);
   height: 100%;
   background: #0a0a0a;
+  border-left: 1px solid rgba(115, 145, 102, 0.3);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -277,15 +281,6 @@
 }
 
 /* Override MDEditor to match dark theme */
-.be-mde-wrap .w-md-editor-preview { display: none !important; }
-.be-mde-wrap .w-md-editor-text { width: 100% !important; }
-/* Hide the view-toggle buttons (edit/live/preview switchers) */
-.be-mde-wrap .w-md-editor-toolbar-divider ~ li,
-.be-mde-wrap li button[data-name="preview"],
-.be-mde-wrap li button[data-name="live"],
-.be-mde-wrap li button[data-name="edit"],
-.be-mde-wrap .w-md-editor-toolbar > ul:last-child { display: none !important; }
-
 .be-mde-wrap .w-md-editor {
   background: transparent !important;
   border: none !important;
