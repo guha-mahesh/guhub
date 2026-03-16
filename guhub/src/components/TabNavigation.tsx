@@ -5,11 +5,11 @@ const TabNavigation = () => {
   const location = useLocation();
 
   const tabs = [
-    { path: '/',          label: 'guha of-sorts' },
-    { path: '/projects',  label: 'PROJECTS'   },
-    { path: '/about',     label: 'RÉSUMÉ'     },
-    { path: '/blog',      label: 'BLOG'       },
-    { path: '/listening', label: 'LISTENING'  },
+    { path: '/',          label: 'guha of-sorts'     },
+    { path: '/projects',  label: 'projects of-sorts' },
+    { path: '/about',     label: 'resume of-sorts'   },
+    { path: '/blog',      label: 'blog of-sorts'     },
+    { path: '/listening', label: 'listening of-sorts'},
   ];
 
   return (

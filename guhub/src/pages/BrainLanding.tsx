@@ -26,7 +26,6 @@ const BrainLanding = () => {
         <div className="mobileContent">
           <div className="mobileNameBlock">
             <span className="mobileNameFirst">guha of-sorts</span>
-            <span className="mobileNameLast">MAHESH</span>
           </div>
           <div className="mobileRoleStack">
             <div className="mobileRoleItem">
@@ -63,7 +62,6 @@ const BrainLanding = () => {
           <div className="heroMain">
             <div className="nameBlock">
               <span className="nameFirst">guha of-sorts</span>
-              <span className="nameLast">MAHESH</span>
             </div>
             <div className="roleStack">
               <div className="roleItem">
