@@ -27,6 +27,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       album: item.track.album.name,
       albumArt: item.track.album.images[1]?.url ?? null,
       spotifyUrl: item.track.external_urls.spotify,
+      previewUrl: item.track.preview_url ?? null,
       playedAt: item.played_at,
       uri: item.track.uri,
     }));

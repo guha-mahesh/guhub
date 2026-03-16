@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import './QueuePage.css';
 
 interface TrackResult {
@@ -9,12 +9,46 @@ interface TrackResult {
   albumArt: string | null;
   uri: string;
   spotifyUrl: string;
+  previewUrl?: string | null;
   playedAt?: string;
 }
 
 type QueueState = 'idle' | 'searching' | 'results' | 'queuing' | 'success' | 'error';
 
 const API = import.meta.env.VITE_API_BASE ?? '';
+
+function PreviewBtn({ url }: { url: string | null | undefined }) {
+  const [playing, setPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const toggle = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!url) return;
+    if (!audioRef.current) {
+      audioRef.current = new Audio(url);
+      audioRef.current.volume = 0.6;
+      audioRef.current.onended = () => setPlaying(false);
+    }
+    if (playing) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      setPlaying(false);
+    } else {
+      audioRef.current.play();
+      setPlaying(true);
+    }
+  };
+
+  useEffect(() => () => { audioRef.current?.pause(); }, []);
+
+  if (!url) return null;
+  return (
+    <button className={`previewBtn ${playing ? 'playing' : ''}`} onClick={toggle} title={playing ? 'stop preview' : 'play 30s preview'}>
+      {playing ? '■' : '▶'}
+    </button>
+  );
+}
 
 function timeAgo(iso: string) {
   const diff = (Date.now() - new Date(iso).getTime()) / 1000;
@@ -167,13 +201,16 @@ export default function QueuePage() {
                           <span className="resultMeta">{track.artist} — {track.album}</span>
                         </div>
                       </div>
-                      <button
-                        className="resultQueue"
-                        onClick={() => queue(track)}
-                        disabled={queueState === 'queuing'}
-                      >
-                        {queueState === 'queuing' ? '...' : '+ queue'}
-                      </button>
+                      <div className="resultActions">
+                        <PreviewBtn url={track.previewUrl} />
+                        <button
+                          className="resultQueue"
+                          onClick={() => queue(track)}
+                          disabled={queueState === 'queuing'}
+                        >
+                          {queueState === 'queuing' ? '...' : '+ queue'}
+                        </button>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -187,14 +224,15 @@ export default function QueuePage() {
           {nowPlaying && (
             <>
               <p className="recentLabel">&gt; now playing</p>
-              <a href={nowPlaying.spotifyUrl} target="_blank" rel="noopener noreferrer" className="recentRow npNowRow">
+              <div className="recentRow npNowRow">
                 {nowPlaying.albumArt && <img src={nowPlaying.albumArt} alt="" className="recentArt" />}
                 <div className="recentText">
-                  <span className="recentTitle">{nowPlaying.title}</span>
+                  <a href={nowPlaying.spotifyUrl} target="_blank" rel="noopener noreferrer" className="recentTitleLink">{nowPlaying.title}</a>
                   <span className="recentMeta">{nowPlaying.artist}</span>
                 </div>
+                <PreviewBtn url={nowPlaying.previewUrl} />
                 <span className="npBarDot" />
-              </a>
+              </div>
               <p className="recentLabel recentLabelSpaced">&gt; recently played</p>
             </>
           )}
@@ -206,22 +244,17 @@ export default function QueuePage() {
           ) : (
             <div className="recentList">
               {recent.map((track, i) => (
-                <a
-                  key={i}
-                  href={track.spotifyUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="recentRow"
-                >
+                <div key={i} className="recentRow">
                   {track.albumArt && <img src={track.albumArt} alt="" className="recentArt" />}
                   <div className="recentText">
-                    <span className="recentTitle">{track.title}</span>
+                    <a href={track.spotifyUrl} target="_blank" rel="noopener noreferrer" className="recentTitleLink">{track.title}</a>
                     <span className="recentMeta">{track.artist}</span>
                   </div>
+                  <PreviewBtn url={track.previewUrl} />
                   {track.playedAt && (
                     <span className="recentTime">{timeAgo(track.playedAt)}</span>
                   )}
-                </a>
+                </div>
               ))}
             </div>
           )}
