@@ -43,63 +43,32 @@ const CATEGORY_COLORS: Record<Category, string> = {
 };
 
 const LOCATIONS: GlobeLocation[] = [
-  {
-    id: 'bangalore', name: 'Bengaluru, India', lat: 12.9716, lng: 77.5946,
-    queryKeywords: 'India Bangalore born family origins', category: 'home',
-    description: 'Where I was born.',
-  },
-  {
-    id: 'houston', name: 'Houston, TX', lat: 29.7604, lng: -95.3698,
-    queryKeywords: 'Houston home family Texas Sugar Land', category: 'home',
-    description: 'Grew up here.',
+  { id: 'bangalore', name: 'Bengaluru, India', lat: 12.9716, lng: 77.5946, queryKeywords: 'India Bangalore born family origins', category: 'home', description: 'Where I was born.' },
+  { id: 'houston', name: 'Houston, TX', lat: 29.7604, lng: -95.3698, queryKeywords: 'Houston home family Texas Sugar Land', category: 'home', description: 'Grew up here.',
     subLocations: [
       { name: 'Sugar Land', description: 'Suburb where I actually grew up. First Colony Mall territory.', queryKeywords: 'Sugar Land Houston Texas First Colony Mall' },
       { name: 'Houston proper', description: 'The city itself — Uptown, Greenway Plaza, downtown.' },
     ],
   },
-  {
-    id: 'sf', name: 'San Francisco, CA', lat: 37.7749, lng: -122.4194,
-    queryKeywords: 'San Francisco Engramme co-op WeWork California Street Mission Dolores Golden Gate', category: 'work',
-    description: 'Current base. Co-op at Engramme.',
-    siteLink: { path: '/about', label: 'résumé → Engramme', scrollTo: 'engramme' },
+  { id: 'sf', name: 'San Francisco, CA', lat: 37.7749, lng: -122.4194, queryKeywords: 'San Francisco Engramme co-op WeWork California Street Mission Dolores Golden Gate', category: 'work', description: 'Current base. Co-op at Engramme.', siteLink: { path: '/about', label: 'résumé → Engramme', scrollTo: 'engramme' },
     subLocations: [
-      { name: '650 California St', description: 'Engramme\'s WeWork office. 7th floor happy hours.', queryKeywords: 'WeWork 650 California Engramme office', siteLink: { path: '/about', label: 'résumé → Engramme', scrollTo: 'engramme' } },
+      { name: '650 California St', description: "Engramme's WeWork office. 7th floor happy hours.", queryKeywords: 'WeWork 650 California Engramme office', siteLink: { path: '/about', label: 'résumé → Engramme', scrollTo: 'engramme' } },
       { name: 'Golden Gate Park', description: 'DeYoung Museum, Cal Academy, biking.', queryKeywords: 'Golden Gate Park DeYoung Museum Cal Academy bike' },
       { name: 'Sausalito', description: 'Ebiked across the Golden Gate Bridge. ~1hr ride.', queryKeywords: 'Sausalito ebike Golden Gate Bridge' },
       { name: 'Clement St (home)', description: 'Where I live. Richmond district.', queryKeywords: 'Clement Street Richmond apartment home SF' },
     ],
   },
-  {
-    id: 'boston', name: 'Boston, MA', lat: 42.3601, lng: -71.0589,
-    queryKeywords: 'Northeastern Boston university campus Cambridge Harvard Engramme', category: 'school',
-    description: 'Northeastern + where Engramme was founded.',
-    siteLink: { path: '/about', label: 'résumé → Northeastern', scrollTo: 'education' },
+  { id: 'boston', name: 'Boston, MA', lat: 42.3601, lng: -71.0589, queryKeywords: 'Northeastern Boston university campus Cambridge Harvard Engramme', category: 'school', description: 'Northeastern + where Engramme was founded.', siteLink: { path: '/about', label: 'résumé → Northeastern', scrollTo: 'education' },
     subLocations: [
-      { name: 'Northeastern University', description: 'Data Science + FinTech, Martinson Honors. Class of \'28.', queryKeywords: 'Northeastern Boston university campus', siteLink: { path: '/about', label: 'résumé → Northeastern', scrollTo: 'education' } },
+      { name: 'Northeastern University', description: "Data Science + FinTech, Martinson Honors. Class of '28.", queryKeywords: 'Northeastern Boston university campus', siteLink: { path: '/about', label: 'résumé → Northeastern', scrollTo: 'education' } },
       { name: 'Cambridge', description: 'Harvard Medical School — where Engramme was spun out.', queryKeywords: 'Harvard Engramme spinout Cambridge Mayfield' },
       { name: 'Plymouth', description: 'Hacker house f25 trip — 22 Summer St.', queryKeywords: 'Plymouth hacker house f25 trip group' },
     ],
   },
-  {
-    id: 'chicago', name: 'Chicago, IL', lat: 41.8781, lng: -87.6298,
-    queryKeywords: 'Chicago city visit', category: 'interest',
-    description: 'Favorite city in the US.',
-  },
-  {
-    id: 'la', name: 'Los Angeles, CA', lat: 34.0522, lng: -118.2437,
-    queryKeywords: 'Los Angeles LA visit', category: 'interest',
-    description: 'Visited.',
-  },
-  {
-    id: 'pacific-nw', name: 'Pacific Northwest', lat: 47.7511, lng: -120.7401,
-    queryKeywords: 'Washington Pacific Northwest dream state', category: 'interest',
-    description: 'Dream region.',
-  },
-  {
-    id: 'belgium', name: 'Belgium', lat: 50.7503, lng: 4.5000,
-    queryKeywords: 'Belgium Policy Playground EU Leuven Brussels exchange basketball', category: 'project',
-    description: 'Exchange semester. Built Policy Playground.',
-    siteLink: { path: '/projects', label: 'projects → Policy Playground', scrollTo: 'project-leuven' },
+  { id: 'chicago', name: 'Chicago, IL', lat: 41.8781, lng: -87.6298, queryKeywords: 'Chicago city visit', category: 'interest', description: 'Favorite city in the US.' },
+  { id: 'la', name: 'Los Angeles, CA', lat: 34.0522, lng: -118.2437, queryKeywords: 'Los Angeles LA visit', category: 'interest', description: 'Visited.' },
+  { id: 'pacific-nw', name: 'Pacific Northwest', lat: 47.7511, lng: -120.7401, queryKeywords: 'Washington Pacific Northwest dream state', category: 'interest', description: 'Dream region.' },
+  { id: 'belgium', name: 'Belgium', lat: 50.7503, lng: 4.5000, queryKeywords: 'Belgium Policy Playground EU Leuven Brussels exchange basketball', category: 'project', description: 'Exchange semester. Built Policy Playground.', siteLink: { path: '/projects', label: 'projects → Policy Playground', scrollTo: 'project-leuven' },
     subLocations: [
       { name: 'Leuven', description: 'Lived here during the exchange. Refugehof basketball, Cafe Belge.', queryKeywords: 'Leuven Belgium basketball Refugehof cafe belge', siteLink: { path: '/projects', label: 'projects → Policy Playground', scrollTo: 'project-leuven' } },
       { name: 'Brussels', description: 'Policy Playground was built for an EU markets project.', queryKeywords: 'Belgium Policy Playground EU financial markets Brussels' },
@@ -107,32 +76,15 @@ const LOCATIONS: GlobeLocation[] = [
       { name: 'Luxembourg', description: 'Visited.', queryKeywords: 'Luxembourg Europe travel' },
     ],
   },
-  {
-    id: 'petra', name: 'Petra, Jordan', lat: 30.3285, lng: 35.4444,
-    queryKeywords: 'Petra Jordan Middle East travel', category: 'interest',
-    description: 'Visited.',
-  },
-  {
-    id: 'british-isles', name: 'British Isles', lat: 54.0, lng: -3.5,
-    queryKeywords: 'Dublin My Bloody Valentine Cocteau Twins Scotland Ireland shoegaze', category: 'interest',
-    description: 'Home of some of my favorite bands.',
+  { id: 'petra', name: 'Petra, Jordan', lat: 30.3285, lng: 35.4444, queryKeywords: 'Petra Jordan Middle East travel', category: 'interest', description: 'Visited.' },
+  { id: 'british-isles', name: 'British Isles', lat: 54.0, lng: -3.5, queryKeywords: 'Dublin My Bloody Valentine Cocteau Twins Scotland Ireland shoegaze', category: 'interest', description: 'Home of some of my favorite bands.',
     subLocations: [
       { name: 'Dublin, Ireland', description: 'My Bloody Valentine formed here.', queryKeywords: 'My Bloody Valentine Dublin Ireland shoegaze', siteLink: { path: '/listening', label: 'listening → MBV' } },
       { name: 'Grangemouth, Scotland', description: 'Cocteau Twins are from here.', queryKeywords: 'Cocteau Twins Scotland Grangemouth dream pop', siteLink: { path: '/listening', label: 'listening → Cocteau Twins' } },
     ],
   },
-  {
-    id: 'seoul', name: 'Seoul, South Korea', lat: 37.5665, lng: 126.9780,
-    queryKeywords: 'Parannoul Seoul Korean shoegaze music', category: 'interest',
-    description: 'Parannoul.',
-    siteLink: { path: '/listening', label: 'listening → Parannoul' },
-  },
-  {
-    id: 'sacramento', name: 'Sacramento, CA', lat: 38.5816, lng: -121.4944,
-    queryKeywords: 'Death Grips Sacramento experimental hip hop', category: 'interest',
-    description: 'Death Grips.',
-    siteLink: { path: '/listening', label: 'listening → Death Grips' },
-  },
+  { id: 'seoul', name: 'Seoul, South Korea', lat: 37.5665, lng: 126.9780, queryKeywords: 'Parannoul Seoul Korean shoegaze music', category: 'interest', description: 'Parannoul.', siteLink: { path: '/listening', label: 'listening → Parannoul' } },
+  { id: 'sacramento', name: 'Sacramento, CA', lat: 38.5816, lng: -121.4944, queryKeywords: 'Death Grips Sacramento experimental hip hop', category: 'interest', description: 'Death Grips.', siteLink: { path: '/listening', label: 'listening → Death Grips' } },
 ];
 
 async function fetchMemories(keywords: string): Promise<Memory[]> {
@@ -141,24 +93,11 @@ async function fetchMemories(keywords: string): Promise<Memory[]> {
   form.append('top_k', '8');
   form.append('enable_llm_proxy_filter', 'false');
   form.append('alpha', '0.5');
-  const res = await fetch(ENGRAMME_API, {
-    method: 'POST',
-    headers: { 'x-api-key': API_KEY },
-    body: form,
-  });
+  const res = await fetch(ENGRAMME_API, { method: 'POST', headers: { 'x-api-key': API_KEY }, body: form });
   const data = await res.json();
   const mems: any[] = data.memories || [];
-  mems.sort((a, b) => {
-    const ta = a?.content?.when?.event_start_time || '';
-    const tb = b?.content?.when?.event_start_time || '';
-    return tb.localeCompare(ta);
-  });
-  return mems.map(m => ({
-    source: m.source || '?',
-    headline: m.content?.headline || '',
-    narrative: m.content?.narrative || '',
-    date: m.content?.when?.event_start_time?.slice(0, 10) || '',
-  }));
+  mems.sort((a, b) => (b?.content?.when?.event_start_time || '').localeCompare(a?.content?.when?.event_start_time || ''));
+  return mems.map(m => ({ source: m.source || '?', headline: m.content?.headline || '', narrative: m.content?.narrative || '', date: m.content?.when?.event_start_time?.slice(0, 10) || '' }));
 }
 
 const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => void }) => {
@@ -172,28 +111,19 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
   const setHoveredPolygon = _setHoveredPolygon;
   const [allLocations, setAllLocations] = useState<GlobeLocation[]>(LOCATIONS);
   const navigate = useNavigate();
-  const spinToLocationRef = useRef<(loc: GlobeLocation) => void>(() => {});
+  const spinRef = useRef<(loc: GlobeLocation) => void>(() => {});
 
+  // Spotify top artists dynamic pins
   useEffect(() => {
-    fetch('/api/spotify/top-artists')
-      .then(r => r.json())
-      .then(data => {
-        if (data.pins?.length) {
-          setAllLocations(prev => {
-            const existingIds = new Set(prev.map(l => l.id));
-            const newPins = data.pins.filter((p: GlobeLocation) => !existingIds.has(p.id));
-            return [...prev, ...newPins];
-          });
-        }
-      })
-      .catch(() => {});
+    fetch('/api/spotify/top-artists').then(r => r.json()).then(data => {
+      if (data.pins?.length) {
+        setAllLocations(prev => {
+          const seen = new Set(prev.map(l => l.id));
+          return [...prev, ...data.pins.filter((p: GlobeLocation) => !seen.has(p.id))];
+        });
+      }
+    }).catch(() => {});
   }, []);
-
-  useEffect(() => {
-    if (globeRef.current) {
-      globeRef.current.htmlElementsData(allLocations);
-    }
-  }, [allLocations]);
 
   const spinToLocation = useCallback((loc: GlobeLocation) => {
     setSelected(loc);
@@ -205,12 +135,11 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
       globeRef.current.controls().autoRotate = false;
       globeRef.current.pointOfView({ lat: loc.lat, lng: loc.lng, altitude: 1.8 }, 1200);
     }
-    fetchMemories(loc.queryKeywords)
-      .then(mems => setMemories(mems))
-      .catch(() => {})
-      .finally(() => setLoading(false));
-  }, []);
+    fetchMemories(loc.queryKeywords).then(setMemories).catch(() => {}).finally(() => setLoading(false));
+  }, [onPanelChange]);
 
+  // Keep ref fresh — this is what the globe's click handlers use
+  useEffect(() => { spinRef.current = spinToLocation; }, [spinToLocation]);
 
   const closePanel = useCallback(() => {
     setPanelOpen(false);
@@ -220,110 +149,81 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
     const url = new URL(window.location.href);
     url.searchParams.delete('pin');
     window.history.replaceState({}, '', url.toString());
-  }, []);
+  }, [onPanelChange]);
 
+  // ?pin= URL param
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const pinId = params.get('pin');
+    const pinId = new URLSearchParams(window.location.search).get('pin');
     if (!pinId) return;
-    const loc = allLocations.find(l => l.id === pinId);
-    if (!loc) return;
     const tryPin = setInterval(() => {
-      if (globeRef.current) {
-        clearInterval(tryPin);
-        spinToLocation(loc);
-      }
+      const loc = allLocations.find(l => l.id === pinId);
+      if (globeRef.current && loc) { clearInterval(tryPin); spinToLocation(loc); }
     }, 200);
     return () => clearInterval(tryPin);
-  }, [spinToLocation]);
+  }, [allLocations, spinToLocation]);
 
+  // Globe init — runs once
   useEffect(() => {
     if (!containerRef.current) return;
     const el = containerRef.current;
 
     import('globe.gl').then(({ default: Globe }) => {
       if (!el) return;
-      // Inject pin pulse keyframe into document
-      if (!document.getElementById('globe-pin-style')) {
-        const s = document.createElement('style');
-        s.id = 'globe-pin-style';
-        s.textContent = '@keyframes pinPulse { 0% { transform: scale(1); opacity: 0.5; } 100% { transform: scale(2.8); opacity: 0; } }';
-        document.head.appendChild(s);
-      }
-      Promise.all([fetch(GEOJSON_URL).then(r => r.json())]).then(([{ features: countries }]) => {
+      fetch(GEOJSON_URL).then(r => r.json()).then(({ features: countries }) => {
         if (!el) return;
         let hovered: any = null;
+
+        const makePin = (d: GlobeLocation) => {
+          const color = CATEGORY_COLORS[d.category] ?? '#739166';
+          const div = document.createElement('div');
+          div.style.cssText = 'width:14px;height:14px;position:relative;cursor:pointer;display:flex;align-items:center;justify-content:center;';
+          div.innerHTML = `
+            <div style="width:8px;height:8px;border-radius:50%;background:${color};box-shadow:0 0 0 2px rgba(0,0,0,0.9),0 0 10px ${color}99;transition:transform 0.15s;flex-shrink:0;"></div>
+            <div style="position:absolute;inset:-3px;border-radius:50%;border:1.5px solid ${color}55;animation:pinPulse 2.5s ease-out infinite;pointer-events:none;"></div>
+          `;
+          const dot = div.firstElementChild as HTMLElement;
+          div.addEventListener('mouseenter', () => { dot.style.transform = 'scale(1.8)'; });
+          div.addEventListener('mouseleave', () => { dot.style.transform = ''; });
+          div.addEventListener('click', (e) => { e.stopPropagation(); spinRef.current(d); });
+          return div;
+        };
+
+        // Inject keyframe
+        if (!document.getElementById('globe-pin-style')) {
+          const s = document.createElement('style');
+          s.id = 'globe-pin-style';
+          s.textContent = '@keyframes pinPulse{0%{transform:scale(1);opacity:0.6}100%{transform:scale(2.6);opacity:0}}';
+          document.head.appendChild(s);
+        }
+
         const globe = (Globe({ animateIn: true, waitForGlobeReady: true }) as any)
-          .width(el.clientWidth as any).height(el.clientHeight)
+          .width(el.clientWidth).height(el.clientHeight)
           .backgroundColor('rgba(0,0,0,0)')
           .showAtmosphere(true)
           .atmosphereColor('rgba(115,145,102,0.35)')
           .atmosphereAltitude(0.18)
           .polygonsData(countries)
-          .polygonCapColor((feat: any) => feat === hovered ? '#1a2a14' : '#0e1a0a')
+          .polygonCapColor((f: any) => f === hovered ? '#1a2a14' : '#0e1a0a')
           .polygonSideColor(() => 'rgba(115,145,102,0.03)')
           .polygonStrokeColor(() => 'rgba(115,145,102,0.55)')
-          .polygonAltitude((feat: any) => feat === hovered ? 0.016 : 0.006)
+          .polygonAltitude((f: any) => f === hovered ? 0.016 : 0.006)
           .onPolygonHover((poly: any) => {
             hovered = poly;
             setHoveredPolygon(poly);
-            globe
-              .polygonCapColor((f: any) => f === hovered ? '#1a2a14' : '#0e1a0a')
-              .polygonAltitude((f: any) => f === hovered ? 0.016 : 0.006);
+            globe.polygonCapColor((f: any) => f === hovered ? '#1a2a14' : '#0e1a0a')
+                 .polygonAltitude((f: any) => f === hovered ? 0.016 : 0.006);
           })
-          // Use HTML markers instead of points for nicer pins
-          .htmlElementsData(allLocations)
-          .htmlLat((d: any) => d.lat)
-          .htmlLng((d: any) => d.lng)
-          .htmlAltitude(0.04)
-          .htmlElement((d: any) => {
+          .pointsData(LOCATIONS)
+          .pointLat((d: any) => d.lat)
+          .pointLng((d: any) => d.lng)
+          .pointColor((d: any) => CATEGORY_COLORS[d.category as Category] ?? '#739166')
+          .pointAltitude(0.015)
+          .pointRadius(0.35)
+          .pointLabel((d: any) => {
             const color = CATEGORY_COLORS[d.category as Category] ?? '#739166';
-            const el = document.createElement('div');
-            el.style.cssText = `
-              width: 12px; height: 12px; position: relative; cursor: pointer;
-              display: flex; align-items: center; justify-content: center;
-            `;
-            el.innerHTML = `
-              <div style="
-                width: 8px; height: 8px; border-radius: 50%;
-                background: ${color};
-                box-shadow: 0 0 0 2px rgba(0,0,0,0.8), 0 0 8px ${color}88;
-                transition: transform 0.2s;
-              "></div>
-              <div style="
-                position: absolute; inset: -2px; border-radius: 50%;
-                border: 1px solid ${color}44;
-                animation: pinPulse 2.5s ease-out infinite;
-              "></div>
-            `;
-            el.addEventListener('mouseenter', () => {
-              (el.firstElementChild as HTMLElement).style.transform = 'scale(1.6)';
-              // Show tooltip
-              const tip = document.createElement('div');
-              tip.id = 'globe-tip';
-              tip.style.cssText = `
-                position: fixed; z-index: 9999; pointer-events: none;
-                background: rgba(8,8,8,0.95); border: 1px solid ${color};
-                padding: 6px 10px; font-family: 'IBM Plex Mono', monospace;
-                font-size: 0.72rem; color: #f0f0f0; white-space: nowrap;
-                border-radius: 2px;
-              `;
-              tip.textContent = d.name;
-              document.body.appendChild(tip);
-              const move = (e: MouseEvent) => {
-                tip.style.left = (e.clientX + 12) + 'px';
-                tip.style.top = (e.clientY - 20) + 'px';
-              };
-              document.addEventListener('mousemove', move);
-              (el as any)._tipCleanup = () => { tip.remove(); document.removeEventListener('mousemove', move); };
-            });
-            el.addEventListener('mouseleave', () => {
-              (el.firstElementChild as HTMLElement).style.transform = '';
-              (el as any)._tipCleanup?.();
-            });
-            el.addEventListener('click', () => spinToLocationRef.current(d));
-            return el;
+            return `<div style="background:rgba(8,8,8,0.95);border:1px solid ${color};padding:5px 9px;font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:#f0f0f0;white-space:nowrap;border-radius:2px">${d.name}</div>`;
           })
+          .onPointClick((point: any) => { spinRef.current(point as GlobeLocation); })
           (el);
 
         globeRef.current = globe;
@@ -331,10 +231,8 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
         setTimeout(() => {
           globe.scene().traverse((obj: any) => {
             if (obj.isMesh && obj.geometry?.parameters?.radius > 50) {
-              if (obj.material?.color) {
-                obj.material.color.set('#060d04');
-                obj.material.needsUpdate = true;
-              }
+              obj.material?.color?.set('#060d04');
+              if (obj.material) obj.material.needsUpdate = true;
             }
           });
         }, 100);
@@ -348,41 +246,30 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
         ctrl.minDistance = 150;
         ctrl.maxDistance = 550;
 
-        const onResize = () => { if (el && globe) globe.width(el.clientWidth).height(el.clientHeight); };
-        window.addEventListener('resize', onResize);
-        return () => window.removeEventListener('resize', onResize);
+        window.addEventListener('resize', () => {
+          if (el && globe) globe.width(el.clientWidth).height(el.clientHeight);
+        });
       });
     });
     return () => { if (globeRef.current?._destructor) globeRef.current._destructor(); };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Keep the ref fresh so globe click handlers always call the latest version
+  // Update points when Spotify pins load
   useEffect(() => {
-    spinToLocationRef.current = spinToLocation;
-  }, [spinToLocation]);
-
-  const sourceColor: Record<string, string> = {
-    stream: '#ffd700', email: '#87ceeb', claude_code: '#7fff98', codex: '#6b4e71',
-  };
+    if (globeRef.current) globeRef.current.pointsData(allLocations);
+  }, [allLocations]);
 
   const handleSiteLink = (link: NonNullable<GlobeLocation['siteLink']>) => {
-    if (link.external) {
-      window.open(link.path, '_blank');
-    } else {
-      navigate(link.path);
-      if (link.scrollTo) {
-        setTimeout(() => {
-          document.getElementById(link.scrollTo!)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 300);
-      }
-    }
+    if (link.external) { window.open(link.path, '_blank'); return; }
+    navigate(link.path);
+    if (link.scrollTo) setTimeout(() => document.getElementById(link.scrollTo!)?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 300);
   };
+
+  const sourceColor: Record<string, string> = { stream: '#ffd700', email: '#87ceeb', claude_code: '#7fff98', codex: '#6b4e71' };
 
   return (
     <div className="globeSection">
-      <div
-        className="globeCanvas"
-        ref={containerRef}
+      <div className="globeCanvas" ref={containerRef}
         onMouseEnter={() => { if (globeRef.current && !panelOpen) globeRef.current.controls().autoRotate = false; }}
         onMouseLeave={() => { if (globeRef.current && !panelOpen) globeRef.current.controls().autoRotate = true; }}
       />
@@ -403,9 +290,7 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
           <>
             <div className="panelHeader">
               <div>
-                <span className="panelCat" style={{ color: CATEGORY_COLORS[selected.category] }}>
-                  [{selected.category}]
-                </span>
+                <span className="panelCat" style={{ color: CATEGORY_COLORS[selected.category] }}>[{selected.category}]</span>
                 <h2 className="panelName">{selected.name}</h2>
                 <p className="panelDesc">{selected.description}</p>
                 {selected.siteLink && (
@@ -417,7 +302,6 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
               <button className="panelClose" onClick={closePanel}>✕</button>
             </div>
 
-            {/* Sub-locations */}
             {selected.subLocations && selected.subLocations.length > 0 && (
               <>
                 <div className="panelDivider" />
@@ -428,11 +312,7 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
                       <div className="subLocBody">
                         <span className="subLocName">{sub.name}</span>
                         <span className="subLocDesc">{sub.description}</span>
-                        {sub.siteLink && (
-                          <button className="subLocLink" onClick={() => handleSiteLink(sub.siteLink!)}>
-                            → {sub.siteLink.label}
-                          </button>
-                        )}
+                        {sub.siteLink && <button className="subLocLink" onClick={() => handleSiteLink(sub.siteLink!)}>→ {sub.siteLink.label}</button>}
                       </div>
                     </div>
                   ))}
@@ -441,7 +321,6 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
             )}
 
             <div className="panelDivider" />
-
             {loading && <div className="memLoading"><span /><span /><span /></div>}
             {!loading && memories.length > 0 && (
               <>
@@ -450,17 +329,11 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
                   {memories.map((m, i) => (
                     <div key={i} className="memCard">
                       <div className="memMeta">
-                        <span className="memSource" style={{ color: sourceColor[m.source] ?? '#739166' }}>
-                          [{m.source}]
-                        </span>
+                        <span className="memSource" style={{ color: sourceColor[m.source] ?? '#739166' }}>[{m.source}]</span>
                         <span className="memDate">{m.date}</span>
                       </div>
                       <p className="memHeadline">{m.headline}</p>
-                      {m.narrative && (
-                        <p className="memNarrative">
-                          {m.narrative.length > 280 ? m.narrative.slice(0, 280) + '…' : m.narrative}
-                        </p>
-                      )}
+                      {m.narrative && <p className="memNarrative">{m.narrative.length > 280 ? m.narrative.slice(0, 280) + '…' : m.narrative}</p>}
                     </div>
                   ))}
                 </div>
