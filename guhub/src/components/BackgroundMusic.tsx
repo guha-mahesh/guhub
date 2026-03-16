@@ -93,9 +93,23 @@ const BackgroundMusic = () => {
 
   // Click anywhere = play
   useEffect(() => {
-    const tryPlay = () => {
+    const tryPlay = async () => {
       hasClickedRef.current = true;
       setNeedsInteraction(false);
+      // Re-fetch now-playing at click time so we get the current song
+      try {
+        const np = await fetch(`${API}/api/spotify/now-playing`).then(r => r.json());
+        if (np.isPlaying && np.uri) {
+          const freshTrack: Track = { title: np.title, artist: np.artist, albumArt: np.albumArt, uri: np.uri };
+          const queue = queueRef.current;
+          // Prepend if it's not already first
+          if (!queue.length || queue[0].uri !== freshTrack.uri) {
+            const seen = new Set([freshTrack.uri]);
+            const deduped = [freshTrack, ...queue.filter(t => { if (seen.has(t.uri)) return false; seen.add(t.uri); return true; })];
+            queueRef.current = deduped;
+          }
+        }
+      } catch {}
       if (queueRef.current.length) playIndex(0);
     };
     document.addEventListener('click', tryPlay, { once: true });
