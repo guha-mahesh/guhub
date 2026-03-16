@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 const SUPABASE_URL = 'https://lfgoungeysgkwvbjhueq.supabase.co';
-const ANON_KEY = process.env.SUPABASE_ANON_KEY!;
+const ANON_KEY = process.env.VITE_SUPABASE_ANON_KEY!;
 
 // Read cached pins from Supabase — instant response
 export default async function handler(req: VercelRequest, res: VercelResponse) {

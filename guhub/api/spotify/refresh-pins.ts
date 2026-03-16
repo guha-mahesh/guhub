@@ -8,6 +8,8 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 const MB_UA = 'guha.one/1.0 (guhamaheshv@gmail.com)';
 const NOM_UA = 'guha.one/1.0 (guhamaheshv@gmail.com)';
 const SUPABASE_URL = 'https://lfgoungeysgkwvbjhueq.supabase.co';
+// Service key for writes — add SUPABASE_SERVICE_KEY to Vercel env vars
+// Anon key already exists as VITE_SUPABASE_ANON_KEY
 
 async function getSpotifyToken(): Promise<string> {
   const basic = Buffer.from(`${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`).toString('base64');
