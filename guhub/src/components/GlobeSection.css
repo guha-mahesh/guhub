@@ -170,6 +170,33 @@
   background: rgba(115, 145, 102, 0.08);
 }
 
+/* Why I'm here block */
+.panelWhyBlock {
+  margin: 1.25rem 1.75rem;
+  padding: 0.85rem 1rem;
+  border-left: 3px solid #739166;
+  background: rgba(115,145,102,0.04);
+}
+
+.panelWhyLabel {
+  display: block;
+  font-size: 0.6rem;
+  font-family: 'IBM Plex Mono', monospace;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 0.45rem;
+  opacity: 0.8;
+}
+
+.panelWhy {
+  color: #e8e8e8;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.45;
+  margin: 0 0 0.6rem;
+  letter-spacing: -0.01em;
+}
+
 /* Wiki hero image */
 .wikiHero {
   position: relative;

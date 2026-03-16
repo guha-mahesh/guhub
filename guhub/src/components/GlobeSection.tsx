@@ -141,6 +141,10 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
     setLoading(true);
     setMemories([]);
     setWikiData(null);
+    // Scroll globe section into view so panel is visible
+    if (containerRef.current) {
+      containerRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
     if (globeRef.current) {
       globeRef.current.controls().autoRotate = false;
       globeRef.current.pointOfView({ lat: loc.lat, lng: loc.lng, altitude: 1.8 }, 1200);
@@ -260,34 +264,27 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
       <div className={`memoryPanel ${panelOpen ? 'open' : ''}`}>
         {selected && (
           <>
-            {/* Wikipedia hero image */}
-            {wikiData?.image && (
-              <div className="wikiHero" style={{ backgroundImage: `url(${wikiData.image})` }}>
-                <div className="wikiHeroOverlay" />
-                <div className="wikiHeroText">
-                  <span className="panelCat" style={{ color: CATEGORY_COLORS[selected.category] }}>[{selected.category}]</span>
-                  <h2 className="panelName">{selected.name}</h2>
-                  {wikiData.description && <p className="wikiDesc">{wikiData.description}</p>}
-                </div>
-                <button className="panelClose panelCloseHero" onClick={closePanel}>✕</button>
+            {/* Hero — wiki image if available, else category gradient */}
+            <div
+              className="wikiHero"
+              style={wikiData?.image
+                ? { backgroundImage: `url(${wikiData.image})` }
+                : { background: `linear-gradient(135deg, ${CATEGORY_COLORS[selected.category]}22 0%, #0a0a0a 100%)` }
+              }
+            >
+              <div className="wikiHeroOverlay" />
+              <div className="wikiHeroText">
+                <span className="panelCat" style={{ color: CATEGORY_COLORS[selected.category] }}>[{selected.category}]</span>
+                <h2 className="panelName">{selected.name}</h2>
+                {wikiData?.description && <p className="wikiDesc">{wikiData.description}</p>}
               </div>
-            )}
+              <button className="panelClose panelCloseHero" onClick={closePanel}>✕</button>
+            </div>
 
-            {/* Header (shown when no wiki image) */}
-            {!wikiData?.image && (
-              <div className="panelHeader">
-                <div>
-                  <span className="panelCat" style={{ color: CATEGORY_COLORS[selected.category] }}>[{selected.category}]</span>
-                  <h2 className="panelName">{selected.name}</h2>
-                  <p className="panelDesc">{selected.description}</p>
-                </div>
-                <button className="panelClose" onClick={closePanel}>✕</button>
-              </div>
-            )}
-
-            {/* Personal note + site link */}
-            <div className="panelMeta">
-              {wikiData?.image && <p className="panelDesc">{selected.description}</p>}
+            {/* WHY I'M HERE — prominent personal reason */}
+            <div className="panelWhyBlock" style={{ borderLeftColor: CATEGORY_COLORS[selected.category] }}>
+              <span className="panelWhyLabel" style={{ color: CATEGORY_COLORS[selected.category] }}>why i'm here</span>
+              <p className="panelWhy">{selected.description}</p>
               {selected.siteLink && (
                 <button className="panelSiteLink" onClick={() => handleSiteLink(selected.siteLink!)}>
                   → {selected.siteLink.label}
