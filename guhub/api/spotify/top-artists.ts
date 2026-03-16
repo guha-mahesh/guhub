@@ -1,17 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-const WD_UA = 'guha.one/1.0 (guhamaheshv@gmail.com)';
-
-// Q-IDs for "instance of" values that indicate a music group/artist
-const MUSIC_INSTANCE_QIDS = new Set([
-  'Q215380', // musical group
-  'Q5741069', // musical duo
-  'Q2088357', // musical ensemble
-  'Q215627',  // person (solo artist)
-  'Q5',       // human
-  'Q3740104', // indie rock band
-  'Q14623351',// rock band
-]);
+const MB_UA = 'guha.one/1.0 (guhamaheshv@gmail.com)';
+const NOM_UA = 'guha.one/1.0 (guhamaheshv@gmail.com)';
 
 async function getAccessToken(): Promise<string> {
   const basic = Buffer.from(`${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`).toString('base64');
@@ -24,76 +14,68 @@ async function getAccessToken(): Promise<string> {
   return data.access_token as string;
 }
 
-// Search Wikidata for artist — returns QID only if it's a music entity
-async function searchWikidataArtist(name: string, spotifyId: string): Promise<string | null> {
+// Look up artist on MusicBrainz, return their origin city name
+async function mbArtistCity(name: string): Promise<{ city: string; country: string } | null> {
   try {
-    // Search up to 5 results and pick the music one
     const r = await fetch(
-      `https://www.wikidata.org/w/api.php?action=wbsearchentities&search=${encodeURIComponent(name)}&language=en&format=json&limit=5&type=item`,
-      { headers: { 'User-Agent': WD_UA } }
+      `https://musicbrainz.org/ws/2/artist/?query=${encodeURIComponent(name)}&fmt=json&limit=3`,
+      { headers: { 'User-Agent': MB_UA } }
     );
+    if (!r.ok) return null;
     const d = await r.json();
-    const candidates: string[] = d.search?.map((x: any) => x.id) ?? [];
-    if (!candidates.length) return null;
+    const artists: any[] = d.artists ?? [];
 
-    // Fetch P31 (instance of) for all candidates at once
-    const r2 = await fetch(
-      `https://www.wikidata.org/w/api.php?action=wbgetentities&ids=${candidates.join('|')}&props=claims&format=json`,
-      { headers: { 'User-Agent': WD_UA } }
-    );
-    const d2 = await r2.json();
+    // Find best match: name must closely match
+    const match = artists.find(a =>
+      a.name.toLowerCase() === name.toLowerCase() ||
+      a.name.toLowerCase().includes(name.toLowerCase()) ||
+      name.toLowerCase().includes(a.name.toLowerCase())
+    ) ?? artists[0];
 
-    for (const qid of candidates) {
-      const claims = d2.entities?.[qid]?.claims ?? {};
-      const instanceOfs: string[] = (claims.P31 ?? []).map(
-        (s: any) => s?.mainsnak?.datavalue?.value?.id
-      ).filter(Boolean);
-      // Accept if any P31 value is a music type, OR if it has P740 (location of formation = music indicator)
-      const isMusic = instanceOfs.some(q => MUSIC_INSTANCE_QIDS.has(q)) || 'P740' in claims;
-      if (isMusic) return qid;
-    }
-    return null;
+    if (!match) return null;
+
+    // Prefer begin-area (origin) over area (current) — more interesting geographically
+    const city = match['begin-area']?.name ?? match['area']?.name ?? null;
+    const country = match.country ?? match['area']?.name ?? null;
+
+    if (!city) return null;
+    return { city, country };
   } catch { return null; }
 }
 
-async function fetchClaims(qids: string[]): Promise<Record<string, any>> {
-  if (!qids.length) return {};
+// Geocode a city name to lat/lng via Nominatim (OSM), free, no key
+async function geocode(city: string, country?: string | null): Promise<{ lat: number; lng: number; displayName: string } | null> {
   try {
+    const q = country ? `${city}, ${country}` : city;
     const r = await fetch(
-      `https://www.wikidata.org/w/api.php?action=wbgetentities&ids=${qids.join('|')}&props=claims&format=json`,
-      { headers: { 'User-Agent': WD_UA } }
+      `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=1`,
+      { headers: { 'User-Agent': NOM_UA } }
     );
+    if (!r.ok) return null;
     const d = await r.json();
-    return d.entities ?? {};
-  } catch { return {}; }
+    if (!d[0]) return null;
+    return {
+      lat: parseFloat(d[0].lat),
+      lng: parseFloat(d[0].lon),
+      displayName: d[0].display_name.split(',').slice(0, 2).join(',').trim(),
+    };
+  } catch { return null; }
 }
 
-async function fetchLocations(qids: string[]): Promise<Record<string, { lat: number; lng: number; city: string }>> {
-  if (!qids.length) return {};
-  try {
-    const r = await fetch(
-      `https://www.wikidata.org/w/api.php?action=wbgetentities&ids=${qids.join('|')}&props=claims|labels&format=json&languages=en`,
-      { headers: { 'User-Agent': WD_UA } }
-    );
-    const d = await r.json();
-    const out: Record<string, { lat: number; lng: number; city: string }> = {};
-    for (const [qid, entity] of Object.entries(d.entities ?? {}) as [string, any][]) {
-      const coords = entity?.claims?.P625?.[0]?.mainsnak?.datavalue?.value;
-      if (coords?.latitude) {
-        out[qid] = { lat: coords.latitude, lng: coords.longitude, city: entity?.labels?.en?.value ?? qid };
-      }
-    }
-    return out;
-  } catch { return {}; }
-}
-
+// Run in batches to avoid rate limits
 async function batch<T, R>(items: T[], size: number, fn: (item: T) => Promise<R>): Promise<R[]> {
   const results: R[] = [];
   for (let i = 0; i < items.length; i += size) {
     results.push(...await Promise.all(items.slice(i, i + size).map(fn)));
+    if (i + size < items.length) await new Promise(r => setTimeout(r, 300)); // MB rate limit: 1 req/sec
   }
   return results;
 }
+
+// Known bad Wikidata/MB location QIDs or mappings -> override
+const KNOWN_OVERRIDES: Record<string, { lat: number; lng: number; city: string } | null> = {
+  'Cigarettes After Sex': { lat: 31.7619, lng: -106.4850, city: 'El Paso, TX' },
+};
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -108,63 +90,31 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const data = await r.json();
     const artists: any[] = data.items ?? [];
 
-    // Step 1: Find music-verified QID for each artist (batches of 5)
-    const withQids = await batch(artists, 5, async (artist) => ({
-      artist,
-      qid: await searchWikidataArtist(artist.name, artist.id),
-    }));
-    const validQids = withQids.filter(x => x.qid) as { artist: any; qid: string }[];
+    // Step 1: MusicBrainz lookup for each artist (batches of 3 to respect 1req/s)
+    const withCities = await batch(artists, 3, async (artist) => {
+      if (artist.name in KNOWN_OVERRIDES) {
+        return { artist, override: KNOWN_OVERRIDES[artist.name] };
+      }
+      const cityData = await mbArtistCity(artist.name);
+      return { artist, cityData, override: null };
+    });
 
-    // Step 2: Bulk fetch claims for all verified artist QIDs
-    const claimsMap = await fetchClaims(validQids.map(x => x.qid));
+    // Step 2: Geocode all found cities (batches of 5)
+    const withCoords = await batch(withCities, 5, async ({ artist, cityData, override }) => {
+      if (override !== undefined) return { artist, loc: override };
+      if (!cityData) return { artist, loc: null };
+      const geo = await geocode(cityData.city, cityData.country);
+      if (!geo) return { artist, loc: null };
+      return {
+        artist,
+        loc: { lat: geo.lat, lng: geo.lng, city: cityData.city },
+      };
+    });
 
-    // Step 3: Extract location QID — P740 (formation) for groups, P19 (birthplace) for solo artists
-    const locationNeeded = new Map<string, string>(); // locQid -> artistQid
-    for (const { qid } of validQids) {
-      const claims = claimsMap[qid]?.claims ?? {};
-      // P740 = formation, P19 = birthplace, P159 = HQ, P27 = country of citizenship (last resort)
-      const locQid = claims.P740?.[0]?.mainsnak?.datavalue?.value?.id
-                  ?? claims.P19?.[0]?.mainsnak?.datavalue?.value?.id
-                  ?? claims.P159?.[0]?.mainsnak?.datavalue?.value?.id
-                  ?? claims.P27?.[0]?.mainsnak?.datavalue?.value?.id;
-      if (locQid) locationNeeded.set(locQid, qid);
-    }
-
-    // Step 4: Bulk fetch location coords
-    const locData = await fetchLocations([...locationNeeded.keys()]);
-
-    // Step 5: Build artist -> location map
-    const artistLocMap = new Map<string, { lat: number; lng: number; city: string }>();
-    for (const [locQid, artistQid] of locationNeeded.entries()) {
-      const loc = locData[locQid];
-      if (loc) artistLocMap.set(artistQid, loc);
-    }
-
-    // Known bad Wikidata location QIDs -> correct coords override, or null to skip entirely
-    const KNOWN_BAD_LOC_QIDS: Record<string, { lat: number; lng: number; city: string } | null> = {
-      'Q575590': { lat: 31.7619, lng: -106.4850, city: 'El Paso, TX' }, // CAS: WD maps to El Paso IL, override to TX
-    };
-
-    // Step 6: Build deduplicated pins
+    // Step 3: Deduplicate by coords and build pins
     const seen = new Set<string>();
-    const pins = validQids
-      .map(({ artist, qid }) => {
-        // Find the location QID used for this artist
-        const claims = claimsMap[qid]?.claims ?? {};
-        const usedLocQid = claims.P740?.[0]?.mainsnak?.datavalue?.value?.id
-                        ?? claims.P19?.[0]?.mainsnak?.datavalue?.value?.id
-                        ?? claims.P159?.[0]?.mainsnak?.datavalue?.value?.id
-                        ?? claims.P27?.[0]?.mainsnak?.datavalue?.value?.id;
-        // Check if this location QID is a known bad mapping
-        if (usedLocQid && usedLocQid in KNOWN_BAD_LOC_QIDS) {
-          const override = KNOWN_BAD_LOC_QIDS[usedLocQid];
-          if (!override) return null;
-          const key = `${override.lat.toFixed(1)},${override.lng.toFixed(1)}`;
-          if (seen.has(key)) return null;
-          seen.add(key);
-          return { id: `music-${artist.id}`, name: override.city, lat: override.lat, lng: override.lng, category: 'interest', description: artist.name, queryKeywords: `${artist.name} music`, spotifyArtistId: artist.id, wikiQuery: override.city };
-        }
-        const loc = artistLocMap.get(qid);
+    const pins = withCoords
+      .map(({ artist, loc }) => {
         if (!loc) return null;
         const key = `${loc.lat.toFixed(1)},${loc.lng.toFixed(1)}`;
         if (seen.has(key)) return null;
