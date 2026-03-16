@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { FaVolumeUp, FaVolumeMute, FaPlay, FaTimes } from 'react-icons/fa';
+import { FaVolumeUp, FaVolumeMute, FaTimes } from 'react-icons/fa';
 import './BackgroundMusic.css';
 
 const API = import.meta.env.VITE_API_BASE ?? '';
@@ -8,22 +8,46 @@ interface Track {
   title: string;
   artist: string;
   albumArt: string | null;
-  uri: string; // spotify:track:xxx
+  uri: string;
 }
 
 const BackgroundMusic = () => {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [needsInteraction, setNeedsInteraction] = useState(true);
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
+  const [embedSrc, setEmbedSrc] = useState('');
   const [showToast, setShowToast] = useState(false);
+  const [iframeReady, setIframeReady] = useState(false);
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const hasClickedRef = useRef(false);
   const queueRef = useRef<Track[]>([]);
   const queueIndexRef = useRef(0);
-  const controllerReadyRef = useRef(false);
+  const pendingPlayRef = useRef(false);
 
-  // Build queue from now-playing + recent
+  const getTrackId = (uri: string) => uri.replace('spotify:track:', '');
+
+  const sendCommand = useCallback((command: string) => {
+    iframeRef.current?.contentWindow?.postMessage({ command }, 'https://open.spotify.com');
+  }, []);
+
+  const showTrackToast = useCallback(() => {
+    setShowToast(true);
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    toastTimerRef.current = setTimeout(() => setShowToast(false), 5000);
+  }, []);
+
+  const loadTrack = useCallback((idx: number, tracks: Track[]) => {
+    if (!tracks.length) return;
+    const i = idx % tracks.length;
+    const track = tracks[i];
+    queueIndexRef.current = i;
+    setCurrentTrack(track);
+    setIframeReady(false);
+    pendingPlayRef.current = true;
+    setEmbedSrc(`https://open.spotify.com/embed/track/${getTrackId(track.uri)}?utm_source=generator`);
+    showTrackToast();
+  }, [showTrackToast]);
+
+  // Build queue on mount
   useEffect(() => {
     const build = async () => {
       const tracks: Track[] = [];
@@ -37,95 +61,67 @@ const BackgroundMusic = () => {
           if (t.uri) tracks.push({ title: t.title, artist: t.artist, albumArt: t.albumArt, uri: t.uri });
         }
       } catch {}
-      // dedupe by uri
       const seen = new Set<string>();
       const unique = tracks.filter(t => { if (seen.has(t.uri)) return false; seen.add(t.uri); return true; });
       queueRef.current = unique;
-      console.log('[BGMusic] queue built:', unique.length, 'tracks');
-      if (hasClickedRef.current && unique.length) startTrack(0, unique);
+      // Preload first track immediately so embed is ready when user first interacts
+      if (unique.length) {
+        const track = unique[0];
+        setCurrentTrack(track);
+        setEmbedSrc(`https://open.spotify.com/embed/track/${getTrackId(track.uri)}?utm_source=generator`);
+      }
     };
     build();
   }, []);
 
-  const getTrackId = (uri: string) => uri.replace('spotify:track:', '');
-
-  const startTrack = useCallback((idx: number, tracks: Track[]) => {
-    if (!tracks.length) return;
-    const i = idx % tracks.length;
-    const track = tracks[i];
-    queueIndexRef.current = i;
-    setCurrentTrack(track);
-    controllerReadyRef.current = false;
-
-    // Load embed iframe with this track
-    const trackId = getTrackId(track.uri);
-    const embedUrl = `https://open.spotify.com/embed/track/${trackId}?utm_source=generator&autoplay=1`;
-    if (iframeRef.current) {
-      iframeRef.current.src = embedUrl;
-    }
-    setIsPlaying(true);
-
-    // Show toast for 5s
-    setShowToast(true);
-    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
-    toastTimerRef.current = setTimeout(() => setShowToast(false), 5000);
-  }, []);
-
-  // Listen for embed events (track end, ready)
+  // Listen for iframe API messages
   useEffect(() => {
     const onMessage = (e: MessageEvent) => {
       if (!e.origin.includes('spotify.com')) return;
       try {
         const data = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
-        console.log('[BGMusic] embed message:', data);
         if (data?.type === 'ready') {
-          controllerReadyRef.current = true;
+          setIframeReady(true);
+          // If play was requested while loading, send it now
+          if (pendingPlayRef.current) {
+            pendingPlayRef.current = false;
+            sendCommand('toggle');
+            setIsPlaying(true);
+          }
         }
-        // When playback position hits duration, advance queue
         if (data?.type === 'player_state_changed') {
           const state = data.payload;
-          if (state?.is_paused && state?.position === 0 && controllerReadyRef.current) {
-            // track ended, play next
+          if (state?.is_paused === false) setIsPlaying(true);
+          if (state?.is_paused === true && state?.position === 0 && iframeReady) {
+            // track ended — advance
             const next = queueIndexRef.current + 1;
-            startTrack(next, queueRef.current);
+            loadTrack(next, queueRef.current);
           }
         }
       } catch {}
     };
     window.addEventListener('message', onMessage);
     return () => window.removeEventListener('message', onMessage);
-  }, [startTrack]);
+  }, [sendCommand, loadTrack, iframeReady]);
 
-  // First click triggers playback
-  useEffect(() => {
-    const tryPlay = () => {
-      hasClickedRef.current = true;
-      setNeedsInteraction(false);
-      if (queueRef.current.length) {
-        startTrack(0, queueRef.current);
-      } else {
-        console.warn('[BGMusic] queue empty on click, will start when loaded');
-      }
-    };
-    document.addEventListener('click', tryPlay, { once: true });
-    return () => document.removeEventListener('click', tryPlay);
-  }, [startTrack]);
-
-  const togglePlay = () => {
-    if (!iframeRef.current || !queueRef.current.length) return;
+  const togglePlay = useCallback(() => {
+    if (!queueRef.current.length) return;
     if (isPlaying) {
-      // pause via postMessage
-      iframeRef.current.contentWindow?.postMessage({ command: 'pause' }, '*');
+      sendCommand('toggle');
       setIsPlaying(false);
     } else {
-      if (!currentTrack) {
-        startTrack(0, queueRef.current);
-      } else {
-        iframeRef.current.contentWindow?.postMessage({ command: 'toggle' }, '*');
+      if (!embedSrc) {
+        loadTrack(0, queueRef.current);
+      } else if (iframeReady) {
+        sendCommand('toggle');
         setIsPlaying(true);
+        if (currentTrack) showTrackToast();
+      } else {
+        // iframe still loading, mark pending
+        pendingPlayRef.current = true;
       }
     }
-  };
+  }, [isPlaying, embedSrc, iframeReady, currentTrack, sendCommand, loadTrack, showTrackToast]);
 
   const dismissToast = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -135,9 +131,9 @@ const BackgroundMusic = () => {
 
   return (
     <div className="backgroundMusicControl">
-      {/* Spotify embed — must be rendered (not display:none) for autoplay */}
       <iframe
         ref={iframeRef}
+        src={embedSrc || undefined}
         style={{ position: 'absolute', width: '1px', height: '1px', opacity: 0, pointerEvents: 'none' }}
         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
         title="spotify-preview"
@@ -145,10 +141,10 @@ const BackgroundMusic = () => {
 
       <button
         onClick={togglePlay}
-        className={`musicToggle ${needsInteraction ? 'pulse' : ''}`}
-        title={isPlaying ? 'Pause' : 'Play'}
+        className="musicToggle"
+        title={isPlaying ? 'Pause' : 'Play music'}
       >
-        {isPlaying ? <FaVolumeUp /> : needsInteraction ? <FaPlay /> : <FaVolumeMute />}
+        {isPlaying ? <FaVolumeUp /> : <FaVolumeMute />}
       </button>
 
       {showToast && currentTrack && (
