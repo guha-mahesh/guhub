@@ -18,41 +18,40 @@ async function getAccessToken(): Promise<string> {
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
-  res.setHeader('Pragma', 'no-cache');
-  res.setHeader('Expires', '0');
-  res.removeHeader('ETag');
-  if (req.method === 'OPTIONS') return res.status(200).end();
+  // Vercel cron sends GET with authorization header
+  if (req.headers.authorization !== `Bearer ${process.env.CRON_SECRET}`) {
+    return res.status(401).json({ error: 'unauthorized' });
+  }
+
   try {
     const token = await getAccessToken();
     const r = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
       headers: { Authorization: `Bearer ${token}` },
     });
+
     if (r.status === 204 || r.status > 400) {
-      // Fall back to cron cache
-      const { data: cached } = await supabase.from('now_playing_cache').select('*').eq('id', 'current').single();
-      if (cached) return res.json({ isPlaying: false, cached: true, ...cached });
-      return res.json({ isPlaying: false });
+      return res.json({ ok: true, playing: false });
     }
+
     const data = await r.json();
-    if (!data?.item) {
-      const { data: cached } = await supabase.from('now_playing_cache').select('*').eq('id', 'current').single();
-      if (cached) return res.json({ isPlaying: false, cached: true, ...cached });
-      return res.json({ isPlaying: false });
+    if (!data?.item || !data.is_playing) {
+      return res.json({ ok: true, playing: false });
     }
-    return res.json({
-      isPlaying: data.is_playing,
+
+    const track = {
+      id: 'current',
       title: data.item.name,
       artist: data.item.artists.map((a: any) => a.name).join(', '),
       album: data.item.album.name,
       albumArt: data.item.album.images[0]?.url ?? null,
-      spotifyUrl: data.item.external_urls.spotify,
       uri: data.item.uri,
-      previewUrl: data.item.preview_url ?? null,
-      progressMs: data.progress_ms,
-      durationMs: data.item.duration_ms,
-    });
+      spotifyUrl: data.item.external_urls.spotify,
+      updated_at: new Date().toISOString(),
+    };
+
+    await supabase.from('now_playing_cache').upsert(track, { onConflict: 'id' });
+
+    return res.json({ ok: true, playing: true, track: track.title });
   } catch (e: any) {
     return res.status(500).json({ error: e.message });
   }
