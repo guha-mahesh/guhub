@@ -124,3 +124,44 @@
   font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem;
   padding: 8px; cursor: pointer; border-radius: 2px;
 }
+
+/* Geo results */
+.geoResults {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin: 2px 0;
+}
+
+.geoResult {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(115,145,102,0.15);
+  color: #ccc;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.68rem;
+  padding: 5px 8px;
+  cursor: pointer;
+  border-radius: 2px;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.geoResult:hover { border-color: rgba(115,145,102,0.4); background: rgba(115,145,102,0.06); }
+.geoResult.active { border-color: #739166; background: rgba(115,145,102,0.1); color: #f0f0f0; }
+.geoResultName { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.geoResultType { color: rgba(115,145,102,0.5); font-size: 0.6rem; flex-shrink: 0; }
+
+/* Show name toggle */
+.friendToggleRow { margin-top: 4px; }
+.friendToggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem;
+  color: rgba(115,145,102,0.7);
+}
+.friendToggle input[type="checkbox"] { accent-color: #739166; width: 14px; height: 14px; cursor: pointer; }

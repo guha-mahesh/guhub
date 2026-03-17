@@ -44,9 +44,10 @@ interface Friend {
   lat: number;
   lng: number;
   color: string;
+  show_name?: boolean;
   note?: string;
-  song?: string;   // Spotify track ID
-  animal?: string; // Wikipedia article slug
+  song?: string;
+  animal?: string;
   descriptors?: Record<string, string>;
 }
 
@@ -257,7 +258,7 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
             <circle cx="7" cy="5" r="3.5" fill="${color}" stroke="rgba(0,0,0,0.7)" stroke-width="1"/>
             <path d="M1 17c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="${color}" stroke-width="1.5" stroke-linecap="round" fill="none"/>
           </svg>
-          <div class="friendPinTip" style="display:none;position:absolute;bottom:calc(100% + 2px);left:50%;transform:translateX(-50%);background:rgba(8,8,8,0.95);border:1px solid ${color};padding:3px 8px;font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:#f0f0f0;white-space:nowrap;border-radius:2px;z-index:9999;">${f.name} · ${f.city}</div>
+          <div class="friendPinTip" style="display:none;position:absolute;bottom:calc(100% + 2px);left:50%;transform:translateX(-50%);background:rgba(8,8,8,0.95);border:1px solid ${color};padding:3px 8px;font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:#f0f0f0;white-space:nowrap;border-radius:2px;z-index:9999;">${f.city}</div>
         `;
         pin.addEventListener('mouseenter', () => { (pin.querySelector('.friendPinTip') as HTMLElement).style.display = 'block'; });
         pin.addEventListener('mouseleave', () => { (pin.querySelector('.friendPinTip') as HTMLElement).style.display = 'none'; });
@@ -328,7 +329,7 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
           .pointResolution(12)
           .pointLabel((d: any) => {
             const c = d.category === 'friend' ? (d.friendData?.color ?? '#a8d8ea') : (CATEGORY_COLORS[d.category as Category] ?? '#739166');
-            const label = d.category === 'friend' ? d.description : d.name;
+            const label = d.category === 'friend' ? d.name : d.name;
             return `<div style="background:rgba(8,8,8,0.95);border:1px solid ${c};padding:5px 9px;font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:#f0f0f0;white-space:nowrap;border-radius:2px;cursor:pointer">${label}</div>`;
           })
           .onPointHover((point: any) => {
@@ -426,7 +427,8 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
                   <span className="panelWhyLabel" style={{ color: accentColor }}>
                     {f ? 'who\'s here' : 'why i\'m here'}
                   </span>
-                  <p className="panelWhy">{selected.description}</p>
+                  <p className="panelWhy">{f ? (f.show_name ? f.name : f.city) : selected.description}</p>
+                  {/* name intentionally not shown — anonymous by design */}
                   {f?.note && <p className="panelDesc" style={{ marginTop: 4 }}>{f.note}</p>}
                   {selected.siteLink && (
                     <button className="panelSiteLink" onClick={() => handleSiteLink(selected.siteLink!)}>

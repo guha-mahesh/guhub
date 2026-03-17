@@ -9,10 +9,19 @@ interface Friend {
   lat: number;
   lng: number;
   color: string;
+  show_name?: boolean;
   note?: string;
-  song?: string;   // Spotify track ID
-  animal?: string; // Wikipedia article slug
+  song?: string;
+  animal?: string;
   descriptors?: Record<string, string>;
+}
+
+interface GeoResult {
+  display_name: string;
+  lat: string;
+  lon: string;
+  type: string;
+  address?: { city?: string; town?: string; country?: string };
 }
 
 const PRESET_COLORS = [
@@ -35,13 +44,19 @@ export default function FriendEditor() {
     setFriends(await r.json());
   };
 
+  const [geoResults, setGeoResults] = useState<GeoResult[]>([]);
+
   const geocodeCity = async (city: string) => {
     setGeocoding(true);
+    setGeoResults([]);
     try {
-      const r = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(city)}&format=json&limit=1`, {
-        headers: { 'User-Agent': 'guha.one/1.0' }
-      });
-      const d = await r.json();
+      const r = await fetch(
+        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(city)}&format=json&limit=5&addressdetails=1`,
+        { headers: { 'User-Agent': 'guha.one/1.0' } }
+      );
+      const d: GeoResult[] = await r.json();
+      setGeoResults(d);
+      // Auto-select first result
       if (d[0]) setEditing(prev => prev ? { ...prev, lat: parseFloat(d[0].lat), lng: parseFloat(d[0].lon) } : null);
     } finally { setGeocoding(false); }
   };
@@ -64,7 +79,7 @@ export default function FriendEditor() {
     loadFriends();
   };
 
-  const blank = (): Friend => ({ name: '', city: '', lat: 0, lng: 0, color: PRESET_COLORS[0], note: '', song: '', animal: '' });
+  const blank = (): Friend => ({ name: '', city: '', lat: 0, lng: 0, color: PRESET_COLORS[0], note: '', song: '', animal: '', show_name: false });
 
   return (
     <div className="friendEditor">
@@ -99,7 +114,19 @@ export default function FriendEditor() {
               <input value={editing.city} onChange={e => setEditing({ ...editing, city: e.target.value })} placeholder="city, country" />
               <button onClick={() => geocodeCity(editing.city)} disabled={geocoding}>{geocoding ? '…' : 'locate'}</button>
             </div>
-            {editing.lat !== 0 && <p className="friendCoords">{editing.lat.toFixed(3)}, {editing.lng.toFixed(3)}</p>}
+            {/* Geo results picker */}
+            {geoResults.length > 0 && (
+              <div className="geoResults">
+                {geoResults.map((g, i) => (
+                  <button key={i} className={`geoResult ${editing.lat === parseFloat(g.lat) ? 'active' : ''}`}
+                    onClick={() => setEditing(prev => prev ? { ...prev, lat: parseFloat(g.lat), lng: parseFloat(g.lon) } : null)}>
+                    <span className="geoResultName">{g.display_name.split(',').slice(0, 3).join(',')}</span>
+                    <span className="geoResultType">{g.type}</span>
+                  </button>
+                ))}
+              </div>
+            )}
+            {editing.lat !== 0 && <p className="friendCoords">{editing.lat.toFixed(4)}, {editing.lng.toFixed(4)}</p>}
 
             <label>color</label>
             <div className="friendColorRow">
@@ -118,6 +145,14 @@ export default function FriendEditor() {
 
             <label>animal <span className="optional">(wikipedia slug — optional)</span></label>
             <input value={editing.animal ?? ''} onChange={e => setEditing({ ...editing, animal: e.target.value })} placeholder="e.g. Snow_leopard" />
+
+            <div className="friendToggleRow">
+              <label className="friendToggle">
+                <input type="checkbox" checked={!!editing.show_name}
+                  onChange={e => setEditing({ ...editing, show_name: e.target.checked })} />
+                <span>show name publicly</span>
+              </label>
+            </div>
 
             <div className="friendModalActions">
               <button className="friendSaveBtn" onClick={save}>save</button>
