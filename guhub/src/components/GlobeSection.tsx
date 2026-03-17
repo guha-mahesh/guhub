@@ -127,6 +127,22 @@ async function fetchMemories(keywords: string): Promise<Memory[]> {
   return mems.map(m => ({ source: m.source || '?', headline: m.content?.headline || '', narrative: m.content?.narrative || '', date: m.content?.when?.event_start_time?.slice(0, 10) || '' }));
 }
 
+const FriendAnimal = ({ slug, color }: { slug: string; color: string }) => {
+  const [img, setImg] = useState<string | null>(null);
+  useEffect(() => {
+    fetch(`/api/wiki?q=${encodeURIComponent(slug)}`)
+      .then(r => r.json())
+      .then(d => { if (d.image) setImg(d.image); })
+      .catch(() => {});
+  }, [slug]);
+  return (
+    <span className="friendAnimalTag" style={{ borderColor: color + '55', color }}>
+      {img && <img src={img} alt={slug} className="friendAnimalImg" />}
+      {slug.replace(/_/g, ' ')}
+    </span>
+  );
+};
+
 const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => void }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const globeRef = useRef<any>(null);
@@ -481,11 +497,7 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
 
                       {/* Metadata row: animal + note */}
                       <div className="friendCardMeta">
-                        {f.animal && (
-                          <span className="friendCardTag" style={{ borderColor: f.color + '55', color: f.color }}>
-                            🐾 {f.animal.replace(/_/g, ' ')}
-                          </span>
-                        )}
+                        {f.animal && <FriendAnimal slug={f.animal} color={f.color} />}
                         {f.note && <span className="friendCardNote">{f.note}</span>}
                       </div>
 

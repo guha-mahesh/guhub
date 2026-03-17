@@ -256,6 +256,25 @@
   padding: 2px 7px;
 }
 
+.friendAnimalTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.68rem;
+  border: 1px solid;
+  border-radius: 2px;
+  padding: 2px 7px 2px 4px;
+}
+
+.friendAnimalImg {
+  width: 18px;
+  height: 18px;
+  object-fit: cover;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
 .friendCardNote {
   color: rgba(200,200,200,0.55);
   font-size: 0.75rem;
