@@ -417,17 +417,10 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
               </div>
             )}
 
-            {/* Personal reason / site link (non-friend pins only) */}
-            {!((selected as any).friendData) && (
-              <div className="panelWhyBlock" style={{ borderLeftColor: CATEGORY_COLORS[selected.category] }}>
-                <span className="panelWhyLabel" style={{ color: CATEGORY_COLORS[selected.category] }}>why i'm here</span>
-                <p className="panelWhy">{selected.description}</p>
-                {selected.siteLink && (
-                  <button className="panelSiteLink" onClick={() => handleSiteLink(selected.siteLink!)}>
-                    → {selected.siteLink.label}
-                  </button>
-                )}
-              </div>
+            {selected.siteLink && (
+              <button className="panelSiteLink" style={{ margin: '0.75rem 1.75rem 0' }} onClick={() => handleSiteLink(selected.siteLink!)}>
+                → {selected.siteLink.label}
+              </button>
             )}
 
             {/* Wikipedia extract */}
