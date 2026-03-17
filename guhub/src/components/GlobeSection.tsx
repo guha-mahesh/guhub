@@ -203,9 +203,8 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
       globeRef.current.pointOfView({ lat: loc.lat, lng: loc.lng, altitude: 1.8 }, 1200);
     }
     fetchMemories(loc.queryKeywords).then(setMemories).catch(() => {}).finally(() => setLoading(false));
-    // For friend pins with an animal, append the animal to the wiki query
-    const friendData = (loc as any).friendData as Friend | undefined;
-    const wikiQ = friendData?.animal ? `${loc.wikiQuery ?? loc.name},${friendData.animal}` : loc.wikiQuery;
+    // Always use city wiki query — animal is shown in friend card separately
+    const wikiQ = loc.wikiQuery;
     if (wikiQ) {
       const encoded = wikiQ.split(',').map((s: string) => encodeURIComponent(s.trim())).join(',');
       fetch(`/api/wiki?q=${encoded}`)
@@ -462,35 +461,48 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
               </>
             )}
 
-            {/* FRIENDS section — colored cards with song + data */}
+            {/* FRIENDS section — self-contained friend cards */}
             {(() => {
-              // Collect all friends at this location
-              const friends: Friend[] = [];
               const f = (selected as any).friendData as Friend | undefined;
-              if (f) friends.push(f);
-              if (!friends.length) return null;
+              if (!f) return null;
               return (
                 <>
                   <div className="panelDivider" />
                   <div className="panelSection">
                     <p className="panelSectionLabel">people</p>
-                    {friends.map((fr, i) => (
-                      <div key={i} className="friendCard" style={{ borderColor: fr.color + '55', background: fr.color + '0d' }}>
-                        <div className="friendCardDot" style={{ background: fr.color }} />
-                        <div className="friendCardBody">
-                          <span className="friendCardCity">{fr.show_name ? fr.name : fr.city}</span>
-                          {fr.note && <span className="friendCardNote">{fr.note}</span>}
+                    <div className="friendCard" style={{ borderColor: f.color + '55', background: f.color + '08' }}>
+                      {/* Header row: icon + label */}
+                      <div className="friendCardHeader">
+                        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <circle cx="14" cy="10" r="6" fill={f.color} opacity="0.9"/>
+                          <path d="M2 28c0-6.627 5.373-12 12-12s12 5.373 12 12" stroke={f.color} strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.9"/>
+                        </svg>
+                        <div>
+                          <span className="friendCardLabel" style={{ color: f.color }}>Guha's Friend</span>
+                          {f.show_name && <span className="friendCardName">{f.name}</span>}
                         </div>
-                        {fr.song && (
-                          <iframe
-                            src={`https://open.spotify.com/embed/track/${fr.song}?utm_source=generator&theme=0`}
-                            width="100%" height="80" frameBorder="0"
-                            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                            loading="lazy" style={{ borderRadius: '4px', marginTop: '8px' }}
-                          />
-                        )}
                       </div>
-                    ))}
+
+                      {/* Metadata row: animal + note */}
+                      <div className="friendCardMeta">
+                        {f.animal && (
+                          <span className="friendCardTag" style={{ borderColor: f.color + '55', color: f.color }}>
+                            🐾 {f.animal.replace(/_/g, ' ')}
+                          </span>
+                        )}
+                        {f.note && <span className="friendCardNote">{f.note}</span>}
+                      </div>
+
+                      {/* Song embed */}
+                      {f.song && (
+                        <iframe
+                          src={`https://open.spotify.com/embed/track/${f.song}?utm_source=generator&theme=0`}
+                          width="100%" height="80" frameBorder="0"
+                          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                          loading="lazy" style={{ borderRadius: '4px', marginTop: '10px', display: 'block' }}
+                        />
+                      )}
+                    </div>
                   </div>
                 </>
               );
