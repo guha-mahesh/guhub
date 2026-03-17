@@ -1,0 +1,126 @@
+.friendEditor {
+  padding: 1rem 0 0.5rem;
+  border-top: 1px solid rgba(115,145,102,0.12);
+  margin-top: 0.75rem;
+}
+
+.friendEditorHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.6rem;
+}
+
+.friendEditorTitle {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(115,145,102,0.6);
+}
+
+.friendAddBtn {
+  background: none;
+  border: 1px solid rgba(115,145,102,0.4);
+  color: #739166;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.68rem;
+  padding: 2px 8px;
+  cursor: pointer;
+  border-radius: 2px;
+}
+.friendAddBtn:hover { background: rgba(115,145,102,0.1); }
+
+.friendList { display: flex; flex-direction: column; gap: 4px; }
+
+.friendRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem;
+}
+
+.friendDot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.friendRowName { color: #e0e0e0; font-weight: 500; }
+.friendRowCity { color: rgba(115,145,102,0.6); flex: 1; }
+
+.friendEditBtn, .friendDeleteBtn {
+  background: none; border: none; cursor: pointer;
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; padding: 1px 4px;
+}
+.friendEditBtn { color: rgba(115,145,102,0.6); }
+.friendEditBtn:hover { color: #739166; }
+.friendDeleteBtn { color: rgba(255,100,100,0.5); }
+.friendDeleteBtn:hover { color: #ff6464; }
+
+.friendEmpty { color: rgba(115,145,102,0.35); font-style: italic; font-size: 0.75rem; margin: 0; }
+
+.friendModal {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 9999;
+}
+
+.friendModalBox {
+  background: #0d0d0d; border: 1px solid rgba(115,145,102,0.3);
+  padding: 1.5rem; width: 340px; border-radius: 4px;
+  display: flex; flex-direction: column; gap: 6px;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.friendModalBox h3 {
+  color: #739166; font-size: 0.9rem; font-weight: 600;
+  margin: 0 0 0.5rem; letter-spacing: 0.05em;
+}
+
+.friendModalBox label {
+  font-size: 0.65rem; color: rgba(115,145,102,0.6);
+  text-transform: uppercase; letter-spacing: 0.1em; margin-top: 6px;
+}
+
+.optional { text-transform: none; opacity: 0.6; letter-spacing: 0; }
+
+.friendModalBox input {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(115,145,102,0.25);
+  color: #e0e0e0; font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem;
+  padding: 6px 8px; border-radius: 2px; width: 100%; box-sizing: border-box;
+}
+.friendModalBox input:focus { outline: none; border-color: rgba(115,145,102,0.6); }
+
+.friendCityRow { display: flex; gap: 6px; }
+.friendCityRow input { flex: 1; }
+.friendCityRow button {
+  background: none; border: 1px solid rgba(115,145,102,0.3);
+  color: #739166; font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem;
+  padding: 4px 10px; cursor: pointer; border-radius: 2px; white-space: nowrap;
+}
+
+.friendCoords { font-size: 0.62rem; color: rgba(115,145,102,0.5); margin: 0; }
+
+.friendColorRow { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+
+.friendColorSwatch {
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 2px solid transparent; cursor: pointer; padding: 0;
+  transition: transform 0.1s;
+}
+.friendColorSwatch.active { border-color: #fff; transform: scale(1.2); }
+.friendColorPicker { width: 28px; height: 20px; padding: 0; border: none; cursor: pointer; background: none; }
+
+.friendModalActions { display: flex; gap: 8px; margin-top: 8px; }
+
+.friendSaveBtn {
+  flex: 1; background: rgba(115,145,102,0.15);
+  border: 1px solid rgba(115,145,102,0.4); color: #739166;
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem;
+  padding: 8px; cursor: pointer; border-radius: 2px;
+}
+.friendSaveBtn:hover { background: rgba(115,145,102,0.25); }
+
+.friendCancelBtn {
+  flex: 1; background: none;
+  border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.4);
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem;
+  padding: 8px; cursor: pointer; border-radius: 2px;
+}

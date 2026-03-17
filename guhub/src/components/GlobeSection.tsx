@@ -37,7 +37,17 @@ interface GlobeLocation {
   media?: MediaItem[];
 }
 
-interface WikiData {
+interface Friend {
+  id: string;
+  name: string;
+  city: string;
+  lat: number;
+  lng: number;
+  color: string;
+  note?: string;
+}
+
+
   title: string;
   description: string;
   extract: string;
@@ -126,6 +136,20 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
   const allLocationsRef = useRef<GlobeLocation[]>(LOCATIONS);
   const navigate = useNavigate();
   const spinRef = useRef<(loc: GlobeLocation) => void>(() => {});
+  const friendLayerRef = useRef<any>(null);
+
+  // Load friends
+  useEffect(() => {
+    fetch('/api/friends').then(r => r.json()).then((friends: Friend[]) => {
+      if (!friends?.length) return;
+      // Inject friend markers once globe is ready
+      const tryInject = setInterval(() => {
+        if (!globeRef.current) return;
+        clearInterval(tryInject);
+        injectFriendMarkers(friends);
+      }, 200);
+    }).catch(() => {});
+  }, []);
 
   useEffect(() => {
     fetch('/api/spotify/top-artists').then(r => r.json()).then(data => {
@@ -173,6 +197,92 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
   }, [onPanelChange]);
 
   useEffect(() => { spinRef.current = spinToLocation; }, [spinToLocation]);
+
+  // Inject friend markers as htmlElementsData — stored separately, applied after globe init
+  const injectFriendMarkers = (friends: Friend[]) => {
+    if (!globeRef.current) return;
+    // Store friends on globe via custom property for re-use
+    (globeRef.current as any).__friends = friends;
+    renderFriendOverlay(friends);
+  };
+
+  const renderFriendOverlay = (friends: Friend[]) => {
+    if (!containerRef.current) return;
+    // Remove existing overlay
+    const existing = containerRef.current.querySelector('.friendOverlay');
+    if (existing) existing.remove();
+
+    const overlay = document.createElement('div');
+    overlay.className = 'friendOverlay';
+    overlay.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:5;';
+    containerRef.current.appendChild(overlay);
+
+    const updatePositions = () => {
+      if (!globeRef.current) return;
+      overlay.innerHTML = '';
+      friends.forEach((f: Friend) => {
+        const projected = globeRef.current.getScreenCoords(f.lat, f.lng, 0.07);
+        if (!projected) return;
+        const { x, y } = projected;
+        if (x < 0 || y < 0) return;
+
+        const color = f.color ?? '#a8d8ea';
+        const pin = document.createElement('div');
+        pin.style.cssText = `position:absolute;left:${x}px;top:${y}px;transform:translate(-50%,-100%);pointer-events:all;cursor:pointer;`;
+        pin.innerHTML = `
+          <svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 0 4px ${color}88)">
+            <circle cx="7" cy="5" r="3.5" fill="${color}" stroke="rgba(0,0,0,0.7)" stroke-width="1"/>
+            <path d="M1 17c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="${color}" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+          </svg>
+          <div class="friendPinTip" style="display:none;position:absolute;bottom:calc(100% + 2px);left:50%;transform:translateX(-50%);background:rgba(8,8,8,0.95);border:1px solid ${color};padding:3px 8px;font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:#f0f0f0;white-space:nowrap;border-radius:2px;z-index:9999;">${f.name} · ${f.city}</div>
+        `;
+        pin.addEventListener('mouseenter', () => { (pin.querySelector('.friendPinTip') as HTMLElement).style.display = 'block'; });
+        pin.addEventListener('mouseleave', () => { (pin.querySelector('.friendPinTip') as HTMLElement).style.display = 'none'; });
+        overlay.appendChild(pin);
+      });
+    };
+
+    // Update on every animation frame
+    let animId: number;
+    const loop = () => { updatePositions(); animId = requestAnimationFrame(loop); };
+    loop();
+    // Store cleanup on overlay element
+    (overlay as any)._cleanup = () => cancelAnimationFrame(animId);
+  };
+
+
+
+  // Render friend SVG markers via htmlElementsData on a separate layer
+  const injectFriendMarkers = (friends: Friend[]) => {
+    if (!globeRef.current) return;
+    const globe = globeRef.current;
+    globe
+      .htmlElementsData(friends)
+      .htmlLat((d: any) => d.lat)
+      .htmlLng((d: any) => d.lng)
+      .htmlAltitude(0.07)
+      .htmlElement((d: any) => {
+        const color = d.color ?? '#a8d8ea';
+        const el = document.createElement('div');
+        el.style.cssText = 'position:relative;cursor:pointer;display:flex;flex-direction:column;align-items:center;';
+        el.innerHTML = `
+          <svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 0 4px ${color}88)">
+            <circle cx="7" cy="5" r="3.5" fill="${color}" stroke="rgba(0,0,0,0.6)" stroke-width="1"/>
+            <path d="M1 17c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="${color}" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+          </svg>
+        `;
+        const tip = document.createElement('div');
+        tip.style.cssText = `display:none;position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);background:rgba(8,8,8,0.95);border:1px solid ${color};padding:3px 7px;font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:#f0f0f0;white-space:nowrap;border-radius:2px;pointer-events:none;z-index:9999;`;
+        tip.textContent = `${d.name} · ${d.city}`;
+        el.appendChild(tip);
+        el.addEventListener('mouseenter', () => { tip.style.display = 'block'; });
+        el.addEventListener('mouseleave', () => { tip.style.display = 'none'; });
+        return el;
+      });
+    friendLayerRef.current = friends;
+  };
+
+
 
   const closePanel = useCallback(() => {
     setPanelOpen(false);
