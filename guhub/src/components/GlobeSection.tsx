@@ -418,26 +418,18 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
               </div>
             )}
 
-            {/* WHY I'M HERE — prominent personal reason */}
-            {(() => {
-              const f = (selected as any).friendData as Friend | undefined;
-              const accentColor = f?.color ?? CATEGORY_COLORS[selected.category];
-              return (
-                <div className="panelWhyBlock" style={{ borderLeftColor: accentColor }}>
-                  <span className="panelWhyLabel" style={{ color: accentColor }}>
-                    {f ? 'who\'s here' : 'why i\'m here'}
-                  </span>
-                  <p className="panelWhy">{f ? (f.show_name ? f.name : f.city) : selected.description}</p>
-                  {/* name intentionally not shown — anonymous by design */}
-                  {f?.note && <p className="panelDesc" style={{ marginTop: 4 }}>{f.note}</p>}
-                  {selected.siteLink && (
-                    <button className="panelSiteLink" onClick={() => handleSiteLink(selected.siteLink!)}>
-                      → {selected.siteLink.label}
-                    </button>
-                  )}
-                </div>
-              );
-            })()}
+            {/* Personal reason / site link (non-friend pins only) */}
+            {!((selected as any).friendData) && (
+              <div className="panelWhyBlock" style={{ borderLeftColor: CATEGORY_COLORS[selected.category] }}>
+                <span className="panelWhyLabel" style={{ color: CATEGORY_COLORS[selected.category] }}>why i'm here</span>
+                <p className="panelWhy">{selected.description}</p>
+                {selected.siteLink && (
+                  <button className="panelSiteLink" onClick={() => handleSiteLink(selected.siteLink!)}>
+                    → {selected.siteLink.label}
+                  </button>
+                )}
+              </div>
+            )}
 
             {/* Wikipedia extract */}
             {wikiData?.extract && (
@@ -470,78 +462,69 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
               </>
             )}
 
-            <div className="panelDivider" />
-            {/* Media embeds — Spotify, YouTube, etc. */}
+            {/* FRIENDS section — colored cards with song + data */}
             {(() => {
-              const friendData = (selected as any).friendData as Friend | undefined;
-              const items: MediaItem[] = [
+              // Collect all friends at this location
+              const friends: Friend[] = [];
+              const f = (selected as any).friendData as Friend | undefined;
+              if (f) friends.push(f);
+              if (!friends.length) return null;
+              return (
+                <>
+                  <div className="panelDivider" />
+                  <div className="panelSection">
+                    <p className="panelSectionLabel">people</p>
+                    {friends.map((fr, i) => (
+                      <div key={i} className="friendCard" style={{ borderColor: fr.color + '55', background: fr.color + '0d' }}>
+                        <div className="friendCardDot" style={{ background: fr.color }} />
+                        <div className="friendCardBody">
+                          <span className="friendCardCity">{fr.show_name ? fr.name : fr.city}</span>
+                          {fr.note && <span className="friendCardNote">{fr.note}</span>}
+                        </div>
+                        {fr.song && (
+                          <iframe
+                            src={`https://open.spotify.com/embed/track/${fr.song}?utm_source=generator&theme=0`}
+                            width="100%" height="80" frameBorder="0"
+                            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                            loading="lazy" style={{ borderRadius: '4px', marginTop: '8px' }}
+                          />
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </>
+              );
+            })()}
+
+            {/* ARTISTS section — Spotify embeds */}
+            {(() => {
+              const artistItems: MediaItem[] = [
                 ...(selected.media ?? []),
-                // Friend song embed
-                ...(friendData?.song ? [{ type: 'spotify_track' as const, id: friendData.song, label: `${friendData.name}'s song` }] : []),
-                // Multi-artist city pins — embed each artist
                 ...(selected.artists?.length && !selected.media
                   ? selected.artists.map(a => ({ type: 'spotify_artist' as const, id: a.spotifyArtistId, label: a.name }))
                   : []),
-                // Legacy single-artist dynamic pins
-                ...(!selected.media && !selected.artists?.length && selected.id.startsWith('music-')
+                ...(!selected.media && !selected.artists?.length && selected.id.startsWith('music-') && !(selected as any).friendData
                   ? [{ type: 'spotify_artist' as const, id: selected.id.replace('music-', ''), label: selected.description }]
                   : []),
               ];
-              if (!items.length) return null;
+              if (!artistItems.length) return null;
               return (
                 <>
-                  <div className="mediaSection">
-                    {items.map((item, i) => {
-                      if (item.type === 'spotify_artist') {
-                        return (
-                          <div key={i} className="mediaEmbed">
-                            {item.label && <p className="mediaLabel">♫ {item.label}</p>}
-                            <iframe
-                              src={`https://open.spotify.com/embed/artist/${item.id}?utm_source=generator&theme=0`}
-                              width="100%" height="152"
-                              frameBorder="0"
-                              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                              loading="lazy"
-                              style={{ borderRadius: '6px' }}
-                            />
-                          </div>
-                        );
-                      }
-                      if (item.type === 'spotify_track') {
-                        return (
-                          <div key={i} className="mediaEmbed">
-                            {item.label && <p className="mediaLabel">♫ {item.label}</p>}
-                            <iframe
-                              src={`https://open.spotify.com/embed/track/${item.id}?utm_source=generator&theme=0`}
-                              width="100%" height="80"
-                              frameBorder="0"
-                              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                              loading="lazy"
-                              style={{ borderRadius: '6px' }}
-                            />
-                          </div>
-                        );
-                      }
-                      if (item.type === 'youtube') {
-                        return (
-                          <div key={i} className="mediaEmbed">
-                            {item.label && <p className="mediaLabel">▶ {item.label}</p>}
-                            <iframe
-                              src={`https://www.youtube.com/embed/${item.id}`}
-                              width="100%" height="180"
-                              frameBorder="0"
-                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                              allowFullScreen
-                              loading="lazy"
-                              style={{ borderRadius: '6px' }}
-                            />
-                          </div>
-                        );
-                      }
-                      return null;
-                    })}
-                  </div>
                   <div className="panelDivider" />
+                  <div className="panelSection">
+                    <p className="panelSectionLabel">artists</p>
+                    {artistItems.map((item, i) => (
+                      <div key={i} className="mediaEmbed">
+                        {item.label && <p className="mediaLabel">♫ {item.label}</p>}
+                        <iframe
+                          src={`https://open.spotify.com/embed/artist/${item.id}?utm_source=generator&theme=0`}
+                          width="100%" height="152" frameBorder="0"
+                          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                          loading="lazy" style={{ borderRadius: '6px' }}
+                        />
+                      </div>
+                    ))}
+                  </div>
                 </>
               );
             })()}
