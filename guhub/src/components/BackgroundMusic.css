@@ -42,6 +42,50 @@
   50% { box-shadow: 0 0 0 10px rgba(115, 145, 102, 0); transform: scale(1.05); }
 }
 
+/* ── mute hint ── */
+.muteHint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(10,10,10,0.97);
+  border: 1px solid rgba(115,145,102,0.6);
+  border-radius: 6px;
+  padding: 10px 14px;
+  box-shadow: 0 0 24px rgba(115,145,102,0.2), 0 4px 20px rgba(0,0,0,0.6);
+  backdrop-filter: blur(12px);
+  animation: muteHintIn 0.3s ease, muteHintOut 0.4s ease 4.1s forwards;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.muteHintArrow {
+  font-size: 1.1rem;
+  color: #739166;
+  animation: nudgeRight 0.7s ease-in-out infinite alternate;
+}
+
+.muteHintText {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem;
+  color: #d0d0d0;
+  letter-spacing: 0.05em;
+}
+
+@keyframes muteHintIn {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes muteHintOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+@keyframes nudgeRight {
+  from { transform: translateX(0); }
+  to   { transform: translateX(4px); }
+}
+
 /* ── toast ── */
 .musicToast {
   display: flex;

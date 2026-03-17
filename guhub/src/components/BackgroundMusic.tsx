@@ -19,6 +19,8 @@ const BackgroundMusic = () => {
   const [isNowPlaying, setIsNowPlaying] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [dismissed, setDismissed] = useState(false);
+  const [showMuteHint, setShowMuteHint] = useState(false);
+  const muteHintShownRef = useRef(false);
   const nowPlayingUriRef = useRef<string | null>(null);
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hasClickedRef = useRef(false);
@@ -68,6 +70,12 @@ const BackgroundMusic = () => {
     setIsNowPlaying(track.uri === nowPlayingUriRef.current);
     setIsPlaying(true);
     showTrackToast();
+    // Show mute hint once on first play
+    if (!muteHintShownRef.current) {
+      muteHintShownRef.current = true;
+      setShowMuteHint(true);
+      setTimeout(() => setShowMuteHint(false), 4500);
+    }
   }, []);
 
   // Build queue on mount, prefetch first few previews
@@ -150,6 +158,13 @@ const BackgroundMusic = () => {
       >
         {isPlaying ? <FaVolumeUp /> : needsInteraction ? <FaPlay /> : <FaVolumeMute />}
       </button>
+
+      {showMuteHint && (
+        <div className="muteHint">
+          <span className="muteHintArrow">→</span>
+          <span className="muteHintText">click to mute</span>
+        </div>
+      )}
 
       {currentTrack && isPlaying && !dismissed && (
         <div className={`musicToast ${showToast ? 'visible' : 'faded'}`}>
