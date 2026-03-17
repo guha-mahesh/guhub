@@ -136,7 +136,6 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
   const allLocationsRef = useRef<GlobeLocation[]>(LOCATIONS);
   const navigate = useNavigate();
   const spinRef = useRef<(loc: GlobeLocation) => void>(() => {});
-  const friendLayerRef = useRef<any>(null);
 
   // Load friends
   useEffect(() => {
