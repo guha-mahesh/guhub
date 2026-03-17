@@ -267,6 +267,14 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
         if (!projected) return;
         const { x, y } = projected;
         if (x < 0 || y < 0) return;
+        // Hide if on the back of the globe — check dot product of point vector vs camera
+        const pov = globeRef.current.pointOfView();
+        const camLat = pov.lat * Math.PI / 180;
+        const camLng = pov.lng * Math.PI / 180;
+        const pLat = f.lat * Math.PI / 180;
+        const pLng = f.lng * Math.PI / 180;
+        const dot = Math.sin(camLat) * Math.sin(pLat) + Math.cos(camLat) * Math.cos(pLat) * Math.cos(pLng - camLng);
+        if (dot < 0.1) return; // behind or on the horizon
 
         const color = f.color ?? '#a8d8ea';
         const pin = document.createElement('div');
