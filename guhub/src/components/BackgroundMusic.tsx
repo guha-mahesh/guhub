@@ -16,8 +16,10 @@ const BackgroundMusic = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [needsInteraction, setNeedsInteraction] = useState(true);
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
+  const [isNowPlaying, setIsNowPlaying] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [dismissed, setDismissed] = useState(false);
+  const nowPlayingUriRef = useRef<string | null>(null);
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hasClickedRef = useRef(false);
   const queueRef = useRef<Track[]>([]);
@@ -63,6 +65,7 @@ const BackgroundMusic = () => {
     audioRef.current.play().catch(() => {});
 
     setCurrentTrack(track);
+    setIsNowPlaying(track.uri === nowPlayingUriRef.current);
     setIsPlaying(true);
     showTrackToast();
   }, []);
@@ -73,7 +76,7 @@ const BackgroundMusic = () => {
       const tracks: Track[] = [];
       try {
         const np = await fetch(`${API}/api/spotify/now-playing`).then(r => r.json());
-        if (np.isPlaying && np.uri) tracks.push({ title: np.title, artist: np.artist, albumArt: np.albumArt, uri: np.uri });
+        if (np.isPlaying && np.uri) { tracks.push({ title: np.title, artist: np.artist, albumArt: np.albumArt, uri: np.uri }); nowPlayingUriRef.current = np.uri; }
       } catch {}
       try {
         const recent = await fetch(`${API}/api/spotify/recent?limit=20`).then(r => r.json());
@@ -100,9 +103,9 @@ const BackgroundMusic = () => {
       try {
         const np = await fetch(`${API}/api/spotify/now-playing`).then(r => r.json());
         if (np.isPlaying && np.uri) {
+          nowPlayingUriRef.current = np.uri;
           const freshTrack: Track = { title: np.title, artist: np.artist, albumArt: np.albumArt, uri: np.uri };
           const queue = queueRef.current;
-          // Prepend if it's not already first
           if (!queue.length || queue[0].uri !== freshTrack.uri) {
             const seen = new Set([freshTrack.uri]);
             const deduped = [freshTrack, ...queue.filter(t => { if (seen.has(t.uri)) return false; seen.add(t.uri); return true; })];
@@ -150,7 +153,7 @@ const BackgroundMusic = () => {
 
       {currentTrack && isPlaying && !dismissed && (
         <div className={`musicToast ${showToast ? 'visible' : 'faded'}`}>
-          <span className="toastStatus">♫ listening</span>
+          <span className="toastStatus">{isNowPlaying ? '♫ now playing' : '♫ last played'}</span>
           <div className="toastTrack">
             {currentTrack.albumArt && <img src={currentTrack.albumArt} alt="" className="toastArt" />}
             <div className="toastText">
