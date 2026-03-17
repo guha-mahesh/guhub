@@ -62,7 +62,7 @@ const BackgroundMusic = () => {
 
     if (!audioRef.current) audioRef.current = new Audio();
     audioRef.current.src = previewUrl;
-    audioRef.current.volume = 0.35;
+    audioRef.current.volume = 0.15;
     audioRef.current.onended = () => playIndex(i + 1);
     audioRef.current.play().catch(() => {});
 
