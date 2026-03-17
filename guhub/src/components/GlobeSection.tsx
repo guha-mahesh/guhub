@@ -6,7 +6,7 @@ const ENGRAMME_API = 'https://memorymachines-gateway-prod-btf57kda.uc.gateway.de
 const API_KEY = 'qfXJw6okrhiUHXYs2FQCJNPB3zmziGtd';
 const GEOJSON_URL = 'https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson';
 
-type Category = 'home' | 'work' | 'school' | 'project' | 'interest';
+type Category = 'home' | 'work' | 'school' | 'project' | 'interest' | 'friend';
 
 interface SubLocation {
   name: string;
@@ -45,6 +45,9 @@ interface Friend {
   lng: number;
   color: string;
   note?: string;
+  song?: string;   // Spotify track ID
+  animal?: string; // Wikipedia article slug
+  descriptors?: Record<string, string>;
 }
 
 interface WikiData {
@@ -68,6 +71,7 @@ const CATEGORY_COLORS: Record<Category, string> = {
   school:   '#87ceeb',
   project:  '#7fff98',
   interest: '#b39ddb',
+  friend:   '#ffffff', // overridden per-friend
 };
 
 const LOCATIONS: GlobeLocation[] = [
@@ -137,11 +141,30 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
   const navigate = useNavigate();
   const spinRef = useRef<(loc: GlobeLocation) => void>(() => {});
 
-  // Load friends
+  // Load friends — both as subtle overlay AND as clickable location pins
   useEffect(() => {
     fetch('/api/friends').then(r => r.json()).then((friends: Friend[]) => {
       if (!friends?.length) return;
-      // Inject friend markers once globe is ready
+      // Add as location pins
+      const friendPins: GlobeLocation[] = friends.map(f => ({
+        id: `friend-${f.id}`,
+        name: f.city,
+        lat: f.lat,
+        lng: f.lng,
+        queryKeywords: `${f.name} ${f.city}`,
+        category: 'friend' as Category,
+        description: f.name,
+        wikiQuery: f.city,
+        // store friend data for panel rendering
+        friendData: f,
+      } as any));
+      setAllLocations(prev => {
+        const seen = new Set(prev.map(l => l.id));
+        const next = [...prev, ...friendPins.filter(p => !seen.has(p.id))];
+        allLocationsRef.current = next;
+        return next;
+      });
+      // Also inject subtle overlay markers
       const tryInject = setInterval(() => {
         if (!globeRef.current) return;
         clearInterval(tryInject);
@@ -179,15 +202,16 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
       globeRef.current.pointOfView({ lat: loc.lat, lng: loc.lng, altitude: 1.8 }, 1200);
     }
     fetchMemories(loc.queryKeywords).then(setMemories).catch(() => {}).finally(() => setLoading(false));
-    if (loc.wikiQuery) {
-      // Encode each query separately to preserve commas as separators
-      const encoded = loc.wikiQuery.split(',').map(s => encodeURIComponent(s.trim())).join(',');
+    // For friend pins with an animal, append the animal to the wiki query
+    const friendData = (loc as any).friendData as Friend | undefined;
+    const wikiQ = friendData?.animal ? `${loc.wikiQuery ?? loc.name},${friendData.animal}` : loc.wikiQuery;
+    if (wikiQ) {
+      const encoded = wikiQ.split(',').map((s: string) => encodeURIComponent(s.trim())).join(',');
       fetch(`/api/wiki?q=${encoded}`)
         .then(r => r.json())
         .then(d => { if (!d.error) setWikiData(d); })
         .catch(() => {});
     } else {
-      // For dynamic pins (Spotify artists etc), try the location name directly
       fetch(`/api/wiki?q=${encodeURIComponent(loc.name)}`)
         .then(r => r.json())
         .then(d => { if (!d.error) setWikiData(d); })
@@ -298,11 +322,14 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
           .pointsData(allLocationsRef.current)
           .pointLat((d: any) => d.lat)
           .pointLng((d: any) => d.lng)
-          .pointColor((d: any) => CATEGORY_COLORS[d.category as Category] ?? '#739166')
-          .pointAltitude(0.06).pointRadius(0.5).pointResolution(16)
+          .pointColor((d: any) => d.category === 'friend' ? (d.friendData?.color ?? '#a8d8ea') : (CATEGORY_COLORS[d.category as Category] ?? '#739166'))
+          .pointAltitude((d: any) => d.category === 'friend' ? 0.03 : 0.06)
+          .pointRadius((d: any) => d.category === 'friend' ? 0.25 : 0.5)
+          .pointResolution(12)
           .pointLabel((d: any) => {
-            const c = CATEGORY_COLORS[d.category as Category] ?? '#739166';
-            return `<div style="background:rgba(8,8,8,0.95);border:1px solid ${c};padding:5px 9px;font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:#f0f0f0;white-space:nowrap;border-radius:2px;cursor:pointer">${d.name}</div>`;
+            const c = d.category === 'friend' ? (d.friendData?.color ?? '#a8d8ea') : (CATEGORY_COLORS[d.category as Category] ?? '#739166');
+            const label = d.category === 'friend' ? d.description : d.name;
+            return `<div style="background:rgba(8,8,8,0.95);border:1px solid ${c};padding:5px 9px;font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:#f0f0f0;white-space:nowrap;border-radius:2px;cursor:pointer">${label}</div>`;
           })
           .onPointHover((point: any) => {
             hoveredPoint = point;
@@ -391,15 +418,24 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
             )}
 
             {/* WHY I'M HERE — prominent personal reason */}
-            <div className="panelWhyBlock" style={{ borderLeftColor: CATEGORY_COLORS[selected.category] }}>
-              <span className="panelWhyLabel" style={{ color: CATEGORY_COLORS[selected.category] }}>why i'm here</span>
-              <p className="panelWhy">{selected.description}</p>
-              {selected.siteLink && (
-                <button className="panelSiteLink" onClick={() => handleSiteLink(selected.siteLink!)}>
-                  → {selected.siteLink.label}
-                </button>
-              )}
-            </div>
+            {(() => {
+              const f = (selected as any).friendData as Friend | undefined;
+              const accentColor = f?.color ?? CATEGORY_COLORS[selected.category];
+              return (
+                <div className="panelWhyBlock" style={{ borderLeftColor: accentColor }}>
+                  <span className="panelWhyLabel" style={{ color: accentColor }}>
+                    {f ? 'who\'s here' : 'why i\'m here'}
+                  </span>
+                  <p className="panelWhy">{selected.description}</p>
+                  {f?.note && <p className="panelDesc" style={{ marginTop: 4 }}>{f.note}</p>}
+                  {selected.siteLink && (
+                    <button className="panelSiteLink" onClick={() => handleSiteLink(selected.siteLink!)}>
+                      → {selected.siteLink.label}
+                    </button>
+                  )}
+                </div>
+              );
+            })()}
 
             {/* Wikipedia extract */}
             {wikiData?.extract && (
@@ -435,8 +471,11 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
             <div className="panelDivider" />
             {/* Media embeds — Spotify, YouTube, etc. */}
             {(() => {
+              const friendData = (selected as any).friendData as Friend | undefined;
               const items: MediaItem[] = [
                 ...(selected.media ?? []),
+                // Friend song embed
+                ...(friendData?.song ? [{ type: 'spotify_track' as const, id: friendData.song, label: `${friendData.name}'s song` }] : []),
                 // Multi-artist city pins — embed each artist
                 ...(selected.artists?.length && !selected.media
                   ? selected.artists.map(a => ({ type: 'spotify_artist' as const, id: a.spotifyArtistId, label: a.name }))

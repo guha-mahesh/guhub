@@ -9,9 +9,10 @@ interface Friend {
   lat: number;
   lng: number;
   color: string;
-  emoji?: string;
   note?: string;
-  tags?: string[];
+  song?: string;   // Spotify track ID
+  animal?: string; // Wikipedia article slug
+  descriptors?: Record<string, string>;
 }
 
 const PRESET_COLORS = [
@@ -63,7 +64,7 @@ export default function FriendEditor() {
     loadFriends();
   };
 
-  const blank = (): Friend => ({ name: '', city: '', lat: 0, lng: 0, color: PRESET_COLORS[0], emoji: '', note: '' });
+  const blank = (): Friend => ({ name: '', city: '', lat: 0, lng: 0, color: PRESET_COLORS[0], note: '', song: '', animal: '' });
 
   return (
     <div className="friendEditor">
@@ -111,6 +112,12 @@ export default function FriendEditor() {
 
             <label>note <span className="optional">(optional)</span></label>
             <input value={editing.note ?? ''} onChange={e => setEditing({ ...editing, note: e.target.value })} placeholder="how you know them, vibes, etc." />
+
+            <label>song <span className="optional">(spotify track id — optional)</span></label>
+            <input value={editing.song ?? ''} onChange={e => setEditing({ ...editing, song: e.target.value })} placeholder="e.g. 4uLU6hMCjMI75M1A2tKUQC" />
+
+            <label>animal <span className="optional">(wikipedia slug — optional)</span></label>
+            <input value={editing.animal ?? ''} onChange={e => setEditing({ ...editing, animal: e.target.value })} placeholder="e.g. Snow_leopard" />
 
             <div className="friendModalActions">
               <button className="friendSaveBtn" onClick={save}>save</button>
