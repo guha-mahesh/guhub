@@ -147,18 +147,21 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
     fetch('/api/friends').then(r => r.json()).then((friends: Friend[]) => {
       if (!friends?.length) return;
       // Add as location pins
-      const friendPins: GlobeLocation[] = friends.map(f => ({
-        id: `friend-${f.id}`,
-        name: f.city,
-        lat: f.lat,
-        lng: f.lng,
-        queryKeywords: `${f.name} ${f.city}`,
-        category: 'friend' as Category,
-        description: f.name,
-        wikiQuery: f.city,
-        // store friend data for panel rendering
-        friendData: f,
-      } as any));
+      const friendPins: GlobeLocation[] = friends.map(f => {
+        // Extract just city name for Wikipedia (e.g. "pittsburgh pennsylvania" -> "Pittsburgh")
+        const wikiCity = f.city.split(/[,\s]+/)[0];
+        return {
+          id: `friend-${f.id}`,
+          name: f.city,
+          lat: f.lat,
+          lng: f.lng,
+          queryKeywords: `${f.name} ${f.city}`,
+          category: 'friend' as Category,
+          description: f.name,
+          wikiQuery: wikiCity,
+          friendData: f,
+        } as any;
+      });
       setAllLocations(prev => {
         const seen = new Set(prev.map(l => l.id));
         const next = [...prev, ...friendPins.filter(p => !seen.has(p.id))];
