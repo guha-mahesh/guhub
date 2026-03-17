@@ -64,8 +64,8 @@
 
 .friendModalBox {
   background: #0d0d0d; border: 1px solid rgba(115,145,102,0.3);
-  padding: 1.5rem; width: 340px; border-radius: 4px;
-  display: flex; flex-direction: column; gap: 6px;
+  padding: 2rem; width: 460px; border-radius: 4px;
+  display: flex; flex-direction: column; gap: 8px;
   font-family: 'IBM Plex Mono', monospace;
 }
 
