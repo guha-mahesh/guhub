@@ -61,7 +61,7 @@
 .muteHintArrow {
   font-size: 1.1rem;
   color: #739166;
-  animation: nudgeRight 0.7s ease-in-out infinite alternate;
+  animation: nudgeUp 0.7s ease-in-out infinite alternate;
 }
 
 .muteHintText {
@@ -81,9 +81,9 @@
   to   { opacity: 0; }
 }
 
-@keyframes nudgeRight {
-  from { transform: translateX(0); }
-  to   { transform: translateX(4px); }
+@keyframes nudgeUp {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-4px); }
 }
 
 /* ── toast ── */

@@ -62,7 +62,7 @@ const BackgroundMusic = () => {
 
     if (!audioRef.current) audioRef.current = new Audio();
     audioRef.current.src = previewUrl;
-    audioRef.current.volume = 0.15;
+    audioRef.current.volume = 0.35;
     audioRef.current.onended = () => playIndex(i + 1);
     audioRef.current.play().catch(() => {});
 
@@ -161,7 +161,7 @@ const BackgroundMusic = () => {
 
       {showMuteHint && (
         <div className="muteHint">
-          <span className="muteHintArrow">→</span>
+          <span className="muteHintArrow">↑</span>
           <span className="muteHintText">click to mute</span>
         </div>
       )}
