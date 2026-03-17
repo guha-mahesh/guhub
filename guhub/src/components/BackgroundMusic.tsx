@@ -153,7 +153,7 @@ const BackgroundMusic = () => {
 
       {currentTrack && isPlaying && !dismissed && (
         <div className={`musicToast ${showToast ? 'visible' : 'faded'}`}>
-          <span className="toastStatus">{isNowPlaying ? '♫ now playing' : '♫ last played'}</span>
+          <span className="toastStatus">{isNowPlaying ? '♫ now playing' : '♫ was listening'}</span>
           <div className="toastTrack">
             {currentTrack.albumArt && <img src={currentTrack.albumArt} alt="" className="toastArt" />}
             <div className="toastText">
