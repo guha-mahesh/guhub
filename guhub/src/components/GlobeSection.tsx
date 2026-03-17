@@ -47,7 +47,7 @@ interface Friend {
   note?: string;
 }
 
-
+interface WikiData {
   title: string;
   description: string;
   extract: string;
@@ -248,38 +248,6 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
     loop();
     // Store cleanup on overlay element
     (overlay as any)._cleanup = () => cancelAnimationFrame(animId);
-  };
-
-
-
-  // Render friend SVG markers via htmlElementsData on a separate layer
-  const injectFriendMarkers = (friends: Friend[]) => {
-    if (!globeRef.current) return;
-    const globe = globeRef.current;
-    globe
-      .htmlElementsData(friends)
-      .htmlLat((d: any) => d.lat)
-      .htmlLng((d: any) => d.lng)
-      .htmlAltitude(0.07)
-      .htmlElement((d: any) => {
-        const color = d.color ?? '#a8d8ea';
-        const el = document.createElement('div');
-        el.style.cssText = 'position:relative;cursor:pointer;display:flex;flex-direction:column;align-items:center;';
-        el.innerHTML = `
-          <svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 0 4px ${color}88)">
-            <circle cx="7" cy="5" r="3.5" fill="${color}" stroke="rgba(0,0,0,0.6)" stroke-width="1"/>
-            <path d="M1 17c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="${color}" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-          </svg>
-        `;
-        const tip = document.createElement('div');
-        tip.style.cssText = `display:none;position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);background:rgba(8,8,8,0.95);border:1px solid ${color};padding:3px 7px;font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:#f0f0f0;white-space:nowrap;border-radius:2px;pointer-events:none;z-index:9999;`;
-        tip.textContent = `${d.name} · ${d.city}`;
-        el.appendChild(tip);
-        el.addEventListener('mouseenter', () => { tip.style.display = 'block'; });
-        el.addEventListener('mouseleave', () => { tip.style.display = 'none'; });
-        return el;
-      });
-    friendLayerRef.current = friends;
   };
 
 
