@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import './FriendEditor.css';
 
 interface Friend {
@@ -84,7 +85,7 @@ export default function FriendEditor() {
         {!friends.length && <p className="friendEmpty">no friends yet :(</p>}
       </div>
 
-      {editing && (
+      {editing && createPortal(
         <div className="friendModal">
           <div className="friendModalBox">
             <h3>{isNew ? 'add friend' : 'edit friend'}</h3>
@@ -117,7 +118,7 @@ export default function FriendEditor() {
             </div>
           </div>
         </div>
-      )}
+      , document.body)}
     </div>
   );
 }
