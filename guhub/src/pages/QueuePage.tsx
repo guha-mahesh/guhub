@@ -69,16 +69,6 @@ function timeAgo(iso: string) {
   return `${Math.floor(diff / 86400)}d ago`;
 }
 
-interface PlaylistTrack {
-  id: string;
-  title: string;
-  artist: string;
-  albumArt: string | null;
-  uri: string;
-  spotifyUrl: string;
-  addedAt: string;
-}
-
 export default function QueuePage() {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<TrackResult[]>([]);
@@ -88,12 +78,6 @@ export default function QueuePage() {
   const [recent, setRecent] = useState<TrackResult[]>([]);
   const [recentLoading, setRecentLoading] = useState(true);
   const [nowPlaying, setNowPlaying] = useState<TrackResult | null>(null);
-  const [playlist, setPlaylist] = useState<PlaylistTrack[]>([]);
-  const [playlistId, setPlaylistId] = useState('');
-  const [plQuery, setPlQuery] = useState('');
-  const [plResults, setPlResults] = useState<TrackResult[]>([]);
-  const [plState, setPlState] = useState<'idle'|'searching'|'adding'|'added'|'error'|'dupe'>('idle');
-  const [plAdded, setPlAdded] = useState<TrackResult | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -105,40 +89,6 @@ export default function QueuePage() {
     const interval = setInterval(fetchNP, 30_000);
     return () => clearInterval(interval);
   }, []);
-
-  useEffect(() => {
-    fetch(`${API}/api/spotify/playlist`)
-      .then(r => r.json())
-      .then(d => { setPlaylist(d.tracks ?? []); setPlaylistId(d.playlistId ?? ''); })
-      .catch(() => {});
-  }, [plAdded]);
-
-  const plSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!plQuery.trim()) return;
-    setPlState('searching');
-    setPlResults([]);
-    try {
-      const r = await fetch(`${API}/api/spotify/search?q=${encodeURIComponent(plQuery)}&_=${Date.now()}`);
-      const data = await r.json();
-      setPlResults(data.tracks ?? []);
-      setPlState('idle');
-    } catch { setPlState('error'); }
-  };
-
-  const plAdd = async (track: TrackResult) => {
-    setPlState('adding');
-    try {
-      const r = await fetch(`${API}/api/spotify/playlist`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ uri: track.uri }),
-      });
-      if (r.status === 409) { setPlState('dupe'); return; }
-      if (r.ok) { setPlAdded(track); setPlState('added'); setPlQuery(''); setPlResults([]); }
-      else setPlState('error');
-    } catch { setPlState('error'); }
-  };
 
   useEffect(() => {
     fetch(`${API}/api/spotify/recent?limit=15`)
@@ -313,79 +263,6 @@ export default function QueuePage() {
                   {track.playedAt && (
                     <span className="recentTime">{timeAgo(track.playedAt)}</span>
                   )}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* ── playlist ── */}
-        <div className="plSection">
-          <div className="plHeader">
-            <p className="recentLabel">&gt; crowd playlist</p>
-            {playlistId && (
-              <a href={`https://open.spotify.com/playlist/${playlistId}`} target="_blank" rel="noopener noreferrer" className="plOpenLink">open on spotify ↗</a>
-            )}
-          </div>
-
-          {plState === 'added' && plAdded ? (
-            <div className="plAdded">
-              <span className="plAddedCheck">✓</span>
-              <span>{plAdded.title} added</span>
-              <button className="plAddAgain" onClick={() => { setPlState('idle'); setPlAdded(null); }}>add another</button>
-            </div>
-          ) : (
-            <form onSubmit={plSearch} className="queueForm plForm">
-              <div className="queueInputRow">
-                <span className="queuePrompt">$</span>
-                <input
-                  className="queueInput"
-                  type="text"
-                  value={plQuery}
-                  onChange={e => setPlQuery(e.target.value)}
-                  placeholder="add a song to the shared playlist..."
-                  disabled={plState === 'searching' || plState === 'adding'}
-                />
-                <button type="submit" className="queueSubmit" disabled={!plQuery.trim() || plState === 'searching' || plState === 'adding'}>
-                  {plState === 'searching' ? '...' : 'search'}
-                </button>
-              </div>
-            </form>
-          )}
-
-          {plState === 'dupe' && <p className="queueError">// already in the playlist</p>}
-          {plState === 'error' && <p className="queueError">// something went wrong</p>}
-
-          {plResults.length > 0 && (
-            <div className="queueResults plResults">
-              {plResults.map((track, i) => (
-                <div key={i} className="queueResultRow">
-                  <div className="resultInfo">
-                    {track.albumArt && <img src={track.albumArt} alt="" className="resultArt" />}
-                    <div className="resultText">
-                      <span className="resultTitle">{track.title}</span>
-                      <span className="resultMeta">{track.artist} — {track.album}</span>
-                    </div>
-                  </div>
-                  <PreviewBtn uri={track.uri ?? ''} />
-                  <button className="resultQueue" onClick={() => plAdd(track)} disabled={plState === 'adding'}>
-                    {plState === 'adding' ? '...' : '+ add'}
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {playlist.length > 0 && (
-            <div className="plTracks">
-              {playlist.map((track, i) => (
-                <div key={i} className="recentRow">
-                  {track.albumArt && <img src={track.albumArt} alt="" className="recentArt" />}
-                  <div className="recentText">
-                    <a href={track.spotifyUrl} target="_blank" rel="noopener noreferrer" className="recentTitleLink">{track.title}</a>
-                    <span className="recentMeta">{track.artist}</span>
-                  </div>
-                  <PreviewBtn uri={track.uri} />
                 </div>
               ))}
             </div>
