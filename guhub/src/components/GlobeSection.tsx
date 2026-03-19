@@ -205,7 +205,7 @@ const FriendCard = ({ friend }: { friend: Friend }) => {
         </div>
         <div className="friendCardInfo">
           {friend.show_name && <span className="friendCardName" style={{ color }}>{friend.name}</span>}
-          <span className="friendCardLabel" style={{ color: color + '99' }}>Guha's friend</span>
+          <span className="friendCardLabel" style={{ color: color + '99' }}>{friend.city ? friend.city.split(',')[0] : 'Guha\'s friend'}</span>
         </div>
         <div className="friendCardDot" style={{ background: color, boxShadow: `0 0 7px ${color}` }} />
       </div>
