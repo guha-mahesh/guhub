@@ -61,7 +61,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const serviceKey = process.env.SUPABASE_SERVICE_KEY!;
   const ADMIN_KEY = process.env.ADMIN_KEY ?? 'Crescent1!';
 
-  // GET — flat list of all artists
+  // GET — flat list of all artists, with images fetched from Spotify if missing
   if (req.method === 'GET') {
     const r = await fetch(`${SUPABASE_URL}/rest/v1/artist_pins?select=id,artists&order=name.asc`, {
       headers: { apikey: serviceKey, Authorization: `Bearer ${serviceKey}` },
@@ -70,6 +70,30 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const artists = rows.flatMap(row =>
       (row.artists ?? []).map((a: any) => ({ ...a, pinId: row.id }))
     );
+
+    // Batch-fetch images for artists missing imageUrl
+    const missing = artists.filter(a => !a.imageUrl).map(a => a.spotifyArtistId);
+    if (missing.length > 0) {
+      try {
+        const token = await getSpotifyToken();
+        const chunks: string[][] = [];
+        for (let i = 0; i < missing.length; i += 50) chunks.push(missing.slice(i, i + 50));
+        const imageMap: Record<string, string> = {};
+        for (const chunk of chunks) {
+          const sr = await fetch(`https://api.spotify.com/v1/artists?ids=${chunk.join(',')}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const sd = await sr.json();
+          for (const a of sd.artists ?? []) {
+            if (a?.id) imageMap[a.id] = a.images?.[2]?.url ?? a.images?.[1]?.url ?? a.images?.[0]?.url ?? null;
+          }
+        }
+        for (const a of artists) {
+          if (!a.imageUrl && imageMap[a.spotifyArtistId]) a.imageUrl = imageMap[a.spotifyArtistId];
+        }
+      } catch {}
+    }
+
     return res.json(artists);
   }
 
