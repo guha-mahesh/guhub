@@ -5,6 +5,7 @@ import './GlobeSection.css';
 const ENGRAMME_API = 'https://memorymachines-gateway-prod-btf57kda.uc.gateway.dev/v1/memories/recall';
 const API_KEY = 'qfXJw6okrhiUHXYs2FQCJNPB3zmziGtd';
 const GEOJSON_URL = 'https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson';
+const ARTIST_COLOR = '#a78bfa';
 
 type Category = 'home' | 'work' | 'school' | 'project' | 'interest' | 'friend';
 
@@ -33,8 +34,9 @@ interface GlobeLocation {
   siteLink?: { path: string; label: string; external?: boolean; scrollTo?: string };
   wikiQuery?: string;
   spotifyArtistId?: string;
-  artists?: { name: string; spotifyArtistId: string }[]; // multiple artists per city
+  artists?: { name: string; spotifyArtistId: string }[];
   media?: MediaItem[];
+  friends?: Friend[];
 }
 
 interface Friend {
@@ -143,6 +145,78 @@ const FriendAnimal = ({ slug, color }: { slug: string; color: string }) => {
   );
 };
 
+const CLUSTER_RADIUS = 0.5; // degrees (~50km)
+
+function findNearestLocation(locations: GlobeLocation[], lat: number, lng: number): GlobeLocation | null {
+  let best: GlobeLocation | null = null;
+  let bestDist = Infinity;
+  for (const loc of locations) {
+    const dist = Math.hypot(loc.lat - lat, loc.lng - lng);
+    if (dist < CLUSTER_RADIUS && dist < bestDist) { best = loc; bestDist = dist; }
+  }
+  return best;
+}
+
+const FriendCard = ({ friend }: { friend: Friend }) => {
+  const color = friend.color ?? '#a8d8ea';
+  return (
+    <div className="friendCard" style={{ borderLeftColor: color, background: color + '08' }}>
+      <div className="friendCardHeader">
+        <div className="friendCardIcon" style={{ background: color + '18', borderColor: color + '55' }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="8" r="4" fill={color} />
+            <path d="M4 20c0-4.418 3.582-8 8-8s8 3.582 8 8" stroke={color} strokeWidth="2" strokeLinecap="round" fill="none" />
+          </svg>
+        </div>
+        <div className="friendCardInfo">
+          {friend.show_name && <span className="friendCardName" style={{ color }}>{friend.name}</span>}
+          <span className="friendCardLabel" style={{ color: color + '99' }}>Guha's friend</span>
+        </div>
+        <div className="friendCardDot" style={{ background: color, boxShadow: `0 0 7px ${color}` }} />
+      </div>
+      {(friend.animal || friend.note) && (
+        <div className="friendCardMeta">
+          {friend.animal && <FriendAnimal slug={friend.animal} color={color} />}
+          {friend.note && <span className="friendCardNote">{friend.note}</span>}
+        </div>
+      )}
+      {friend.song && (
+        <iframe
+          src={`https://open.spotify.com/embed/track/${friend.song}?utm_source=generator&theme=0`}
+          width="100%" height="80" frameBorder="0"
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy" style={{ borderRadius: '4px', marginTop: '6px', display: 'block' }}
+        />
+      )}
+    </div>
+  );
+};
+
+const ArtistCard = ({ name, spotifyArtistId }: { name: string; spotifyArtistId: string }) => (
+  <div className="artistCard">
+    <div className="artistCardHeader">
+      <div className="artistCardIcon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="9" stroke={ARTIST_COLOR} strokeWidth="1.5" />
+          <circle cx="12" cy="12" r="3.5" fill={ARTIST_COLOR} />
+          <circle cx="12" cy="12" r="1.2" fill="#0e1a0a" />
+        </svg>
+      </div>
+      <div className="artistCardInfo">
+        <span className="artistCardName">{name}</span>
+        <span className="artistCardLabel">musician</span>
+      </div>
+      <div className="artistCardDot" />
+    </div>
+    <iframe
+      src={`https://open.spotify.com/embed/artist/${spotifyArtistId}?utm_source=generator&theme=0`}
+      width="100%" height="152" frameBorder="0"
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      loading="lazy" style={{ borderRadius: '6px', marginTop: '6px' }}
+    />
+  </div>
+);
+
 const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => void }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const globeRef = useRef<any>(null);
@@ -158,51 +232,54 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
   const navigate = useNavigate();
   const spinRef = useRef<(loc: GlobeLocation) => void>(() => {});
 
-  // Load friends — both as subtle overlay AND as clickable location pins
+  // Load friends — merge into nearest existing location or create a city pin
   useEffect(() => {
     fetch('/api/friends').then(r => r.json()).then((friends: Friend[]) => {
       if (!friends?.length) return;
-      // Add as location pins
-      const friendPins: GlobeLocation[] = friends.map(f => {
-        // Extract just city name for Wikipedia (e.g. "pittsburgh pennsylvania" -> "Pittsburgh")
-        const wikiCity = f.city.split(/[,\s]+/)[0];
-        return {
-          id: `friend-${f.id}`,
-          name: f.city,
-          lat: f.lat,
-          lng: f.lng,
-          queryKeywords: `${f.name} ${f.city}`,
-          category: 'friend' as Category,
-          description: f.name,
-          wikiQuery: wikiCity,
-          friendData: f,
-        } as any;
-      });
       setAllLocations(prev => {
-        const seen = new Set(prev.map(l => l.id));
-        const next = [...prev, ...friendPins.filter(p => !seen.has(p.id))];
+        const next = prev.map(l => ({ ...l }));
+        for (const f of friends) {
+          const nearest = findNearestLocation(next, f.lat, f.lng);
+          if (nearest) {
+            nearest.friends = [...(nearest.friends ?? []), f];
+          } else {
+            const wikiCity = f.city.split(/[,\s]+/)[0];
+            next.push({
+              id: `friend-city-${f.id}`,
+              name: f.city,
+              lat: f.lat,
+              lng: f.lng,
+              queryKeywords: `${f.name} ${f.city}`,
+              category: 'friend' as Category,
+              description: f.city,
+              wikiQuery: wikiCity,
+              friends: [f],
+            });
+          }
+        }
         allLocationsRef.current = next;
         return next;
       });
-      // Also inject subtle overlay markers
-      const tryInject = setInterval(() => {
-        if (!globeRef.current) return;
-        clearInterval(tryInject);
-        injectFriendMarkers(friends);
-      }, 200);
     }).catch(() => {});
   }, []);
 
   useEffect(() => {
     fetch('/api/spotify/top-artists').then(r => r.json()).then(data => {
-      if (data.pins?.length) {
-        setAllLocations(prev => {
-          const seen = new Set(prev.map(l => l.id));
-          const next = [...prev, ...data.pins.filter((p: GlobeLocation) => !seen.has(p.id))];
-          allLocationsRef.current = next;
-          return next;
-        });
-      }
+      if (!data.pins?.length) return;
+      setAllLocations(prev => {
+        const next = prev.map(l => ({ ...l }));
+        for (const pin of data.pins as GlobeLocation[]) {
+          const nearest = findNearestLocation(next, pin.lat, pin.lng);
+          const artistEntry = { name: pin.description, spotifyArtistId: pin.spotifyArtistId ?? pin.id.replace('music-', '') };
+          if (nearest) {
+            nearest.artists = [...(nearest.artists ?? []), artistEntry];
+          } else {
+            next.push({ ...pin, artists: [artistEntry] });
+          }
+        }
+        allLocationsRef.current = next;
+        return next;
+      });
     }).catch(() => {});
   }, []);
 
@@ -240,65 +317,6 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
 
   useEffect(() => { spinRef.current = spinToLocation; }, [spinToLocation]);
 
-  // Inject friend markers as htmlElementsData — stored separately, applied after globe init
-  const injectFriendMarkers = (friends: Friend[]) => {
-    if (!globeRef.current) return;
-    // Store friends on globe via custom property for re-use
-    (globeRef.current as any).__friends = friends;
-    renderFriendOverlay(friends);
-  };
-
-  const renderFriendOverlay = (friends: Friend[]) => {
-    if (!containerRef.current) return;
-    // Remove existing overlay
-    const existing = containerRef.current.querySelector('.friendOverlay');
-    if (existing) existing.remove();
-
-    const overlay = document.createElement('div');
-    overlay.className = 'friendOverlay';
-    overlay.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:5;';
-    containerRef.current.appendChild(overlay);
-
-    const updatePositions = () => {
-      if (!globeRef.current) return;
-      overlay.innerHTML = '';
-      friends.forEach((f: Friend) => {
-        const projected = globeRef.current.getScreenCoords(f.lat, f.lng, 0.07);
-        if (!projected) return;
-        const { x, y } = projected;
-        if (x < 0 || y < 0) return;
-        // Hide if on the back of the globe — check dot product of point vector vs camera
-        const pov = globeRef.current.pointOfView();
-        const camLat = pov.lat * Math.PI / 180;
-        const camLng = pov.lng * Math.PI / 180;
-        const pLat = f.lat * Math.PI / 180;
-        const pLng = f.lng * Math.PI / 180;
-        const dot = Math.sin(camLat) * Math.sin(pLat) + Math.cos(camLat) * Math.cos(pLat) * Math.cos(pLng - camLng);
-        if (dot < 0.1) return; // behind or on the horizon
-
-        const color = f.color ?? '#a8d8ea';
-        const pin = document.createElement('div');
-        pin.style.cssText = `position:absolute;left:${x}px;top:${y}px;transform:translate(-50%,-100%);pointer-events:all;cursor:pointer;`;
-        pin.innerHTML = `
-          <svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 0 4px ${color}88)">
-            <circle cx="7" cy="5" r="3.5" fill="${color}" stroke="rgba(0,0,0,0.7)" stroke-width="1"/>
-            <path d="M1 17c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="${color}" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-          </svg>
-          <div class="friendPinTip" style="display:none;position:absolute;bottom:calc(100% + 2px);left:50%;transform:translateX(-50%);background:rgba(8,8,8,0.95);border:1px solid ${color};padding:3px 8px;font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:#f0f0f0;white-space:nowrap;border-radius:2px;z-index:9999;">${f.city}</div>
-        `;
-        pin.addEventListener('mouseenter', () => { (pin.querySelector('.friendPinTip') as HTMLElement).style.display = 'block'; });
-        pin.addEventListener('mouseleave', () => { (pin.querySelector('.friendPinTip') as HTMLElement).style.display = 'none'; });
-        overlay.appendChild(pin);
-      });
-    };
-
-    // Update on every animation frame
-    let animId: number;
-    const loop = () => { updatePositions(); animId = requestAnimationFrame(loop); };
-    loop();
-    // Store cleanup on overlay element
-    (overlay as any)._cleanup = () => cancelAnimationFrame(animId);
-  };
 
 
 
@@ -349,14 +367,17 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
           .pointsData(allLocationsRef.current)
           .pointLat((d: any) => d.lat)
           .pointLng((d: any) => d.lng)
-          .pointColor((d: any) => d.category === 'friend' ? (d.friendData?.color ?? '#a8d8ea') : (CATEGORY_COLORS[d.category as Category] ?? '#739166'))
+          .pointColor((d: any) => {
+            if (d.category === 'friend') return d.friends?.[0]?.color ?? '#a8d8ea';
+            if (d.id?.startsWith('music-')) return ARTIST_COLOR;
+            return CATEGORY_COLORS[d.category as Category] ?? '#739166';
+          })
           .pointAltitude((d: any) => d.category === 'friend' ? 0.03 : 0.06)
-          .pointRadius((d: any) => d.category === 'friend' ? 0.25 : 0.5)
+          .pointRadius((d: any) => d.category === 'friend' ? 0.3 : 0.5)
           .pointResolution(12)
           .pointLabel((d: any) => {
-            const c = d.category === 'friend' ? (d.friendData?.color ?? '#a8d8ea') : (CATEGORY_COLORS[d.category as Category] ?? '#739166');
-            const label = d.category === 'friend' ? d.name : d.name;
-            return `<div style="background:rgba(8,8,8,0.95);border:1px solid ${c};padding:5px 9px;font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:#f0f0f0;white-space:nowrap;border-radius:2px;cursor:pointer">${label}</div>`;
+            const c = d.category === 'friend' ? (d.friends?.[0]?.color ?? '#a8d8ea') : d.id?.startsWith('music-') ? ARTIST_COLOR : (CATEGORY_COLORS[d.category as Category] ?? '#739166');
+            return `<div style="background:rgba(8,8,8,0.95);border:1px solid ${c};padding:5px 9px;font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:#f0f0f0;white-space:nowrap;border-radius:2px;cursor:pointer">${d.name}</div>`;
           })
           .onPointHover((point: any) => {
             hoveredPoint = point;
@@ -481,58 +502,23 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
               </>
             )}
 
-            {/* FRIENDS section — self-contained friend cards */}
+            {/* FRIENDS section */}
+            {selected.friends?.length ? (
+              <>
+                <div className="panelDivider" />
+                <div className="panelSection">
+                  <p className="panelSectionLabel">people</p>
+                  {selected.friends.map((f, i) => <FriendCard key={i} friend={f} />)}
+                </div>
+              </>
+            ) : null}
+
+            {/* ARTISTS section */}
             {(() => {
-              const f = (selected as any).friendData as Friend | undefined;
-              if (!f) return null;
-              return (
-                <>
-                  <div className="panelDivider" />
-                  <div className="panelSection">
-                    <p className="panelSectionLabel">people</p>
-                    <div className="friendCard" style={{ borderColor: f.color + '55', background: f.color + '08' }}>
-                      {/* Header row: icon + label */}
-                      <div className="friendCardHeader">
-                        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <circle cx="14" cy="10" r="6" fill={f.color} opacity="0.9"/>
-                          <path d="M2 28c0-6.627 5.373-12 12-12s12 5.373 12 12" stroke={f.color} strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.9"/>
-                        </svg>
-                        <div>
-                          <span className="friendCardLabel" style={{ color: f.color }}>Guha's Friend</span>
-                          {f.show_name && <span className="friendCardName">{f.name}</span>}
-                        </div>
-                      </div>
-
-                      {/* Metadata row: animal + note */}
-                      <div className="friendCardMeta">
-                        {f.animal && <FriendAnimal slug={f.animal} color={f.color} />}
-                        {f.note && <span className="friendCardNote">{f.note}</span>}
-                      </div>
-
-                      {/* Song embed */}
-                      {f.song && (
-                        <iframe
-                          src={`https://open.spotify.com/embed/track/${f.song}?utm_source=generator&theme=0`}
-                          width="100%" height="80" frameBorder="0"
-                          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                          loading="lazy" style={{ borderRadius: '4px', marginTop: '10px', display: 'block' }}
-                        />
-                      )}
-                    </div>
-                  </div>
-                </>
-              );
-            })()}
-
-            {/* ARTISTS section — Spotify embeds */}
-            {(() => {
-              const artistItems: MediaItem[] = [
-                ...(selected.media ?? []),
-                ...(selected.artists?.length && !selected.media
-                  ? selected.artists.map(a => ({ type: 'spotify_artist' as const, id: a.spotifyArtistId, label: a.name }))
-                  : []),
-                ...(!selected.media && !selected.artists?.length && selected.id.startsWith('music-') && !(selected as any).friendData
-                  ? [{ type: 'spotify_artist' as const, id: selected.id.replace('music-', ''), label: selected.description }]
+              const artistItems = [
+                ...(selected.artists ?? []),
+                ...(!selected.artists?.length && selected.id.startsWith('music-')
+                  ? [{ name: selected.description, spotifyArtistId: selected.id.replace('music-', '') }]
                   : []),
               ];
               if (!artistItems.length) return null;
@@ -541,17 +527,7 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
                   <div className="panelDivider" />
                   <div className="panelSection">
                     <p className="panelSectionLabel">artists</p>
-                    {artistItems.map((item, i) => (
-                      <div key={i} className="mediaEmbed">
-                        {item.label && <p className="mediaLabel">♫ {item.label}</p>}
-                        <iframe
-                          src={`https://open.spotify.com/embed/artist/${item.id}?utm_source=generator&theme=0`}
-                          width="100%" height="152" frameBorder="0"
-                          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                          loading="lazy" style={{ borderRadius: '6px' }}
-                        />
-                      </div>
-                    ))}
+                    {artistItems.map((a, i) => <ArtistCard key={i} name={a.name} spotifyArtistId={a.spotifyArtistId} />)}
                   </div>
                 </>
               );
