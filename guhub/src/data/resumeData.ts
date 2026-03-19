@@ -84,15 +84,5 @@ export const resumeData: ResumeData = {
         "Delivered personalized instruction in Pandas, NumPy, statistics, and EDA, enabling students to apply data science concepts"
       ]
     },
-    {
-      title: "Data Science Intern",
-      company: "Green Joules",
-      date: "Jun 2023 – Sep 2023",
-      bullets: [
-        "Assessed biofuel feasibility of 11 crops by analyzing production volumes, commodity prices, and food security considerations",
-        "Researched crop by-products for potential biofuel applications and presented data-driven recommendations",
-        "Developed visualizations that informed strategic decision-making on the potential establishment of a biorefinery in Texas"
-      ]
-    }
   ]
 };
