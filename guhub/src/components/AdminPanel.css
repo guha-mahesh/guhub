@@ -51,7 +51,23 @@
   max-height: 70vh;
   overflow-y: auto;
   backdrop-filter: blur(12px);
+  position: relative;
 }
+
+.friendEditorPanelClose {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  color: rgba(115,145,102,0.5);
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: color 0.15s;
+}
+.friendEditorPanelClose:hover { color: #739166; }
 
 @media (max-width: 768px) {
   .adminPanel { bottom: 1rem; right: 1rem; }

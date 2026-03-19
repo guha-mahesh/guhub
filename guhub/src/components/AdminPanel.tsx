@@ -23,6 +23,7 @@ const AdminPanel = () => {
 
       {showFriends && (
         <div className="friendEditorPanel">
+          <button className="friendEditorPanelClose" onClick={() => setShowFriends(false)}>✕</button>
           <FriendEditor />
         </div>
       )}
