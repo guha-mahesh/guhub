@@ -20,8 +20,23 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   const { q } = req.query;
   if (!q || typeof q !== 'string') return res.status(400).json({ error: 'Missing q' });
+  const type = typeof req.query.type === 'string' ? req.query.type : 'track';
   try {
     const token = await getAccessToken();
+    if (type === 'artist') {
+      const r = await fetch(`https://api.spotify.com/v1/search?type=artist&limit=6&q=${encodeURIComponent(q)}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await r.json();
+      if (data.error) return res.status(r.status).json({ error: data.error.message, artists: [] });
+      const artists = (data.artists?.items ?? []).map((a: any) => ({
+        id: a.id,
+        name: a.name,
+        imageUrl: a.images?.[2]?.url ?? a.images?.[1]?.url ?? a.images?.[0]?.url ?? null,
+        genres: (a.genres ?? []).slice(0, 2),
+      }));
+      return res.json({ artists });
+    }
     const r = await fetch(`https://api.spotify.com/v1/search?type=track&limit=5&q=${encodeURIComponent(q)}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
