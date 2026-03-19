@@ -107,7 +107,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         if (!locMap.has(locKey)) {
           locMap.set(locKey, { lat: loc.lat, lng: loc.lng, city: loc.city, artistList: [] });
         }
-        locMap.get(locKey)!.artistList.push({ name: artist.name, spotifyArtistId: artist.id });
+        locMap.get(locKey)!.artistList.push({ name: artist.name, spotifyArtistId: artist.id, hometown: loc.city });
       } catch { continue; }
     }
 

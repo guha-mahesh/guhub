@@ -227,7 +227,7 @@ const FriendCard = ({ friend }: { friend: Friend }) => {
   );
 };
 
-const ArtistCard = ({ name, spotifyArtistId }: { name: string; spotifyArtistId: string }) => (
+const ArtistCard = ({ name, spotifyArtistId, hometown }: { name: string; spotifyArtistId: string; hometown?: string }) => (
   <div className="artistCard">
     <div className="artistCardHeader">
       <div className="artistCardIcon">
@@ -239,7 +239,7 @@ const ArtistCard = ({ name, spotifyArtistId }: { name: string; spotifyArtistId: 
       </div>
       <div className="artistCardInfo">
         <span className="artistCardName">{name}</span>
-        <span className="artistCardLabel">musician</span>
+        <span className="artistCardLabel">{hometown ?? 'musician'}</span>
       </div>
       <div className="artistCardDot" />
     </div>
@@ -530,7 +530,7 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
                   <div className="panelDivider" />
                   <div className="panelSection">
                     <p className="panelSectionLabel">artists</p>
-                    {artistItems.map((a, i) => <ArtistCard key={i} name={a.name} spotifyArtistId={a.spotifyArtistId} />)}
+                    {artistItems.map((a, i) => <ArtistCard key={i} name={a.name} spotifyArtistId={a.spotifyArtistId} hometown={(a as any).hometown} />)}
                   </div>
                 </>
               );

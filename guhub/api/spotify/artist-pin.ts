@@ -138,7 +138,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(409).json({ error: 'Already in collection' });
     }
 
-    const mergedArtists = [...existingArtists, { name: artist.name, spotifyArtistId, imageUrl }];
+    const mergedArtists = [...existingArtists, { name: artist.name, spotifyArtistId, imageUrl, hometown: loc.city }];
 
     await fetch(`${SUPABASE_URL}/rest/v1/artist_pins`, {
       method: 'POST',
