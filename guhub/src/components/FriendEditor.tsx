@@ -118,7 +118,10 @@ export default function FriendEditor() {
       {editing && createPortal(
         <div className="friendModal">
           <div className="friendModalBox">
-            <h3>{isNew ? 'add friend' : 'edit friend'}</h3>
+            <div className="friendModalTitleRow">
+              <h3>{isNew ? 'add friend' : 'edit friend'}</h3>
+              <button className="friendModalClose" onClick={() => setEditing(null)}>✕</button>
+            </div>
 
             <label>name</label>
             <input value={editing.name} onChange={e => setEditing({ ...editing, name: e.target.value })} placeholder="name" />

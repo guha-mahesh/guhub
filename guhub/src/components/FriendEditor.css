@@ -69,10 +69,20 @@
   font-family: 'IBM Plex Mono', monospace;
 }
 
-.friendModalBox h3 {
-  color: #739166; font-size: 0.9rem; font-weight: 600;
-  margin: 0 0 0.5rem; letter-spacing: 0.05em;
+.friendModalTitleRow {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 0.5rem;
 }
+.friendModalTitleRow h3 {
+  color: #739166; font-size: 0.9rem; font-weight: 600;
+  margin: 0; letter-spacing: 0.05em;
+}
+.friendModalClose {
+  background: none; border: none; color: rgba(115,145,102,0.5);
+  font-size: 1rem; cursor: pointer; padding: 0; line-height: 1;
+  transition: color 0.15s;
+}
+.friendModalClose:hover { color: #739166; }
 
 .friendModalBox label {
   font-size: 0.65rem; color: rgba(115,145,102,0.6);
