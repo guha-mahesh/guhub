@@ -367,18 +367,11 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
           .pointsData(allLocationsRef.current)
           .pointLat((d: any) => d.lat)
           .pointLng((d: any) => d.lng)
-          .pointColor((d: any) => {
-            if (d.category === 'friend') return d.friends?.[0]?.color ?? '#a8d8ea';
-            if (d.id?.startsWith('music-')) return ARTIST_COLOR;
-            return CATEGORY_COLORS[d.category as Category] ?? '#739166';
-          })
+          .pointColor(() => '#739166')
           .pointAltitude((d: any) => d.category === 'friend' ? 0.03 : 0.06)
           .pointRadius((d: any) => d.category === 'friend' ? 0.3 : 0.5)
           .pointResolution(12)
-          .pointLabel((d: any) => {
-            const c = d.category === 'friend' ? (d.friends?.[0]?.color ?? '#a8d8ea') : d.id?.startsWith('music-') ? ARTIST_COLOR : (CATEGORY_COLORS[d.category as Category] ?? '#739166');
-            return `<div style="background:rgba(8,8,8,0.95);border:1px solid ${c};padding:5px 9px;font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:#f0f0f0;white-space:nowrap;border-radius:2px;cursor:pointer">${d.name}</div>`;
-          })
+          .pointLabel((d: any) => `<div style="background:rgba(8,8,8,0.95);border:1px solid #739166;padding:5px 9px;font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:#f0f0f0;white-space:nowrap;border-radius:2px;cursor:pointer">${d.name}</div>`)
           .onPointHover((point: any) => {
             hoveredPoint = point;
             el.style.cursor = point ? 'pointer' : 'default';
@@ -430,16 +423,7 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
         onMouseLeave={() => { if (globeRef.current && !panelOpen) globeRef.current.controls().autoRotate = true; }}
       />
 
-      <div className="globeLegend">
-        {(Object.entries(CATEGORY_COLORS) as [Category, string][]).map(([cat, color]) => (
-          <div key={cat} className="legendItem">
-            <span className="legendDot" style={{ backgroundColor: color, boxShadow: `0 0 6px ${color}` }} />
-            <span className="legendLabel">{cat}</span>
-          </div>
-        ))}
-      </div>
-
-      {!panelOpen && <div className="globeHint"><span>click a pin to explore</span></div>}
+{!panelOpen && <div className="globeHint"><span>click a pin to explore</span></div>}
 
       <div className={`memoryPanel ${panelOpen ? 'open' : ''}`}>
         {selected && (
