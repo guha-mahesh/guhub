@@ -243,18 +243,15 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
           if (nearest) {
             nearest.friends = [...(nearest.friends ?? []), f];
           } else {
-            const cityParts = f.city.split(',').map(s => s.trim());
-            // "Queens, New York, NY" → "New York, NY"; "Pittsburgh, PA" → "Pittsburgh, PA"
-            const displayName = cityParts.length >= 3 ? cityParts.slice(1).join(', ') : f.city;
-            const wikiCity = (cityParts.length >= 3 ? cityParts[1] : cityParts[0]);
+            const wikiCity = f.city.split(',')[0].trim();
             next.push({
               id: `friend-city-${f.id}`,
-              name: displayName,
+              name: f.city,
               lat: f.lat,
               lng: f.lng,
               queryKeywords: `${f.name} ${f.city}`,
               category: 'friend' as Category,
-              description: displayName,
+              description: f.city,
               wikiQuery: wikiCity,
               friends: [f],
             });
