@@ -1,6 +1,19 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './GlobeSection.css';
+import majorCitiesRaw from '../data/majorCities.json';
+
+interface MajorCity { name: string; lat: number; lng: number; country: string; pop: number; }
+const MAJOR_CITIES = majorCitiesRaw as MajorCity[];
+const CITY_SNAP_RADIUS = 1.5; // degrees (~150km)
+
+function snapToMajorCity(lat: number, lng: number): MajorCity | null {
+  // Already sorted by pop desc — first match within radius is the largest city
+  for (const city of MAJOR_CITIES) {
+    if (Math.hypot(city.lat - lat, city.lng - lng) < CITY_SNAP_RADIUS) return city;
+  }
+  return null;
+}
 
 const ENGRAMME_API = 'https://memorymachines-gateway-prod-btf57kda.uc.gateway.dev/v1/memories/recall';
 const API_KEY = 'qfXJw6okrhiUHXYs2FQCJNPB3zmziGtd';
@@ -145,16 +158,38 @@ const FriendAnimal = ({ slug, color }: { slug: string; color: string }) => {
   );
 };
 
-const CLUSTER_RADIUS = 0.5; // degrees (~50km)
-
-function findNearestLocation(locations: GlobeLocation[], lat: number, lng: number): GlobeLocation | null {
+function findNearestLocation(locations: GlobeLocation[], lat: number, lng: number, radius = CITY_SNAP_RADIUS): GlobeLocation | null {
   let best: GlobeLocation | null = null;
   let bestDist = Infinity;
   for (const loc of locations) {
     const dist = Math.hypot(loc.lat - lat, loc.lng - lng);
-    if (dist < CLUSTER_RADIUS && dist < bestDist) { best = loc; bestDist = dist; }
+    if (dist < radius && dist < bestDist) { best = loc; bestDist = dist; }
   }
   return best;
+}
+
+// Returns the existing pin to merge into, or creates a new one snapped to the nearest major city
+function getOrCreateCityPin(next: GlobeLocation[], lat: number, lng: number, fallbackName: string): GlobeLocation {
+  const existing = findNearestLocation(next, lat, lng);
+  if (existing) return existing;
+
+  const major = snapToMajorCity(lat, lng);
+  if (major) {
+    const id = `city-${major.name.toLowerCase().replace(/\s+/g, '-')}`;
+    const alreadyCreated = next.find(l => l.id === id);
+    if (alreadyCreated) return alreadyCreated;
+    const pin: GlobeLocation = { id, name: major.name, lat: major.lat, lng: major.lng, queryKeywords: `${major.name} ${major.country}`, category: 'interest' as Category, description: major.name, wikiQuery: major.name };
+    next.push(pin);
+    return pin;
+  }
+
+  // No major city nearby — pin at exact coords with fallback name
+  const id = `city-${lat.toFixed(2)}-${lng.toFixed(2)}`;
+  const alreadyCreated = next.find(l => l.id === id);
+  if (alreadyCreated) return alreadyCreated;
+  const pin: GlobeLocation = { id, name: fallbackName, lat, lng, queryKeywords: fallbackName, category: 'interest' as Category, description: fallbackName, wikiQuery: fallbackName.split(',')[0].trim() };
+  next.push(pin);
+  return pin;
 }
 
 const FriendCard = ({ friend }: { friend: Friend }) => {
@@ -232,30 +267,15 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
   const navigate = useNavigate();
   const spinRef = useRef<(loc: GlobeLocation) => void>(() => {});
 
-  // Load friends — merge into nearest existing location or create a city pin
+  // Load friends — snap to nearest major city or existing location
   useEffect(() => {
     fetch('/api/friends').then(r => r.json()).then((friends: Friend[]) => {
       if (!friends?.length) return;
       setAllLocations(prev => {
         const next = prev.map(l => ({ ...l }));
         for (const f of friends) {
-          const nearest = findNearestLocation(next, f.lat, f.lng);
-          if (nearest) {
-            nearest.friends = [...(nearest.friends ?? []), f];
-          } else {
-            const wikiCity = f.city.split(',')[0].trim();
-            next.push({
-              id: `friend-city-${f.id}`,
-              name: f.city,
-              lat: f.lat,
-              lng: f.lng,
-              queryKeywords: `${f.name} ${f.city}`,
-              category: 'friend' as Category,
-              description: f.city,
-              wikiQuery: wikiCity,
-              friends: [f],
-            });
-          }
+          const pin = getOrCreateCityPin(next, f.lat, f.lng, f.city);
+          pin.friends = [...(pin.friends ?? []), f];
         }
         allLocationsRef.current = next;
         return next;
@@ -269,13 +289,9 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
       setAllLocations(prev => {
         const next = prev.map(l => ({ ...l }));
         for (const pin of data.pins as GlobeLocation[]) {
-          const nearest = findNearestLocation(next, pin.lat, pin.lng);
           const artistEntry = { name: pin.description, spotifyArtistId: pin.spotifyArtistId ?? pin.id.replace('music-', '') };
-          if (nearest) {
-            nearest.artists = [...(nearest.artists ?? []), artistEntry];
-          } else {
-            next.push({ ...pin, artists: [artistEntry] });
-          }
+          const cityPin = getOrCreateCityPin(next, pin.lat, pin.lng, pin.description);
+          cityPin.artists = [...(cityPin.artists ?? []), artistEntry];
         }
         allLocationsRef.current = next;
         return next;
