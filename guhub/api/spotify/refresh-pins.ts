@@ -53,6 +53,8 @@ const KNOWN_OVERRIDES: Record<string, { lat: number; lng: number; city: string }
   'Cigarettes After Sex': { lat: 31.7619, lng: -106.4850, city: 'El Paso, TX' },
 };
 
+const BLACKLIST = new Set(['Lovejoy']);
+
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const secret = req.headers['x-refresh-secret'];
@@ -88,6 +90,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     for (const artist of chunk) {
       try {
+        if (BLACKLIST.has(artist.name)) continue;
         let loc: { lat: number; lng: number; city: string } | null = null;
         if (artist.name in KNOWN_OVERRIDES) {
           loc = KNOWN_OVERRIDES[artist.name];
