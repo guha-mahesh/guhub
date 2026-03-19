@@ -289,9 +289,12 @@ const GlobeSection = ({ onPanelChange }: { onPanelChange?: (open: boolean) => vo
       setAllLocations(prev => {
         const next = prev.map(l => ({ ...l }));
         for (const pin of data.pins as GlobeLocation[]) {
-          const artistEntry = { name: pin.description, spotifyArtistId: pin.spotifyArtistId ?? pin.id.replace('music-', '') };
-          const cityPin = getOrCreateCityPin(next, pin.lat, pin.lng, pin.description);
-          cityPin.artists = [...(cityPin.artists ?? []), artistEntry];
+          const cityPin = getOrCreateCityPin(next, pin.lat, pin.lng, pin.name);
+          // API already groups artists per city — use the array if present
+          const entries = pin.artists?.length
+            ? pin.artists
+            : [{ name: pin.description, spotifyArtistId: pin.spotifyArtistId ?? pin.id.replace('music-', '') }];
+          cityPin.artists = [...(cityPin.artists ?? []), ...entries];
         }
         allLocationsRef.current = next;
         return next;
