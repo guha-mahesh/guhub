@@ -1,5 +1,8 @@
 {
   "rewrites": [
+    { "source": "/api/spotify/now-playing", "destination": "/api/spotify/player?action=now-playing" },
+    { "source": "/api/spotify/recent", "destination": "/api/spotify/player?action=recent" },
+    { "source": "/api/spotify/queue", "destination": "/api/spotify/player?action=queue" },
     { "source": "/api/:path*", "destination": "/api/:path*" },
     { "source": "/massivewhiteboard", "destination": "/api/whiteboard" },
     { "source": "/(.*)", "destination": "/index.html" }
