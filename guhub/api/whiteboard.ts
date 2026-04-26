@@ -40,7 +40,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method === 'DELETE') {
     const key = req.headers['x-key'] ?? req.query.key;
     if (key !== WHITEBOARD_KEY) return res.status(401).json({ error: 'Unauthorized' });
-    const r = await fetch(`${SUPABASE_URL}/rest/v1/whiteboard?id=gte.0`, {
+    const id = req.query.id;
+    const filter = id ? `id=eq.${encodeURIComponent(String(id))}` : 'id=gte.0';
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/whiteboard?${filter}`, {
       method: 'DELETE',
       headers: { apikey: SERVICE_KEY, Authorization: `Bearer ${SERVICE_KEY}` },
     });
@@ -58,18 +60,58 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.json(entries);
   }
 
-  const rows = entries.map(e => `<div class="e"><div class="t">${esc(e.created_at)}</div><div class="c">${esc(e.content)}</div></div>`).join('');
+  const isAdmin = req.query.key === WHITEBOARD_KEY;
+  const rows = entries.map(e => {
+    const trash = isAdmin
+      ? `<button class="trash" data-id="${e.id}" aria-label="delete entry">×</button>`
+      : '';
+    return `<div class="e">${trash}<div class="t">${esc(e.created_at)}</div><div class="c">${esc(e.content)}</div></div>`;
+  }).join('');
+
+  const adminBadge = isAdmin ? `<span class="admin">admin</span>` : '';
+  const adminScript = isAdmin ? `<script>
+const KEY = ${JSON.stringify(String(req.query.key))};
+document.querySelectorAll('.trash').forEach(b => {
+  b.addEventListener('click', async () => {
+    const id = b.dataset.id;
+    if (!confirm('delete this entry?')) return;
+    b.disabled = true;
+    b.textContent = '…';
+    const r = await fetch('/api/whiteboard?id=' + id + '&key=' + encodeURIComponent(KEY), { method: 'DELETE' });
+    if (r.ok) {
+      const e = b.closest('.e');
+      e.style.transition = 'opacity .2s';
+      e.style.opacity = '0';
+      setTimeout(() => e.remove(), 200);
+    } else {
+      b.disabled = false;
+      b.textContent = '×';
+      alert('delete failed: ' + r.status);
+    }
+  });
+});
+</script>` : '';
+
   const html = `<!doctype html><html><head><meta charset="utf-8"><title>massive whiteboard</title><meta name="viewport" content="width=device-width,initial-scale=1"><style>
 *{box-sizing:border-box}
 body{font-family:ui-monospace,'IBM Plex Mono',Menlo,monospace;background:#f4f1ea;color:#1a1a1a;max-width:900px;margin:0 auto;padding:2rem;line-height:1.55}
-h1{font-size:.9rem;margin:0 0 2rem;opacity:.5;font-weight:400;letter-spacing:.05em;text-transform:uppercase}
-.e{margin:0 0 1.75rem;padding:0 0 1.75rem;border-bottom:1px solid rgba(0,0,0,.08)}
+h1{font-size:.9rem;margin:0 0 2rem;opacity:.5;font-weight:400;letter-spacing:.05em;text-transform:uppercase;display:flex;gap:.75rem;align-items:center}
+.admin{font-size:.65rem;background:#1a1a1a;color:#f4f1ea;padding:.15rem .4rem;border-radius:2px;letter-spacing:.08em;opacity:1}
+.e{position:relative;margin:0 0 1.75rem;padding:0 0 1.75rem;border-bottom:1px solid rgba(0,0,0,.08)}
 .e:last-child{border-bottom:none}
 .t{font-size:.7rem;opacity:.4;margin-bottom:.5rem}
 .c{white-space:pre-wrap;word-wrap:break-word;overflow-wrap:break-word}
 .empty{opacity:.4;font-style:italic}
-@media (prefers-color-scheme:dark){body{background:#111;color:#e8e8e8}.e{border-bottom-color:rgba(255,255,255,.08)}}
-</style></head><body><h1>massive whiteboard — ${entries.length} entr${entries.length === 1 ? 'y' : 'ies'}</h1>${rows || '<div class="empty">nothing here yet</div>'}</body></html>`;
+.trash{position:absolute;top:-.1rem;right:0;background:none;border:1px solid rgba(0,0,0,.15);color:inherit;font:inherit;font-size:1rem;line-height:1;width:1.6rem;height:1.6rem;cursor:pointer;opacity:.3;transition:opacity .15s,background .15s,border-color .15s,color .15s;border-radius:2px;padding:0;display:flex;align-items:center;justify-content:center}
+.trash:hover{opacity:1;background:#c44;border-color:#c44;color:#fff}
+.trash:disabled{cursor:wait;opacity:.5}
+@media (prefers-color-scheme:dark){
+  body{background:#111;color:#e8e8e8}
+  .e{border-bottom-color:rgba(255,255,255,.08)}
+  .admin{background:#e8e8e8;color:#111}
+  .trash{border-color:rgba(255,255,255,.18)}
+}
+</style></head><body><h1>massive whiteboard — ${entries.length} entr${entries.length === 1 ? 'y' : 'ies'}${adminBadge}</h1>${rows || '<div class="empty">nothing here yet</div>'}${adminScript}</body></html>`;
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   return res.send(html);
 }
