@@ -23,23 +23,20 @@
 }
 
 .projectsPageTitle {
-  font-size: 0.68rem;
-  color: #444;
+  font-size: 0.78rem;
+  color: #d8d8d8;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  margin: 0 0 0.4rem 0;
+  margin: 0;
+  font-weight: 600;
 }
-.projectsPageTitle::before { content: '> '; color: #333; }
+.projectsPageTitle::before { content: '> '; color: #a7c49a; }
 
 .projectsPageCount {
-  font-size: 2.2rem;
-  color: #f0f0f0;
-  font-weight: 700;
-  margin: 0;
-  letter-spacing: -0.02em;
-  line-height: 1;
+  color: #888;
+  font-weight: 400;
+  margin-left: 0.4rem;
 }
-.projectsPageCount span { color: #2a2a2a; }
 
 /* ── filter ──────────────────────────────────────────── */
 .galaxyFilters {
@@ -53,7 +50,7 @@
 
 .filterLabel {
   font-size: 0.65rem;
-  color: #333;
+  color: #8a8a8a;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   padding: 0.55rem 0.85rem;
@@ -68,7 +65,7 @@
   background: #0a0a0a;
   border: none;
   border-right: 1px solid #151515;
-  color: #444;
+  color: #a8a8a8;
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.65rem;
   letter-spacing: 0.1em;
@@ -200,7 +197,7 @@
   right: 0.6rem;
   background: none;
   border: none;
-  color: #555;
+  color: #b8b8b8;
   font-size: 1rem;
   cursor: pointer;
   line-height: 1;
@@ -220,7 +217,7 @@
 
 .treeCardDesc {
   font-size: 0.68rem;
-  color: #666;
+  color: #c8c8c8;
   line-height: 1.65;
   margin: 0 0 0.85rem 0;
   max-height: 120px;
@@ -238,7 +235,7 @@
 
 .treeCardTag {
   font-size: 0.6rem;
-  color: #444;
+  color: #a8a8a8;
   border: 1px solid #1e1e1e;
   padding: 0.1rem 0.4rem;
   letter-spacing: 0.06em;
@@ -264,7 +261,7 @@
 
 .treeCardPrivate {
   font-size: 0.65rem;
-  color: #333;
+  color: #8a8a8a;
   display: flex;
   align-items: center;
   gap: 0.3rem;

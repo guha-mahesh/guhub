@@ -1,0 +1,124 @@
+/* ── Crenshaw — small steampunk anteater easter egg ─────────────── */
+/* Position (top/bottom/left/right) is set per-corner inline by Anteater.tsx */
+.anteaterAnchor {
+  position: fixed;
+  width: 130px;
+  z-index: 6;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.6));
+}
+
+.anteaterBob {
+  width: 100%;
+  transform-origin: bottom center;
+}
+
+.anteater {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* ── body silhouette ── */
+.atrSilhouette {
+  fill: #b8a070;
+  stroke: #0a0808;
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+
+/* ── eye + monocle ── */
+.atrEye { fill: #050202; }
+.atrEyeGlint { fill: #ffffff; }
+.atrGoggle {
+  fill: none;
+  stroke: #b08d57;
+  stroke-width: 1.2;
+}
+.atrGoggleArm {
+  stroke: #b08d57;
+  stroke-width: 1.2;
+}
+
+/* ── ear ── */
+.atrEar {
+  fill: #6a5230;
+  stroke: #0a0808;
+  stroke-width: 1;
+  stroke-linejoin: round;
+}
+
+.atrNostril { fill: #0a0808; }
+
+/* ── shoulder stripe (the giveaway feature) ── */
+.atrStripeBlack {
+  fill: none;
+  stroke: #0a0808;
+  stroke-width: 12;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.atrStripeWhite {
+  fill: none;
+  stroke: #f0e6d0;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ── bushy tail and fur ── */
+.atrTail {
+  fill: #a08a5e;
+  stroke: #0a0808;
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+.atrTailFur line {
+  stroke: #0a0808;
+  stroke-width: 0.9;
+  stroke-linecap: round;
+  opacity: 0.75;
+}
+.atrFur circle {
+  fill: #0a0808;
+  opacity: 0.4;
+}
+
+/* ── claws ── */
+.atrClaws path {
+  fill: none;
+  stroke: #0a0808;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+/* ── brass shoulder gear ── */
+.atrGearTooth {
+  fill: #b08d57;
+  stroke: #0a0808;
+  stroke-width: 0.6;
+}
+.atrGearRim {
+  fill: #b08d57;
+  stroke: #0a0808;
+  stroke-width: 0.8;
+}
+.atrGearInner {
+  fill: #14110d;
+  stroke: #0a0808;
+  stroke-width: 0.6;
+}
+.atrGearBolt {
+  fill: #6a5230;
+}
+
+.atrRivet {
+  fill: #6a5230;
+  stroke: #0a0808;
+  stroke-width: 0.4;
+}
+
+@media (max-width: 1100px) {
+  .anteaterAnchor { width: 110px; left: 12vw; }
+}

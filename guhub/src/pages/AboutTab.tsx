@@ -1,7 +1,16 @@
 import { useState, useEffect } from 'react';
 import { resumeData as initialResumeData, type ResumeData } from '../data/resumeData';
-import MemorySpan from '../components/MemorySpan';
 import './AboutTab.css';
+
+// Render text with **bold** segments.
+const renderBullet = (text: string) => {
+  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+  return parts.map((p, i) =>
+    p.startsWith('**') && p.endsWith('**')
+      ? <strong key={i}>{p.slice(2, -2)}</strong>
+      : <span key={i}>{p}</span>
+  );
+};
 
 const AboutTab = () => {
   const [resumeData, setResumeData] = useState<ResumeData>(initialResumeData);
@@ -44,7 +53,7 @@ const AboutTab = () => {
 
             <section className="resumeLeftSection">
               <p className="leftLabel">education</p>
-              <p className="leftSchool" id="education"><MemorySpan queryKey="northeastern">{resumeData.education.school}</MemorySpan></p>
+              <p className="leftSchool" id="education">{resumeData.education.school}</p>
               <p className="leftDegreeText">{resumeData.education.degree}</p>
               <p className="leftMeta">{resumeData.education.gpa}</p>
               <p className="leftMeta">exp. {resumeData.education.date}</p>
@@ -62,7 +71,7 @@ const AboutTab = () => {
             <section className="resumeLeftSection">
               <p className="leftLabel">interests</p>
               <p className="skillsInline">
-                <MemorySpan queryKey="shoegaze">shoegaze</MemorySpan>, <MemorySpan queryKey="typing">competitive typing</MemorySpan>, metaethics, <MemorySpan queryKey="ea">effective altruism</MemorySpan>, <MemorySpan queryKey="birding">animal welfare</MemorySpan>, geopolitics
+                shoegaze, competitive typing, metaethics, effective altruism, animal welfare, geopolitics
               </p>
             </section>
 
@@ -83,22 +92,18 @@ const AboutTab = () => {
                 <div key={i} className="expEntry">
                   <div className="expEntryHeader">
                     <div className="expEntryLeft">
-                      <span className="expEntryCompany">
-                {exp.company.includes('Engramme')
-                  ? <span id="engramme"><MemorySpan queryKey="engramme">{exp.company}</MemorySpan></span>
-                  : exp.company}
-              </span>
+                      <span className="expEntryCompany">{exp.company}</span>
                       <span className="expEntryTitle">{exp.title}</span>
                     </div>
                     <span className="expEntryDate">{exp.date}</span>
                   </div>
                   <ul className="expEntryBullets">
                     {(hasContext ? mainBullets : exp.bullets).map((bullet, j) => (
-                      <li key={j} className="expBullet">{bullet}</li>
+                      <li key={j} className="expBullet">{renderBullet(bullet)}</li>
                     ))}
                   </ul>
                   {hasContext && (
-                    <p className="expContext">{contextBullet}</p>
+                    <p className="expContext">{renderBullet(contextBullet)}</p>
                   )}
                   {!isLast && <div className="expRule" />}
                 </div>

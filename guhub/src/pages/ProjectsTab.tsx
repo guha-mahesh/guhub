@@ -1,9 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { projects as allProjects } from '../data/projects';
 import type { Project } from '../data/projects';
-import { galaxyArray, type GalaxyType } from '../data/galaxyData';
 import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
-import MemorySpan from '../components/MemorySpan';
 import './ProjectsTab.css';
 
 const W = 900;
@@ -41,18 +39,11 @@ function branchPath(ax: number, ay: number, px: number, py: number): string {
 }
 
 export default function ProjectsTab() {
-  const [selectedGalaxy, setSelectedGalaxy] = useState<GalaxyType | null>(null);
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
   const [projects] = useState<Project[]>(allProjects);
   const svgRef = useRef<SVGSVGElement>(null);
   const trunkRef = useRef<SVGPathElement>(null);
   const branchRefs = useRef<(SVGPathElement | null)[]>([]);
-
-  const filtered = selectedGalaxy
-    ? projects.filter(p => p.galaxies.includes(selectedGalaxy))
-    : projects;
-
-  const filteredSet = new Set(filtered.map(p => p.id));
 
   // animate on mount
   useEffect(() => {
@@ -85,26 +76,9 @@ export default function ProjectsTab() {
       <div className="projectsContainer">
 
         <div className="projectsHeader">
-          <p className="projectsPageTitle">projects</p>
-          <h1 className="projectsPageCount">
-            {filtered.length}<span>/{projects.length}</span>
-          </h1>
-        </div>
-
-        {/* filter */}
-        <div className="galaxyFilters">
-          <span className="filterLabel">filter</span>
-          <div className="filterBadges">
-            {galaxyArray.map(g => (
-              <button
-                key={g.id}
-                className={`filterBtn ${selectedGalaxy === g.id ? 'active' : ''}`}
-                onClick={() => setSelectedGalaxy(selectedGalaxy === g.id ? null : g.id)}
-              >
-                {g.id}
-              </button>
-            ))}
-          </div>
+          <p className="projectsPageTitle">
+            projects <span className="projectsPageCount">/ {projects.length}</span>
+          </p>
         </div>
 
         {/* tree */}
@@ -145,11 +119,10 @@ export default function ProjectsTab() {
             {projects.map((project, i) => {
               const pos = NODE_POS[i % NODE_POS.length];
               const path = branchPath(pos.ax, pos.ay, pos.x, pos.y);
-              const isFiltered = selectedGalaxy !== null && !filteredSet.has(project.id);
               const isActive = activeIdx === i;
 
               return (
-                <g key={project.id} className={`projectGroup ${isFiltered ? 'dimmed' : ''} ${isActive ? 'active' : ''}`}>
+                <g key={project.id} className={`projectGroup ${isActive ? 'active' : ''}`}>
                   {/* branch */}
                   <path
                     ref={el => { branchRefs.current[i] = el; }}
@@ -205,11 +178,7 @@ export default function ProjectsTab() {
               }}
             >
               <button className="treeCardClose" onClick={() => setActiveIdx(null)}>×</button>
-              <h2 className="treeCardTitle" id={activeProject.globePinId ? `project-${activeProject.globePinId}` : undefined}>
-                  <MemorySpan queryKey={activeProject.title.toLowerCase().replace(/[^a-z]/g, '-').replace(/-+/g,'-')}>
-                    {activeProject.title}
-                  </MemorySpan>
-                </h2>
+              <h2 className="treeCardTitle">{activeProject.title}</h2>
               <p className="treeCardDesc">{activeProject.description}</p>
               <div className="treeCardTech">
                 {activeProject.tech.map((t, i) => (

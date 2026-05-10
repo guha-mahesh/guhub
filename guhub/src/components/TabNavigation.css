@@ -87,3 +87,23 @@
     letter-spacing: 0.08em;
   }
 }
+
+/* ── Crenshaw notification badge ── */
+.tab { position: relative; }
+
+.crenshawBadge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 7px;
+  height: 7px;
+  background: #d4a55a;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(212, 165, 90, 0.85);
+  animation: crenshawBadgePulse 1.4s ease-in-out infinite;
+}
+
+@keyframes crenshawBadgePulse {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50%      { opacity: 1;    transform: scale(1.25); }
+}

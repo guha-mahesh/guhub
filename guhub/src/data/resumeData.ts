@@ -56,13 +56,13 @@ export const resumeData: ResumeData = {
       date: "Dec 2025 – Sep 2026",
       globePinId: "sf",
       bullets: [
-        "Built entity resolution for the core memory API: a KNN classifier that identifies who appears in a memory without their name being mentioned, running 353x better than random chance; shipping to production",
-        "Contributed to a research blog post grounded in a real study on what people need to recall in daily life; helped collect and analyze a 1,940-question dataset from a 134-person Prolific study across 18 memory categories",
-        "Built the macOS and iOS apps end-to-end in Swift: wrote an algorithm that detects to-do items from screen context and cross-references them with active work to passively track task progress; cut API costs by 75% through smart batching and deduplication",
-        "Built a speaker-detection pipeline using on-device voiceprints (no cloud processing, GDPR/SOC2 compliant) for passive transcription across surfaces including Google Meet",
-        "Rebuilt the Chrome extension's content extraction across 289 commits; the main surface demoed to Apple, Samsung, GitHub, and TripAdvisor",
+        "Built **entity resolution for the core memory API**: a KNN classifier that identifies who appears in a memory without their name being mentioned, running **353x better than random chance**; shipping to production",
+        "Contributed to a research blog post grounded in a real study on what people need to recall in daily life; helped collect and analyze a **1,940-question dataset from a 134-person Prolific study** across 18 memory categories",
+        "Built the **macOS and iOS apps end-to-end in Swift**: wrote an algorithm that detects to-do items from screen context and cross-references them with active work to passively track task progress; **cut API costs by 75%** through smart batching and deduplication",
+        "Built a **speaker-detection pipeline using on-device voiceprints** (no cloud processing, GDPR/SOC2 compliant) for passive transcription across surfaces including Google Meet",
+        "Rebuilt the Chrome extension's content extraction across **289 commits**; the main surface **demoed to Apple, Samsung, GitHub, and TripAdvisor**",
         "Managed beta tester onboarding and feedback cycles; ran competitive evaluations against other memory products",
-        "Human memory lab; Mayfield-backed at pre-seed, currently in active conversations with top-tier investors. Founded by Gabriel Kreiman (Harvard Medical School) and Spandan Madan (Harvard CS PhD)"
+        "Human memory lab at pre-seed, currently in active conversations with top-tier investors. Founded by **Gabriel Kreiman (Harvard Medical School)** and **Spandan Madan (Harvard CS PhD)**"
       ]
     },
     {
@@ -70,8 +70,8 @@ export const resumeData: ResumeData = {
       company: "Rev (NU Student Club)",
       date: "Aug 2025 – Present",
       bullets: [
-        "Produced engaging social media videos that increased visibility and attendance at club information sessions",
-        "Reviewed 30+ membership applications and identified top candidates for interviews",
+        "Produced engaging social media videos that **increased visibility and attendance** at club information sessions",
+        "Reviewed **30+ membership applications** and identified top candidates for interviews",
         "Led candidate evaluations and interviews, selecting members best positioned to contribute to Rev's mission"
       ]
     },
@@ -80,8 +80,8 @@ export const resumeData: ResumeData = {
       company: "Knack",
       date: "Jan 2025 – Present",
       bullets: [
-        "Achieved a 5-star rating by guiding 10 students to improve their academic performance and strengthen Python programming",
-        "Delivered personalized instruction in Pandas, NumPy, statistics, and EDA, enabling students to apply data science concepts"
+        "Achieved a **5-star rating** by guiding **10 students** to improve their academic performance and strengthen Python programming",
+        "Delivered personalized instruction in **Pandas, NumPy, statistics, and EDA**, enabling students to apply data science concepts"
       ]
     },
   ]

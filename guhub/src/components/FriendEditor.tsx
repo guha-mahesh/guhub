@@ -30,13 +30,6 @@ interface GeoResult {
   };
 }
 
-function canonicalCityName(g: GeoResult): string {
-  const addr = g.address;
-  if (!addr) return g.display_name.split(',')[0].trim();
-  const city = addr.city ?? addr.town ?? addr.municipality ?? g.display_name.split(',')[0].trim();
-  const region = addr.state ?? addr.country ?? '';
-  return region ? `${city}, ${region}` : city;
-}
 
 const PRESET_COLORS = [
   '#f4a4b8','#f7c59f','#a8d8ea','#b8f0b8','#d4b8f0',
@@ -70,8 +63,8 @@ export default function FriendEditor() {
       );
       const d: GeoResult[] = await r.json();
       setGeoResults(d);
-      // Auto-select first result with canonical city name
-      if (d[0]) setEditing(prev => prev ? { ...prev, lat: parseFloat(d[0].lat), lng: parseFloat(d[0].lon), city: canonicalCityName(d[0]) } : null);
+      // Auto-select first result — only update coords, never overwrite what the user typed
+      if (d[0]) setEditing(prev => prev ? { ...prev, lat: parseFloat(d[0].lat), lng: parseFloat(d[0].lon) } : null);
     } finally { setGeocoding(false); }
   };
 
@@ -136,7 +129,7 @@ export default function FriendEditor() {
               <div className="geoResults">
                 {geoResults.map((g, i) => (
                   <button key={i} className={`geoResult ${editing.lat === parseFloat(g.lat) ? 'active' : ''}`}
-                    onClick={() => setEditing(prev => prev ? { ...prev, lat: parseFloat(g.lat), lng: parseFloat(g.lon), city: canonicalCityName(g) } : null)}>
+                    onClick={() => setEditing(prev => prev ? { ...prev, lat: parseFloat(g.lat), lng: parseFloat(g.lon) } : null)}>
                     <span className="geoResultName">{g.display_name.split(',').slice(0, 3).join(',')}</span>
                     <span className="geoResultType">{g.type}</span>
                   </button>

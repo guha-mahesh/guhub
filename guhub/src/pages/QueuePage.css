@@ -58,11 +58,11 @@
   text-overflow: ellipsis;
 }
 
-.npBarSep { color: #333; font-size: 0.75rem; }
+.npBarSep { color: #8a8a8a; font-size: 0.75rem; }
 
 .npBarArtist {
   font-size: 0.65rem;
-  color: #555;
+  color: #b8b8b8;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -112,7 +112,7 @@
 
 .queueSub {
   font-size: 0.72rem;
-  color: #444;
+  color: #a8a8a8;
   margin: 0;
   line-height: 1.6;
 }
@@ -157,7 +157,7 @@
   background: transparent;
   border: none;
   border-left: 1px solid #1e1e1e;
-  color: #555;
+  color: #b8b8b8;
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.7rem;
   letter-spacing: 0.1em;
@@ -199,12 +199,12 @@
 
 .resultText { display: flex; flex-direction: column; min-width: 0; }
 .resultTitle { font-size: 0.78rem; color: #d0d0d0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.resultMeta { font-size: 0.65rem; color: #444; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 0.1rem; }
+.resultMeta { font-size: 0.65rem; color: #a8a8a8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 0.1rem; }
 
 .resultQueue {
   background: transparent;
   border: 1px solid #1e1e1e;
-  color: #555;
+  color: #b8b8b8;
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.62rem;
   letter-spacing: 0.08em;
@@ -231,13 +231,13 @@
 
 .successArt { width: 48px; height: 48px; object-fit: cover; }
 .successTitle { font-size: 0.88rem; color: #f0f0f0; margin: 0 0 0.2rem; font-weight: 700; }
-.successArtist { font-size: 0.72rem; color: #666; margin: 0; }
+.successArtist { font-size: 0.72rem; color: #c8c8c8; margin: 0; }
 .successMsg { font-size: 0.65rem; color: #739166; letter-spacing: 0.15em; text-transform: uppercase; margin: 0; }
 
 .queueAgain {
   background: transparent;
   border: 1px solid #1e1e1e;
-  color: #666;
+  color: #c8c8c8;
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.68rem;
   letter-spacing: 0.1em;
@@ -296,14 +296,14 @@
 .recentTitle { font-size: 0.75rem; color: #bbb; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .recentTitleLink { font-size: 0.75rem; color: #bbb; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-decoration: none; }
 .recentTitleLink:hover { color: #f0f0f0; text-decoration: underline; }
-.recentMeta { font-size: 0.63rem; color: #444; margin-top: 0.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.recentMeta { font-size: 0.63rem; color: #a8a8a8; margin-top: 0.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .recentTime { font-size: 0.6rem; color: #2a2a2a; flex-shrink: 0; letter-spacing: 0.04em; }
 
 /* ── preview button ────────────────────────────────────── */
 .previewBtn {
   background: transparent;
   border: 1px solid #222;
-  color: #444;
+  color: #a8a8a8;
   font-size: 0.55rem;
   width: 22px;
   height: 22px;
@@ -331,7 +331,7 @@
 .previewBtn {
   background: transparent;
   border: 1px solid #222;
-  color: #444;
+  color: #a8a8a8;
   font-size: 0.55rem;
   width: 22px;
   height: 22px;

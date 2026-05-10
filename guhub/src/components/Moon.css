@@ -1,0 +1,247 @@
+/* ── Big rubberhose moon (opens LEFT, weathered) ────────── */
+.moon {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  animation: moonBob 5.2s ease-in-out infinite;
+  filter: drop-shadow(-12px 8px 28px rgba(0,0,0,0.7));
+}
+
+@keyframes moonBob {
+  0%, 100% { transform: translateY(0) rotate(-0.8deg); }
+  50%      { transform: translateY(-12px) rotate(1deg); }
+}
+
+.moonShadow {
+  fill: rgba(0,0,0,0.55);
+  filter: blur(6px);
+}
+
+/* ── body ── */
+.moonBody {
+  fill: #cbb892;
+  stroke: #0a0808;
+  stroke-width: 5;
+  stroke-linejoin: round;
+}
+
+/* ── craters ── */
+.moonCraters ellipse {
+  fill: #6e5a3a;
+  stroke: #0a0808;
+  stroke-width: 1.6;
+}
+.moonCraters .craterRim {
+  fill: none;
+  stroke: #f5e8c4;
+  stroke-width: 1.4;
+  opacity: 0.6;
+}
+
+/* ── stipple ── */
+.moonStipple circle {
+  fill: #4a3a20;
+  opacity: 0.85;
+}
+
+/* ── cracks ── */
+.moonCracks path {
+  fill: none;
+  stroke: #2a1a10;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ── jaw / shadow hatching ── */
+.moonHatch line {
+  stroke: #0a0808;
+  stroke-width: 1.2;
+  opacity: 0.55;
+  stroke-linecap: round;
+}
+
+/* ── face ── */
+.moonFace {
+  opacity: 0;
+  transition: opacity 0.8s ease 0.1s;
+}
+.moonFace.open { opacity: 1; }
+
+/* nose — long pinocchio stick */
+.moonNose {
+  fill: #cbb892;
+  stroke: #0a0808;
+  stroke-width: 3;
+  stroke-linejoin: miter;
+}
+.moonNoseKnob { fill: #0a0808; }
+.moonNostril { fill: #0a0808; }
+.moonNoseCrease {
+  fill: none;
+  stroke: #0a0808;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  opacity: 0.55;
+}
+
+/* brow */
+.moonBrow { fill: #0a0808; }
+.moonFrown {
+  fill: none;
+  stroke: #0a0808;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+/* sunburst eye — golden petals + recessed socket + black iris + white pupil */
+.moonPetal {
+  fill: #d4a55a;
+  stroke: #3a1f08;
+  stroke-width: 1.5;
+}
+
+.moonEyeSocket {
+  fill: #1a0a04;
+  stroke: #050202;
+  stroke-width: 1.4;
+}
+.moonEyeSocketInner {
+  fill: #2a1408;
+  stroke: none;
+}
+
+.moonEyeIris {
+  fill: #050202;
+  stroke: #1a0a04;
+  stroke-width: 1;
+}
+
+.moonEyePupilWhite {
+  fill: #f5f0e0;
+  stroke: #1a1a1a;
+  stroke-width: 0.8;
+}
+
+.moonEyePupilCore {
+  fill: #050202;
+}
+
+/* hooded lid */
+.moonLid {
+  fill: #cbb892;
+  stroke: #0a0808;
+  stroke-width: 5;
+  stroke-linejoin: round;
+}
+.moonLidCrease {
+  fill: none;
+  stroke: #0a0808;
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+.moonBag {
+  fill: none;
+  stroke: #0a0808;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  opacity: 0.85;
+}
+
+/* red-glowing scar */
+.moonScarRed {
+  fill: none;
+  stroke: #b22020;
+  stroke-width: 9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.55;
+}
+.moonScarRedCore {
+  fill: none;
+  stroke: #ff5a3a;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* mouth (closed sneer) */
+.moonMouthLine {
+  fill: none;
+  stroke: #0a0808;
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.moonMouthCorner {
+  fill: none;
+  stroke: #0a0808;
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+.moonPeekTooth {
+  fill: #f3e6c8;
+  stroke: #0a0808;
+  stroke-width: 2.4;
+  stroke-linejoin: round;
+}
+.moonCheekLine {
+  fill: none;
+  stroke: #0a0808;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  opacity: 0.5;
+}
+
+/* blood drip */
+.moonBloodDrip {
+  fill: none;
+  stroke: #8b1a1a;
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+.moonBloodDropTip {
+  fill: #8b1a1a;
+  stroke: #4a0808;
+  stroke-width: 1;
+}
+
+/* ── Crenshaw nameplate ── */
+.moonNameplate {
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+}
+.moonPlate {
+  fill: #b08d57;
+  stroke: #0a0808;
+  stroke-width: 1.5;
+}
+.moonPlateInner {
+  fill: #14110d;
+  stroke: #6a5230;
+  stroke-width: 1;
+}
+.moonPlateRivet {
+  fill: #6a5230;
+  stroke: #0a0808;
+  stroke-width: 0.8;
+}
+.moonPlateText {
+  fill: #d4a55a;
+  font-family: 'Limelight', Georgia, serif;
+  font-size: 16px;
+  letter-spacing: 0.18em;
+}
+
+/* ── brass cog mount ── */
+.moonCogSpin {
+  transform-origin: 0 0;
+  animation: moonCogSpin 22s linear infinite;
+}
+@keyframes moonCogSpin { to { transform: rotate(360deg); } }
+.moonCogTooth { fill: #b08d57; stroke: #0a0808; stroke-width: 2.5; }
+.moonCogRim { fill: #b08d57; stroke: #0a0808; stroke-width: 3; }
+.moonCogInner { fill: #14110d; stroke: #0a0808; stroke-width: 2; }
+.moonCogSpoke { stroke: #b08d57; stroke-width: 8; stroke-linecap: round; }
+.moonCogHub { fill: #6a5230; stroke: #0a0808; stroke-width: 2; }
+.moonCogBolt { fill: #14110d; }

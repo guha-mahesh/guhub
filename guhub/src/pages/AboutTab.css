@@ -32,7 +32,7 @@
 
 .resumeName {
   font-size: 2.8rem;
-  color: #f0f0f0;
+  color: #f4f4f4;
   font-weight: 700;
   letter-spacing: -0.03em;
   margin: 0;
@@ -40,58 +40,61 @@
 }
 
 .resumeTagline {
-  font-size: 0.7rem;
-  color: #444;
-  letter-spacing: 0.15em;
+  font-size: 0.72rem;
+  color: #93b582;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
+  font-weight: 600;
 }
 
 .resumeHeaderMeta {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.7rem;
   padding-bottom: 0.3rem;
 }
 
 .resumeMetaLink {
-  font-size: 0.7rem;
-  color: #555;
+  font-size: 0.78rem;
+  color: #c2c2c2;
   text-decoration: none;
   letter-spacing: 0.05em;
   transition: color 0.1s;
+  font-weight: 500;
 }
 
-.resumeMetaLink:hover { color: #f0f0f0; }
+.resumeMetaLink:hover { color: #f4f4f4; }
 
 .resumeDownload {
-  color: #739166;
+  color: #a7c49a;
+  font-weight: 600;
 }
 
-.resumeDownload:hover { color: #8aaa7a; }
+.resumeDownload:hover { color: #c2dab1; }
 
 .resumeMetaDot {
-  width: 2px;
-  height: 2px;
-  background: #333;
+  width: 3px;
+  height: 3px;
+  background: #555;
   border-radius: 50%;
 }
 
 /* ── rules ───────────────────────────────────────────── */
 .resumeRule {
   height: 1px;
-  background: #1a1a1a;
+  background: #2a2a2a;
   margin: 0;
 }
 
 .leftRule {
   height: 1px;
-  background: #141414;
+  background: #1f1f1f;
   margin: 1.5rem 0;
 }
 
 .expRule {
   height: 1px;
-  background: #111;
+  background: #1f1f1f;
   margin: 2rem 0;
 }
 
@@ -106,7 +109,7 @@
 /* ── left column ─────────────────────────────────────── */
 .resumeLeft {
   padding-right: 2.5rem;
-  border-right: 1px solid #111;
+  border-right: 1px solid #1f1f1f;
 }
 
 .resumeLeftSection {
@@ -116,38 +119,39 @@
 }
 
 .leftLabel {
-  font-size: 0.6rem;
-  color: #739166;
-  letter-spacing: 0.2em;
+  font-size: 0.65rem;
+  color: #a7c49a;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 0.55rem 0;
+  font-weight: 700;
 }
 
 .leftSchool {
-  font-size: 0.8rem;
-  color: #d0d0d0;
+  font-size: 0.88rem;
+  color: #f0f0f0;
   font-weight: 700;
   margin: 0;
   line-height: 1.4;
 }
 
 .leftDegreeText {
-  font-size: 0.7rem;
-  color: #666;
+  font-size: 0.75rem;
+  color: #c8c8c8;
   line-height: 1.6;
   margin: 0;
 }
 
 .leftMeta {
-  font-size: 0.65rem;
-  color: #444;
+  font-size: 0.7rem;
+  color: #a0a0a0;
   margin: 0;
   letter-spacing: 0.04em;
 }
 
 .skillsInline {
-  font-size: 0.68rem;
-  color: #666;
+  font-size: 0.74rem;
+  color: #b8b8b8;
   line-height: 1.7;
   margin: 0;
 }
@@ -158,18 +162,15 @@
 }
 
 .rightLabel {
-  font-size: 0.6rem;
-  color: #739166;
-  letter-spacing: 0.2em;
+  font-size: 0.65rem;
+  color: #a7c49a;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   margin: 0 0 2rem 0;
+  font-weight: 700;
 }
 
 /* ── experience entry ────────────────────────────────── */
-.expEntry {
-  /* each entry */
-}
-
 .expEntryHeader {
   display: flex;
   justify-content: space-between;
@@ -182,26 +183,27 @@
 .expEntryLeft {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 0.25rem;
 }
 
 .expEntryCompany {
-  font-size: 1rem;
-  color: #e0e0e0;
+  font-size: 1.05rem;
+  color: #f4f4f4;
   font-weight: 700;
   letter-spacing: -0.01em;
 }
 
 .expEntryTitle {
-  font-size: 0.7rem;
-  color: #555;
-  letter-spacing: 0.06em;
+  font-size: 0.74rem;
+  color: #a7c49a;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
+  font-weight: 600;
 }
 
 .expEntryDate {
-  font-size: 0.65rem;
-  color: #333;
+  font-size: 0.72rem;
+  color: #9a9a9a;
   letter-spacing: 0.06em;
   white-space: nowrap;
   flex-shrink: 0;
@@ -214,13 +216,13 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
+  gap: 0.6rem;
 }
 
 .expBullet {
-  font-size: 0.78rem;
-  color: #777;
-  line-height: 1.65;
+  font-size: 0.82rem;
+  color: #d0d0d0;
+  line-height: 1.7;
   padding-left: 1rem;
   position: relative;
 }
@@ -229,36 +231,27 @@
   content: '›';
   position: absolute;
   left: 0;
-  color: #333;
+  color: #a7c49a;
+}
+
+.expBullet strong {
+  color: #ffffff;
+  font-weight: 700;
 }
 
 /* ── context line (last bullet for Engramme) ─────────── */
 .expContext {
-  font-size: 0.65rem;
-  color: #3a3a3a;
-  margin: 0.75rem 0 0 1rem;
-  line-height: 1.6;
+  font-size: 0.72rem;
+  color: #a8a8a8;
+  margin: 0.85rem 0 0 1rem;
+  line-height: 1.65;
   font-style: italic;
 }
 
-/* ── arbor section ───────────────────────────────────── */
-.arborSection {
-  padding: 2.5rem 0 0;
-}
-
-.arborContainer {
-  display: flex;
-  justify-content: flex-start;
-}
-
-.arborFrame {
-  border-radius: 0;
-  border: 1px solid #1a1a1a;
-  transition: border-color 0.2s;
-}
-
-.arborFrame:hover {
-  border-color: #739166;
+.expContext strong {
+  color: #d8d8d8;
+  font-weight: 700;
+  font-style: normal;
 }
 
 /* ── responsive ──────────────────────────────────────── */
@@ -273,13 +266,11 @@
   .resumeLeft {
     padding-right: 0;
     border-right: none;
-    border-bottom: 1px solid #111;
+    border-bottom: 1px solid #1f1f1f;
     padding-bottom: 2rem;
   }
 
   .resumeRight { padding-left: 0; }
 
   .resumeName { font-size: 2rem; }
-
-  .arborFrame { width: 100% !important; height: 500px !important; }
 }

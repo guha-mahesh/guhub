@@ -164,7 +164,7 @@
 
 .toastArtist {
   font-size: 0.62rem;
-  color: #555;
+  color: #b8b8b8;
   font-family: 'IBM Plex Mono', monospace;
   white-space: nowrap;
   overflow: hidden;
@@ -178,7 +178,7 @@
   right: 8px;
   background: none;
   border: none;
-  color: #444;
+  color: #a8a8a8;
   font-size: 0.62rem;
   cursor: pointer;
   padding: 2px;

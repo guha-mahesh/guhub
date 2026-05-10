@@ -1,0 +1,74 @@
+/* ── Aquarium: framer-motion drives all motion. CSS handles visuals only. */
+.aquarium {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+
+  /* Antique-brass etching look on the dark soot bg */
+  --ink: #8a6a3a;
+  --brass: #c79c66;
+  --cream: #e6d4ad;
+  --ember: #f5b450;
+}
+
+.drifter {
+  width: max-content;
+  will-change: transform;
+}
+
+/* ── creature line styles ──────────────────────────────── */
+.aquarium .ink {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.aquarium .ink.thin { stroke-width: 1.2; }
+
+.aquarium .brass {
+  stroke: var(--brass);
+  stroke-width: 1.4;
+  fill: none;
+}
+
+.aquarium .brassFill {
+  fill: var(--brass);
+  stroke: var(--ink);
+  stroke-width: 0.8;
+}
+
+.aquarium .brassGhost {
+  fill: var(--brass);
+  fill-opacity: 0.10;
+  stroke: none;
+}
+
+.aquarium .eyeWhite {
+  fill: var(--cream);
+  stroke: var(--ink);
+  stroke-width: 1.2;
+}
+
+.aquarium .biolume {
+  fill: var(--ember);
+}
+
+.aquarium .jelly { width: 200px; height: 320px; overflow: visible; }
+.aquarium .squid { width: 220px; height: 360px; overflow: visible; }
+.aquarium .sipho { width: 100px; height: 540px; overflow: visible; }
+
+.jellyGlow {
+  fill: var(--ember);
+  fill-opacity: 0.16;
+  filter: blur(10px);
+}
+
+.jellyTentacles, .squidArms, .siphoTentacles {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.3;
+  stroke-linecap: round;
+}

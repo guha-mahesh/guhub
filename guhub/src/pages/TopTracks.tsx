@@ -110,10 +110,10 @@ const TopTracks = () => {
           ← back to music of-sorts
         </Link>
         <div className="headerContent">
-          <span className="headerLabel">[2024 in review]</span>
+          <span className="headerLabel">[2025 in review]</span>
           <h1 className="tracksTitle">TOP ALBUMS</h1>
           <p className="tracksSubtitle">
-            ranked by vibes not objectivity
+            ranked by objectivity and every opinion of mine is musical dogma
 
           </p>
         </div>
