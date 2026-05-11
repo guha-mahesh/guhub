@@ -46,8 +46,8 @@ export default function CrenshawExplainer() {
             <h2 className="explainerTitle">a tiny strange-loop mini-game</h2>
             <p className="explainerBody">
               The moon is Casper. The anteater hiding around the site is Crenshaw.
-              Clicking Casper&apos;s eye drops you a level into him; do that four
-              times and the loop closes. Loosely inspired by Gödel, Escher, Bach.
+              Pay attention to what Casper says — that&apos;s how it starts.
+              Loosely inspired by Gödel, Escher, Bach.
             </p>
             <p className="explainerBody explainerHint">
               No obligation to play. If the anteater and the Casper banter are
