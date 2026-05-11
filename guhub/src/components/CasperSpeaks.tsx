@@ -29,6 +29,11 @@ const LINES = [
   "don't make me roll my eye.",
   "you have a good face for radio.",
   "blink twice if you see this.",
+  // crenshaw connection: surfaces who he is + who's looking for him,
+  // without ever forcing dialogue. one of these every ~30s on first visit.
+  "have you seen the anteater? small, with the shoulder stripe.",
+  "the anteater is mine, by the way.",
+  "look in the corners. that's where he hides.",
 ];
 
 const VISIBLE_MS = 5500;
