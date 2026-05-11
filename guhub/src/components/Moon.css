@@ -259,7 +259,16 @@
   transform-origin: 0 0;
   transform-box: view-box;
   filter: drop-shadow(0 3px 5px rgba(0,0,0,0.55));
+  /* clicks on the plate / nameplate text bubble up to the moonAnchor
+     wrapper, which opens the casper/crenshaw explainer. SVG doesn't
+     inherit cursor from parent HTML reliably — set it explicitly. */
+  cursor: help;
 }
+.moonPlate, .moonPlateInner, .moonPlateRivet, .moonPlateHook, .moonPlateText {
+  cursor: help;
+  pointer-events: all;
+}
+.moonPlateText { user-select: none; }
 
 @keyframes plateSway {
   0%   { transform: rotate(-2.4deg); }
