@@ -298,7 +298,9 @@
 @media (max-width: 768px) {
   .projectsContainer { padding: 2rem 1rem 4rem; }
 
-  /* tree card becomes a fixed bottom sheet on mobile */
+  /* tree card becomes a fixed bottom sheet on mobile. z-index sits ABOVE
+     the sidebar toggle ([ ! ], z-index 1001) so the contact button
+     doesn't poke through the sheet content. */
   .treeCard {
     position: fixed !important;
     left: 0 !important;
@@ -313,7 +315,7 @@
     border-bottom: none;
     border-top: 2px solid var(--sage);
     border-radius: 0;
-    z-index: 200;
+    z-index: 1100;
     box-sizing: border-box;
   }
 
