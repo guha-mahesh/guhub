@@ -34,6 +34,34 @@ export default function ViewDeck() {
     return () => window.removeEventListener('mousemove', handler);
   }, []);
 
+  // Idle-hide: after 5s of no input, fade out all UI chrome (sidebar
+  // toggle, ⌘K hint, music toast/button, tab nav, view_deck label, the
+  // flashlight, the opt-in icon). On any movement they fade back in.
+  // Implemented via two body classes:
+  //   viewDeckMode  — always on while this page is mounted; defines the
+  //                   opacity transitions on the targets
+  //   viewDeckIdle  — added/removed by the idle timer; flips opacity to 0
+  useEffect(() => {
+    document.body.classList.add('viewDeckMode');
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    const arm = () => {
+      if (timer) clearTimeout(timer);
+      document.body.classList.remove('viewDeckIdle');
+      timer = setTimeout(() => document.body.classList.add('viewDeckIdle'), 5000);
+    };
+    arm();
+    window.addEventListener('mousemove', arm);
+    window.addEventListener('keydown', arm);
+    window.addEventListener('touchstart', arm);
+    return () => {
+      if (timer) clearTimeout(timer);
+      document.body.classList.remove('viewDeckMode', 'viewDeckIdle');
+      window.removeEventListener('mousemove', arm);
+      window.removeEventListener('keydown', arm);
+      window.removeEventListener('touchstart', arm);
+    };
+  }, []);
+
   return (
     <div className="viewDeck">
       <span className="viewDeckLabel">{prefix}view_deck</span>

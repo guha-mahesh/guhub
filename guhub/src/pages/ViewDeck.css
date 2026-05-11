@@ -43,3 +43,32 @@
   );
   mix-blend-mode: screen;
 }
+
+/* ── idle-hide on view_deck ────────────────────────────────────────
+   While this page is mounted, all UI chrome gets a fade transition.
+   When the user has been idle for ~5s (viewDeckIdle on body), every
+   piece of chrome fades to 0 so the aquarium has the whole canvas.
+   Any cursor/key/touch movement removes viewDeckIdle and they fade
+   back in. */
+body.viewDeckMode .sidebarToggle,
+body.viewDeckMode .cmdPaletteHint,
+body.viewDeckMode .tabNavigation,
+body.viewDeckMode .backgroundMusicControl,
+body.viewDeckMode .musicToast,
+body.viewDeckMode .crenshawOptIn,
+body.viewDeckMode .viewDeckLabel,
+body.viewDeckMode .viewDeckFlashlight {
+  transition: opacity 0.8s ease;
+}
+
+body.viewDeckIdle .sidebarToggle,
+body.viewDeckIdle .cmdPaletteHint,
+body.viewDeckIdle .tabNavigation,
+body.viewDeckIdle .backgroundMusicControl,
+body.viewDeckIdle .musicToast,
+body.viewDeckIdle .crenshawOptIn,
+body.viewDeckIdle .viewDeckLabel,
+body.viewDeckIdle .viewDeckFlashlight {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
