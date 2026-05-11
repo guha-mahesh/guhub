@@ -27,7 +27,7 @@ const ROOT: Frag[] = [
   { t: 'txt', v: '. Before that, a teenager in Sugar Land. I keep ' },
   { t: 'sh', vs: ['a list', 'a folder', 'an ongoing tally', 'a small ledger'] },
   { t: 'txt', v: ' of things I would ' },
-  { t: 'sh', vs: ['argue with', 'fight', 'make a small enemy over', 'go to the mat for'] },
+  { t: 'sh', vs: ['argue with', 'fight', 'make a small enemy over', 'talk too long with'] },
   { t: 'txt', v: ' a stranger about.' },
 ];
 
