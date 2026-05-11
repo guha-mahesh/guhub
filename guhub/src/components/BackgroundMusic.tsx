@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { FaPlay, FaPause, FaTimes } from 'react-icons/fa';
+import { useIsMobile } from '../hooks/useIsMobile';
 import './BackgroundMusic.css';
 
 const API = import.meta.env.VITE_API_BASE ?? '';
@@ -19,6 +20,14 @@ interface Track {
 // ──────────────────────────────────────────────────────────────────────
 
 const BackgroundMusic = () => {
+  const isMobile = useIsMobile();
+  // Disabled entirely on mobile: no autoplay click handler, no Web Audio
+  // setup, no toast, no toggle button. Saves bandwidth + screen real estate.
+  if (isMobile) return null;
+  return <BackgroundMusicInner />;
+};
+
+const BackgroundMusicInner = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [needsInteraction, setNeedsInteraction] = useState(true);
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);

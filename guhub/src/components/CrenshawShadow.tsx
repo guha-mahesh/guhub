@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useMeta } from '../contexts/MetaContext';
+import { useIsMobile } from '../hooks/useIsMobile';
 import './CrenshawShadow.css';
 
 // ──────────────────────────────────────────────────────────────────────
@@ -14,14 +15,16 @@ const SHADOW_SIZE = 48;
 
 export default function CrenshawShadow() {
   const { metaQuestDone, crenshawFreed } = useMeta();
+  const isMobile = useIsMobile();
   const ref = useRef<HTMLDivElement>(null);
   const targetRef = useRef({ x: -200, y: -200 });
   const posRef = useRef({ x: -200, y: -200 });
   const [active, setActive] = useState(false);
 
   // shadow is only present after meta-quest, and disappears once Crenshaw
-  // has been released (the strange loop is closed).
-  const enabled = metaQuestDone && !crenshawFreed;
+  // has been released (the strange loop is closed). Also off on mobile —
+  // no cursor to follow.
+  const enabled = metaQuestDone && !crenshawFreed && !isMobile;
 
   useEffect(() => {
     if (!enabled) return;

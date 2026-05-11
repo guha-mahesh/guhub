@@ -3,6 +3,7 @@ import { useEffect, useRef, useState, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useCrenshaw, type Corner } from '../contexts/CrenshawContext';
 import { useMeta, MAX_META_LEVEL } from '../contexts/MetaContext';
+import { useIsMobile } from '../hooks/useIsMobile';
 import './Anteater.css';
 
 // ──────────────────────────────────────────────────────────────────────
@@ -44,6 +45,7 @@ export default function Anteater() {
   const { currentRoute, currentCorner, relocate } = useCrenshaw();
   const { level: metaLevel, openRpg, metaQuestDone, crenshawFreed, openMiu } = useMeta();
   const location = useLocation();
+  const isMobile = useIsMobile();
   const onPath = location.pathname === currentRoute;
   // At meta⁴, Crenshaw doesn't run — clicking him opens the meta RPG.
   // After meta-quest is done at the surface, he also stops fleeing —
@@ -152,6 +154,8 @@ export default function Anteater() {
   }, [currentRoute, currentCorner]);
 
   if (!onPath) return null;
+  // mobile has no hover/cursor mechanic, so the chase doesn't make sense
+  if (isMobile) return null;
   // once the player has solved the MIU puzzle, Crenshaw is at peace —
   // he no longer hides on any tab.
   if (crenshawFreed) return null;
