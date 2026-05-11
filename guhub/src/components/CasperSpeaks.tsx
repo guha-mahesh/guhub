@@ -39,12 +39,28 @@ export default function CasperSpeaks() {
   const location = useLocation();
   const { level, metaVisited } = useMeta();
   const [line, setLine] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Casper himself doesn't render on mobile (the home page swaps to a
+  // mobile fallback), so his speech bubble/banner shouldn't either.
+  useEffect(() => {
+    const check = () => {
+      setIsMobile(
+        window.innerWidth <= 768 ||
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
+      );
+    };
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   const onHome = location.pathname === '/';
   // Suppress when in a meta level (Casper speaks differently there) OR
   // once the player has ever descended at least once — the puns are
   // really a discoverability hint for the eye, and they've found it.
-  const muted = level > 0 || metaVisited;
+  // Also suppress on mobile (Casper isn't rendered there).
+  const muted = level > 0 || metaVisited || isMobile;
 
   useEffect(() => {
     if (muted) { setLine(null); return; }

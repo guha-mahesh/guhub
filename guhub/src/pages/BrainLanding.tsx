@@ -230,6 +230,11 @@ const BrainLanding = () => {
         <div className="proseWrap">
           {level === 0 ? <Prose frags={ROOT} /> : <MetaDialogue level={level} />}
         </div>
+        {level === 0 && (
+          <Link to="/about" className="realTalkButton">
+            <span className="realTalkText">↓ ok let's be real, you're here for the resumé ↓</span>
+          </Link>
+        )}
         {level === MAX_META_LEVEL && <MetaCrenshawHint level={level} onOpen={openRpg} />}
       </div>
 

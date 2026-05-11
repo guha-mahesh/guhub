@@ -98,6 +98,35 @@
   font-style: italic;
 }
 
+/* "real talk" skip-to-resume button — restored from earlier site versions.
+   Lets visitors who just want the resume jump straight there. */
+.realTalkButton {
+  display: inline-block;
+  margin-top: 1.6rem;
+  padding: 0.7rem 1.1rem;
+  background: rgba(20, 17, 13, 0.7);
+  border: 1px solid var(--brass, #b08d57);
+  border-radius: 3px;
+  text-decoration: none;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  color: var(--brass, #b08d57);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: fit-content;
+}
+.realTalkButton:hover {
+  background: rgba(245, 180, 80, 0.1);
+  border-color: var(--ember, #f5b450);
+  color: var(--ember, #f5b450);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(245, 180, 80, 0.18);
+}
+.realTalkText {
+  font-style: italic;
+}
+
 /* Permanent quiet mark shown only after Crenshaw has been freed. */
 .heroFreedMark {
   font-family: 'Special Elite', 'IBM Plex Mono', monospace;
