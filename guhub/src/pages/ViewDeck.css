@@ -57,7 +57,9 @@ body.viewDeckMode .backgroundMusicControl,
 body.viewDeckMode .musicToast,
 body.viewDeckMode .crenshawOptIn,
 body.viewDeckMode .viewDeckLabel,
-body.viewDeckMode .viewDeckFlashlight {
+body.viewDeckMode .viewDeckFlashlight,
+body.viewDeckMode .casperBubble,
+body.viewDeckMode .casperBanner {
   transition: opacity 0.8s ease;
 }
 
@@ -68,7 +70,9 @@ body.viewDeckIdle .backgroundMusicControl,
 body.viewDeckIdle .musicToast,
 body.viewDeckIdle .crenshawOptIn,
 body.viewDeckIdle .viewDeckLabel,
-body.viewDeckIdle .viewDeckFlashlight {
+body.viewDeckIdle .viewDeckFlashlight,
+body.viewDeckIdle .casperBubble,
+body.viewDeckIdle .casperBanner {
   opacity: 0 !important;
   pointer-events: none !important;
 }

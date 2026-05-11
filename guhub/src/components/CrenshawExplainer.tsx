@@ -46,7 +46,7 @@ export default function CrenshawExplainer() {
             <h2 className="explainerTitle">a tiny strange-loop mini-game</h2>
             <p className="explainerBody">
               The moon is Casper. The anteater hiding around the site is Crenshaw.
-              Pay attention to what Casper says — that&apos;s how it starts.
+              Pay attention to what Casper says. That&apos;s how it starts.
               Loosely inspired by Gödel, Escher, Bach.
             </p>
             <p className="explainerBody explainerHint">
