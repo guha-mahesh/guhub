@@ -38,6 +38,15 @@
   margin-left: 0.4rem;
 }
 
+.projectsPageHint {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  color: #888;
+  margin: 0.5rem 0 0;
+  letter-spacing: 0.06em;
+  font-style: italic;
+}
+
 /* ── filter ──────────────────────────────────────────── */
 .galaxyFilters {
   display: flex;
@@ -150,10 +159,11 @@
 
 /* ── node labels ─────────────────────────────────────── */
 .nodeLabel {
-  fill: #444;
+  fill: #6a6a6a;
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 9.5px;
-  letter-spacing: 0.04em;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
   cursor: pointer;
   opacity: 0;
   animation: labelAppear 0.4s ease forwards;
@@ -161,7 +171,7 @@
   pointer-events: all;
   user-select: none;
 }
-.nodeLabel:hover, .active .nodeLabel { fill: #c0c0c0; }
+.nodeLabel:hover, .active .nodeLabel { fill: #e0e0e0; }
 
 @keyframes labelAppear {
   from { opacity: 0; }

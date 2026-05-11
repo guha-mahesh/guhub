@@ -9,8 +9,11 @@ const W = 900;
 const H = 560;
 const CX = W / 2;
 
-// trunk: slight organic drift left as it rises
-const trunkPath = `M ${CX} ${H} C ${CX-2} ${H-120} ${CX-4} ${H-240} ${CX-6} ${H-360}`;
+// trunk: perfectly centered. Earlier versions drifted ~6 SVG units left
+// as the trunk rose, which left the tree's visual center slightly off
+// from the geometric center of the page, making the arbor card below
+// appear misaligned. Now straight so everything stacks on the same axis.
+const trunkPath = `M ${CX} ${H} L ${CX} ${H-360}`;
 
 // node positions, left column, right column, top
 const NODE_POS = [
@@ -81,6 +84,7 @@ export default function ProjectsTab() {
           <p className="projectsPageTitle">
             {level > 0 ? `${metaLabel(level).toLowerCase()} projects` : 'projects'} <span className="projectsPageCount">/ {projects.length}</span>
           </p>
+          <p className="projectsPageHint">click any node on the tree for project details</p>
         </div>
 
         {/* tree */}
