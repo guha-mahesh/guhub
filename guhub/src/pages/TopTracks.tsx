@@ -49,7 +49,7 @@ const TopTracks = () => {
       rank: 9,
       title: "Getting Killed",
       artist: "Geese",
-      review: "I feel there's always a competition between pretentious people trying to remake older music and pretentious people making overproduced 21st century glitch-slop. I'm usually a huge proponent of the latter (for example, I despised Geordie Greep while glazing tf out of Imaginal Disk). Though I have glitch-slop above this album later on in this list, Geese did a great job with this album that I was so reluctant to like. Everyone IK was going crazy about this, so I went in with a closed mind and still liked it quite a bit which is a testament to its quality.",
+      review: "I feel there's always a competition between pretentious people trying to remake older music and pretentious people making overproduced 21st century glitch-slop. I'm usually a huge proponent of the latter (for example, I despised Geordie Greep while glazing Imaginal Disk). Though I have glitch-slop above this album later on in this list, Geese did a great job with this album that I was so reluctant to like. Everyone IK was going crazy about this, so I went in with a closed mind and still liked it quite a bit which is a testament to its quality.",
       spotifyEmbed: "https://open.spotify.com/embed/track/1g9GiiPPaL7KcDHlDzu7lT?utm_source=generator"
     },
     {
