@@ -280,12 +280,20 @@
   fill: #b08d57;
   stroke: #0a0808;
   stroke-width: 1.5;
+  transition: fill 0.2s ease, filter 0.2s ease;
 }
 .moonPlateInner {
   fill: #14110d;
   stroke: #6a5230;
   stroke-width: 1;
+  transition: stroke 0.2s ease;
 }
+
+/* Subtle hover on the nameplate to signal it's clickable. Not a full
+   button — just a small lift in brass tone + a slight warm glow. */
+.moonPlateSway:hover .moonPlate { fill: #c79c66; filter: drop-shadow(0 0 6px rgba(245, 180, 80, 0.25)); }
+.moonPlateSway:hover .moonPlateInner { stroke: #8a6a3a; }
+.moonPlateSway:hover .moonPlateText { fill: #e6d4ad; }
 .moonPlateRivet {
   fill: #6a5230;
   stroke: #0a0808;
@@ -302,6 +310,7 @@
   font-size: 19px;
   font-weight: 700;
   letter-spacing: 0.14em;
+  transition: fill 0.2s ease;
 }
 
 /* ── letter-shaped blob craters (CASPER hidden, top-to-bottom) ── */
