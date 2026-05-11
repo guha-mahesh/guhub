@@ -286,11 +286,9 @@ const BackgroundMusic = () => {
         </div>
       )}
 
-      {currentTrack && (
+      {currentTrack && isPlaying && (
         <div className={`musicToast ${showToast && !dismissed ? 'visible' : 'faded'}`}>
-          <span className="toastStatus">
-            {!isPlaying ? '♫ paused' : isNowPlaying ? '♫ now playing' : '♫ was listening'}
-          </span>
+          <span className="toastStatus">{isNowPlaying ? '♫ now playing' : '♫ was listening'}</span>
           <div className="toastTrack">
             {currentTrack.albumArt && <img src={currentTrack.albumArt} alt="" className="toastArt" />}
             <div className="toastText">
