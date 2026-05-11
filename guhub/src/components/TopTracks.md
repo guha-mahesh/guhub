@@ -36,7 +36,7 @@ Fav track:
 <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/4NGKKYlXp4jRVJrV3gdOma?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
 
 6. K1- Kmoe
-nother spoiler- the next 3 artists are extremely similar, but I guess that’s just where my taste is this year. KMOE is a  relatively new artist & I love his whiny ass voice. Idk overall the pros and distortion in general is awesome though not super original. He sounds great!
+nother spoiler- the next 3 artists are extremely similar, but I guess that’s just where my taste is this year. KMOE is a  relatively new artist & I love his whiny voice. Idk overall the pros and distortion in general is awesome though not super original. He sounds great!
 
 Fav track:
 <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/6joVOYeKHWl5g744BuB3dg?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
