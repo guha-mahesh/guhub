@@ -116,13 +116,15 @@ function MetaCrenshawHint({ level, onOpen }: { level: number; onOpen: () => void
 
 const BrainLanding = () => {
   const [isMobile, setIsMobile] = useState(false);
-  const { level, goDeeper, goShallower, reset, openRpg, crenshawFreed, openReset } = useMeta();
+  const { level, goDeeper, goShallower, reset, openRpg, crenshawFreed, openReset, openExplainer } = useMeta();
 
   // eye-zoom transition
   const [zoomOrigin, setZoomOrigin] = useState<{ x: number; y: number } | null>(null);
   const transitioningRef = useRef(false);
 
   const handleEyeClick = (e: React.MouseEvent) => {
+    // prevent the body-click (explainer) from also firing
+    e.stopPropagation();
     if (transitioningRef.current) return;
     if (level >= MAX_META_LEVEL) return; // bottom, can't go deeper
     transitioningRef.current = true;
@@ -189,7 +191,15 @@ const BrainLanding = () => {
     <div className={`brainLanding meta-level-${level}`}>
 
       {/* Moon: anchored to right edge */}
-      <div className="moonAnchor">
+      {/* Clicking anywhere on Casper (except the eye, which still descends)
+          opens the explainer modal that introduces the mini-game. */}
+      <div
+        className="moonAnchor moonAnchorClickable"
+        onClick={openExplainer}
+        role="button"
+        aria-label="about the casper and crenshaw mini-game"
+        title="about Casper & Crenshaw"
+      >
         <Moon
           variant={variant}
           nameplateText={nameplate}

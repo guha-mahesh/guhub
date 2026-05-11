@@ -14,14 +14,14 @@ const BASE_TABS = [
 const TabNavigation = () => {
   const location = useLocation();
   const { currentRoute: crenshawRoute } = useCrenshaw();
-  const { level, crenshawFreed } = useMeta();
+  const { level, crenshawFreed, optedOut } = useMeta();
   const prefix = level > 0 ? metaLabel(level).toLowerCase() + ' ' : '';
 
   return (
     <nav className="tabNavigation">
       <div className="tabContainer">
         {BASE_TABS.map((tab) => {
-          const hasCrenshaw = !crenshawFreed && tab.path === crenshawRoute && tab.path !== location.pathname;
+          const hasCrenshaw = !crenshawFreed && !optedOut && tab.path === crenshawRoute && tab.path !== location.pathname;
           const label = `${prefix}${tab.base}`;
           const shortLabel = `${prefix}${tab.short}`;
           return (

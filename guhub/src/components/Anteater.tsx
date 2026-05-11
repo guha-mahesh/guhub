@@ -43,7 +43,7 @@ const TUCK: Record<Corner, { x: number; y: number }> = {
 
 export default function Anteater() {
   const { currentRoute, currentCorner, relocate } = useCrenshaw();
-  const { level: metaLevel, openRpg, metaQuestDone, crenshawFreed, openMiu } = useMeta();
+  const { level: metaLevel, openRpg, metaQuestDone, crenshawFreed, openMiu, optedOut } = useMeta();
   const location = useLocation();
   const isMobile = useIsMobile();
   const onPath = location.pathname === currentRoute;
@@ -156,6 +156,8 @@ export default function Anteater() {
   if (!onPath) return null;
   // mobile has no hover/cursor mechanic, so the chase doesn't make sense
   if (isMobile) return null;
+  // user has opted out of the mini-game
+  if (optedOut) return null;
   // once the player has solved the MIU puzzle, Crenshaw is at peace —
   // he no longer hides on any tab.
   if (crenshawFreed) return null;

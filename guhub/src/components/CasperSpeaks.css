@@ -13,7 +13,12 @@
   font-style: italic;
   box-shadow: 0 6px 22px rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(3px);
-  pointer-events: none;
+  cursor: help;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.casperBubble:hover {
+  border-color: var(--ember, #f5b450);
+  box-shadow: 0 6px 22px rgba(245, 180, 80, 0.25);
 }
 
 .casperBubbleText {
@@ -71,6 +76,12 @@
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
   font-family: 'IBM Plex Mono', monospace;
   max-width: 320px;
+  cursor: help;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.casperBanner:hover {
+  border-color: var(--ember, #f5b450);
+  box-shadow: 0 4px 14px rgba(245, 180, 80, 0.25);
 }
 
 .casperBannerLabel {

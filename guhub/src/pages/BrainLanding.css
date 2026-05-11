@@ -51,6 +51,11 @@
   padding: calc(230px - 3vh) 2rem 4rem 11rem;
 }
 
+/* The "?" affordance — hovering Casper's body (anything but his eye)
+   reads as a help cursor, and clicking opens the explainer. The eye's
+   own .moonEyeClickable cursor:pointer wins on hover. */
+.moonAnchorClickable { cursor: help; }
+
 /* Moon: big, right half of the viewport (as before). */
 .moonAnchor {
   position: fixed;

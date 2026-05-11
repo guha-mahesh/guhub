@@ -17,6 +17,8 @@ import CasperSpeaks from "./components/CasperSpeaks";
 import CrenshawShadow from "./components/CrenshawShadow";
 import MiuPuzzle from "./components/MiuPuzzle";
 import ResetCrenshawModal from "./components/ResetCrenshawModal";
+import CrenshawExplainer from "./components/CrenshawExplainer";
+import CrenshawOptInButton from "./components/CrenshawOptInButton";
 import BrainLanding from "./pages/BrainLanding";
 import ProjectsTab from "./pages/ProjectsTab";
 import AboutTab from "./pages/AboutTab";
@@ -48,6 +50,8 @@ function App() {
           <CrenshawShadow />
           <MiuPuzzle />
           <ResetCrenshawModal />
+          <CrenshawExplainer />
+          <CrenshawOptInButton />
           <Routes>
             <Route path="/" element={<BrainLanding />} />
             <Route path="/projects" element={<ProjectsTab />} />

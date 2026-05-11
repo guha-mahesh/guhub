@@ -39,11 +39,21 @@ interface MetaCtx {
   closeReset: () => void;
   /** Wipe all game progress back to factory state. */
   resetGame: () => void;
+  /** Player has opted out of the crenshaw mini-game (no anteater, no
+   *  caspertoasts). Persistent. Can be toggled back on. */
+  optedOut: boolean;
+  optOut: () => void;
+  optBackIn: () => void;
+  /** Explainer modal (what is this mini-game?) */
+  explainerOpen: boolean;
+  openExplainer: () => void;
+  closeExplainer: () => void;
 }
 
 const QUEST_DONE_KEY = 'crenshaw:meta-quest-done';
 const FREED_KEY = 'crenshaw:freed';
 const META_VISITED_KEY = 'meta:visited';
+const OPTED_OUT_KEY = 'crenshaw:opted-out';
 
 const MetaContext = createContext<MetaCtx>({
   level: 0,
@@ -65,6 +75,12 @@ const MetaContext = createContext<MetaCtx>({
   openReset: () => {},
   closeReset: () => {},
   resetGame: () => {},
+  optedOut: false,
+  optOut: () => {},
+  optBackIn: () => {},
+  explainerOpen: false,
+  openExplainer: () => {},
+  closeExplainer: () => {},
 });
 
 export function MetaProvider({ children }: { children: ReactNode }) {
@@ -83,6 +99,11 @@ export function MetaProvider({ children }: { children: ReactNode }) {
   const [rpgOpen, setRpgOpen] = useState(false);
   const [miuOpen, setMiuOpen] = useState(false);
   const [resetOpen, setResetOpen] = useState(false);
+  const [explainerOpen, setExplainerOpen] = useState(false);
+  const [optedOut, setOptedOut] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    return window.localStorage.getItem(OPTED_OUT_KEY) === '1';
+  });
   // Persistent achievements (localStorage, not session)
   const [metaQuestDone, setMetaQuestDone] = useState<boolean>(() => {
     if (typeof window === 'undefined') return false;
@@ -109,6 +130,9 @@ export function MetaProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     try { window.localStorage.setItem(META_VISITED_KEY, metaVisited ? '1' : '0'); } catch {}
   }, [metaVisited]);
+  useEffect(() => {
+    try { window.localStorage.setItem(OPTED_OUT_KEY, optedOut ? '1' : '0'); } catch {}
+  }, [optedOut]);
 
   const goDeeper = useCallback(() => setLevel(l => {
     const next = Math.min(MAX_META_LEVEL, l + 1);
@@ -137,6 +161,10 @@ export function MetaProvider({ children }: { children: ReactNode }) {
     setRpgOpen(false);
     setMiuOpen(false);
   }, []);
+  const optOut = useCallback(() => setOptedOut(true), []);
+  const optBackIn = useCallback(() => setOptedOut(false), []);
+  const openExplainer = useCallback(() => setExplainerOpen(true), []);
+  const closeExplainer = useCallback(() => setExplainerOpen(false), []);
 
   return (
     <MetaContext.Provider
@@ -147,6 +175,8 @@ export function MetaProvider({ children }: { children: ReactNode }) {
         crenshawFreed, freeCrenshaw,
         miuOpen, openMiu, closeMiu,
         resetOpen, openReset, closeReset, resetGame,
+        optedOut, optOut, optBackIn,
+        explainerOpen, openExplainer, closeExplainer,
       }}
     >
       {children}

@@ -42,7 +42,7 @@ const NEXT_MAX_MS = 36000;
 
 export default function CasperSpeaks() {
   const location = useLocation();
-  const { level, metaVisited } = useMeta();
+  const { level, metaVisited, optedOut, openExplainer } = useMeta();
   const [line, setLine] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -64,8 +64,9 @@ export default function CasperSpeaks() {
   // Suppress when in a meta level (Casper speaks differently there) OR
   // once the player has ever descended at least once — the puns are
   // really a discoverability hint for the eye, and they've found it.
-  // Also suppress on mobile (Casper isn't rendered there).
-  const muted = level > 0 || metaVisited || isMobile;
+  // Also suppress on mobile (Casper isn't rendered there) and when the
+  // player has opted out of the mini-game.
+  const muted = level > 0 || metaVisited || isMobile || optedOut;
 
   useEffect(() => {
     if (muted) { setLine(null); return; }
@@ -101,6 +102,10 @@ export default function CasperSpeaks() {
         <motion.div
           key={line}
           className={onHome ? 'casperBubble' : 'casperBanner'}
+          onClick={openExplainer}
+          role="button"
+          title="about Casper & Crenshaw"
+          aria-label="about the casper and crenshaw mini-game"
           initial={{ opacity: 0, y: onHome ? 6 : -8 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: onHome ? 6 : -8 }}

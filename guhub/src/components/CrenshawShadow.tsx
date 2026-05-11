@@ -14,7 +14,7 @@ const LERP = 0.12;
 const SHADOW_SIZE = 48;
 
 export default function CrenshawShadow() {
-  const { metaQuestDone, crenshawFreed } = useMeta();
+  const { metaQuestDone, crenshawFreed, optedOut } = useMeta();
   const isMobile = useIsMobile();
   const ref = useRef<HTMLDivElement>(null);
   const targetRef = useRef({ x: -200, y: -200 });
@@ -24,7 +24,7 @@ export default function CrenshawShadow() {
   // shadow is only present after meta-quest, and disappears once Crenshaw
   // has been released (the strange loop is closed). Also off on mobile —
   // no cursor to follow.
-  const enabled = metaQuestDone && !crenshawFreed && !isMobile;
+  const enabled = metaQuestDone && !crenshawFreed && !isMobile && !optedOut;
 
   useEffect(() => {
     if (!enabled) return;
