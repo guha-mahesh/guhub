@@ -15,20 +15,24 @@ const CX = W / 2;
 // appear misaligned. Now straight so everything stacks on the same axis.
 const trunkPath = `M ${CX} ${H} L ${CX} ${H-360}`;
 
-// node positions, left column, right column, top
+// node positions. ax/ay = where the branch ATTACHES to the trunk.
+// Trunk is now perfectly centered at x=CX, so all attachments must
+// also sit on x=CX (earlier values like CX-4, CX-6 came from the
+// original drifting-trunk layout and left a visible gap once the
+// trunk was straightened).
 const NODE_POS = [
-  { x: 125, y: 115, ax: CX-4, ay: 200 },   // 0  far-left high
-  { x: 78,  y: 275, ax: CX-5, ay: 300 },   // 1  far-left mid
-  { x: 175, y: 385, ax: CX-5, ay: 360 },   // 2  left mid-low
-  { x: 255, y: 468, ax: CX-4, ay: 430 },   // 3  left low
-  { x: 775, y: 115, ax: CX-4, ay: 200 },   // 4  far-right high
-  { x: 822, y: 275, ax: CX-3, ay: 300 },   // 5  far-right mid
-  { x: 725, y: 385, ax: CX-3, ay: 360 },   // 6  right mid-low
-  { x: 645, y: 468, ax: CX-4, ay: 430 },   // 7  right low
-  { x: CX,  y: 44,  ax: CX-6, ay: 200 },   // 8  crown
-  { x: 310, y: 220, ax: CX-5, ay: 280 },   // 9  center-left
-  { x: 590, y: 220, ax: CX-3, ay: 280 },   // 10 center-right
-  { x: 450, y: 480, ax: CX-4, ay: 500 },   // 11 base
+  { x: 125, y: 115, ax: CX, ay: 200 },   // 0  far-left high
+  { x: 78,  y: 275, ax: CX, ay: 300 },   // 1  far-left mid
+  { x: 175, y: 385, ax: CX, ay: 360 },   // 2  left mid-low
+  { x: 255, y: 468, ax: CX, ay: 430 },   // 3  left low
+  { x: 775, y: 115, ax: CX, ay: 200 },   // 4  far-right high
+  { x: 822, y: 275, ax: CX, ay: 300 },   // 5  far-right mid
+  { x: 725, y: 385, ax: CX, ay: 360 },   // 6  right mid-low
+  { x: 645, y: 468, ax: CX, ay: 430 },   // 7  right low
+  { x: CX,  y: 44,  ax: CX, ay: 200 },   // 8  crown
+  { x: 310, y: 220, ax: CX, ay: 280 },   // 9  center-left
+  { x: 590, y: 220, ax: CX, ay: 280 },   // 10 center-right
+  { x: 450, y: 480, ax: CX, ay: 500 },   // 11 base
 ];
 
 function branchPath(ax: number, ay: number, px: number, py: number): string {
