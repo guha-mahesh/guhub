@@ -1,6 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AdminProvider } from "./contexts/AdminContext";
 import { CrenshawProvider } from "./contexts/CrenshawContext";
+import { MetaProvider } from "./contexts/MetaContext";
+import { InventoryProvider } from "./contexts/InventoryContext";
 import TabNavigation from "./components/TabNavigation";
 import Sidebar from "./components/Sidebar";
 import BackgroundMusic from "./components/BackgroundMusic";
@@ -8,6 +10,13 @@ import AdminPasswordModal from "./components/AdminPasswordModal";
 import AdminPanel from "./components/AdminPanel";
 import CommandPalette from "./components/CommandPalette";
 import Anteater from "./components/Anteater";
+import MetaCrenshawRpg from "./components/MetaCrenshawRpg";
+import MetaNpcs, { InventoryBar } from "./components/MetaNpcs";
+import SiteBackdrop from "./components/SiteBackdrop";
+import CasperSpeaks from "./components/CasperSpeaks";
+import CrenshawShadow from "./components/CrenshawShadow";
+import MiuPuzzle from "./components/MiuPuzzle";
+import ResetCrenshawModal from "./components/ResetCrenshawModal";
 import BrainLanding from "./pages/BrainLanding";
 import ProjectsTab from "./pages/ProjectsTab";
 import AboutTab from "./pages/AboutTab";
@@ -15,12 +24,16 @@ import MusicLanding from "./pages/MusicLanding";
 import TopTracks from "./pages/TopTracks";
 import BlogPage from "./pages/BlogPage";
 import QueuePage from "./pages/QueuePage";
+import ViewDeck from "./pages/ViewDeck";
 
 function App() {
   return (
     <AdminProvider>
       <Router>
+        <MetaProvider>
+        <InventoryProvider>
         <CrenshawProvider>
+          <SiteBackdrop />
           <TabNavigation />
           <Sidebar />
           <BackgroundMusic />
@@ -28,6 +41,13 @@ function App() {
           <AdminPanel />
           <CommandPalette />
           <Anteater />
+          <MetaCrenshawRpg />
+          <MetaNpcs />
+          <InventoryBar />
+          <CasperSpeaks />
+          <CrenshawShadow />
+          <MiuPuzzle />
+          <ResetCrenshawModal />
           <Routes>
             <Route path="/" element={<BrainLanding />} />
             <Route path="/projects" element={<ProjectsTab />} />
@@ -37,8 +57,11 @@ function App() {
             <Route path="/log" element={<BlogPage />} />
             <Route path="/blog" element={<BlogPage />} />
             <Route path="/listening" element={<QueuePage />} />
+            <Route path="/view_deck" element={<ViewDeck />} />
           </Routes>
         </CrenshawProvider>
+        </InventoryProvider>
+        </MetaProvider>
       </Router>
     </AdminProvider>
   );

@@ -1,4 +1,4 @@
-// Custom SVG icons — no emoji allowed in this codebase
+// Custom SVG icons, no emoji allowed in this codebase
 // Each SVG is designed to match the gu-niverse aesthetic: lo-fi, shoegaze-adjacent, technical
 
 export const WipIcon = ({ size = 20, className = '' }: { size?: number; className?: string }) => (
@@ -48,10 +48,10 @@ export const TearIcon = ({ size = 22, className = '' }: { size?: number; classNa
   >
     {/* Minimal face outline */}
     <circle cx="12" cy="11" r="7" stroke="currentColor" strokeWidth="1.2" fill="none" opacity="0.85" />
-    {/* Eyes — simple dots */}
+    {/* Eyes, simple dots */}
     <circle cx="9.5" cy="10" r="0.9" fill="currentColor" />
     <circle cx="14.5" cy="10" r="0.9" fill="currentColor" />
-    {/* Subtle upward curve — "trying not to cry" */}
+    {/* Subtle upward curve, "trying not to cry" */}
     <path d="M9.5 13.5 Q12 15.5 14.5 13.5" stroke="currentColor" strokeWidth="1.2" fill="none" strokeLinecap="round" />
     {/* Tear drop */}
     <path

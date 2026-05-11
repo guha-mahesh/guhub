@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { FaVolumeUp, FaVolumeMute, FaPlay, FaTimes } from 'react-icons/fa';
+import { FaPlay, FaPause, FaTimes } from 'react-icons/fa';
 import './BackgroundMusic.css';
 
 const API = import.meta.env.VITE_API_BASE ?? '';
@@ -11,22 +11,44 @@ interface Track {
   uri: string;
 }
 
+// ──────────────────────────────────────────────────────────────────────
+// Background music = ambient noise on the tab. We deliberately use the
+// Web Audio API (AudioContext + AudioBufferSourceNode) rather than an
+// <audio> element. AudioBufferSourceNode does NOT register with the
+// platform Media Session, so macOS Now Playing / F8 won't pick it up.
+// ──────────────────────────────────────────────────────────────────────
+
 const BackgroundMusic = () => {
-  const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [needsInteraction, setNeedsInteraction] = useState(true);
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
   const [isNowPlaying, setIsNowPlaying] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [dismissed, setDismissed] = useState(false);
-  const [showMuteHint, setShowMuteHint] = useState(false);
-  const muteHintShownRef = useRef(false);
+  const [showPauseHint, setShowPauseHint] = useState(false);
+  const pauseHintShownRef = useRef(false);
   const nowPlayingUriRef = useRef<string | null>(null);
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hasClickedRef = useRef(false);
   const queueRef = useRef<Track[]>([]);
   const queueIndexRef = useRef(0);
   const previewCacheRef = useRef<Record<string, string>>({});
+  const lastToastUriRef = useRef<string | null>(null);
+
+  // ── Web Audio plumbing ──
+  const audioCtxRef = useRef<AudioContext | null>(null);
+  const gainRef = useRef<GainNode | null>(null);
+  const sourceRef = useRef<AudioBufferSourceNode | null>(null);
+  const bufferRef = useRef<AudioBuffer | null>(null);
+  const bufferCacheRef = useRef<Record<string, AudioBuffer>>({});
+  const startedAtRef = useRef(0);
+  const pausedOffsetRef = useRef(0);
+  // intentional pause flag, so `source.onended` doesn't auto-advance when we
+  // stop() it ourselves (Web Audio fires onended for stop() and natural end alike)
+  const intentionalStopRef = useRef(false);
+  // current track URI guard, prevents 3x-scratch from racing playIndex calls
+  const currentUriRef = useRef<string | null>(null);
+  const loadingUriRef = useRef<string | null>(null);
 
   const getTrackId = (uri: string) => uri.replace('spotify:track:', '');
 
@@ -43,42 +65,104 @@ const BackgroundMusic = () => {
     return null;
   };
 
-  const showTrackToast = () => {
-    setDismissed(false);
+  const showTrackToast = (uri: string) => {
+    if (lastToastUriRef.current === uri) return;
+    lastToastUriRef.current = uri;
+    if (dismissed) return;
     setShowToast(true);
     if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
-    toastTimerRef.current = setTimeout(() => setShowToast(false), 5000);
+    toastTimerRef.current = setTimeout(() => setShowToast(false), 3500);
+  };
+
+  const ensureCtx = () => {
+    if (!audioCtxRef.current) {
+      const Ctx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      const ctx = new Ctx();
+      const gain = ctx.createGain();
+      gain.gain.value = 0.15;
+      gain.connect(ctx.destination);
+      audioCtxRef.current = ctx;
+      gainRef.current = gain;
+    }
+    return audioCtxRef.current;
+  };
+
+  const stopSource = (intentional: boolean) => {
+    const src = sourceRef.current;
+    if (!src) return;
+    intentionalStopRef.current = intentional;
+    try { src.stop(); } catch {}
+    try { src.disconnect(); } catch {}
+    sourceRef.current = null;
   };
 
   const playIndex = useCallback(async (idx: number) => {
     const tracks = queueRef.current;
     if (!tracks.length) return;
-    const i = idx % tracks.length;
+    const i = ((idx % tracks.length) + tracks.length) % tracks.length;
     const track = tracks[i];
+
+    // 3x-scratch guard: same track already playing OR already loading
+    if (currentUriRef.current === track.uri && sourceRef.current) return;
+    if (loadingUriRef.current === track.uri) return;
+    loadingUriRef.current = track.uri;
     queueIndexRef.current = i;
 
     const previewUrl = await getPreviewUrl(track.uri);
-    if (!previewUrl) { playIndex(i + 1); return; }
+    if (!previewUrl) { loadingUriRef.current = null; playIndex(i + 1); return; }
 
-    if (!audioRef.current) audioRef.current = new Audio();
-    audioRef.current.src = previewUrl;
-    audioRef.current.volume = 0.15;
-    audioRef.current.onended = () => playIndex(i + 1);
-    audioRef.current.play().catch(() => {});
+    const ctx = ensureCtx();
+    if (ctx.state === 'suspended') { try { await ctx.resume(); } catch {} }
+
+    let buffer = bufferCacheRef.current[track.uri];
+    if (!buffer) {
+      try {
+        const resp = await fetch(previewUrl);
+        const arr = await resp.arrayBuffer();
+        buffer = await ctx.decodeAudioData(arr);
+        bufferCacheRef.current[track.uri] = buffer;
+      } catch {
+        loadingUriRef.current = null;
+        playIndex(i + 1);
+        return;
+      }
+    }
+
+    // a later call may have superseded us while we were awaiting
+    if (loadingUriRef.current !== track.uri) return;
+
+    stopSource(true);
+    bufferRef.current = buffer;
+    pausedOffsetRef.current = 0;
+
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+    source.connect(gainRef.current!);
+    source.onended = () => {
+      if (intentionalStopRef.current) {
+        intentionalStopRef.current = false;
+        return;
+      }
+      playIndex(i + 1);
+    };
+    source.start(0);
+    sourceRef.current = source;
+    startedAtRef.current = ctx.currentTime;
+    currentUriRef.current = track.uri;
+    loadingUriRef.current = null;
 
     setCurrentTrack(track);
     setIsNowPlaying(track.uri === nowPlayingUriRef.current);
     setIsPlaying(true);
-    showTrackToast();
-    // Show mute hint once on first play
-    if (!muteHintShownRef.current) {
-      muteHintShownRef.current = true;
-      setShowMuteHint(true);
-      setTimeout(() => setShowMuteHint(false), 4500);
+    showTrackToast(track.uri);
+    if (!pauseHintShownRef.current) {
+      pauseHintShownRef.current = true;
+      setShowPauseHint(true);
+      setTimeout(() => setShowPauseHint(false), 4500);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Build queue on mount, prefetch first few previews
   useEffect(() => {
     const build = async () => {
       const tracks: Track[] = [];
@@ -95,19 +179,19 @@ const BackgroundMusic = () => {
       const seen = new Set<string>();
       const unique = tracks.filter(t => { if (seen.has(t.uri)) return false; seen.add(t.uri); return true; });
       queueRef.current = unique;
-      // Prefetch first 3 preview URLs in background
       unique.slice(0, 3).forEach(t => getPreviewUrl(t.uri));
-      if (hasClickedRef.current) playIndex(0);
+      // First-play is driven by the click handler, not by build completion.
     };
     build();
-  }, [playIndex]);
+  }, []);
 
-  // Click anywhere = play
+  // Click anywhere = first-play. The click handler is the single source
+  // of truth for first-play; we do not re-trigger from the build effect.
   useEffect(() => {
     const tryPlay = async () => {
+      if (hasClickedRef.current) return;
       hasClickedRef.current = true;
       setNeedsInteraction(false);
-      // Re-fetch now-playing at click time so we get the current song
       try {
         const np = await fetch(`${API}/api/spotify/now-playing`).then(r => r.json());
         if (np.isPlaying && np.uri) {
@@ -127,17 +211,52 @@ const BackgroundMusic = () => {
     return () => document.removeEventListener('click', tryPlay);
   }, [playIndex]);
 
+  // Tear down the audio context on unmount.
+  useEffect(() => {
+    return () => {
+      stopSource(true);
+      const ctx = audioCtxRef.current;
+      if (ctx && ctx.state !== 'closed') { try { ctx.close(); } catch {} }
+      audioCtxRef.current = null;
+      gainRef.current = null;
+    };
+  }, []);
+
   const togglePlay = async () => {
-    if (!audioRef.current && !queueRef.current.length) return;
+    if (!queueRef.current.length) return;
     if (isPlaying) {
-      audioRef.current?.pause();
+      // pause: stop the source, capture elapsed offset so we can resume later
+      const ctx = audioCtxRef.current;
+      if (ctx && sourceRef.current) {
+        pausedOffsetRef.current += ctx.currentTime - startedAtRef.current;
+      }
+      stopSource(true);
       setIsPlaying(false);
     } else {
-      if (!audioRef.current?.src) {
-        await playIndex(queueIndexRef.current);
-      } else {
-        await audioRef.current.play().catch(() => {});
+      // resume from saved offset if we have a buffer, otherwise (re)start
+      const ctx = audioCtxRef.current;
+      const gain = gainRef.current;
+      const buf = bufferRef.current;
+      if (ctx && gain && buf) {
+        if (ctx.state === 'suspended') { try { await ctx.resume(); } catch {} }
+        const source = ctx.createBufferSource();
+        source.buffer = buf;
+        source.connect(gain);
+        const i = queueIndexRef.current;
+        source.onended = () => {
+          if (intentionalStopRef.current) {
+            intentionalStopRef.current = false;
+            return;
+          }
+          playIndex(i + 1);
+        };
+        const off = Math.min(pausedOffsetRef.current, buf.duration - 0.01);
+        source.start(0, Math.max(0, off));
+        sourceRef.current = source;
+        startedAtRef.current = ctx.currentTime - off;
         setIsPlaying(true);
+      } else {
+        await playIndex(queueIndexRef.current);
       }
     }
   };
@@ -155,20 +274,23 @@ const BackgroundMusic = () => {
         onClick={togglePlay}
         className={`musicToggle ${needsInteraction ? 'pulse' : ''}`}
         title={isPlaying ? 'Pause' : 'Play music'}
+        aria-label={isPlaying ? 'Pause music' : 'Play music'}
       >
-        {isPlaying ? <FaVolumeUp /> : needsInteraction ? <FaPlay /> : <FaVolumeMute />}
+        {needsInteraction ? <FaPlay /> : (isPlaying ? <FaPause /> : <FaPlay />)}
       </button>
 
-      {showMuteHint && (
+      {showPauseHint && (
         <div className="muteHint">
           <span className="muteHintArrow">↑</span>
-          <span className="muteHintText">click to mute</span>
+          <span className="muteHintText">click to pause</span>
         </div>
       )}
 
-      {currentTrack && isPlaying && !dismissed && (
-        <div className={`musicToast ${showToast ? 'visible' : 'faded'}`}>
-          <span className="toastStatus">{isNowPlaying ? '♫ now playing' : '♫ was listening'}</span>
+      {currentTrack && (
+        <div className={`musicToast ${showToast && !dismissed ? 'visible' : 'faded'}`}>
+          <span className="toastStatus">
+            {!isPlaying ? '♫ paused' : isNowPlaying ? '♫ now playing' : '♫ was listening'}
+          </span>
           <div className="toastTrack">
             {currentTrack.albumArt && <img src={currentTrack.albumArt} alt="" className="toastArt" />}
             <div className="toastText">

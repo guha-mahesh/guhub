@@ -1,13 +1,13 @@
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react';
 
 // ──────────────────────────────────────────────────────────────────────
-// Crenshaw — the steampunk anteater easter egg.
+// Crenshaw, the steampunk anteater easter egg.
 // Tracks which route + which corner he's currently hiding in. When the
 // cursor closes in, he tucks away and relocates to a different random
 // route AND a different random corner.
 // ──────────────────────────────────────────────────────────────────────
 
-// Only routes that have tabs in TabNavigation — otherwise the badge has
+// Only routes that have tabs in TabNavigation, otherwise the badge has
 // nowhere to show and Crenshaw becomes unreachable.
 const ROUTES = ['/', '/projects', '/about', '/log', '/listening'] as const;
 type Route = typeof ROUTES[number];

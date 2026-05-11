@@ -123,12 +123,12 @@
 }
 
 .linkButton:hover {
-    border: 3px solid #739166;
+    border: 3px solid #b08d57;
     transform: translateY(-12px);
 }
 
 .linkButton:hover svg {
-    fill: #739166;
+    fill: #b08d57;
 }
 
 .tooltip {
@@ -267,7 +267,7 @@
 }
 
 .transitioner:hover {
-    color: #739166;
+    color: #b08d57;
 }
 
 .linkButtons.hidden {
@@ -356,7 +356,7 @@
     text-align: center;
     font-size: 2.5rem;
     margin-bottom: 2rem;
-    color: #739166;
+    color: #b08d57;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -607,13 +607,13 @@ body {
 .arborFrame {
 
     border-radius: 12px;
-    box-shadow: 0 8px 25px rgba(115, 145, 102, 0.3);
+    box-shadow: 0 8px 25px rgba(176, 141, 87, 0.3);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .arborFrame:hover {
     transform: translateY(-5px);
-    box-shadow: 0 12px 35px rgba(115, 145, 102, 0.5);
+    box-shadow: 0 12px 35px rgba(176, 141, 87, 0.5);
 }
 
 .arborIcon {

@@ -26,6 +26,22 @@
   stroke-linejoin: round;
 }
 
+/* ── meta-casper variants, recolor the body for recursive levels ── */
+.moon-meta1 .moonBody { fill: #b29969; }
+.moon-meta1 .moonNose,
+.moon-meta1 .moonLid,
+.moon-meta1 .moonEyeSocket { fill: #b29969; }
+
+.moon-meta2 .moonBody { fill: #8c6c44; }
+.moon-meta2 .moonNose,
+.moon-meta2 .moonLid { fill: #8c6c44; }
+.moon-meta2 { filter: hue-rotate(-12deg) saturate(0.85); }
+
+.moon-meta3 .moonBody { fill: #5e4628; }
+.moon-meta3 .moonNose,
+.moon-meta3 .moonLid { fill: #5e4628; }
+.moon-meta3 { filter: hue-rotate(-25deg) saturate(0.7); }
+
 /* ── craters ── */
 .moonCraters ellipse {
   fill: #6e5a3a;
@@ -69,7 +85,7 @@
 }
 .moonFace.open { opacity: 1; }
 
-/* nose — long pinocchio stick */
+/* nose, long pinocchio stick */
 .moonNose {
   fill: #cbb892;
   stroke: #0a0808;
@@ -95,7 +111,24 @@
   stroke-linecap: round;
 }
 
-/* sunburst eye — golden petals + recessed socket + black iris + white pupil */
+/* clickable eye, zooms into recursive meta-Casper on click */
+.moonEyeClickable {
+  cursor: pointer;
+  pointer-events: auto;
+  transition: filter 0.18s ease;
+}
+.moonEyeClickable:hover {
+  filter: drop-shadow(0 0 12px rgba(245, 180, 80, 0.6));
+}
+.moonEyeClickable:active .moonEyeIris,
+.moonEyeClickable:active .moonEyePupilWhite,
+.moonEyeClickable:active .moonEyePupilCore {
+  transform: scale(0.95);
+  transform-origin: 340px 320px;
+  transform-box: view-box;
+}
+
+/* sunburst eye, golden petals + recessed socket + black iris + white pupil */
 .moonPetal {
   fill: #d4a55a;
   stroke: #3a1f08;
@@ -207,10 +240,33 @@
   stroke-width: 1;
 }
 
-/* ── Crenshaw nameplate ── */
-.moonNameplate {
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+/* ── Chain hanging from the moon's belly ── */
+.moonChain ellipse {
+  fill: #b08d57;
+  stroke: #0a0808;
+  stroke-width: 1;
 }
+.moonChainHook {
+  fill: #14110d;
+  stroke: #b08d57;
+  stroke-width: 1.4;
+}
+
+/* ── Nameplate (now hangs and sways from the chain) ── */
+.moonPlateSway {
+  /* origin defaults to (0,0) of the parent translate, i.e. the hinge */
+  animation: plateSway 3.4s ease-in-out infinite;
+  transform-origin: 0 0;
+  transform-box: view-box;
+  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.55));
+}
+
+@keyframes plateSway {
+  0%   { transform: rotate(-2.4deg); }
+  50%  { transform: rotate(2.4deg);  }
+  100% { transform: rotate(-2.4deg); }
+}
+
 .moonPlate {
   fill: #b08d57;
   stroke: #0a0808;
@@ -226,11 +282,25 @@
   stroke: #0a0808;
   stroke-width: 0.8;
 }
+.moonPlateHook {
+  fill: #14110d;
+  stroke: #b08d57;
+  stroke-width: 1.2;
+}
 .moonPlateText {
   fill: #d4a55a;
   font-family: 'Limelight', Georgia, serif;
-  font-size: 16px;
-  letter-spacing: 0.18em;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+/* ── letter-shaped blob craters (CASPER hidden, top-to-bottom) ── */
+.craterLetter {
+  fill: #6e5a3a;
+  stroke: #0a0808;
+  stroke-width: 1.4;
+  opacity: 0.92;
 }
 
 /* ── brass cog mount ── */

@@ -1,6 +1,6 @@
 .friendEditor {
   padding: 1rem 0 0.5rem;
-  border-top: 1px solid rgba(115,145,102,0.12);
+  border-top: 1px solid rgba(176, 141, 87,0.12);
   margin-top: 0.75rem;
 }
 
@@ -16,20 +16,20 @@
   font-size: 0.7rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(115,145,102,0.6);
+  color: rgba(176, 141, 87,0.6);
 }
 
 .friendAddBtn {
   background: none;
-  border: 1px solid rgba(115,145,102,0.4);
-  color: #739166;
+  border: 1px solid rgba(176, 141, 87,0.4);
+  color: #b08d57;
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.68rem;
   padding: 2px 8px;
   cursor: pointer;
   border-radius: 2px;
 }
-.friendAddBtn:hover { background: rgba(115,145,102,0.1); }
+.friendAddBtn:hover { background: rgba(176, 141, 87,0.1); }
 
 .friendList { display: flex; flex-direction: column; gap: 4px; }
 
@@ -43,18 +43,18 @@
 
 .friendDot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
 .friendRowName { color: #e0e0e0; font-weight: 500; }
-.friendRowCity { color: rgba(115,145,102,0.6); flex: 1; }
+.friendRowCity { color: rgba(176, 141, 87,0.6); flex: 1; }
 
 .friendEditBtn, .friendDeleteBtn {
   background: none; border: none; cursor: pointer;
   font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; padding: 1px 4px;
 }
-.friendEditBtn { color: rgba(115,145,102,0.6); }
-.friendEditBtn:hover { color: #739166; }
+.friendEditBtn { color: rgba(176, 141, 87,0.6); }
+.friendEditBtn:hover { color: #b08d57; }
 .friendDeleteBtn { color: rgba(255,100,100,0.5); }
 .friendDeleteBtn:hover { color: #ff6464; }
 
-.friendEmpty { color: rgba(115,145,102,0.35); font-style: italic; font-size: 0.75rem; margin: 0; }
+.friendEmpty { color: rgba(176, 141, 87,0.35); font-style: italic; font-size: 0.75rem; margin: 0; }
 
 .friendModal {
   position: fixed; inset: 0; background: rgba(0,0,0,0.7);
@@ -63,7 +63,7 @@
 }
 
 .friendModalBox {
-  background: #0d0d0d; border: 1px solid rgba(115,145,102,0.3);
+  background: #0d0d0d; border: 1px solid rgba(176, 141, 87,0.3);
   padding: 2rem; width: 460px; border-radius: 4px;
   display: flex; flex-direction: column; gap: 8px;
   font-family: 'IBM Plex Mono', monospace;
@@ -74,39 +74,39 @@
   margin-bottom: 0.5rem;
 }
 .friendModalTitleRow h3 {
-  color: #739166; font-size: 0.9rem; font-weight: 600;
+  color: #b08d57; font-size: 0.9rem; font-weight: 600;
   margin: 0; letter-spacing: 0.05em;
 }
 .friendModalClose {
-  background: none; border: none; color: rgba(115,145,102,0.5);
+  background: none; border: none; color: rgba(176, 141, 87,0.5);
   font-size: 1rem; cursor: pointer; padding: 0; line-height: 1;
   transition: color 0.15s;
 }
-.friendModalClose:hover { color: #739166; }
+.friendModalClose:hover { color: #b08d57; }
 
 .friendModalBox label {
-  font-size: 0.65rem; color: rgba(115,145,102,0.6);
+  font-size: 0.65rem; color: rgba(176, 141, 87,0.6);
   text-transform: uppercase; letter-spacing: 0.1em; margin-top: 6px;
 }
 
 .optional { text-transform: none; opacity: 0.6; letter-spacing: 0; }
 
 .friendModalBox input {
-  background: rgba(255,255,255,0.04); border: 1px solid rgba(115,145,102,0.25);
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(176, 141, 87,0.25);
   color: #e0e0e0; font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem;
   padding: 6px 8px; border-radius: 2px; width: 100%; box-sizing: border-box;
 }
-.friendModalBox input:focus { outline: none; border-color: rgba(115,145,102,0.6); }
+.friendModalBox input:focus { outline: none; border-color: rgba(176, 141, 87,0.6); }
 
 .friendCityRow { display: flex; gap: 6px; }
 .friendCityRow input { flex: 1; }
 .friendCityRow button {
-  background: none; border: 1px solid rgba(115,145,102,0.3);
-  color: #739166; font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem;
+  background: none; border: 1px solid rgba(176, 141, 87,0.3);
+  color: #b08d57; font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem;
   padding: 4px 10px; cursor: pointer; border-radius: 2px; white-space: nowrap;
 }
 
-.friendCoords { font-size: 0.62rem; color: rgba(115,145,102,0.5); margin: 0; }
+.friendCoords { font-size: 0.62rem; color: rgba(176, 141, 87,0.5); margin: 0; }
 
 .friendColorRow { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
 
@@ -121,12 +121,12 @@
 .friendModalActions { display: flex; gap: 8px; margin-top: 8px; }
 
 .friendSaveBtn {
-  flex: 1; background: rgba(115,145,102,0.15);
-  border: 1px solid rgba(115,145,102,0.4); color: #739166;
+  flex: 1; background: rgba(176, 141, 87,0.15);
+  border: 1px solid rgba(176, 141, 87,0.4); color: #b08d57;
   font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem;
   padding: 8px; cursor: pointer; border-radius: 2px;
 }
-.friendSaveBtn:hover { background: rgba(115,145,102,0.25); }
+.friendSaveBtn:hover { background: rgba(176, 141, 87,0.25); }
 
 .friendCancelBtn {
   flex: 1; background: none;
@@ -145,7 +145,7 @@
 
 .geoResult {
   background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(115,145,102,0.15);
+  border: 1px solid rgba(176, 141, 87,0.15);
   color: #ccc;
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.68rem;
@@ -158,10 +158,10 @@
   align-items: center;
   gap: 8px;
 }
-.geoResult:hover { border-color: rgba(115,145,102,0.4); background: rgba(115,145,102,0.06); }
-.geoResult.active { border-color: #739166; background: rgba(115,145,102,0.1); color: #f0f0f0; }
+.geoResult:hover { border-color: rgba(176, 141, 87,0.4); background: rgba(176, 141, 87,0.06); }
+.geoResult.active { border-color: #b08d57; background: rgba(176, 141, 87,0.1); color: #f0f0f0; }
 .geoResultName { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.geoResultType { color: rgba(115,145,102,0.5); font-size: 0.6rem; flex-shrink: 0; }
+.geoResultType { color: rgba(176, 141, 87,0.5); font-size: 0.6rem; flex-shrink: 0; }
 
 /* Show name toggle */
 .friendToggleRow { margin-top: 4px; }
@@ -172,6 +172,6 @@
   cursor: pointer;
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.72rem;
-  color: rgba(115,145,102,0.7);
+  color: rgba(176, 141, 87,0.7);
 }
-.friendToggle input[type="checkbox"] { accent-color: #739166; width: 14px; height: 14px; cursor: pointer; }
+.friendToggle input[type="checkbox"] { accent-color: #b08d57; width: 14px; height: 14px; cursor: pointer; }

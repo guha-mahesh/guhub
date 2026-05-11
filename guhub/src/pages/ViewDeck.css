@@ -1,0 +1,45 @@
+/* view_deck — empty idle space; the global aquarium + coral reef are the show. */
+.viewDeck {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  pointer-events: none;
+}
+
+.viewDeckLabel {
+  position: fixed;
+  top: 96px;
+  left: 2rem;
+  font-family: 'IBM Plex Mono', 'Special Elite', monospace;
+  font-size: 0.78rem;
+  color: var(--brass, #b08d57);
+  letter-spacing: 0.22em;
+  text-transform: lowercase;
+  opacity: 0.75;
+  pointer-events: none;
+  user-select: none;
+  z-index: 4;
+  text-shadow: 0 0 12px rgba(245, 180, 80, 0.4);
+}
+
+/* Flashlight overlay: a soft warm glow that BRIGHTENS the area near the
+   cursor. The rest of the page stays exactly as it was — no darkening.
+   mix-blend-mode: screen makes the glow ADDITIVE so it lifts whatever's
+   underneath rather than covering it.
+
+   --mouse-x / --mouse-y are set imperatively from ViewDeck.tsx on
+   mousemove (not via React state, to avoid render thrashing). */
+.viewDeckFlashlight {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: radial-gradient(
+    circle 20vh at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(245, 200, 110, 0.45) 0%,
+    rgba(245, 180, 80, 0.22) 35%,
+    rgba(176, 141, 87, 0.08) 65%,
+    transparent 85%
+  );
+  mix-blend-mode: screen;
+}

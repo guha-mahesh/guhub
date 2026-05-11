@@ -1,0 +1,90 @@
+/* ── Casper speech bubble (home page) ─────────────────────────────── */
+.casperBubble {
+  position: fixed;
+  right: 18vw;          /* sits to the left of Casper's mouth */
+  top: 52vh;
+  z-index: 7;
+  max-width: 260px;
+  padding: 12px 16px;
+  background: rgba(20, 17, 13, 0.92);
+  border: 1.5px solid var(--brass);
+  border-radius: 6px;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(3px);
+  pointer-events: none;
+}
+
+.casperBubbleText {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.4;
+  color: var(--bone);
+}
+
+/* tail pointing right toward Casper's mouth */
+.casperBubbleTail {
+  position: absolute;
+  right: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top:    8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-left:   10px solid var(--brass);
+}
+.casperBubbleTail::after {
+  content: '';
+  position: absolute;
+  top: -6px;
+  right: 2px;
+  width: 0;
+  height: 0;
+  border-top:    6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-left:   8px solid rgba(20, 17, 13, 0.92);
+}
+
+@media (max-width: 1300px) {
+  .casperBubble { right: 22vw; max-width: 220px; }
+}
+@media (max-width: 1100px) {
+  .casperBubble { right: 28vw; max-width: 200px; }
+}
+
+/* ── Casper banner (every other page) ─────────────────────────────── */
+.casperBanner {
+  position: fixed;
+  top: 70px;
+  right: 1.6rem;
+  z-index: 7;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 8px 14px 8px 12px;
+  background: rgba(20, 17, 13, 0.88);
+  border: 1px solid rgba(176, 141, 87, 0.4);
+  border-radius: 3px;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+  font-family: 'IBM Plex Mono', monospace;
+  max-width: 320px;
+}
+
+.casperBannerLabel {
+  font-size: 0.6rem;
+  color: var(--brass);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.casperBannerLine {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  color: var(--bone);
+  font-size: 0.92rem;
+  line-height: 1.3;
+}

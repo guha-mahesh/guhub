@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { projects as allProjects } from '../data/projects';
 import type { Project } from '../data/projects';
 import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
+import { useMeta, metaLabel } from '../contexts/MetaContext';
 import './ProjectsTab.css';
 
 const W = 900;
@@ -11,7 +12,7 @@ const CX = W / 2;
 // trunk: slight organic drift left as it rises
 const trunkPath = `M ${CX} ${H} C ${CX-2} ${H-120} ${CX-4} ${H-240} ${CX-6} ${H-360}`;
 
-// node positions — left column, right column, top
+// node positions, left column, right column, top
 const NODE_POS = [
   { x: 125, y: 115, ax: CX-4, ay: 200 },   // 0  far-left high
   { x: 78,  y: 275, ax: CX-5, ay: 300 },   // 1  far-left mid
@@ -39,6 +40,7 @@ function branchPath(ax: number, ay: number, px: number, py: number): string {
 }
 
 export default function ProjectsTab() {
+  const { level } = useMeta();
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
   const [projects] = useState<Project[]>(allProjects);
   const svgRef = useRef<SVGSVGElement>(null);
@@ -77,7 +79,7 @@ export default function ProjectsTab() {
 
         <div className="projectsHeader">
           <p className="projectsPageTitle">
-            projects <span className="projectsPageCount">/ {projects.length}</span>
+            {level > 0 ? `${metaLabel(level).toLowerCase()} projects` : 'projects'} <span className="projectsPageCount">/ {projects.length}</span>
           </p>
         </div>
 
@@ -104,7 +106,7 @@ export default function ProjectsTab() {
               </radialGradient>
               <radialGradient id="nodeActive" cx="50%" cy="40%" r="55%">
                 <stop offset="0%" stopColor="#b0cc9e" />
-                <stop offset="100%" stopColor="#739166" />
+                <stop offset="100%" stopColor="#b08d57" />
               </radialGradient>
             </defs>
 

@@ -1,4 +1,4 @@
-/* ── Crenshaw — small steampunk anteater easter egg ─────────────── */
+/* ── Crenshaw, small steampunk anteater easter egg ─────────────── */
 /* Position (top/bottom/left/right) is set per-corner inline by Anteater.tsx */
 .anteaterAnchor {
   position: fixed;
@@ -6,6 +6,37 @@
   z-index: 6;
   pointer-events: none;
   filter: drop-shadow(0 2px 6px rgba(0,0,0,0.6));
+}
+
+/* At meta⁴ he stops fleeing, clickable, glows */
+.anteaterAnchor.anteaterCatchable {
+  pointer-events: auto;
+  cursor: pointer;
+  filter: drop-shadow(0 0 14px rgba(245, 180, 80, 0.55));
+}
+.anteaterAnchor.anteaterCatchable:hover {
+  filter: drop-shadow(0 0 22px rgba(245, 180, 80, 0.85));
+}
+
+/* Surface post-meta-quest: watchful but ungrabable until your cursor's
+   shadow has aligned with him. Glow scales with merge progress. */
+.anteaterAnchor.anteaterMerging {
+  cursor: progress;
+  pointer-events: auto;
+  filter: drop-shadow(0 0 calc(12px + 18px * var(--merge, 0))
+                      rgba(245, 180, 80, calc(0.2 + 0.6 * var(--merge, 0))));
+}
+
+/* Ready: shadow fully aligned. Pulsing ember halo, click enabled. */
+.anteaterAnchor.anteaterReady {
+  cursor: pointer;
+  pointer-events: auto;
+  animation: anteaterReadyPulse 1.3s ease-in-out infinite;
+}
+
+@keyframes anteaterReadyPulse {
+  0%, 100% { filter: drop-shadow(0 0 18px rgba(245, 180, 80, 0.7)); }
+  50%      { filter: drop-shadow(0 0 32px rgba(245, 180, 80, 1)); }
 }
 
 .anteaterBob {
@@ -51,18 +82,20 @@
 
 .atrNostril { fill: #0a0808; }
 
-/* ── shoulder stripe (the giveaway feature) ── */
+/* ── shoulder stripe (the giveaway feature) ──
+   Now a filled wedge that sits ON the shoulder rather than a thin stroke
+   sliding off into the legs. White edge above runs across the back as
+   the classic anteater "collar." */
 .atrStripeBlack {
-  fill: none;
+  fill: #0a0808;
   stroke: #0a0808;
-  stroke-width: 12;
-  stroke-linecap: round;
+  stroke-width: 0.8;
   stroke-linejoin: round;
 }
 .atrStripeWhite {
   fill: none;
   stroke: #f0e6d0;
-  stroke-width: 3;
+  stroke-width: 2.4;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
@@ -91,6 +124,14 @@
   stroke: #0a0808;
   stroke-width: 1.5;
   stroke-linecap: round;
+}
+/* Front foot is a curled fist with thick sickle claws — main anteater cue. */
+.atrClawsFront path {
+  fill: none;
+  stroke: #0a0808;
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 /* ── brass shoulder gear ── */

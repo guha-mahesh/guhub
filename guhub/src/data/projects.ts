@@ -20,7 +20,7 @@ export const projects: Project[] = [
   {
     id: 11,
     title: "earthborn",
-    description: "Research project on AI de-telltization — the hypothesis that removing detectable AI linguistic tells (hedging, hollow affirmations, bullet-point addiction, sycophancy) is the foundational lever for chatbot likability. Ships a TellDetector class that scores text for AI markers and a MessagesDBParser for Apple's chat.db. Parsed ~190k iMessages as a naturalistic human conversation corpus for grounding the detector.",
+    description: "Research project on AI de-telltization, the hypothesis that removing detectable AI linguistic tells (hedging, hollow affirmations, bullet-point addiction, sycophancy) is the foundational lever for chatbot likability. Ships a TellDetector class that scores text for AI markers and a MessagesDBParser for Apple's chat.db. Parsed ~190k iMessages as a naturalistic human conversation corpus for grounding the detector.",
     tech: ["Python", "NLP", "Apple chat.db", "Corpus Linguistics"],
     galaxies: ['philosophy'],
     color: "purpleGradient",

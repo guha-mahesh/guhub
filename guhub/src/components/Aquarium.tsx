@@ -5,6 +5,7 @@ import './Aquarium.css';
 // Steampunk marine creatures animated with framer-motion.
 // Bell pulses (jellyfish), mantle jet (squid), staggered nectophore
 // throbs (siphonophore), undulating tentacles via path-d interpolation.
+// Plus rare species (shark, whale, mosasaurus) that pass less often.
 // ──────────────────────────────────────────────────────────────────────
 
 // reusable easing
@@ -42,7 +43,7 @@ function Jellyfish() {
         ))}
       </motion.g>
 
-      {/* bioluminescent dots inside the bell — pulse with the contraction */}
+      {/* bioluminescent dots inside the bell, pulse with the contraction */}
       <motion.g
         animate={{ opacity: [0.35, 0.85, 0.35] }}
         transition={{ duration: 2.6, repeat: Infinity, ease }}
@@ -114,7 +115,7 @@ function Squid() {
         <circle cx="110" cy="-16" r="2" className="brassFill" />
       </motion.g>
 
-      {/* arms wave — same easing as mantle, slightly offset for trailing feel */}
+      {/* arms wave, same easing as mantle, slightly offset for trailing feel */}
       <g className="squidArms">
         {armPairs.map(([a, b], i) => (
           <motion.path
@@ -170,7 +171,7 @@ function Siphonophore() {
       {/* central stem */}
       <line x1="50" y1="38" x2="50" y2="500" className="ink thin" />
 
-      {/* nectophore zooids — each pulses in a wave down the chain */}
+      {/* nectophore zooids, each pulses in a wave down the chain */}
       {nectophores.map((b, i) => (
         <motion.g
           key={i}
@@ -209,8 +210,514 @@ function Siphonophore() {
   );
 }
 
+// ── Shark (rare) ──────────────────────────────────────────
+// Sleek torpedo body, brass nose plate, dorsal gear, monocle eye.
+function Shark() {
+  return (
+    <svg className="shark" viewBox="0 0 320 140">
+      {/* caudal tail fin (heterocercal — top lobe longer) */}
+      <path className="ink" d="M 60 70 L 8 22 L 32 70 L 8 118 Z" />
+
+      {/* main body, torpedo shape */}
+      <path
+        className="ink"
+        d="M 310 70
+           Q 290 50, 222 50
+           Q 150 48, 102 56
+           Q 72 62, 60 70
+           Q 72 78, 102 86
+           Q 150 92, 222 90
+           Q 290 90, 310 70 Z"
+      />
+
+      {/* dorsal fin */}
+      <path className="ink" d="M 168 52 L 184 22 L 206 50 Z" />
+
+      {/* pectoral fin */}
+      <path className="ink" d="M 238 88 L 256 116 L 282 92 Z" />
+
+      {/* gill slits */}
+      <path className="ink thin" d="M 248 62 L 248 78" fill="none" />
+      <path className="ink thin" d="M 256 62 L 256 78" fill="none" />
+      <path className="ink thin" d="M 264 62 L 264 78" fill="none" />
+
+      {/* mouth (slight grin) */}
+      <path className="ink thin" d="M 268 80 Q 290 86, 306 78" fill="none" />
+
+      {/* eye + brass monocle ring */}
+      <circle cx="286" cy="62" r="6" className="brass" fill="none" />
+      <circle cx="286" cy="62" r="2.6" className="brassFill" />
+
+      {/* brass dorsal gear bolt */}
+      <circle cx="184" cy="34" r="3.5" className="brassFill" />
+
+      {/* brass nose plate (rim around snout tip) */}
+      <path className="brass" d="M 304 60 Q 316 70, 304 80" fill="none" strokeWidth="2" />
+
+      {/* rivets along the hull */}
+      <circle cx="120" cy="80" r="1.4" className="brassFill" />
+      <circle cx="160" cy="82" r="1.4" className="brassFill" />
+      <circle cx="200" cy="80" r="1.4" className="brassFill" />
+      <circle cx="244" cy="76" r="1.4" className="brassFill" />
+    </svg>
+  );
+}
+
+// ── Whale (rare) ──────────────────────────────────────────
+// Massive body, horizontal fluke, blowhole with steam, brass gear & seams.
+function Whale() {
+  return (
+    <svg className="whale" viewBox="0 0 380 200">
+      {/* steam plumes rising above blowhole */}
+      <ellipse cx="318" cy="30" rx="6" ry="4" className="brassGhost" />
+      <ellipse cx="324" cy="14" rx="5" ry="3" className="brassGhost" />
+      <ellipse cx="316" cy="-2" rx="4" ry="2.5" className="brassGhost" />
+
+      {/* main body */}
+      <path
+        className="ink"
+        d="M 370 90
+           Q 380 80, 370 65
+           Q 350 50, 300 50
+           Q 220 44, 140 48
+           Q 80 54, 50 65
+           L 50 110
+           Q 80 118, 140 124
+           Q 220 128, 300 122
+           Q 350 116, 370 100
+           Q 380 92, 370 90 Z"
+      />
+
+      {/* horizontal tail fluke */}
+      <path className="ink" d="M 50 88 L 4 60 L 22 88 L 4 116 L 50 100 Z" />
+
+      {/* pectoral flipper */}
+      <path className="ink" d="M 280 115 L 296 142 L 318 120 Z" />
+
+      {/* baleen mouth line */}
+      <path className="ink thin" d="M 220 100 Q 290 106, 358 92" fill="none" />
+
+      {/* eye + monocle */}
+      <circle cx="338" cy="76" r="6" className="brass" fill="none" />
+      <circle cx="338" cy="76" r="2.8" className="brassFill" />
+
+      {/* blowhole */}
+      <ellipse cx="320" cy="48" rx="4.5" ry="2" className="brassFill" />
+
+      {/* large brass gear on side */}
+      <circle cx="220" cy="80" r="9" className="brass" fill="none" />
+      <circle cx="220" cy="80" r="2.4" className="brassFill" />
+      {/* gear teeth, simple */}
+      {[0, 60, 120, 180, 240, 300].map(deg => (
+        <line
+          key={deg}
+          x1="220"
+          y1="71"
+          x2="220"
+          y2="67"
+          className="brass"
+          strokeWidth="1.4"
+          transform={`rotate(${deg} 220 80)`}
+        />
+      ))}
+
+      {/* hull seams + rivets */}
+      <path className="ink thin" d="M 160 62 L 160 122" fill="none" />
+      <path className="ink thin" d="M 270 58 L 270 122" fill="none" />
+      <circle cx="160" cy="62" r="1.5" className="brassFill" />
+      <circle cx="160" cy="122" r="1.5" className="brassFill" />
+      <circle cx="270" cy="58" r="1.5" className="brassFill" />
+      <circle cx="270" cy="122" r="1.5" className="brassFill" />
+    </svg>
+  );
+}
+
+// ── Mosasaurus (rare) ─────────────────────────────────────
+// Long sinuous prehistoric body, four paddle limbs, armored bands.
+function Mosasaurus() {
+  return (
+    <svg className="mosa" viewBox="0 0 440 160">
+      {/* main body — long ribbon */}
+      <path
+        className="ink"
+        d="M 425 75
+           Q 410 55, 360 52
+           Q 280 48, 200 56
+           Q 120 60, 60 72
+           Q 30 78, 10 82
+           Q 30 92, 60 90
+           Q 120 92, 200 92
+           Q 280 90, 360 82
+           Q 410 78, 425 75 Z"
+      />
+
+      {/* tail end fin */}
+      <path className="ink" d="M 10 82 L -4 56 L 6 82 L -4 112 Z" />
+
+      {/* front (right) paddle limb */}
+      <path className="ink" d="M 285 88 L 305 122 L 325 92 Z" />
+
+      {/* rear (left) paddle limb */}
+      <path className="ink" d="M 128 90 L 148 124 L 170 95 Z" />
+
+      {/* small dorsal ridge */}
+      <path className="ink" d="M 250 54 L 262 38 L 278 53 Z" />
+
+      {/* eye + monocle */}
+      <circle cx="400" cy="66" r="5.5" className="brass" fill="none" />
+      <circle cx="400" cy="66" r="2.4" className="brassFill" />
+
+      {/* open jaw with two teeth */}
+      <path className="ink" d="M 425 75 Q 418 84, 406 83" fill="none" />
+      <path className="ink thin" d="M 412 78 L 412 84" fill="none" />
+      <path className="ink thin" d="M 418 76 L 418 83" fill="none" />
+
+      {/* armor plates: three diagonal brass bands across the body */}
+      <path
+        className="brass"
+        d="M 100 66 L 95 90 L 115 90 L 120 66 Z"
+        fill="var(--brass)"
+        fillOpacity="0.18"
+        strokeWidth="1"
+      />
+      <path
+        className="brass"
+        d="M 200 62 L 195 92 L 215 92 L 220 62 Z"
+        fill="var(--brass)"
+        fillOpacity="0.18"
+        strokeWidth="1"
+      />
+      <path
+        className="brass"
+        d="M 310 58 L 305 86 L 325 86 L 330 58 Z"
+        fill="var(--brass)"
+        fillOpacity="0.18"
+        strokeWidth="1"
+      />
+
+      {/* rivets at the plate edges */}
+      <circle cx="100" cy="66" r="1.2" className="brassFill" />
+      <circle cx="120" cy="66" r="1.2" className="brassFill" />
+      <circle cx="200" cy="62" r="1.2" className="brassFill" />
+      <circle cx="220" cy="62" r="1.2" className="brassFill" />
+      <circle cx="310" cy="58" r="1.2" className="brassFill" />
+      <circle cx="330" cy="58" r="1.2" className="brassFill" />
+    </svg>
+  );
+}
+
+// ── Saltwater Crocodile (very rare, MASSIVE) ──────────────
+// Long armored body, four stubby legs with toe-claws, osteoderm spikes
+// along the spine, brass plate panels riveted to the hull, shoulder gear,
+// teeth in a half-open jaw, monocle eye set high on the head.
+function Croc() {
+  return (
+    <svg className="croc" viewBox="0 0 600 180">
+      {/* main silhouette */}
+      <path
+        className="ink"
+        d="M 588 96
+           Q 568 78, 502 80
+           L 480 58
+           Q 412 54, 364 62
+           Q 280 64, 192 72
+           Q 110 82, 12 100
+           L 32 110
+           Q 110 112, 188 108
+           L 198 132
+           L 212 152
+           L 244 152
+           L 234 124
+           Q 296 118, 360 118
+           L 408 122
+           L 418 145
+           L 444 152
+           L 458 124
+           Q 478 118, 498 112
+           L 500 116
+           Q 568 118, 588 96 Z"
+      />
+
+      {/* osteoderm spikes along the back ridge */}
+      <path
+        className="ink thin"
+        fill="none"
+        d="M 200 67 L 210 56 L 222 68
+           M 240 65 L 250 54 L 262 66
+           M 280 64 L 290 53 L 302 65
+           M 320 64 L 330 53 L 342 65
+           M 360 62 L 370 51 L 382 63
+           M 400 62 L 410 51 L 422 63
+           M 440 60 L 450 50 L 462 62"
+      />
+
+      {/* eye + monocle (on top of head) */}
+      <circle cx="488" cy="58" r="6" className="brass" fill="none" />
+      <circle cx="488" cy="58" r="2.8" className="brassFill" />
+      <circle cx="487" cy="57" r="0.8" className="biolume" />
+
+      {/* nostril at snout tip */}
+      <ellipse cx="572" cy="84" rx="2.2" ry="1.1" className="ink" fill="var(--ink)" />
+
+      {/* upper jaw teeth — zigzag */}
+      <path
+        className="ink thin"
+        fill="none"
+        d="M 510 88 L 512 95 L 516 88 L 520 95 L 524 88 L 528 95 L 532 88 L 536 95 L 540 88 L 544 95 L 548 88"
+      />
+
+      {/* lower jaw teeth — zigzag */}
+      <path
+        className="ink thin"
+        fill="none"
+        d="M 510 110 L 512 103 L 516 110 L 520 103 L 524 110 L 528 103 L 532 110 L 536 103 L 540 110 L 544 103 L 548 110"
+      />
+
+      {/* mouth seam */}
+      <line x1="500" y1="99" x2="588" y2="96" className="ink thin" />
+
+      {/* brass armor plate panels (back side, semi-transparent) */}
+      <path
+        className="brass"
+        d="M 220 78 L 218 100 L 240 100 L 242 76 Z"
+        fill="var(--brass)" fillOpacity="0.16" strokeWidth="1"
+      />
+      <path
+        className="brass"
+        d="M 280 76 L 278 102 L 300 102 L 302 74 Z"
+        fill="var(--brass)" fillOpacity="0.16" strokeWidth="1"
+      />
+      <path
+        className="brass"
+        d="M 340 74 L 338 104 L 360 104 L 362 72 Z"
+        fill="var(--brass)" fillOpacity="0.16" strokeWidth="1"
+      />
+      <path
+        className="brass"
+        d="M 400 72 L 398 106 L 420 106 L 422 70 Z"
+        fill="var(--brass)" fillOpacity="0.16" strokeWidth="1"
+      />
+
+      {/* shoulder gear */}
+      <circle cx="460" cy="84" r="9" className="brass" fill="none" />
+      <circle cx="460" cy="84" r="2.6" className="brassFill" />
+      {[0, 60, 120, 180, 240, 300].map(deg => (
+        <line
+          key={deg}
+          x1="460" y1="74" x2="460" y2="70"
+          className="brass" strokeWidth="1.4"
+          transform={`rotate(${deg} 460 84)`}
+        />
+      ))}
+
+      {/* rivets at plate corners */}
+      {[[220,78],[242,78],[280,76],[302,76],[340,74],[362,74],[400,72],[422,72]].map(([x,y]) => (
+        <circle key={`${x}-${y}`} cx={x} cy={y} r="1.2" className="brassFill" />
+      ))}
+
+      {/* toe-claws — front foot */}
+      <path
+        className="ink thin"
+        fill="none"
+        d="M 422 152 L 419 159 M 432 152 L 432 160 M 442 152 L 444 159"
+      />
+      {/* toe-claws — back foot */}
+      <path
+        className="ink thin"
+        fill="none"
+        d="M 217 152 L 213 159 M 228 152 L 228 160 M 240 152 L 243 159"
+      />
+    </svg>
+  );
+}
+
+// ── Anglerfish (deep-sea, common-rare) ────────────────────
+// Round body, downturned jagged-tooth mouth, bioluminescent lure on a
+// stalk, brass plate seam, monocle eye.
+function Anglerfish() {
+  return (
+    <svg className="angler" viewBox="0 0 220 160">
+      {/* heterocercal tail */}
+      <path className="ink" d="M 60 90 L 14 50 L 36 90 L 14 130 Z" />
+
+      {/* body */}
+      <path
+        className="ink"
+        d="M 60 90
+           Q 54 50, 96 38
+           Q 142 28, 170 56
+           Q 188 84, 168 112
+           Q 148 132, 108 134
+           Q 76 130, 60 90 Z"
+      />
+
+      {/* lure stalk */}
+      <path className="ink thin" fill="none" d="M 120 38 Q 138 18, 146 4" />
+      <circle cx="146" cy="4" r="6" className="brass" fill="none" />
+      <circle cx="146" cy="4" r="3" className="biolume" />
+
+      {/* zigzag mouth (upper + lower teeth) */}
+      <path
+        className="ink thin"
+        fill="none"
+        d="M 100 110 L 104 118 L 110 110 L 116 118 L 122 110 L 128 118 L 134 110 L 140 118 L 146 110"
+      />
+      <path
+        className="ink thin"
+        fill="none"
+        d="M 100 130 L 104 122 L 110 130 L 116 122 L 122 130 L 128 122 L 134 130 L 140 122 L 146 130"
+      />
+
+      {/* pectoral fin */}
+      <path className="ink" d="M 112 130 L 120 148 L 134 130 Z" />
+
+      {/* eye + monocle */}
+      <circle cx="118" cy="68" r="5.5" className="brass" fill="none" />
+      <circle cx="118" cy="68" r="2.8" className="brassFill" />
+
+      {/* hull-seam + rivets */}
+      <path className="brass" fill="none" strokeWidth="1.4" d="M 84 78 L 84 108" />
+      <circle cx="84" cy="78" r="1.4" className="brassFill" />
+      <circle cx="84" cy="108" r="1.4" className="brassFill" />
+
+      {/* small dorsal spines */}
+      <path
+        className="ink thin"
+        fill="none"
+        d="M 100 38 L 104 30 L 110 40 M 118 36 L 122 28 L 126 36"
+      />
+    </svg>
+  );
+}
+
+// ── Manta Ray ─────────────────────────────────────────────
+// Wide diamond body, cephalic horns, whip tail, brass wing plating.
+function MantaRay() {
+  return (
+    <svg className="manta" viewBox="0 0 320 160">
+      {/* body with wide pectoral wings */}
+      <path
+        className="ink"
+        d="M 160 30
+           Q 230 36, 296 78
+           Q 268 90, 232 90
+           Q 198 96, 168 122
+           L 160 130
+           L 152 122
+           Q 122 96, 88 90
+           Q 52 90, 24 78
+           Q 90 36, 160 30 Z"
+      />
+
+      {/* cephalic horns at the front */}
+      <path className="ink thin" fill="none" d="M 150 36 Q 148 22, 152 12" />
+      <path className="ink thin" fill="none" d="M 170 36 Q 172 22, 168 12" />
+
+      {/* whip tail */}
+      <path
+        className="ink thin"
+        fill="none"
+        d="M 160 130 Q 168 142, 156 154 Q 162 158, 158 165"
+      />
+
+      {/* eye + monocle */}
+      <circle cx="176" cy="66" r="5" className="brass" fill="none" />
+      <circle cx="176" cy="66" r="2.4" className="brassFill" />
+
+      {/* wing armor plates */}
+      <path
+        className="brass"
+        d="M 56 76 L 100 80 L 96 90 L 60 88 Z"
+        fill="var(--brass)" fillOpacity="0.16" strokeWidth="1"
+      />
+      <path
+        className="brass"
+        d="M 220 80 L 264 76 L 260 88 L 224 90 Z"
+        fill="var(--brass)" fillOpacity="0.16" strokeWidth="1"
+      />
+      {[[56,76],[100,80],[220,80],[264,76]].map(([x,y]) => (
+        <circle key={`${x}-${y}`} cx={x} cy={y} r="1.2" className="brassFill" />
+      ))}
+
+      {/* gill slits */}
+      <path
+        className="ink thin"
+        fill="none"
+        d="M 160 96 L 160 104 M 168 96 L 168 104 M 176 96 L 176 104"
+      />
+    </svg>
+  );
+}
+
+// ── Seahorse (vertical posture, drifts upward instead of horizontally) ──
+function Seahorse() {
+  return (
+    <svg className="seah" viewBox="0 0 100 220">
+      {/* head + tube snout */}
+      <path
+        className="ink"
+        d="M 30 28
+           Q 22 38, 22 52
+           Q 26 64, 40 66
+           Q 52 66, 56 56
+           L 76 56
+           L 76 48
+           L 56 48
+           Q 50 36, 42 30
+           Q 36 24, 30 28 Z"
+      />
+
+      {/* curved S body */}
+      <path
+        className="ink"
+        d="M 38 66
+           Q 32 96, 46 116
+           Q 56 138, 50 158
+           Q 44 178, 60 188
+           Q 76 192, 80 174
+           Q 72 166, 64 164
+           Q 60 150, 64 138
+           Q 58 116, 54 96
+           Q 50 76, 38 66 Z"
+      />
+
+      {/* coiled tail */}
+      <path
+        className="ink thin"
+        fill="none"
+        d="M 80 174 Q 86 186, 78 196 Q 70 200, 64 194"
+      />
+
+      {/* crown spines */}
+      <path
+        className="ink thin"
+        fill="none"
+        d="M 32 28 L 28 18 L 34 26 M 40 24 L 42 14 L 46 24 M 50 26 L 56 18 L 56 26"
+      />
+
+      {/* eye + monocle */}
+      <circle cx="40" cy="46" r="4" className="brass" fill="none" />
+      <circle cx="40" cy="46" r="2" className="brassFill" />
+
+      {/* armor segments along the body */}
+      <path className="brass" d="M 44 84 L 54 84 L 54 90 L 44 90 Z" fill="var(--brass)" fillOpacity="0.2" strokeWidth="1" />
+      <path className="brass" d="M 48 108 L 60 108 L 60 116 L 48 116 Z" fill="var(--brass)" fillOpacity="0.2" strokeWidth="1" />
+      <path className="brass" d="M 54 134 L 66 134 L 66 142 L 54 142 Z" fill="var(--brass)" fillOpacity="0.2" strokeWidth="1" />
+      <path className="brass" d="M 56 158 L 68 158 L 68 168 L 56 168 Z" fill="var(--brass)" fillOpacity="0.2" strokeWidth="1" />
+
+      {/* dorsal fin wave */}
+      <path
+        className="ink thin"
+        fill="none"
+        d="M 56 86 Q 64 92, 58 100 Q 68 98, 62 110"
+      />
+    </svg>
+  );
+}
+
 // ──────────────────────────────────────────────────────────
-// Aquarium — composes the drifting set with motion-driven drift + bob
+// Aquarium, composes the drifting set with motion-driven drift + bob.
+// New: diagonal drift (verticalDrift) + depth illusion (depthRange).
 // ──────────────────────────────────────────────────────────
 type Drifter = {
   Cmp: React.FC;
@@ -222,16 +729,39 @@ type Drifter = {
   direction: 'ltr' | 'rtl';
   bobAmp: number;
   bobDur: number;
+  /** Optional. vh of vertical drift across the full horizontal pass —
+   *  creates a slow diagonal travel. Positive = drifts down, negative = up. */
+  verticalDrift?: number;
+  /** Optional. Scale oscillation range that multiplies the base scale across
+   *  the pass: [min, max]. Cycles min → max → min once per pass. Creates a
+   *  depth illusion (creature approaches and recedes). */
+  depthRange?: [number, number];
 };
 
 const DRIFTERS: Drifter[] = [
-  { Cmp: Jellyfish,    top: '6%',  scale: 0.75, opacity: 0.45, duration: 95,  delay: -28,  direction: 'ltr', bobAmp: 14, bobDur: 9  },
-  { Cmp: Siphonophore, top: '2%',  scale: 0.55, opacity: 0.40, duration: 130, delay: -70,  direction: 'rtl', bobAmp: 8,  bobDur: 7  },
-  { Cmp: Squid,        top: '34%', scale: 0.65, opacity: 0.38, duration: 110, delay: -55,  direction: 'ltr', bobAmp: 18, bobDur: 11 },
-  { Cmp: Jellyfish,    top: '52%', scale: 0.5,  opacity: 0.32, duration: 140, delay: -100, direction: 'rtl', bobAmp: 10, bobDur: 8  },
-  { Cmp: Siphonophore, top: '14%', scale: 0.42, opacity: 0.30, duration: 165, delay: -40,  direction: 'ltr', bobAmp: 5,  bobDur: 6  },
-  { Cmp: Squid,        top: '66%', scale: 0.45, opacity: 0.28, duration: 150, delay: -90,  direction: 'rtl', bobAmp: 12, bobDur: 10 },
-  { Cmp: Jellyfish,    top: '76%', scale: 0.6,  opacity: 0.42, duration: 100, delay: -15,  direction: 'ltr', bobAmp: 16, bobDur: 9  },
+  // existing creatures (frequent)
+  { Cmp: Jellyfish,    top: '6%',  scale: 0.75, opacity: 0.45, duration: 95,  delay: -28,  direction: 'ltr', bobAmp: 14, bobDur: 9,  verticalDrift: 8 },
+  { Cmp: Siphonophore, top: '2%',  scale: 0.55, opacity: 0.40, duration: 130, delay: -70,  direction: 'rtl', bobAmp: 8,  bobDur: 7 },
+  { Cmp: Squid,        top: '34%', scale: 0.65, opacity: 0.38, duration: 110, delay: -55,  direction: 'ltr', bobAmp: 18, bobDur: 11, depthRange: [0.7, 1.35] },
+  { Cmp: Jellyfish,    top: '52%', scale: 0.5,  opacity: 0.32, duration: 140, delay: -100, direction: 'rtl', bobAmp: 10, bobDur: 8,  verticalDrift: -10 },
+  { Cmp: Siphonophore, top: '14%', scale: 0.42, opacity: 0.30, duration: 165, delay: -40,  direction: 'ltr', bobAmp: 5,  bobDur: 6,  depthRange: [0.6, 1.4] },
+  { Cmp: Squid,        top: '66%', scale: 0.45, opacity: 0.28, duration: 150, delay: -90,  direction: 'rtl', bobAmp: 12, bobDur: 10, verticalDrift: 14 },
+  { Cmp: Jellyfish,    top: '76%', scale: 0.6,  opacity: 0.42, duration: 100, delay: -15,  direction: 'ltr', bobAmp: 16, bobDur: 9,  depthRange: [0.85, 1.25] },
+  // rare species: long durations + heavy negative delays so they appear
+  // infrequently and not all at once
+  { Cmp: Shark,        top: '38%', scale: 0.5,  opacity: 0.34, duration: 220, delay: -160, direction: 'ltr', bobAmp: 4,  bobDur: 14, verticalDrift: 7 },
+  { Cmp: Whale,        top: '24%', scale: 0.65, opacity: 0.32, duration: 280, delay: -210, direction: 'rtl', bobAmp: 6,  bobDur: 18, depthRange: [0.85, 1.2] },
+  { Cmp: Mosasaurus,   top: '58%', scale: 0.48, opacity: 0.28, duration: 260, delay: -240, direction: 'ltr', bobAmp: 7,  bobDur: 13, verticalDrift: -8, depthRange: [0.75, 1.3] },
+  // ultra-rare massive saltie — slow, heavy, deliberately oversized
+  { Cmp: Croc,         top: '44%', scale: 1.05, opacity: 0.34, duration: 380, delay: -320, direction: 'rtl', bobAmp: 4,  bobDur: 22, depthRange: [0.88, 1.18] },
+  // mid-tier ecosystem: angler, manta, seahorses populate the column
+  { Cmp: Anglerfish,   top: '46%', scale: 0.42, opacity: 0.36, duration: 160, delay: -60,  direction: 'rtl', bobAmp: 8,  bobDur: 9,  verticalDrift: 6,  depthRange: [0.7, 1.3] },
+  { Cmp: Anglerfish,   top: '82%', scale: 0.5,  opacity: 0.32, duration: 175, delay: -130, direction: 'ltr', bobAmp: 6,  bobDur: 10, verticalDrift: -5 },
+  { Cmp: MantaRay,     top: '20%', scale: 0.72, opacity: 0.36, duration: 200, delay: -85,  direction: 'ltr', bobAmp: 10, bobDur: 14, depthRange: [0.6, 1.35] },
+  { Cmp: MantaRay,     top: '62%', scale: 0.55, opacity: 0.30, duration: 230, delay: -180, direction: 'rtl', bobAmp: 7,  bobDur: 12, verticalDrift: 9 },
+  // seahorses use the vertical axis: long verticalDrift, slow horizontal pass
+  { Cmp: Seahorse,     top: '88%', scale: 0.55, opacity: 0.40, duration: 220, delay: -50,  direction: 'ltr', bobAmp: 3,  bobDur: 6,  verticalDrift: -38, depthRange: [0.8, 1.15] },
+  { Cmp: Seahorse,     top: '90%', scale: 0.42, opacity: 0.34, duration: 260, delay: -170, direction: 'rtl', bobAmp: 4,  bobDur: 7,  verticalDrift: -42 },
 ];
 
 export default function Aquarium() {
@@ -240,13 +770,28 @@ export default function Aquarium() {
       {DRIFTERS.map((d, i) => {
         const fromX = d.direction === 'ltr' ? '-30vw' : '130vw';
         const toX   = d.direction === 'ltr' ? '130vw' : '-30vw';
+        // diagonal drift: animate y alongside x
+        const outerAnimate: { x: string; y?: string[] } = { x: toX };
+        if (d.verticalDrift !== undefined) {
+          outerAnimate.y = ['0vh', `${d.verticalDrift}vh`];
+        }
+        // depth-scale: oscillate base-scale * [min..max..min] once per pass
+        const depthKeyframes = d.depthRange ? [d.depthRange[0], d.depthRange[1], d.depthRange[0]] : null;
+        const flip = d.direction === 'rtl' ? ' scaleX(-1)' : '';
+
+        const inner = (
+          <div style={{ transform: `scale(${d.scale})${flip}`, transformOrigin: 'top left' }}>
+            <d.Cmp />
+          </div>
+        );
+
         return (
           <motion.div
             key={i}
             className="drifter"
             style={{ top: d.top, opacity: d.opacity, position: 'absolute' }}
-            initial={{ x: fromX }}
-            animate={{ x: toX }}
+            initial={{ x: fromX, y: 0 }}
+            animate={outerAnimate}
             transition={{
               duration: d.duration,
               repeat: Infinity,
@@ -259,9 +804,15 @@ export default function Aquarium() {
               transition={{ duration: d.bobDur, repeat: Infinity, ease }}
               style={{ display: 'inline-block' }}
             >
-              <div style={{ transform: `scale(${d.scale})`, transformOrigin: 'top left' }}>
-                <d.Cmp />
-              </div>
+              {depthKeyframes ? (
+                <motion.div
+                  animate={{ scale: depthKeyframes }}
+                  transition={{ duration: d.duration, repeat: Infinity, ease: 'easeInOut' }}
+                  style={{ display: 'inline-block', transformOrigin: 'center center' }}
+                >
+                  {inner}
+                </motion.div>
+              ) : inner}
             </motion.div>
           </motion.div>
         );

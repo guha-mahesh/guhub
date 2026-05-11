@@ -1,34 +1,37 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useCrenshaw } from '../contexts/CrenshawContext';
+import { useMeta, metaLabel } from '../contexts/MetaContext';
 import './TabNavigation.css';
+
+const BASE_TABS = [
+  { path: '/',          short: 'guha',      base: 'guha'      },
+  { path: '/projects',  short: 'projects',  base: 'projects'  },
+  { path: '/about',     short: 'resume',    base: 'resume'    },
+  { path: '/log',       short: 'log',       base: 'log'       },
+  { path: '/listening', short: 'listening', base: 'listening' },
+];
 
 const TabNavigation = () => {
   const location = useLocation();
   const { currentRoute: crenshawRoute } = useCrenshaw();
-
-  const tabs = [
-    { path: '/',          label: 'guha of-sorts',     short: 'guha'      },
-    { path: '/projects',  label: 'projects of-sorts', short: 'projects'  },
-    { path: '/about',     label: 'resume of-sorts',   short: 'resume'    },
-    { path: '/log',       label: 'log of-sorts',      short: 'log'       },
-    { path: '/listening', label: 'listening of-sorts',short: 'listening' },
-  ];
+  const { level, crenshawFreed } = useMeta();
+  const prefix = level > 0 ? metaLabel(level).toLowerCase() + ' ' : '';
 
   return (
     <nav className="tabNavigation">
       <div className="tabContainer">
-        {tabs.map((tab) => {
-          // show the crenshaw notification when he's hiding on this tab AND
-          // the user isn't already viewing it (no point hinting at the page they're on)
-          const hasCrenshaw = tab.path === crenshawRoute && tab.path !== location.pathname;
+        {BASE_TABS.map((tab) => {
+          const hasCrenshaw = !crenshawFreed && tab.path === crenshawRoute && tab.path !== location.pathname;
+          const label = `${prefix}${tab.base}`;
+          const shortLabel = `${prefix}${tab.short}`;
           return (
             <Link
               key={tab.path}
               to={tab.path}
               className={`tab ${location.pathname === tab.path ? 'active' : ''}`}
             >
-              <span className="tabFull">{tab.label}</span>
-              <span className="tabShort">{tab.short}</span>
+              <span className="tabFull">{label}</span>
+              <span className="tabShort">{shortLabel}</span>
               {hasCrenshaw && <span className="crenshawBadge" aria-label="crenshaw is here" />}
             </Link>
           );

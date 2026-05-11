@@ -1,17 +1,47 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Moon.css';
 
 // ──────────────────────────────────────────────────────────────────────
-// Big rubberhose crescent — opens LEFT, dramatically curved, weathered.
-// Cracks, craters, jaw hatch, bloodshot eye, sneering mouth, red-glowing
-// scar. Brass cog mount peeks out behind upper-right.
+// Casper, the rubberhose crescent moon. Modular: every visual aspect
+// can be overridden via props so meta-Caspers reuse this component
+// without duplicating the SVG.
 // ──────────────────────────────────────────────────────────────────────
 
-export default function Moon() {
+export type CasperVariant = 'default' | 'meta1' | 'meta2' | 'meta3';
+
+interface MoonProps {
+  /** Visual variant, controls palette via CSS class. */
+  variant?: CasperVariant;
+  /** Text on the hanging brass plate. Default: "WHERE'S CRENSHAW?" */
+  nameplateText?: string;
+  /** Whether to show the chain + hanging nameplate. */
+  showNameplate?: boolean;
+  /** Whether to show the brass cog mount peeking behind upper-right. */
+  showCog?: boolean;
+  /** Whether to show the CASPER-spelled-out blob craters. */
+  showCasperCraters?: boolean;
+  /** Click handler for the eyeball. Receives the click event so callers can
+   *  capture pointer position for a zoom-out-from-eye animation. */
+  onEyeClick?: (e: React.MouseEvent) => void;
+  /** Current meta-depth (used by the default onEyeClick to navigate deeper). */
+  depth?: number;
+}
+
+export default function Moon({
+  variant = 'default',
+  nameplateText = "WHERE'S CRENSHAW?",
+  showNameplate = true,
+  showCog = true,
+  showCasperCraters = true,
+  onEyeClick,
+  depth = 0,
+}: MoonProps = {}) {
   const ref = useRef<SVGSVGElement>(null);
   const [open, setOpen] = useState(false);
   const [pupil, setPupil] = useState({ dx: 0, dy: 0 });
   const targetRef = useRef({ dx: 0, dy: 0 });
+  const navigate = useNavigate();
 
   const onMove = useCallback((e: MouseEvent) => {
     if (!ref.current) return;
@@ -58,10 +88,12 @@ export default function Moon() {
   const irisR = 28;
   const pupilR = 7;
 
+  const handleEyeClick = onEyeClick ?? ((_e: React.MouseEvent) => navigate(`/inside/${depth + 1}`));
+
   return (
     <svg
       ref={ref}
-      className="moon"
+      className={`moon moon-${variant}`}
       viewBox="-140 -20 820 870"
       preserveAspectRatio="xMidYMid meet"
     >
@@ -96,17 +128,38 @@ export default function Moon() {
       {/* drop shadow */}
       <ellipse cx="280" cy="810" rx="240" ry="14" className="moonShadow" />
 
-      {/* brass specimen nameplate — "WHERE'S CRENSHAW?" — sits below the lower tip */}
-      <g className="moonNameplate" transform="translate(220, 818)">
-        <rect x="-180" y="-26" width="360" height="52" rx="3" className="moonPlate" />
-        <rect x="-170" y="-18" width="340" height="36" rx="2" className="moonPlateInner" />
-        <circle cx="-162" cy="0" r="3.2" className="moonPlateRivet" />
-        <circle cx="162"  cy="0" r="3.2" className="moonPlateRivet" />
-        <text x="0" y="6" className="moonPlateText" textAnchor="middle">WHERE'S CRENSHAW?</text>
+      {showNameplate && (<>
+      {/* === chain hanging from the moon's lower belly === */}
+      <g className="moonChain">
+        {/* small alternating links forming a vertical chain */}
+        <ellipse cx="218" cy="752" rx="3"   ry="5"   />
+        <ellipse cx="220" cy="762" rx="5"   ry="3"   />
+        <ellipse cx="222" cy="772" rx="3"   ry="5"   />
+        <ellipse cx="220" cy="782" rx="5"   ry="3"   />
+        <ellipse cx="218" cy="792" rx="3"   ry="5"   />
+        {/* tiny hook ring at the top where it attaches to the moon */}
+        <circle cx="220" cy="744" r="3.5" className="moonChainHook" />
       </g>
 
+      {/* === plate hangs from chain, sways independently === */}
+      {/* Outer <g> positions the hinge at (220, 798) */}
+      <g transform="translate(220, 798)">
+        {/* Inner <g> swings around (0,0), i.e. the hinge */}
+        <g className="moonPlateSway">
+          <rect x="-180" y="0"  width="360" height="52" rx="3" className="moonPlate" />
+          <rect x="-170" y="8"  width="340" height="36" rx="2" className="moonPlateInner" />
+          <circle cx="-162" cy="26" r="3.2" className="moonPlateRivet" />
+          <circle cx="162"  cy="26" r="3.2" className="moonPlateRivet" />
+          {/* two small chain-attachment loops at the top corners (so the
+              chain visually connects on both sides for a hanging-sign feel) */}
+          <circle cx="-150" cy="0" r="3" className="moonPlateHook" />
+          <circle cx="150"  cy="0" r="3" className="moonPlateHook" />
+          <text x="0" y="32" className="moonPlateText" textAnchor="middle">{nameplateText}</text>
+        </g>
+      </g>
+      </>)}
 
-      {/* === brass cog mount, peeks behind upper-right === */}
+      {showCog && (
       <g className="moonMount" transform="translate(605, 130)">
         <g className="moonCogSpin">
           {Array.from({ length: 14 }).map((_, i) => {
@@ -124,8 +177,9 @@ export default function Moon() {
           <circle cx="0" cy="0" r="4" className="moonCogBolt" />
         </g>
       </g>
+      )}
 
-      {/* === crescent body — opens LEFT, dramatic curve === */}
+      {/* === crescent body, opens LEFT, dramatic curve === */}
       <path
         className="moonBody"
         d="M 30 30
@@ -142,15 +196,97 @@ export default function Moon() {
 
       {/* === craters === */}
       <g clipPath="url(#moonClip)" className="moonCraters">
-        <ellipse cx="445" cy="400" rx="32" ry="14" />
-        <ellipse cx="445" cy="397" rx="32" ry="14" className="craterRim" />
+        {/* regular elliptical craters scattered around the body */}
         <ellipse cx="510" cy="290" rx="18" ry="9" />
         <ellipse cx="510" cy="288" rx="18" ry="9" className="craterRim" />
-        <ellipse cx="380" cy="660" rx="26" ry="12" />
-        <ellipse cx="380" cy="657" rx="26" ry="12" className="craterRim" />
         <ellipse cx="180" cy="600" rx="14" ry="7" />
         <ellipse cx="180" cy="598" rx="14" ry="7" className="craterRim" />
         <ellipse cx="540" cy="530" rx="11" ry="6" />
+        <ellipse cx="300" cy="220" rx="10" ry="5" />
+        <ellipse cx="540" cy="420" rx="9" ry="5" />
+
+        {showCasperCraters && (<>
+        {/*
+          === CASPER spelled out as blobby crater shapes, top → bottom ===
+          Each blob is a closed path roughly resembling its letter, but
+          organic enough that it reads as a weird crater on first glance.
+          Only obvious if you trace them vertically and squint.
+        */}
+        {/* C, open crescent opening right */}
+        <path
+          className="craterLetter"
+          transform="translate(370, 150)"
+          d="M -4 -14
+             Q -18 -14 -18 0
+             Q -18 14 -4 14
+             Q 4 14 10 10
+             Q -2 12 -10 6
+             Q -14 0 -10 -6
+             Q -2 -12 10 -10
+             Q 4 -14 -4 -14 Z"
+        />
+        {/* A, peaked blob with crossbar dent */}
+        <path
+          className="craterLetter"
+          transform="translate(450, 250)"
+          d="M -12 14
+             Q -10 -14 0 -14
+             Q 10 -14 12 14
+             Q 6 12 4 4
+             Q 0 2 -4 4
+             Q -6 12 -12 14 Z"
+        />
+        {/* S, sinuous double-loop */}
+        <path
+          className="craterLetter"
+          transform="translate(480, 360)"
+          d="M 10 -12
+             Q -6 -14 -10 -6
+             Q -10 -2 0 0
+             Q 10 2 10 8
+             Q 6 14 -10 12
+             Q 2 12 6 8
+             Q 6 2 -4 0
+             Q -10 -4 -8 -8
+             Q -2 -12 10 -12 Z"
+        />
+        {/* P, vertical with bulb on top */}
+        <path
+          className="craterLetter"
+          transform="translate(460, 470)"
+          d="M -10 -14
+             Q 10 -14 10 -2
+             Q 8 6 -2 6
+             L -2 14
+             Q -10 14 -10 -14 Z"
+        />
+        {/* E, vertical with three prongs */}
+        <path
+          className="craterLetter"
+          transform="translate(400, 580)"
+          d="M -10 -14
+             Q 10 -14 12 -10
+             Q 2 -8 -4 -6
+             L -4 -2
+             Q 6 -2 6 2
+             Q -2 4 -4 6
+             L -4 10
+             Q 10 10 12 14
+             Q -10 14 -10 -14 Z"
+        />
+        {/* R, like P with a leg kicking out (moved left to stay inside body silhouette at low y) */}
+        <path
+          className="craterLetter"
+          transform="translate(370, 690)"
+          d="M -10 -14
+             Q 10 -14 10 -2
+             Q 6 4 -2 4
+             Q 6 8 12 14
+             Q 0 14 -4 8
+             L -4 14
+             Q -10 14 -10 -14 Z"
+        />
+        </>)}
       </g>
 
       {/* === stipple dots === */}
@@ -205,56 +341,64 @@ export default function Moon() {
         <ellipse cx="220" cy="413" rx="3" ry="2" className="moonNostril" />
         <path className="moonNoseCrease" d="M 248 405 L 268 380 L 285 360" />
 
-        {/* sunburst petals around the eye */}
-        <g className="moonEyePetals">
-          {Array.from({ length: 12 }).map((_, i) => {
-            const aDeg = i * 30;
-            const a = (aDeg * Math.PI) / 180;
-            const px = eyeCx + Math.cos(a) * 54;
-            const py = eyeCy + Math.sin(a) * 54;
-            return (
-              <ellipse
-                key={i}
-                cx={px}
-                cy={py}
-                rx={18}
-                ry={9}
-                transform={`rotate(${aDeg} ${px} ${py})`}
-                className="moonPetal"
-              />
-            );
-          })}
+        {/* === clickable eye, zooms into the recursive meta-Casper === */}
+        <g
+          className="moonEyeClickable"
+          onClick={handleEyeClick}
+          role="button"
+          aria-label="enter casper"
+        >
+          {/* sunburst petals around the eye */}
+          <g className="moonEyePetals">
+            {Array.from({ length: 12 }).map((_, i) => {
+              const aDeg = i * 30;
+              const a = (aDeg * Math.PI) / 180;
+              const px = eyeCx + Math.cos(a) * 54;
+              const py = eyeCy + Math.sin(a) * 54;
+              return (
+                <ellipse
+                  key={i}
+                  cx={px}
+                  cy={py}
+                  rx={18}
+                  ry={9}
+                  transform={`rotate(${aDeg} ${px} ${py})`}
+                  className="moonPetal"
+                />
+              );
+            })}
+          </g>
+
+          {/* recessed dark socket */}
+          <circle cx={eyeCx} cy={eyeCy} r={socketR} className="moonEyeSocket" />
+          <circle cx={eyeCx} cy={eyeCy} r={socketR - 4} className="moonEyeSocketInner" />
+
+          {/* black iris, rolls toward cursor */}
+          <circle
+            cx={eyeCx + pupil.dx}
+            cy={eyeCy + pupil.dy}
+            r={irisR}
+            className="moonEyeIris"
+          />
+
+          {/* white pupil dot */}
+          <circle
+            cx={eyeCx + pupil.dx}
+            cy={eyeCy + pupil.dy}
+            r={pupilR}
+            className="moonEyePupilWhite"
+          />
+
+          {/* tiny black aperture in the center of the white pupil */}
+          <circle
+            cx={eyeCx + pupil.dx}
+            cy={eyeCy + pupil.dy}
+            r={2}
+            className="moonEyePupilCore"
+          />
         </g>
 
-        {/* recessed dark socket */}
-        <circle cx={eyeCx} cy={eyeCy} r={socketR} className="moonEyeSocket" />
-        <circle cx={eyeCx} cy={eyeCy} r={socketR - 4} className="moonEyeSocketInner" />
-
-        {/* black iris — rolls toward cursor */}
-        <circle
-          cx={eyeCx + pupil.dx}
-          cy={eyeCy + pupil.dy}
-          r={irisR}
-          className="moonEyeIris"
-        />
-
-        {/* white pupil dot */}
-        <circle
-          cx={eyeCx + pupil.dx}
-          cy={eyeCy + pupil.dy}
-          r={pupilR}
-          className="moonEyePupilWhite"
-        />
-
-        {/* tiny black aperture in the center of the white pupil */}
-        <circle
-          cx={eyeCx + pupil.dx}
-          cy={eyeCy + pupil.dy}
-          r={2}
-          className="moonEyePupilCore"
-        />
-
-        {/* === sneering mouth — asymmetric, downturned, one peek tooth === */}
+        {/* === sneering mouth, asymmetric, downturned, one peek tooth === */}
         <path
           className="moonMouthLine"
           d="M 220 545

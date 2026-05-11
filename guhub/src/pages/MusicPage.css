@@ -1,7 +1,7 @@
 .musicPage {
   min-height: calc(100vh - 52px);
   margin-top: 52px;
-  background: #080808;
+  background: transparent;
   padding: 4rem 2rem;
   font-family: 'IBM Plex Mono', 'Courier New', monospace;
 }
@@ -84,7 +84,7 @@
 }
 
 .reviewRow:hover {
-  background: #0a0a0a;
+  background: rgba(20, 17, 13, 0.6);
 }
 
 .reviewRow:hover .reviewArrow {
@@ -301,7 +301,7 @@
   gap: 0.5rem;
 }
 
-.listCard:hover { background: #0a0a0a; }
+.listCard:hover { background: rgba(20, 17, 13, 0.6); }
 
 .listCardTitle {
   font-size: 0.88rem;

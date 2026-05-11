@@ -46,7 +46,7 @@ const NowPlaying = () => {
         <span className={`npDot ${track.isPlaying ? 'playing' : 'paused'}`} />
         <span className="npLabel">
           {track.isPlaying
-            ? <><span className="npTitle">{track.title}</span><span className="npSep"> — </span><span className="npArtist">{track.artist}</span></>
+            ? <><span className="npTitle">{track.title}</span><span className="npSep">, </span><span className="npArtist">{track.artist}</span></>
             : <span className="npIdle">not playing</span>
           }
         </span>

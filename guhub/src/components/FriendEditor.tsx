@@ -63,7 +63,7 @@ export default function FriendEditor() {
       );
       const d: GeoResult[] = await r.json();
       setGeoResults(d);
-      // Auto-select first result — only update coords, never overwrite what the user typed
+      // Auto-select first result, only update coords, never overwrite what the user typed
       if (d[0]) setEditing(prev => prev ? { ...prev, lat: parseFloat(d[0].lat), lng: parseFloat(d[0].lon) } : null);
     } finally { setGeocoding(false); }
   };
@@ -150,10 +150,10 @@ export default function FriendEditor() {
             <label>note <span className="optional">(optional)</span></label>
             <input value={editing.note ?? ''} onChange={e => setEditing({ ...editing, note: e.target.value })} placeholder="how you know them, vibes, etc." />
 
-            <label>song <span className="optional">(spotify track id — optional)</span></label>
+            <label>song <span className="optional">(spotify track id, optional)</span></label>
             <input value={editing.song ?? ''} onChange={e => setEditing({ ...editing, song: e.target.value })} placeholder="e.g. 4uLU6hMCjMI75M1A2tKUQC" />
 
-            <label>animal <span className="optional">(wikipedia slug — optional)</span></label>
+            <label>animal <span className="optional">(wikipedia slug, optional)</span></label>
             <input value={editing.animal ?? ''} onChange={e => setEditing({ ...editing, animal: e.target.value })} placeholder="e.g. Snow_leopard" />
 
             <div className="friendToggleRow">

@@ -1,0 +1,109 @@
+/* ── Crenshaw portrait (RPG dialog character) ─────────────────────── */
+.crenshawPortrait {
+  width: 100%;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.55));
+}
+
+.crenshawPortraitSvg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* body */
+.cpBody {
+  fill: #b8a070;
+  stroke: #0a0808;
+  stroke-width: 1.8;
+  stroke-linejoin: round;
+}
+
+/* tail */
+.cpTail {
+  fill: #a08a5e;
+  stroke: #0a0808;
+  stroke-width: 1.8;
+  stroke-linejoin: round;
+}
+.cpTailFur line {
+  stroke: #0a0808;
+  stroke-width: 1.1;
+  stroke-linecap: round;
+  opacity: 0.75;
+}
+
+/* face */
+.cpEar {
+  fill: #6a5230;
+  stroke: #0a0808;
+  stroke-width: 1.1;
+  stroke-linejoin: round;
+}
+.cpEye { fill: #050202; }
+.cpGlint { fill: #ffffff; }
+.cpNostril { fill: #0a0808; }
+.cpGoggle {
+  fill: none;
+  stroke: #b08d57;
+  stroke-width: 1.2;
+}
+.cpGoggleArm {
+  stroke: #b08d57;
+  stroke-width: 1.2;
+}
+
+/* shoulder stripe: filled wedge sitting on the shoulder, not a stroke
+   sliding into the legs. White edge runs along the top as the collar. */
+.cpStripeBlack {
+  fill: #0a0808;
+  stroke: #0a0808;
+  stroke-width: 0.9;
+  stroke-linejoin: round;
+}
+.cpStripeWhite {
+  fill: none;
+  stroke: #f0e6d0;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cpFur circle {
+  fill: #0a0808;
+  opacity: 0.4;
+}
+
+.cpClaws path {
+  fill: none;
+  stroke: #0a0808;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+.cpClawsFront path {
+  fill: none;
+  stroke: #0a0808;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* brass shoulder gear */
+.cpGearTooth {
+  fill: #b08d57;
+  stroke: #0a0808;
+  stroke-width: 0.7;
+}
+.cpGearRim {
+  fill: #b08d57;
+  stroke: #0a0808;
+  stroke-width: 0.9;
+}
+.cpGearInner {
+  fill: #14110d;
+  stroke: #0a0808;
+  stroke-width: 0.7;
+}
+.cpGearBolt {
+  fill: #6a5230;
+}

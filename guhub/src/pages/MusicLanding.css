@@ -1,6 +1,6 @@
 .musicLanding {
   min-height: 100vh;
-  background: #080808;
+  background: transparent;
   padding: 100px 3rem 3rem;
 }
 
@@ -28,7 +28,7 @@
   font-size: clamp(3rem, 10vw, 6rem);
   font-weight: 900;
   color: transparent;
-  -webkit-text-stroke: 2px #739166;
+  -webkit-text-stroke: 2px var(--sage);
   letter-spacing: -0.02em;
   text-transform: uppercase;
   margin: 0.5rem 0;
@@ -76,7 +76,7 @@
 }
 
 .musicCard:hover {
-  border-color: #739166;
+  border-color: var(--sage);
   background: rgba(115, 145, 102, 0.1);
   transform: translateY(-8px);
   box-shadow: 0 12px 40px rgba(115, 145, 102, 0.2);
@@ -114,7 +114,7 @@
 }
 
 .cardTitle {
-  color: #739166;
+  color: var(--sage);
   font-size: 1.8rem;
   font-weight: 700;
   margin-bottom: 0.8rem;
@@ -149,7 +149,7 @@
 }
 
 .cardArrow {
-  color: #739166;
+  color: var(--sage);
   font-size: 2rem;
   transition: transform 0.3s ease;
 }

@@ -1,13 +1,15 @@
 import { Link } from 'react-router-dom';
+import { useMeta, metaLabel } from '../contexts/MetaContext';
 import './MusicLanding.css';
 
 const MusicLanding = () => {
+  const { level } = useMeta();
   return (
     <div className="musicLanding">
       <div className="musicHero">
         <div className="musicHeader">
           <span className="musicLabel">[sound]</span>
-          <h1 className="musicTitle">music of-sorts</h1>
+          <h1 className="musicTitle">{level > 0 ? `${metaLabel(level).toLowerCase()} music` : 'music'}</h1>
         </div>
 
         <div className="musicGrid">

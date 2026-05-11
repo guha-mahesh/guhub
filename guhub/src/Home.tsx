@@ -163,7 +163,7 @@ const Home = () => {
           <ul className="expList">
             <li>Produced engaging social media videos that increased visibility and attendance at club information sessions</li>
             <li>Reviewed 30+ membership applications and identified top candidates for interviews</li>
-            <li>Led candidate evaluations and interviews, selecting members best positioned to contribute to Rev's mission</li>
+            <li>Helped lead candidate evaluations and interviews, selecting members best positioned to contribute to Rev's mission</li>
           </ul>
         </div>
 

@@ -4,7 +4,7 @@
 .aboutTab {
   min-height: calc(100vh - 52px);
   margin-top: 52px;
-  background: #080808;
+  background: transparent;
   padding: 4rem 2rem 6rem;
   font-family: 'IBM Plex Mono', 'Courier New', monospace;
 }
@@ -66,7 +66,7 @@
 .resumeMetaLink:hover { color: #f4f4f4; }
 
 .resumeDownload {
-  color: #a7c49a;
+  color: var(--sage-bright);
   font-weight: 600;
 }
 
@@ -120,7 +120,7 @@
 
 .leftLabel {
   font-size: 0.65rem;
-  color: #a7c49a;
+  color: var(--sage-bright);
   letter-spacing: 0.22em;
   text-transform: uppercase;
   margin: 0 0 0.55rem 0;
@@ -163,7 +163,7 @@
 
 .rightLabel {
   font-size: 0.65rem;
-  color: #a7c49a;
+  color: var(--sage-bright);
   letter-spacing: 0.22em;
   text-transform: uppercase;
   margin: 0 0 2rem 0;
@@ -195,7 +195,7 @@
 
 .expEntryTitle {
   font-size: 0.74rem;
-  color: #a7c49a;
+  color: var(--sage-bright);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   font-weight: 600;
@@ -231,7 +231,7 @@
   content: '›';
   position: absolute;
   left: 0;
-  color: #a7c49a;
+  color: var(--sage-bright);
 }
 
 .expBullet strong {

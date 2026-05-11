@@ -1,6 +1,6 @@
 .topTracks {
   min-height: 100vh;
-  background: #080808;
+  background: transparent;
   padding: 100px 3rem 3rem;
 }
 
@@ -24,7 +24,7 @@
 }
 
 .backButton:hover {
-  color: #739166;
+  color: var(--sage);
   transform: translateX(-5px);
 }
 
@@ -45,7 +45,7 @@
 .tracksTitle {
   font-size: clamp(3rem, 10vw, 5rem);
   font-weight: 900;
-  color: #739166;
+  color: var(--sage);
   letter-spacing: -0.02em;
   text-transform: uppercase;
   margin: 0.5rem 0;
@@ -92,9 +92,9 @@
   position: absolute;
   top: 1rem;
   right: 2rem;
-  background: #080808;
+  background: transparent;
   padding: 0.5rem 1.2rem;
-  border: 2px solid #739166;
+  border: 2px solid var(--sage);
   border-radius: 8px;
   backdrop-filter: blur(10px);
 }
@@ -102,7 +102,7 @@
 .rankNumber {
   font-size: 1.5rem;
   font-weight: 900;
-  color: #739166;
+  color: var(--sage);
   font-family: 'Courier New', monospace;
 }
 
@@ -113,7 +113,7 @@
 .albumTitle {
   font-size: 2rem;
   font-weight: 700;
-  color: #739166;
+  color: var(--sage);
   margin-bottom: 0.5rem;
   text-transform: uppercase;
   letter-spacing: -0.01em;
@@ -173,8 +173,8 @@
 }
 
 .rankOne .rankBadge {
-  background: #739166;
-  border-color: #739166;
+  background: var(--sage);
+  border-color: var(--sage);
   box-shadow: 0 4px 20px rgba(115, 145, 102, 0.4);
 }
 

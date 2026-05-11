@@ -59,6 +59,13 @@
 .aquarium .jelly { width: 200px; height: 320px; overflow: visible; }
 .aquarium .squid { width: 220px; height: 360px; overflow: visible; }
 .aquarium .sipho { width: 100px; height: 540px; overflow: visible; }
+.aquarium .shark { width: 320px; height: 140px; overflow: visible; }
+.aquarium .whale { width: 380px; height: 200px; overflow: visible; }
+.aquarium .mosa  { width: 440px; height: 160px; overflow: visible; }
+.aquarium .croc   { width: 600px; height: 180px; overflow: visible; }
+.aquarium .angler { width: 220px; height: 160px; overflow: visible; }
+.aquarium .manta  { width: 320px; height: 160px; overflow: visible; }
+.aquarium .seah   { width: 100px; height: 220px; overflow: visible; }
 
 .jellyGlow {
   fill: var(--ember);

@@ -1,21 +1,31 @@
 :root {
-  /* Main palette */
-  --color-primary: #739166;
-  --color-dark: #080808;
-  --color-bg: #080808;
+  /* ── Steampunk · sepia base ─────────────────────── */
+  --soot:        #0c0a08;
+  --soot-2:      #14110d;
+  --ink:         #1a1612;
+  --cream:       #d4c5a6;
+  --bone:        #f0e6d0;
 
-  /* Galaxy colors */
-  --color-music: #739166;
-  --color-philosophy: #6b4e71;
-  --color-geography: #4a7c59;
-  --color-animals: #c17c74;
-  --color-culture: #8b6f8f;
+  /* ── Warm accent · brass family (steampunk, Casper, meta) ── */
+  --brass:        #b08d57;
+  --brass-bright: #d4a55a;
+  --brass-deep:   #6a5230;
+  --ember:        #f5b450;
 
-  /* Text colors */
-  --color-text-light: #ffffff;
-  --color-text-primary: #739166;
-  --color-text-secondary: rgba(115, 145, 102, 0.8);
-  --color-text-muted: rgba(115, 145, 102, 0.6);
+  /* ── Cool accent · sage family (content, nav, links, labels) ── */
+  --sage:         #739166;
+  --sage-bright:  #a7c49a;
+  --sage-deep:    #4d6641;
+
+  /* ── Legacy aliases (kept so older rules keep working) ── */
+  --color-primary:        var(--brass);
+  --color-dark:           var(--soot);
+  --color-bg:             var(--soot);
+  --color-music:          var(--sage-bright);
+  --color-text-light:     var(--bone);
+  --color-text-primary:   var(--brass);
+  --color-text-secondary: rgba(212, 197, 166, 0.85);
+  --color-text-muted:     rgba(212, 197, 166, 0.6);
 }
 
 * {

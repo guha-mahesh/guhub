@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { resumeData as initialResumeData, type ResumeData } from '../data/resumeData';
+import { useMeta, metaLabel } from '../contexts/MetaContext';
 import './AboutTab.css';
 
 // Render text with **bold** segments.
@@ -14,6 +15,7 @@ const renderBullet = (text: string) => {
 
 const AboutTab = () => {
   const [resumeData, setResumeData] = useState<ResumeData>(initialResumeData);
+  const { level } = useMeta();
 
   useEffect(() => {
     const saved = localStorage.getItem('resumeData');
@@ -31,15 +33,16 @@ const AboutTab = () => {
         {/* ── header ── */}
         <header className="resumeHeader">
           <div className="resumeNameBlock">
-            <h1 className="resumeName">Guha Mahesh</h1>
-            <span className="resumeTagline">Data Science &amp; Engineering</span>
+            <h1 className="resumeName">
+              {level > 0 && <span className="heroMetaPrefix">{metaLabel(level).toLowerCase()} </span>}
+              Guha Mahesh
+            </h1>
+            <span className="resumeTagline">Data Science &amp; SWE</span>
           </div>
           <div className="resumeHeaderMeta">
             <a href="https://github.com/guha-mahesh" target="_blank" rel="noopener noreferrer" className="resumeMetaLink">github</a>
             <span className="resumeMetaDot" />
             <a href="https://linkedin.com/in/guha-mahesh" target="_blank" rel="noopener noreferrer" className="resumeMetaLink">linkedin</a>
-            <span className="resumeMetaDot" />
-            <a href="/GuhaMaheshResumé.pdf" download className="resumeMetaLink resumeDownload">download pdf</a>
           </div>
         </header>
 

@@ -16,7 +16,7 @@ export const books: Book[] = [
     author: "Douglas Hofstadter",
     status: "reading",
     startDate: "2026-01",
-    note: "The recursive transition networks chapter. RTNs as a lens on syntax was what got me — the idea that a grammar rule and a program loop are the same thing wearing different clothes.",
+    note: "The recursive transition networks chapter. RTNs as a lens on syntax was what got me, the idea that a grammar rule and a program loop are the same thing wearing different clothes.",
     genre: ["philosophy", "math", "cs"]
   },
   {
@@ -25,7 +25,7 @@ export const books: Book[] = [
     status: "finished",
     finishDate: "2025-11",
     rating: 5,
-    note: "The will-as-substrate argument hit different than I expected. Not a pessimist read — more like a reclassification of what matters.",
+    note: "The will-as-substrate argument hit different than I expected. Not a pessimist read, more like a reclassification of what matters.",
     genre: ["philosophy"]
   },
   {

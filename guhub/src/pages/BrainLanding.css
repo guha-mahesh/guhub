@@ -98,6 +98,95 @@
   font-style: italic;
 }
 
+/* Permanent quiet mark shown only after Crenshaw has been freed. */
+.heroFreedMark {
+  font-family: 'Special Elite', 'IBM Plex Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--ember, #f5b450);
+  margin: 0.2rem 0 0;
+  letter-spacing: 0.22em;
+  font-style: italic;
+  opacity: 0.85;
+  text-shadow: 0 0 8px rgba(245, 180, 80, 0.3);
+}
+
+/* Stationary peaceful Crenshaw, fixed at bottom-left of home only.
+   Now a real button — clicking opens the calm-reset flow. */
+.crenshawAtPeace {
+  position: fixed;
+  bottom: 5vh;
+  left: 24px;
+  width: 110px;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5));
+  opacity: 0.85;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  transition: opacity 0.25s ease, transform 0.25s ease, filter 0.25s ease;
+}
+.crenshawAtPeace:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+  filter: drop-shadow(0 0 16px rgba(245, 180, 80, 0.45));
+}
+.crenshawAtPeace:focus-visible {
+  outline: 1px solid var(--brass);
+  outline-offset: 6px;
+}
+.crenshawAtPeaceSvg { width: 100%; height: auto; display: block; overflow: visible; }
+.crenshawAtPeace .capBody {
+  fill: #b8a070;
+  stroke: #0a0808;
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+.crenshawAtPeace .capTail {
+  fill: #a08a5e;
+  stroke: #0a0808;
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+.crenshawAtPeace .capStripe {
+  fill: #0a0808;
+  stroke: #0a0808;
+  stroke-width: 0.7;
+  stroke-linejoin: round;
+}
+.crenshawAtPeace .capStripeWhite {
+  fill: none;
+  stroke: #f0e6d0;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.crenshawAtPeace .capGoggle {
+  fill: none;
+  stroke: #b08d57;
+  stroke-width: 1;
+}
+.crenshawAtPeace .capGoggleArm {
+  stroke: #b08d57;
+  stroke-width: 1;
+}
+.crenshawAtPeace .capEye { fill: #050202; }
+.crenshawAtPeace .capGlint { fill: #ffffff; }
+.crenshawAtPeaceLabel {
+  font-family: 'Special Elite', 'IBM Plex Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  color: var(--brass);
+  font-style: italic;
+  text-transform: lowercase;
+  opacity: 0.7;
+}
+
 /* ── Prose ────────────────────────────────────────────── */
 .proseWrap {
   position: relative;
@@ -468,4 +557,293 @@
   .floatingActions { top: 70px; right: 1rem; }
   .gearCorner { bottom: 1rem; right: 1rem; }
   .gearCorner svg { width: 70px; height: 70px; }
+}
+
+/* ── Meta-level overlays on the surface page ─────────────────────── */
+
+/* Slightly darker bg at deeper meta levels, the page IS still guha-of-sorts,
+   just looks like you're inside something. */
+.brainLanding.meta-level-1 { background: radial-gradient(ellipse at 50% 35%, #190f0a 0%, #080604 65%, #030202 100%); }
+.brainLanding.meta-level-2 { background: radial-gradient(ellipse at 50% 35%, #1c0d09 0%, #060403 65%, #020100 100%); }
+.brainLanding.meta-level-3 { background: radial-gradient(ellipse at 50% 35%, #1f0a08 0%, #040201 65%, #010000 100%); }
+.brainLanding.meta-level-4 { background: radial-gradient(ellipse at 50% 35%, #240807 0%, #030101 65%, #000000 100%); }
+
+/* Meta dialogue (replaces the prose at level > 0) */
+.metaDialogueBlock {
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+}
+
+.metaSpeaker {
+  font-size: 0.95rem;
+  color: var(--brass-bright, #d4a55a);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin: 0 0 1.1rem;
+  font-weight: 700;
+}
+
+.metaLine {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.75rem;
+  line-height: 1.4;
+  color: #f0e6d0;
+  font-style: italic;
+  margin: 0 0 1rem;
+}
+
+/* "psst, over here" whisper at the bottom of the deepest level */
+.metaCrenshawWhisper {
+  margin-top: 2rem;
+  padding-left: 0.3rem;
+}
+
+.metaCrenshawWhisperText {
+  font-family: 'Special Elite', 'IBM Plex Mono', monospace;
+  font-size: 1rem;
+  color: var(--ember, #f5b450);
+  letter-spacing: 0.04em;
+  opacity: 0.9;
+  animation: pssntPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes pssntPulse {
+  0%, 100% { opacity: 0.7; }
+  50%      { opacity: 1; }
+}
+
+/* Resurface controls, inline at the top of the heroWrap so they don't
+   collide with the sound-toggle (top-left) or contact button (bottom-left) */
+.metaResurface {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  margin: 0 0 1.4rem;
+}
+
+.metaResurfaceBtn {
+  background: rgba(20, 17, 13, 0.85);
+  border: 1px solid #6a5230;
+  color: #b08d57;
+  padding: 0.55rem 1rem;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.15s;
+  backdrop-filter: blur(2px);
+}
+
+.metaResurfaceBtn:hover {
+  border-color: #d4a55a;
+  color: #f0e6d0;
+  background: rgba(212, 165, 90, 0.06);
+}
+
+.metaResurfaceExit {
+  color: #6a5230;
+}
+
+/* Eye-zoom transition overlay */
+.metaZoomOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #050202;
+  pointer-events: none;
+}
+
+/* ── Inside-the-eye backdrop (meta levels) ────────────────────────── */
+/* At each meta level, the page bg is the iris/pupil of the previous
+   Casper, scaled up so we feel like we're inside his eye. CSS-only
+   radial-gradient approximation of an eye's interior. */
+.brainLanding.meta-level-1::before,
+.brainLanding.meta-level-2::before,
+.brainLanding.meta-level-3::before,
+.brainLanding.meta-level-4::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.brainLanding.meta-level-1::before {
+  background:
+    radial-gradient(circle at 50% 50%,
+      #020100 0%, #020100 6%,
+      #1a0a04 14%, #3a1f0a 32%,
+      #6a3e18 52%, #3a1f0a 72%,
+      #1a0a04 86%, #050202 100%);
+}
+
+.brainLanding.meta-level-2::before {
+  background:
+    radial-gradient(circle at 50% 50%,
+      #010000 0%, #010000 10%,
+      #1a0a04 20%, #4a2810 40%,
+      #7a4818 58%, #3a1f0a 78%,
+      #0a0402 92%, #000 100%);
+}
+
+.brainLanding.meta-level-3::before {
+  background:
+    radial-gradient(circle at 50% 50%,
+      #000 0%, #000 14%,
+      #1a0a04 24%, #5a2010 45%,
+      #8a3018 65%, #3a1408 82%,
+      #050201 94%, #000 100%);
+}
+
+.brainLanding.meta-level-4::before {
+  background:
+    radial-gradient(circle at 50% 50%,
+      #000 0%, #000 18%,
+      #200804 30%, #8a1a18 48%,
+      #b22020 60%, #4a0808 78%,
+      #050000 92%, #000 100%);
+}
+
+/* fine concentric striations to suggest iris fibers, layered on top via ::after */
+.brainLanding.meta-level-1::after,
+.brainLanding.meta-level-2::after,
+.brainLanding.meta-level-3::after,
+.brainLanding.meta-level-4::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    repeating-conic-gradient(
+      from 0deg at 50% 50%,
+      rgba(0,0,0,0)   0deg,
+      rgba(0,0,0,0.12) 2deg,
+      rgba(0,0,0,0)   4deg
+    );
+  mix-blend-mode: overlay;
+  opacity: 0.6;
+}
+
+/* hold back the regular vignette/grain at meta levels, they fight the eye bg */
+.brainLanding.meta-level-1 .bgVignette,
+.brainLanding.meta-level-2 .bgVignette,
+.brainLanding.meta-level-3 .bgVignette,
+.brainLanding.meta-level-4 .bgVignette {
+  background: radial-gradient(ellipse at center, transparent 8%, rgba(0,0,0,0.55) 88%, rgba(0,0,0,0.98) 100%);
+}
+
+/* aquarium creatures should still drift but more faint inside the eye */
+.brainLanding.meta-level-1 .aquarium,
+.brainLanding.meta-level-2 .aquarium,
+.brainLanding.meta-level-3 .aquarium,
+.brainLanding.meta-level-4 .aquarium {
+  opacity: 0.55;
+}
+
+/* ── Meta-Crenshaw clickable + RPG dialog ─────────────────────────── */
+.metaCrenshawWhisper.clickable {
+  cursor: pointer;
+  display: inline-block;
+}
+.metaCrenshawWhisper.clickable:hover .metaCrenshawWhisperText {
+  color: #ffd58a;
+  text-shadow: 0 0 12px rgba(245, 180, 80, 0.45);
+}
+
+.metaRpgOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.metaRpgBox {
+  max-width: 560px;
+  width: 100%;
+  background: #14110d;
+  border: 2px solid #6a5230;
+  border-radius: 4px;
+  padding: 1.6rem 1.8rem;
+  font-family: 'IBM Plex Mono', monospace;
+  box-shadow: 0 10px 40px rgba(245, 180, 80, 0.18);
+}
+
+.metaRpgSpeaker {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: #d4a55a;
+  text-transform: uppercase;
+  margin: 0 0 0.85rem;
+  font-weight: 600;
+}
+
+.metaRpgLine {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.15rem;
+  line-height: 1.55;
+  color: #f0e6d0;
+  font-style: italic;
+  margin: 0 0 1rem;
+}
+
+.metaRpgChoices {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1.3rem;
+}
+
+.metaRpgChoice {
+  background: transparent;
+  border: 1px solid #6a5230;
+  color: #d4a55a;
+  padding: 0.65rem 1rem;
+  font: inherit;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.15s;
+}
+
+.metaRpgChoice:hover {
+  border-color: #f5b450;
+  color: #f5b450;
+  background: rgba(245, 180, 80, 0.06);
+}
+
+.metaRpgClose {
+  position: absolute;
+  top: 1.6rem;
+  right: 1.6rem;
+  background: transparent;
+  border: 1px solid #6a5230;
+  color: #b08d57;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9rem;
+}
+
+/* meta prefix on hero / page-title, calls out the exponent clearly */
+.heroMetaPrefix {
+  color: var(--brass-bright, #d4a55a);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 0.7em;
+  letter-spacing: 0.04em;
+  margin-right: 0.15em;
+}
+
+/* slightly larger hero ornament */
+.heroOrnament {
+  font-size: 1rem;
 }

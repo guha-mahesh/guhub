@@ -15,9 +15,9 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: rgba(115, 145, 102, 0.15);
-  border: 1px solid rgba(115, 145, 102, 0.4);
-  color: #739166;
+  background: rgba(176, 141, 87, 0.15);
+  border: 1px solid rgba(176, 141, 87, 0.4);
+  color: #b08d57;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -27,8 +27,8 @@
 }
 
 .adminPanelToggle:hover {
-  background: rgba(115, 145, 102, 0.25);
-  border-color: #739166;
+  background: rgba(176, 141, 87, 0.25);
+  border-color: #b08d57;
   color: #c0635a;
 }
 
@@ -44,7 +44,7 @@
   right: 8rem;
   z-index: 1500;
   background: rgba(8,8,8,0.97);
-  border: 1px solid rgba(115,145,102,0.25);
+  border: 1px solid rgba(176, 141, 87,0.25);
   border-radius: 4px;
   padding: 1rem 1.25rem;
   width: 280px;
@@ -57,7 +57,7 @@
   float: right;
   background: none;
   border: none;
-  color: rgba(115,145,102,0.5);
+  color: rgba(176, 141, 87,0.5);
   font-size: 0.85rem;
   cursor: pointer;
   padding: 0;
@@ -65,7 +65,7 @@
   line-height: 1;
   transition: color 0.15s;
 }
-.friendEditorPanelClose:hover { color: #739166; }
+.friendEditorPanelClose:hover { color: #b08d57; }
 
 @media (max-width: 768px) {
   .adminPanel { bottom: 1rem; right: 1rem; }

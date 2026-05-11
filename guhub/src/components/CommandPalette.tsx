@@ -20,13 +20,15 @@ const CommandPalette = () => {
 
   const commands: Command[] = [
     // Navigation
-    { id: 'nav-home', label: 'Go to guha of-sorts', sublabel: 'brain graph + landing', action: () => navigate('/'), category: 'navigate' },
-    { id: 'nav-projects', label: 'Go to Projects', sublabel: 'full project list', action: () => navigate('/projects'), category: 'navigate' },
-    { id: 'nav-resume', label: 'Go to Resumé', sublabel: 'education, experience, skills', action: () => navigate('/about'), category: 'navigate' },
-    { id: 'nav-music', label: 'Go to music of-sorts', action: () => navigate('/music'), category: 'navigate' },
+    { id: 'nav-home', label: 'Go to guha', sublabel: 'home', action: () => navigate('/'), category: 'navigate' },
+    { id: 'nav-projects', label: 'Go to projects', sublabel: 'full project list', action: () => navigate('/projects'), category: 'navigate' },
+    { id: 'nav-resume', label: 'Go to resume', sublabel: 'education, experience, skills', action: () => navigate('/about'), category: 'navigate' },
+    { id: 'nav-music', label: 'Go to music', action: () => navigate('/music'), category: 'navigate' },
     { id: 'nav-albums', label: 'Top Albums 2025', action: () => navigate('/music/1'), category: 'navigate' },
-    { id: 'nav-log', label: 'Go to log of-sorts', action: () => navigate('/log'), category: 'navigate' },
-    { id: 'nav-listening', label: 'Go to listening of-sorts', action: () => navigate('/listening'), category: 'navigate' },
+    { id: 'nav-log', label: 'Go to log', action: () => navigate('/log'), category: 'navigate' },
+    { id: 'nav-listening', label: 'Go to listening', action: () => navigate('/listening'), category: 'navigate' },
+    // hidden: not in TabNavigation, only discoverable through here
+    { id: 'nav-view-deck', label: 'Go to view_deck', sublabel: 'idle aquarium space', action: () => navigate('/view_deck'), category: 'misc' },
     // Projects
     { id: 'proj-bioclock', label: 'BioClock', sublabel: 'CNN · satellite · biodiversity prediction', action: () => window.open('https://github.com/guha-mahesh/BioClock', '_blank'), category: 'project' },
     { id: 'proj-flightscope', label: 'FlightScope', sublabel: 'birdwatching · Poisson models · Flask', action: () => window.open('https://github.com/guha-mahesh/FlightScope', '_blank'), category: 'project' },

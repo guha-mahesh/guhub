@@ -2,10 +2,11 @@ import { motion } from 'framer-motion';
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useCrenshaw, type Corner } from '../contexts/CrenshawContext';
+import { useMeta, MAX_META_LEVEL } from '../contexts/MetaContext';
 import './Anteater.css';
 
 // ──────────────────────────────────────────────────────────────────────
-// Crenshaw — small steampunk anteater. Pokes out of one of four corners,
+// Crenshaw, small steampunk anteater. Pokes out of one of four corners,
 // oriented differently each time. As the cursor closes in he scurries
 // off-screen and relocates to a different tab + corner.
 // ──────────────────────────────────────────────────────────────────────
@@ -14,7 +15,7 @@ const PROXIMITY = 240;
 const TUCK_DURATION = 220;
 
 // per-corner positioning: he's tucked near a corner, partially overhanging
-// the edge. Offset is gentle so he stays visible — finding him is the game,
+// the edge. Offset is gentle so he stays visible, finding him is the game,
 // but if he's fully off-screen the game can't start.
 const POSITION: Record<Corner, React.CSSProperties> = {
   BL: { bottom: '5vh', left: '-10px' },
@@ -41,18 +42,36 @@ const TUCK: Record<Corner, { x: number; y: number }> = {
 
 export default function Anteater() {
   const { currentRoute, currentCorner, relocate } = useCrenshaw();
+  const { level: metaLevel, openRpg, metaQuestDone, crenshawFreed, openMiu } = useMeta();
   const location = useLocation();
   const onPath = location.pathname === currentRoute;
+  // At meta⁴, Crenshaw doesn't run — clicking him opens the meta RPG.
+  // After meta-quest is done at the surface, he also stops fleeing —
+  // clicking him opens the MIU boss-fight puzzle.
+  // Once freed, he disappears entirely.
+  const isFinalMeta = metaLevel >= MAX_META_LEVEL;
+  const surfaceWatchful = metaLevel === 0 && metaQuestDone && !crenshawFreed;
+  const stationary = isFinalMeta || surfaceWatchful;
 
   const [tucked, setTucked] = useState(false);
+  // Drawing-Hands merge gate: at the surface after meta-quest, click is
+  // only enabled when the cursor's shadow (a lagged copy of the mouse)
+  // has caught up and OVERLAPPED Crenshaw for a sustained moment. You
+  // can't just walk up and click — your cursor's past has to align
+  // with your present, and the present has to align with him.
+  const [mergeReady, setMergeReady] = useState(false);
+  const [mergeProgress, setMergeProgress] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setTucked(false);
+    setMergeReady(false);
+    setMergeProgress(0);
   }, [currentRoute, currentCorner, location.pathname]);
 
+  // legacy proximity-flee — only when NOT in any of the stationary modes
   useEffect(() => {
-    if (!onPath || tucked) return;
+    if (!onPath || tucked || stationary) return;
     const onMove = (e: MouseEvent) => {
       if (!ref.current) return;
       const r = ref.current.getBoundingClientRect();
@@ -67,7 +86,58 @@ export default function Anteater() {
     };
     window.addEventListener('mousemove', onMove);
     return () => window.removeEventListener('mousemove', onMove);
-  }, [onPath, tucked, relocate]);
+  }, [onPath, tucked, relocate, stationary]);
+
+  // Drawing-Hands merge tracker — runs only on the surface watchful state.
+  // The "shadow" is the cursor position from ~160ms ago. We track a small
+  // ring buffer of recent cursor positions and check whether the lagged
+  // sample is overlapping Crenshaw's body.
+  useEffect(() => {
+    if (!surfaceWatchful) {
+      setMergeReady(false);
+      setMergeProgress(0);
+      return;
+    }
+    const buf: { x: number; y: number; t: number }[] = [];
+    let cur = { x: -1, y: -1 };
+    const onMove = (e: MouseEvent) => {
+      cur = { x: e.clientX, y: e.clientY };
+      buf.push({ x: e.clientX, y: e.clientY, t: performance.now() });
+      // prune > 400ms history
+      const cutoff = performance.now() - 400;
+      while (buf.length > 1 && buf[0].t < cutoff) buf.shift();
+    };
+    window.addEventListener('mousemove', onMove);
+
+    let raf = 0;
+    const HOLD_FOR_READY_MS = 900;
+    const tick = () => {
+      if (!ref.current) { raf = requestAnimationFrame(tick); return; }
+      const r = ref.current.getBoundingClientRect();
+      // need both cursor AND its 160ms-lagged shadow over Crenshaw
+      const shadowSample = buf.length ? buf[0] : cur;
+      const inside = (p: { x: number; y: number }) =>
+        p.x >= r.left && p.x <= r.right && p.y >= r.top && p.y <= r.bottom;
+      const aligned = inside(cur) && inside(shadowSample);
+      setMergeProgress(p => {
+        const next = Math.max(0, Math.min(1, p + (aligned ? 1 : -1.6) * (16 / HOLD_FOR_READY_MS)));
+        return next;
+      });
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      cancelAnimationFrame(raf);
+    };
+  }, [surfaceWatchful]);
+
+  // Promote merge into "ready" once full
+  useEffect(() => {
+    if (mergeProgress >= 1 && !mergeReady) setMergeReady(true);
+    if (mergeProgress < 0.05 && mergeReady) setMergeReady(false);
+  }, [mergeProgress, mergeReady]);
 
   const tuckOffset = TUCK[currentCorner];
   const fromX = tuckOffset.x;
@@ -82,12 +152,18 @@ export default function Anteater() {
   }, [currentRoute, currentCorner]);
 
   if (!onPath) return null;
+  // once the player has solved the MIU puzzle, Crenshaw is at peace —
+  // he no longer hides on any tab.
+  if (crenshawFreed) return null;
 
   return (
     <motion.div
       ref={ref}
-      className="anteaterAnchor"
-      style={POSITION[currentCorner]}
+      className={`anteaterAnchor ${stationary ? 'anteaterCatchable' : ''} ${surfaceWatchful && mergeReady ? 'anteaterReady' : ''} ${surfaceWatchful && mergeProgress > 0 && !mergeReady ? 'anteaterMerging' : ''}`}
+      style={{
+        ...POSITION[currentCorner],
+        ...(surfaceWatchful ? { ['--merge' as string]: String(mergeProgress) } : {}),
+      }}
       initial={{ x: fromX, y: fromY, opacity: 0 }}
       animate={tucked ? { x: fromX, y: fromY, opacity: 0 } : { x: 0, y: 0, opacity: 1 }}
       transition={{
@@ -95,7 +171,18 @@ export default function Anteater() {
         ease: tucked ? [0.85, 0, 0.95, 0.4] : [0.16, 1, 0.3, 1],
         delay: tucked ? 0 : 0.18,
       }}
-      aria-hidden="true"
+      onClick={
+        isFinalMeta ? openRpg
+        : (surfaceWatchful && mergeReady) ? openMiu
+        : undefined
+      }
+      role={stationary ? 'button' : undefined}
+      aria-hidden={!stationary}
+      aria-label={
+        isFinalMeta ? 'speak to meta-crenshaw'
+        : (surfaceWatchful && mergeReady) ? 'derive his name'
+        : (surfaceWatchful ? 'align your shadow with him' : undefined)
+      }
     >
       {/* inner div applies the orientation flip + tilt so motion can keep
           working in screen-space on the wrapper */}
@@ -157,23 +244,23 @@ export default function Anteater() {
 
             <path className="atrEar" d="M 110 56 L 116 47 L 118 58 Z" />
 
-            <circle cx="98" cy="62" r="2.4" className="atrEye" />
-            <circle cx="97" cy="61" r="0.7" className="atrEyeGlint" />
+            {/* bigger eye + brass monocle so the face reads */}
+            <circle cx="98" cy="62" r="5.5" className="atrGoggle" />
+            <line x1="103" y1="63" x2="108" y2="59" className="atrGoggleArm" />
+            <circle cx="98" cy="62" r="3.5" className="atrEye" />
+            <circle cx="96.5" cy="60.5" r="1" className="atrEyeGlint" />
 
             <ellipse cx="13" cy="80" rx="1.6" ry="1.1" className="atrNostril" />
 
+            {/* shoulder stripe: dramatic diagonal black wedge with white
+                borders on the two long edges. Stays inside the body
+                silhouette and reads as the anteater giveaway feature. */}
             <path
               className="atrStripeBlack"
-              d="M 96 60
-                 C 92 78, 95 96, 102 110
-                 C 108 122, 116 130, 122 132"
+              d="M 85 110 L 95 95 L 165 58 L 175 73 Z"
             />
-            <path
-              className="atrStripeWhite"
-              d="M 95 59
-                 C 91 77, 94 95, 101 109
-                 C 107 121, 115 129, 121 131"
-            />
+            <path className="atrStripeWhite" d="M 95 95 L 165 58" />
+            <path className="atrStripeWhite" d="M 85 110 L 175 73" />
 
             <g className="atrFur">
               {[

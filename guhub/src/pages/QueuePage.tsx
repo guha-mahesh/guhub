@@ -209,7 +209,7 @@ export default function QueuePage() {
                         {track.albumArt && <img src={track.albumArt} alt="" className="resultArt" />}
                         <div className="resultText">
                           <span className="resultTitle">{track.title}</span>
-                          <span className="resultMeta">{track.artist} — {track.album}</span>
+                          <span className="resultMeta">{track.artist}, {track.album}</span>
                         </div>
                       </div>
                       <PreviewBtn uri={track.uri ?? ''} />

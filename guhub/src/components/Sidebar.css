@@ -4,9 +4,9 @@
   bottom: 2rem;
   left: 2rem;
   padding: 0.6rem 1.2rem;
-  background-color: #080808;
-  border: 2px solid #739166;
-  color: #739166;
+  background-color: transparent;
+  border: 2px solid var(--sage);
+  color: var(--sage);
   font-family: 'Courier New', monospace;
   font-size: 0.9rem;
   font-weight: 600;
@@ -23,14 +23,14 @@
 }
 
 .sidebarToggle:hover {
-  background-color: #739166;
+  background-color: var(--sage);
   color: #080808;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(115, 145, 102, 0.4);
 }
 
 .sidebarToggle.open {
-  background-color: #739166;
+  background-color: var(--sage);
   color: #080808;
 }
 
@@ -42,7 +42,7 @@
   width: 420px;
   max-height: calc(100vh - 200px);
   background-color: #1a0505;
-  border: 3px solid #739166;
+  border: 3px solid var(--sage);
   border-radius: 8px;
   z-index: 1000;
   transition: left 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -58,7 +58,7 @@
 .terminalHeader {
   background: linear-gradient(180deg, #3a1515 0%, #080808 100%);
   padding: 0.8rem 1rem;
-  border-bottom: 2px solid #739166;
+  border-bottom: 2px solid var(--sage);
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -112,7 +112,7 @@
 }
 
 .terminalPrompt {
-  color: #739166;
+  color: var(--sage);
   font-weight: bold;
 }
 
@@ -125,7 +125,7 @@
   margin: 1.5rem 0;
   padding: 1rem;
   background: rgba(115, 145, 102, 0.03);
-  border-left: 3px solid #739166;
+  border-left: 3px solid var(--sage);
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
@@ -145,12 +145,12 @@
 }
 
 .dataValue {
-  color: #739166;
+  color: var(--sage);
   flex: 1;
 }
 
 .dataValue.link {
-  color: #739166;
+  color: var(--sage);
   text-decoration: none;
   transition: all 0.3s ease;
   position: relative;
@@ -163,7 +163,7 @@
   left: 0;
   width: 0;
   height: 1px;
-  background: #739166;
+  background: var(--sage);
   transition: width 0.3s ease;
 }
 
@@ -220,7 +220,7 @@
 }
 
 .sidebarContent::-webkit-scrollbar-thumb {
-  background: #739166;
+  background: var(--sage);
   border-radius: 4px;
 }
 

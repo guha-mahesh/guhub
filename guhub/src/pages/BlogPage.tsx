@@ -5,6 +5,7 @@ import rehypeKatex from 'rehype-katex';
 import 'katex/dist/katex.min.css';
 import { Link } from 'react-router-dom';
 import { supabase, type Post } from '../lib/supabase';
+import { useMeta, metaLabel } from '../contexts/MetaContext';
 import './BlogPage.css';
 
 type View = 'list' | 'post';
@@ -21,6 +22,7 @@ const PINNED: Array<{ to: string; date: string; title: string; tags: string[]; e
 ];
 
 export default function BlogPage() {
+  const { level } = useMeta();
   const [posts, setPosts] = useState<Post[]>([]);
   const [open, setOpen] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
@@ -62,7 +64,7 @@ export default function BlogPage() {
       <div className="blogContainer">
         <div className="blogHeader">
           <p className="blogLabel">&gt; log</p>
-          <h1 className="blogTitle">log of-sorts</h1>
+          <h1 className="blogTitle">{level > 0 ? `${metaLabel(level).toLowerCase()} log` : 'log'}</h1>
           <p className="blogSub">writing, lists, references </p>
         </div>
 
