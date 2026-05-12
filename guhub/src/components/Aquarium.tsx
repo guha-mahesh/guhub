@@ -780,31 +780,14 @@ function renderDrifter(
   if (d.verticalDrift !== undefined) {
     outerAnimate.y = ['0vh', `${d.verticalDrift}vh`];
   }
-  const flipX = d.direction === 'rtl' ? -1 : 1;
+  const depthKeyframes = d.depthRange ? [d.depthRange[0], d.depthRange[1], d.depthRange[0]] : null;
+  const flip = d.direction === 'rtl' ? ' scaleX(-1)' : '';
 
-  // Depth illusion: oscillate scale on a SHORT, independent cycle (6-10s)
-  // so the swell-and-recede is actually perceptible. Tying it to the
-  // 100-380s horizontal pass made the change ~0.005/sec — invisible.
-  // Both scale layers collapse into this single motion.div with a
-  // consistent center-center origin so the creature grows from its
-  // visual centroid, not a corner. Opacity dips at far-distance for
-  // an extra perspective cue.
-  const depthDur = d.depthRange ? 6 + ((Math.abs(d.bobDur * 1000) % 5)) : 0;
-  const scaleAnimate = d.depthRange
-    ? {
-        scaleX: [
-          d.scale * d.depthRange[0] * flipX,
-          d.scale * d.depthRange[1] * flipX,
-          d.scale * d.depthRange[0] * flipX,
-        ],
-        scaleY: [
-          d.scale * d.depthRange[0],
-          d.scale * d.depthRange[1],
-          d.scale * d.depthRange[0],
-        ],
-        opacity: [d.opacity * 0.7, d.opacity, d.opacity * 0.7],
-      }
-    : { scaleX: d.scale * flipX, scaleY: d.scale };
+  const inner = (
+    <div style={{ transform: `scale(${d.scale})${flip}`, transformOrigin: 'top left' }}>
+      {child}
+    </div>
+  );
 
   return (
     <motion.div
@@ -813,7 +796,7 @@ function renderDrifter(
       role="button"
       tabIndex={-1}
       onClick={() => window.dispatchEvent(new Event('viewdeck:enter'))}
-      style={{ top: d.top, position: 'absolute' }}
+      style={{ top: d.top, opacity: d.opacity, position: 'absolute' }}
       initial={{ x: fromX, y: 0 }}
       animate={outerAnimate}
       transition={{ duration: d.duration, repeat: Infinity, ease: 'linear', delay: d.delay }}
@@ -823,18 +806,15 @@ function renderDrifter(
         transition={{ duration: d.bobDur, repeat: Infinity, ease }}
         style={{ display: 'inline-block' }}
       >
-        <motion.div
-          animate={scaleAnimate}
-          initial={{ opacity: d.opacity }}
-          transition={
-            d.depthRange
-              ? { duration: depthDur, repeat: Infinity, ease: 'easeInOut' }
-              : { duration: 0 }
-          }
-          style={{ display: 'inline-block', transformOrigin: 'center center' }}
-        >
-          {child}
-        </motion.div>
+        {depthKeyframes ? (
+          <motion.div
+            animate={{ scale: depthKeyframes }}
+            transition={{ duration: d.duration, repeat: Infinity, ease: 'easeInOut' }}
+            style={{ display: 'inline-block', transformOrigin: 'center center' }}
+          >
+            {inner}
+          </motion.div>
+        ) : inner}
       </motion.div>
     </motion.div>
   );
