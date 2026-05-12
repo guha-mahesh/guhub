@@ -252,25 +252,23 @@
   font-family: 'IBM Plex Mono', 'Courier New', monospace;
 }
 
-/* ── Shimmer-swap word ────────────────────────────────── */
-/* 100% opaque sage. No alpha so the warm radial bg + bgGrain overlay
-   blend can't tint it. !important to defeat any inherited rule. */
+/* ── Dossier text colors ──────────────────────────────────
+   The whole prose paragraph reads sage (career/personal palette).
+   Static text uses a base sage. Shimmer-swap words rotate through
+   three sage shades so the dossier is visually multi-toned. */
+.proseLine {
+  color: var(--sage-bright, #a7c49a);
+}
+
 .shimmer {
   display: inline;
-  color: var(--bone);
-  padding: 0 0.18em;
-  border-radius: 2px;
-  background-color: #3c5a32 !important;
-  background-image: none !important;
+  padding: 0;
+  background: none;
   transition: opacity 0.35s ease, color 0.35s ease;
-  /* lift above bgGrain (which uses mix-blend-mode: overlay at z-index 2) */
-  position: relative;
-  z-index: 3;
-  isolation: isolate;
 }
-.shimmer:nth-of-type(3n+1) { background-color: #3c5a32 !important; }
-.shimmer:nth-of-type(3n+2) { background-color: #4d6641 !important; }
-.shimmer:nth-of-type(3n+3) { background-color: #2e4226 !important; }
+.shimmer:nth-of-type(3n+1) { color: var(--sage-bright, #a7c49a); }
+.shimmer:nth-of-type(3n+2) { color: var(--sage, #739166); }
+.shimmer:nth-of-type(3n+3) { color: var(--sage-deep, #4d6641); }
 .shimmer.in  { opacity: 1; }
 .shimmer.out { opacity: 0; }
 
