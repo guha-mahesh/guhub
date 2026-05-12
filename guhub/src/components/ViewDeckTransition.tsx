@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 // ──────────────────────────────────────────────────────────────────────
 // Curtain-into-view-deck transition. Listens for the global
@@ -16,9 +17,13 @@ const HOLD_MS = 220;   // brief moment of pure aquarium
 export default function ViewDeckTransition() {
   const navigate = useNavigate();
   const location = useLocation();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const onEnter = () => {
+      // view_deck is desktop-only — ignore any stray viewdeck:enter on
+      // mobile so a tap can't trigger the curtain animation or nav.
+      if (isMobile) return;
       if (location.pathname === '/view_deck') return;
       document.body.classList.add('viewDeckTransitioning');
       const navAt = setTimeout(() => navigate('/view_deck'), FALL_MS);
@@ -32,7 +37,7 @@ export default function ViewDeckTransition() {
     };
     window.addEventListener('viewdeck:enter', onEnter);
     return () => window.removeEventListener('viewdeck:enter', onEnter);
-  }, [location.pathname, navigate]);
+  }, [location.pathname, navigate, isMobile]);
 
   return null;
 }
