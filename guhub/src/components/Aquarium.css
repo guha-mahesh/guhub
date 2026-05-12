@@ -41,6 +41,18 @@ body:not(.viewDeckMode) .drifter:hover {
 /* On view_deck the click affordance is gone (you're already here). */
 body.viewDeckMode .drifter { cursor: default; }
 
+/* Mobile: aquarium creatures are fully non-interactable so a stray tap
+   on a drifting fish never triggers the view_deck transition (and never
+   eats a tap meant for the project card or anything else underneath). */
+@media (max-width: 768px) {
+  .drifter,
+  .drifter svg,
+  .drifter img {
+    pointer-events: none !important;
+    cursor: default !important;
+  }
+}
+
 /* ── creature line styles ──────────────────────────────── */
 .aquarium .ink {
   fill: none;
