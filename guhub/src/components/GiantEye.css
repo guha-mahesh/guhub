@@ -1,0 +1,54 @@
+/* GiantEye — massive ambient eye behind the aquarium. Low opacity so
+   it reads as "something out there", never interactable. */
+.giantEye {
+  position: fixed;
+  z-index: 0;
+  width: 78vw;
+  max-width: 1400px;
+  height: auto;
+  pointer-events: none;
+  filter: drop-shadow(0 0 40px rgba(176, 141, 87, 0.18));
+  /* will-change keeps the opacity keyframes smooth */
+  will-change: opacity, transform;
+}
+
+.giantEyeSvg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+.giantEyeShape {
+  fill: rgba(20, 17, 13, 0.0);
+  stroke: rgba(176, 141, 87, 0.55);
+  stroke-width: 2;
+}
+
+.giantEyeIris {
+  fill: rgba(176, 141, 87, 0.35);
+  stroke: rgba(115, 90, 50, 0.6);
+  stroke-width: 1.4;
+}
+
+.giantEyeStriation {
+  stroke: rgba(58, 38, 18, 0.55);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  opacity: 0.6;
+}
+
+.giantEyePupil {
+  fill: rgba(8, 6, 4, 0.85);
+  stroke: rgba(20, 14, 8, 0.7);
+  stroke-width: 1;
+}
+
+.giantEyeGlint {
+  fill: rgba(245, 230, 200, 0.55);
+}
+
+@media (max-width: 768px) {
+  /* On mobile the eye is jarring at this scale; ratchet it down. */
+  .giantEye { width: 110vw; }
+}
