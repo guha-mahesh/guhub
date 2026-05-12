@@ -45,15 +45,23 @@
   mix-blend-mode: screen;
 }
 
-/* When on /view_deck, each drifting aquarium creature gets a warm glow
-   AND brighter/more-saturated colors so they actually read against the
-   dark background. The aquarium creatures are deliberately low-contrast
-   on other pages (so they don't distract) — on view_deck they get to
-   be the focus. */
+/* On /view_deck, brighten the creature palette by overriding the CSS
+   variables the aquarium uses for its ink/brass/cream/ember strokes.
+   Bumping the source color is more effective than a post-filter because
+   each drifter already animates a low opacity (0.28-0.45) on every
+   pattern — a brightness filter on an already-translucent element
+   barely registers. Source colors get the lift.
+   Also keep the drop-shadow glow for extra luster. */
+body.viewDeckMode .aquarium {
+  --ink: #c79c66;     /* was #8a6a3a — much brighter brass */
+  --brass: #f5c86e;   /* was #c79c66 — closer to ember */
+  --cream: #f0e6d0;
+  --ember: #ffd17a;
+}
+
 body.viewDeckMode .drifter {
   filter: drop-shadow(0 0 12px rgba(245, 200, 110, 0.55))
-          drop-shadow(0 0 26px rgba(176, 141, 87, 0.35))
-          brightness(1.22) saturate(1.25);
+          drop-shadow(0 0 26px rgba(176, 141, 87, 0.35));
 }
 
 /* The reef itself gets a smaller, cooler glow so it doesn't compete. */
