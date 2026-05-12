@@ -252,15 +252,25 @@
 
 /* ── Shimmer-swap word ────────────────────────────────── */
 /* Sage backdrop because the dossier text is about Guha, not Crenshaw.
-   Two-stop sage gradient: the brighter sage mid-band reads as a soft
-   highlight behind each swapped word. */
+   Higher opacity than before — at 0.16 the warm radial bg bleeds through
+   and reads brass. Three nth-of-type variants rotate through sage / sage-
+   bright / sage-deep so adjacent highlighted words don't sit in the
+   exact same tint. */
 .shimmer {
   display: inline;
   color: var(--bone);
-  background: linear-gradient(120deg, transparent 0%, rgba(167, 196, 154, 0.16) 40%, transparent 80%);
   padding: 0 0.15em;
   border-radius: 1px;
   transition: opacity 0.35s ease, color 0.35s ease;
+}
+.shimmer:nth-of-type(3n+1) {
+  background: linear-gradient(120deg, transparent 0%, rgba(115, 145, 102, 0.38) 40%, transparent 80%);
+}
+.shimmer:nth-of-type(3n+2) {
+  background: linear-gradient(120deg, transparent 0%, rgba(167, 196, 154, 0.32) 40%, transparent 80%);
+}
+.shimmer:nth-of-type(3n+3) {
+  background: linear-gradient(120deg, transparent 0%, rgba(77, 102, 65, 0.55) 40%, transparent 80%);
 }
 .shimmer.in  { opacity: 1; }
 .shimmer.out { opacity: 0; }
