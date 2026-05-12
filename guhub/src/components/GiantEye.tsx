@@ -79,15 +79,8 @@ export default function GiantEye() {
           }}
           aria-hidden="true"
         >
-          <svg viewBox="-400 -200 800 400" className="giantEyeSvg">
-            {/* almond outline */}
-            <path
-              className="giantEyeShape"
-              d="M -380 0
-                 Q 0 -180, 380 0
-                 Q 0 180, -380 0 Z"
-            />
-            {/* iris */}
+          <svg viewBox="-200 -200 400 400" className="giantEyeSvg">
+            {/* iris — no almond outline, the eyeball just floats in the deep */}
             <circle cx="0" cy="0" r="130" className="giantEyeIris" />
             {/* iris striations */}
             {Array.from({ length: 18 }).map((_, i) => {

@@ -3,8 +3,9 @@
 .giantEye {
   position: fixed;
   z-index: 0;
-  width: 78vw;
-  max-width: 1400px;
+  /* viewBox is now square (no almond) — narrower width to match */
+  width: 42vw;
+  max-width: 700px;
   height: auto;
   pointer-events: none;
   filter: drop-shadow(0 0 40px rgba(176, 141, 87, 0.18));
@@ -17,12 +18,6 @@
   height: auto;
   display: block;
   overflow: visible;
-}
-
-.giantEyeShape {
-  fill: rgba(20, 17, 13, 0.0);
-  stroke: rgba(176, 141, 87, 0.55);
-  stroke-width: 2;
 }
 
 .giantEyeIris {
