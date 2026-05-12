@@ -236,7 +236,7 @@
 .prose[data-depth="0"] > .proseLine {
   font-size: 1.1rem;
   line-height: 1.85;
-  color: var(--cream);
+  color: var(--sage-bright, #a7c49a);
 }
 
 .prose[data-depth="1"] > .proseLine,
