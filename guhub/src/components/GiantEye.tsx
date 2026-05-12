@@ -9,10 +9,10 @@ import './GiantEye.css';
 // there in the water." Never interactable.
 // ──────────────────────────────────────────────────────────────────────
 
-const MIN_DELAY = 3 * 60 * 1000;
-const MAX_DELAY = 7 * 60 * 1000;
-const FIRST_DELAY_MIN = 45 * 1000;   // first appearance within ~45-90s
-const FIRST_DELAY_MAX = 90 * 1000;
+const MIN_DELAY = 2.5 * 60 * 1000;
+const MAX_DELAY = 5 * 60 * 1000;
+const FIRST_DELAY_MIN = 20 * 1000;   // first appearance within 20-40s after load
+const FIRST_DELAY_MAX = 40 * 1000;
 const VISIBLE_MS = 10000;
 
 interface EyeInstance {
@@ -70,7 +70,7 @@ export default function GiantEye() {
           }}
           initial={{ opacity: 0 }}
           // keyframes: fade in, blink, hold, blink, fade out
-          animate={{ opacity: [0, 0.26, 0.26, 0, 0.26, 0.26, 0, 0.26, 0] }}
+          animate={{ opacity: [0, 0.38, 0.38, 0, 0.38, 0.38, 0, 0.38, 0] }}
           exit={{ opacity: 0 }}
           transition={{
             duration: VISIBLE_MS / 1000,
