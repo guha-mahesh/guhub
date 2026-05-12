@@ -54,14 +54,16 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Selection colors */
+/* Selection colors — sage (career/personal palette), not brass.
+   Previously brass via --color-primary, which made any text selection
+   in the dossier read as a brass band behind the selected word. */
 ::selection {
-  background-color: var(--color-primary);
+  background-color: var(--sage, #739166);
   color: var(--color-dark);
 }
 
 ::-moz-selection {
-  background-color: var(--color-primary);
+  background-color: var(--sage, #739166);
   color: var(--color-dark);
 }
 
