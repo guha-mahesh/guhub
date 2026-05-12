@@ -41,7 +41,7 @@
   left: -450px;
   width: 420px;
   max-height: calc(100vh - 200px);
-  background-color: #1a0505;
+  background-color: var(--soot-2, #14110d);
   border: 3px solid var(--sage);
   border-radius: 8px;
   z-index: 1000;
@@ -56,7 +56,7 @@
 
 /* Terminal Header */
 .terminalHeader {
-  background: linear-gradient(180deg, #3a1515 0%, #080808 100%);
+  background: linear-gradient(180deg, #1f2a1c 0%, #080808 100%);
   padding: 0.8rem 1rem;
   border-bottom: 2px solid var(--sage);
   display: flex;
@@ -73,6 +73,17 @@
 
 .terminalDot.red {
   background-color: #ff6b6b;
+}
+.terminalDotClose {
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  transition: filter 0.15s ease, transform 0.15s ease;
+}
+.terminalDotClose:hover {
+  filter: brightness(1.25);
+  transform: scale(1.15);
 }
 
 .terminalDot.yellow {
@@ -100,7 +111,7 @@
 .terminalBody {
   padding: 1.5rem;
   font-family: 'Courier New', monospace;
-  background-color: #1a0505;
+  background-color: var(--soot-2, #14110d);
 }
 
 .terminalLine {
@@ -216,7 +227,7 @@
 }
 
 .sidebarContent::-webkit-scrollbar-track {
-  background: #1a0505;
+  background: var(--soot-2, #14110d);
 }
 
 .sidebarContent::-webkit-scrollbar-thumb {
@@ -225,7 +236,7 @@
 }
 
 .sidebarContent::-webkit-scrollbar-thumb:hover {
-  background: #ff9fb5;
+  background: var(--sage-bright, #a7c49a);
 }
 
 /* Mobile Responsive */

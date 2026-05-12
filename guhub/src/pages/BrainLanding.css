@@ -251,10 +251,13 @@
 }
 
 /* ── Shimmer-swap word ────────────────────────────────── */
+/* Sage backdrop because the dossier text is about Guha, not Crenshaw.
+   Two-stop sage gradient: the brighter sage mid-band reads as a soft
+   highlight behind each swapped word. */
 .shimmer {
   display: inline;
   color: var(--bone);
-  background: linear-gradient(120deg, transparent 0%, rgba(245, 180, 80, 0.14) 40%, transparent 80%);
+  background: linear-gradient(120deg, transparent 0%, rgba(167, 196, 154, 0.16) 40%, transparent 80%);
   padding: 0 0.15em;
   border-radius: 1px;
   transition: opacity 0.35s ease, color 0.35s ease;
@@ -474,8 +477,8 @@
   height: 44px;
   border-radius: 50%;
   background: var(--soot-2);
-  border: 1.5px solid var(--brass);
-  color: var(--brass);
+  border: 1.5px solid var(--sage, #739166);
+  color: var(--sage-bright, #a7c49a);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -485,9 +488,9 @@
 }
 
 .floatingButton:hover {
-  border-color: var(--ember);
-  color: var(--ember);
-  box-shadow: 0 0 12px rgba(245, 180, 80, 0.35);
+  border-color: var(--sage-bright, #a7c49a);
+  color: var(--sage-bright, #a7c49a);
+  box-shadow: 0 0 12px rgba(167, 196, 154, 0.35);
 }
 
 /* ── Mobile fallback (kept simple) ────────────────────── */

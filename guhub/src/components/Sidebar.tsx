@@ -17,7 +17,15 @@ const Sidebar = () => {
       <div className={`sidebar ${isOpen ? 'open' : ''}`}>
         <div className="sidebarContent">
           <div className="terminalHeader">
-            <span className="terminalDot red"></span>
+            {/* The red dot doubles as a real close button (matches the
+                lower [ x ] toggle). Yellow/green are decorative. */}
+            <button
+              type="button"
+              className="terminalDot red terminalDotClose"
+              onClick={() => setIsOpen(false)}
+              aria-label="close"
+              title="close"
+            />
             <span className="terminalDot yellow"></span>
             <span className="terminalDot green"></span>
             <span className="terminalTitle">contact.exe</span>
