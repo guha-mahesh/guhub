@@ -62,7 +62,7 @@ export const resumeData: ResumeData = {
         "Stood up a **speaker-detection pipeline using on-device voiceprints** (no cloud processing, GDPR/SOC2 compliant) for passive transcription across surfaces including Google Meet",
         "Rewrote the Chrome extension's content extraction across **289 commits**; the main surface **demoed to Apple, Samsung, GitHub, and TripAdvisor**",
         "Owned beta tester onboarding and feedback cycles; ran competitive evaluations against other memory products",
-        "Human memory lab spun out of Harvard, at pre-seed"
+        "Human memory lab spun out of Harvard, at seed"
       ]
     },
     {
