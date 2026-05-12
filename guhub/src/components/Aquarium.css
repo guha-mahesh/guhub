@@ -16,7 +16,20 @@
 .drifter {
   width: max-content;
   will-change: transform;
+  /* aquarium itself has pointer-events: none (decorative). Each drifter
+     opts back in so clicks/hovers register on the creatures only. */
+  pointer-events: auto;
+  cursor: pointer;
 }
+/* hover-highlight on any drifter EXCEPT when on /view_deck (handled
+   below — view_deck already glows each creature) */
+body:not(.viewDeckMode) .drifter:hover {
+  filter: drop-shadow(0 0 14px rgba(245, 180, 80, 0.55))
+          drop-shadow(0 0 26px rgba(176, 141, 87, 0.3));
+  transition: filter 0.2s ease;
+}
+/* On view_deck the click affordance is gone (you're already here). */
+body.viewDeckMode .drifter { cursor: default; }
 
 /* ── creature line styles ──────────────────────────────── */
 .aquarium .ink {

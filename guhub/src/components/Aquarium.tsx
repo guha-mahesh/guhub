@@ -793,6 +793,9 @@ function renderDrifter(
     <motion.div
       key={key}
       className="drifter"
+      role="button"
+      tabIndex={-1}
+      onClick={() => window.dispatchEvent(new Event('viewdeck:enter'))}
       style={{ top: d.top, opacity: d.opacity, position: 'absolute' }}
       initial={{ x: fromX, y: 0 }}
       animate={outerAnimate}
