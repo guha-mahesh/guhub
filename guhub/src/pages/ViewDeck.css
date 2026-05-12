@@ -1,9 +1,10 @@
-/* view_deck — empty idle space; the global aquarium + coral reef are the show. */
+/* view_deck — empty idle space; the global aquarium + coral reef are the show.
+   pointer-events stay live so the + fish button (and its modal) receive
+   clicks. The flashlight overlay has its own pointer-events: none. */
 .viewDeck {
   position: relative;
   min-height: 100vh;
   width: 100%;
-  pointer-events: none;
 }
 
 .viewDeckLabel {
