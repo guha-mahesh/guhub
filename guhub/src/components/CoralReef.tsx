@@ -134,6 +134,108 @@ function Anemone({ x }: { x: number }) {
   );
 }
 
+// A small steampunk crab sitting on the reef floor. Big claws + a
+// riveted shell. Gentle bob so it reads as alive.
+function Crab({ x }: { x: number }) {
+  return (
+    <motion.g
+      transform={`translate(${x}, 230)`}
+      animate={{ y: [0, -1.4, 0] }}
+      transition={{ duration: 3.6 + Math.random() * 1.5, repeat: Infinity, ease }}
+    >
+      {/* shell dome */}
+      <path
+        className="reefInk"
+        fill="var(--reefBrassColor)" fillOpacity="0.28"
+        d="M -16 -2 Q -16 -16, 0 -18 Q 16 -16, 16 -2 Z"
+      />
+      {/* shell texture seams */}
+      <path className="reefInk thin" fill="none" d="M -10 -12 L -8 -4 M 0 -14 L 0 -4 M 10 -12 L 8 -4" />
+      {/* rivets */}
+      <circle cx="-8" cy="-12" r="0.9" className="reefBrassFill" />
+      <circle cx="8" cy="-12" r="0.9" className="reefBrassFill" />
+      <circle cx="0" cy="-15" r="0.9" className="reefBrassFill" />
+      {/* eyes on stalks */}
+      <line className="reefBrass" x1="-5" y1="-18" x2="-5" y2="-23" strokeWidth="0.9" />
+      <line className="reefBrass" x1="5" y1="-18" x2="5" y2="-23" strokeWidth="0.9" />
+      <circle cx="-5" cy="-23.5" r="1.3" className="reefBrassFill" />
+      <circle cx="5" cy="-23.5" r="1.3" className="reefBrassFill" />
+      {/* left claw */}
+      <path
+        className="reefInk"
+        fill="var(--reefBrassColor)" fillOpacity="0.32"
+        d="M -16 -8 L -26 -12 L -30 -8 L -28 -3 L -22 -4 Z"
+      />
+      {/* right claw */}
+      <path
+        className="reefInk"
+        fill="var(--reefBrassColor)" fillOpacity="0.32"
+        d="M 16 -8 L 26 -12 L 30 -8 L 28 -3 L 22 -4 Z"
+      />
+      {/* legs (3 per side) */}
+      <path className="reefInk thin" fill="none" d="M -14 -2 L -22 4 M -14 0 L -22 7 M -12 2 L -20 9" />
+      <path className="reefInk thin" fill="none" d="M 14 -2 L 22 4 M 14 0 L 22 7 M 12 2 L 20 9" />
+    </motion.g>
+  );
+}
+
+// Reef octopus, head peeking out, tentacles trailing and waving.
+function Octopus({ x }: { x: number }) {
+  const tentacles: Array<[number, number, number, number]> = [
+    // [startX, startY, controlOffset, endX, endY]  (using Q curve)
+    [-11, -32, -18, 0],
+    [-7,  -36, -10, 4],
+    [-2,  -38, -4,  6],
+    [3,   -38,  4,  6],
+    [8,   -36, 10,  4],
+    [12,  -32, 18,  0],
+    [-9,  -28, -22, -6],
+    [10,  -28,  22, -6],
+  ];
+  return (
+    <g transform={`translate(${x}, 230)`}>
+      {/* head bulb */}
+      <ellipse
+        cx="0" cy="-46" rx="14" ry="17"
+        className="reefInk"
+        fill="var(--reefBrassColor)" fillOpacity="0.28"
+      />
+      {/* brass crown (steampunk hat band) */}
+      <path className="reefBrass" fill="none" strokeWidth="1.2" d="M -12 -57 Q 0 -62, 12 -57" />
+      <circle cx="-12" cy="-57" r="1.2" className="reefBrassFill" />
+      <circle cx="0" cy="-61" r="1.4" className="reefBrassFill" />
+      <circle cx="12" cy="-57" r="1.2" className="reefBrassFill" />
+      {/* eyes */}
+      <circle cx="-5" cy="-48" r="2.6" className="reefBrass" fill="none" />
+      <circle cx="-5" cy="-48" r="1.2" className="reefBrassFill" />
+      <circle cx="5" cy="-48" r="2.6" className="reefBrass" fill="none" />
+      <circle cx="5" cy="-48" r="1.2" className="reefBrassFill" />
+      {/* tentacles — wave subtly via group rotation */}
+      {tentacles.map(([sx, sy, ex, ey], i) => {
+        const cpx = (sx + ex) / 2 + (i % 2 === 0 ? -3 : 3);
+        const cpy = (sy + ey) / 2 + 6;
+        return (
+          <motion.path
+            key={i}
+            className="reefBrass"
+            fill="none"
+            strokeWidth="1.2"
+            d={`M ${sx} ${sy} Q ${cpx} ${cpy}, ${ex} ${ey}`}
+            animate={{ rotate: [-2.5, 2.5, -2.5] }}
+            transition={{
+              duration: 4 + i * 0.25,
+              repeat: Infinity,
+              ease,
+              delay: i * 0.18,
+            }}
+            style={{ transformOrigin: `${sx}px ${sy}px` }}
+          />
+        );
+      })}
+    </g>
+  );
+}
+
 // A small brass-cased clam (closed shell) sitting on the floor.
 function Clam({ x }: { x: number }) {
   return (
@@ -215,18 +317,23 @@ export default function CoralReef() {
         <Kelp x={60}  height={220} />
         <SeaFan x={120} scale={1} />
         <CoralDome x={210} />
+        <Crab x={250} />
         <SpongeTower x={285} height={70} />
         <Clam x={345} />
         <PipeCoral x={400} />
+        <Octopus x={460} />
         <SeaFan x={490} scale={1.3} />
         <Anemone x={580} />
+        <Crab x={620} />
         <CoralDome x={660} />
         <SpongeTower x={720} height={50} />
         <Kelp x={780} height={170} />
         <PipeCoral x={840} />
         <SeaFan x={930} scale={0.85} />
-        <Clam x={985} />
+        <Octopus x={970} />
+        <Clam x={1005} />
         <Anemone x={1040} />
+        <Crab x={1080} />
         <CoralDome x={1110} />
         <SpongeTower x={1170} height={60} />
       </svg>

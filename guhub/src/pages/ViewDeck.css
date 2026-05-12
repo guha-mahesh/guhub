@@ -44,6 +44,19 @@
   mix-blend-mode: screen;
 }
 
+/* When on /view_deck, each drifting aquarium creature gets a subtle
+   warm glow so they feel like the focus of the page. Not bright — just
+   enough lift to read as the main attraction over the reef + chrome. */
+body.viewDeckMode .drifter {
+  filter: drop-shadow(0 0 9px rgba(245, 180, 80, 0.28))
+          drop-shadow(0 0 18px rgba(176, 141, 87, 0.16));
+}
+
+/* The reef itself gets a smaller, cooler glow so it doesn't compete. */
+body.viewDeckMode .coralReef {
+  filter: drop-shadow(0 -2px 8px rgba(176, 141, 87, 0.15));
+}
+
 /* ── idle-hide on view_deck ────────────────────────────────────────
    While this page is mounted, all UI chrome gets a fade transition.
    When the user has been idle for ~5s (viewDeckIdle on body), every
