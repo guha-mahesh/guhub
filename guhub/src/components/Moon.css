@@ -333,3 +333,16 @@
 .moonCogSpoke { stroke: #b08d57; stroke-width: 8; stroke-linecap: round; }
 .moonCogHub { fill: #6a5230; stroke: #0a0808; stroke-width: 2; }
 .moonCogBolt { fill: #14110d; }
+
+/* ── Mourning state: Crenshaw has been freed ──────────────────────
+   Casper visibly quieter — dimmer overall, lower saturation, softer
+   nameplate, sleepier eye, slower bob. Applied across all variants. */
+.moon.moon-freed {
+  filter: brightness(0.78) saturate(0.55);
+  transition: filter 0.8s ease;
+  /* slower bob = heavier with grief */
+  animation-duration: 8s;
+}
+.moon-freed .moonPlateText { opacity: 0.7; }
+.moon-freed .moonEyePetals { opacity: 0.5; }
+.moon-freed .moonEyeIris { opacity: 0.85; }

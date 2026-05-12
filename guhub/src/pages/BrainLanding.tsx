@@ -147,8 +147,12 @@ const BrainLanding = () => {
     : level === 2 ? 'meta2'
     : 'meta3';
 
-  const nameplate =
-    level === 0
+  // Nameplate reflects Casper's state. Before Crenshaw is freed, he's
+  // looking for him. After, he's quietly grieving — same melancholy text
+  // at every meta level.
+  const nameplate = crenshawFreed
+    ? 'I MISS HIM.'
+    : level === 0
       ? "WHERE'S CRENSHAW?"
       : `WHERE IS ${metaLabel(level)} CRENSHAW?`;
 
@@ -207,6 +211,7 @@ const BrainLanding = () => {
           showCog={level < 3}
           showCasperCraters={level === 0}
           onEyeClick={handleEyeClick}
+          freed={crenshawFreed}
         />
       </div>
 

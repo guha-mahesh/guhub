@@ -26,6 +26,9 @@ interface MoonProps {
   onEyeClick?: (e: React.MouseEvent) => void;
   /** Current meta-depth (used by the default onEyeClick to navigate deeper). */
   depth?: number;
+  /** Casper is in mourning — Crenshaw has been freed. Triggers a dimmer,
+   *  desaturated "quieter" appearance across all meta levels. */
+  freed?: boolean;
 }
 
 export default function Moon({
@@ -36,6 +39,7 @@ export default function Moon({
   showCasperCraters = true,
   onEyeClick,
   depth = 0,
+  freed = false,
 }: MoonProps = {}) {
   const ref = useRef<SVGSVGElement>(null);
   const [open, setOpen] = useState(false);
@@ -93,7 +97,7 @@ export default function Moon({
   return (
     <svg
       ref={ref}
-      className={`moon moon-${variant}`}
+      className={`moon moon-${variant}${freed ? ' moon-freed' : ''}`}
       viewBox="-140 -20 820 870"
       preserveAspectRatio="xMidYMid meet"
     >
