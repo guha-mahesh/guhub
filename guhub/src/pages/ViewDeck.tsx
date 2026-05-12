@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useMeta, metaLabel } from '../contexts/MetaContext';
 import CoralReef from '../components/CoralReef';
+import UserFishAddButton from '../components/UserFishAddButton';
 import './ViewDeck.css';
 
 // ──────────────────────────────────────────────────────────────────────
@@ -66,6 +67,7 @@ export default function ViewDeck() {
     <div className="viewDeck">
       <span className="viewDeckLabel">{prefix}view deck</span>
       <CoralReef />
+      <UserFishAddButton />
       <div ref={flashlightRef} className="viewDeckFlashlight" />
     </div>
   );

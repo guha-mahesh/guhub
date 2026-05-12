@@ -63,6 +63,16 @@
 .aquarium .whale { width: 380px; height: 200px; overflow: visible; }
 .aquarium .mosa  { width: 440px; height: 160px; overflow: visible; }
 .aquarium .croc   { width: 600px; height: 180px; overflow: visible; }
+/* User-uploaded fish — natural-size image, capped on long edge so a
+   tall photo doesn't dominate. The drifter's scale param still applies. */
+.aquarium .userFishImg {
+  display: block;
+  max-width: 240px;
+  max-height: 240px;
+  width: auto;
+  height: auto;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
+}
 .aquarium .angler { width: 220px; height: 160px; overflow: visible; }
 .aquarium .manta  { width: 320px; height: 160px; overflow: visible; }
 .aquarium .seah   { width: 100px; height: 220px; overflow: visible; }

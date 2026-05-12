@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useUserFish } from '../hooks/useUserFish';
 import './Aquarium.css';
 
 // ──────────────────────────────────────────────────────────────────────
@@ -764,59 +765,83 @@ const DRIFTERS: Drifter[] = [
   { Cmp: Seahorse,     top: '90%', scale: 0.42, opacity: 0.34, duration: 260, delay: -170, direction: 'rtl', bobAmp: 4,  bobDur: 7,  verticalDrift: -42 },
 ];
 
+// Shared drifter renderer used by both built-in DRIFTERS (SVG component
+// children) and user-uploaded fish (img children). Pulls all the motion
+// behavior (linear horizontal sweep, optional diagonal drift, optional
+// depth-scale oscillation, bob).
+function renderDrifter(
+  d: Omit<Drifter, 'Cmp'>,
+  key: React.Key,
+  child: React.ReactNode,
+) {
+  const fromX = d.direction === 'ltr' ? '-30vw' : '130vw';
+  const toX   = d.direction === 'ltr' ? '130vw' : '-30vw';
+  const outerAnimate: { x: string; y?: string[] } = { x: toX };
+  if (d.verticalDrift !== undefined) {
+    outerAnimate.y = ['0vh', `${d.verticalDrift}vh`];
+  }
+  const depthKeyframes = d.depthRange ? [d.depthRange[0], d.depthRange[1], d.depthRange[0]] : null;
+  const flip = d.direction === 'rtl' ? ' scaleX(-1)' : '';
+
+  const inner = (
+    <div style={{ transform: `scale(${d.scale})${flip}`, transformOrigin: 'top left' }}>
+      {child}
+    </div>
+  );
+
+  return (
+    <motion.div
+      key={key}
+      className="drifter"
+      style={{ top: d.top, opacity: d.opacity, position: 'absolute' }}
+      initial={{ x: fromX, y: 0 }}
+      animate={outerAnimate}
+      transition={{ duration: d.duration, repeat: Infinity, ease: 'linear', delay: d.delay }}
+    >
+      <motion.div
+        animate={{ y: [-d.bobAmp / 2, d.bobAmp / 2, -d.bobAmp / 2] }}
+        transition={{ duration: d.bobDur, repeat: Infinity, ease }}
+        style={{ display: 'inline-block' }}
+      >
+        {depthKeyframes ? (
+          <motion.div
+            animate={{ scale: depthKeyframes }}
+            transition={{ duration: d.duration, repeat: Infinity, ease: 'easeInOut' }}
+            style={{ display: 'inline-block', transformOrigin: 'center center' }}
+          >
+            {inner}
+          </motion.div>
+        ) : inner}
+      </motion.div>
+    </motion.div>
+  );
+}
+
 export default function Aquarium() {
+  const { fish: userFish } = useUserFish();
   return (
     <div className="aquarium" aria-hidden="true">
-      {DRIFTERS.map((d, i) => {
-        const fromX = d.direction === 'ltr' ? '-30vw' : '130vw';
-        const toX   = d.direction === 'ltr' ? '130vw' : '-30vw';
-        // diagonal drift: animate y alongside x
-        const outerAnimate: { x: string; y?: string[] } = { x: toX };
-        if (d.verticalDrift !== undefined) {
-          outerAnimate.y = ['0vh', `${d.verticalDrift}vh`];
-        }
-        // depth-scale: oscillate base-scale * [min..max..min] once per pass
-        const depthKeyframes = d.depthRange ? [d.depthRange[0], d.depthRange[1], d.depthRange[0]] : null;
-        const flip = d.direction === 'rtl' ? ' scaleX(-1)' : '';
-
-        const inner = (
-          <div style={{ transform: `scale(${d.scale})${flip}`, transformOrigin: 'top left' }}>
-            <d.Cmp />
-          </div>
-        );
-
-        return (
-          <motion.div
-            key={i}
-            className="drifter"
-            style={{ top: d.top, opacity: d.opacity, position: 'absolute' }}
-            initial={{ x: fromX, y: 0 }}
-            animate={outerAnimate}
-            transition={{
-              duration: d.duration,
-              repeat: Infinity,
-              ease: 'linear',
-              delay: d.delay,
-            }}
-          >
-            <motion.div
-              animate={{ y: [-d.bobAmp / 2, d.bobAmp / 2, -d.bobAmp / 2] }}
-              transition={{ duration: d.bobDur, repeat: Infinity, ease }}
-              style={{ display: 'inline-block' }}
-            >
-              {depthKeyframes ? (
-                <motion.div
-                  animate={{ scale: depthKeyframes }}
-                  transition={{ duration: d.duration, repeat: Infinity, ease: 'easeInOut' }}
-                  style={{ display: 'inline-block', transformOrigin: 'center center' }}
-                >
-                  {inner}
-                </motion.div>
-              ) : inner}
-            </motion.div>
-          </motion.div>
-        );
-      })}
+      {DRIFTERS.map((d, i) =>
+        renderDrifter(d, `built-${i}`, <d.Cmp />),
+      )}
+      {userFish.map(f =>
+        renderDrifter(
+          {
+            top: f.top,
+            scale: f.scale,
+            opacity: f.opacity,
+            duration: f.duration,
+            delay: f.delay,
+            direction: f.direction,
+            bobAmp: f.bobAmp,
+            bobDur: f.bobDur,
+            verticalDrift: f.verticalDrift,
+            depthRange: f.depthRange,
+          },
+          f.id,
+          <img src={f.dataUrl} alt="" className="userFishImg" />,
+        ),
+      )}
     </div>
   );
 }
