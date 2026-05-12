@@ -97,7 +97,7 @@
 .heroOrnament {
   font-family: 'Special Elite', 'IBM Plex Mono', monospace;
   font-size: 0.85rem;
-  color: var(--brass);
+  color: var(--sage-bright, #a7c49a);
   margin: 0;
   letter-spacing: 0.18em;
   font-style: italic;
@@ -110,23 +110,23 @@
   margin-top: 1.6rem;
   padding: 0.7rem 1.1rem;
   background: rgba(20, 17, 13, 0.7);
-  border: 1px solid var(--brass, #b08d57);
+  border: 1px solid var(--sage, #739166);
   border-radius: 3px;
   text-decoration: none;
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.78rem;
   letter-spacing: 0.12em;
-  color: var(--brass, #b08d57);
+  color: var(--sage-bright, #a7c49a);
   cursor: pointer;
   transition: all 0.2s ease;
   width: fit-content;
 }
 .realTalkButton:hover {
-  background: rgba(245, 180, 80, 0.1);
-  border-color: var(--ember, #f5b450);
-  color: var(--ember, #f5b450);
+  background: rgba(115, 145, 102, 0.10);
+  border-color: var(--sage-bright, #a7c49a);
+  color: var(--sage-bright, #a7c49a);
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(245, 180, 80, 0.18);
+  box-shadow: 0 4px 14px rgba(115, 145, 102, 0.22);
 }
 .realTalkText {
   font-style: italic;
@@ -525,12 +525,12 @@
 
 .mobileNameLast {
   color: transparent;
-  -webkit-text-stroke: 2px #d4a55a;
+  -webkit-text-stroke: 2px var(--sage-bright, #a7c49a);
 }
 
 .mobileLaptopIcon {
   font-size: 2rem;
-  color: #b08d57;
+  color: var(--sage, #739166);
   margin: 1rem auto 0;
 }
 
@@ -552,8 +552,8 @@
   flex: 1;
   padding: 0.75rem;
   background: transparent;
-  border: 1.5px solid #b08d57;
-  color: #b08d57;
+  border: 1.5px solid var(--sage, #739166);
+  color: var(--sage-bright, #a7c49a);
   text-decoration: none;
   font-size: 0.85rem;
   letter-spacing: 0.05em;
@@ -571,8 +571,8 @@
   height: 44px;
   border-radius: 50%;
   background: rgba(20, 17, 13, 0.9);
-  border: 1.5px solid #b08d57;
-  color: #b08d57;
+  border: 1.5px solid var(--sage, #739166);
+  color: var(--sage-bright, #a7c49a);
   display: flex;
   align-items: center;
   justify-content: center;
