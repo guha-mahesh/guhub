@@ -16,10 +16,20 @@
 .drifter {
   width: max-content;
   will-change: transform;
-  /* aquarium itself has pointer-events: none (decorative). Each drifter
-     opts back in so clicks/hovers register on the creatures only. */
-  pointer-events: auto;
+  /* Tight hitbox: the wrapper div itself does NOT receive pointer events,
+     so empty rectangular space around the SVG is "see-through". Inside,
+     <svg> elements default to pointer-events: visiblePainted which only
+     fires on actually-painted pixels (filled paths, stroked lines). User
+     <img> fish still register on their bounding box — there's no
+     transparency-aware alternative for raster images without canvas. */
+  pointer-events: none;
   cursor: pointer;
+}
+.drifter svg {
+  pointer-events: auto;
+}
+.drifter img {
+  pointer-events: auto;
 }
 /* hover-highlight on any drifter EXCEPT when on /view_deck (handled
    below — view_deck already glows each creature) */

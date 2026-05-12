@@ -1,7 +1,9 @@
 import { useEffect, useRef } from 'react';
+import { Navigate } from 'react-router-dom';
 import { useMeta, metaLabel } from '../contexts/MetaContext';
 import CoralReef from '../components/CoralReef';
 import UserFishAddButton from '../components/UserFishAddButton';
+import { useIsMobile } from '../hooks/useIsMobile';
 import './ViewDeck.css';
 
 // ──────────────────────────────────────────────────────────────────────
@@ -15,9 +17,15 @@ import './ViewDeck.css';
 // ──────────────────────────────────────────────────────────────────────
 
 export default function ViewDeck() {
+  const isMobile = useIsMobile();
   const { level } = useMeta();
   const prefix = level > 0 ? metaLabel(level).toLowerCase() + ' ' : '';
   const flashlightRef = useRef<HTMLDivElement>(null);
+
+  // view_deck is desktop-only — flashlight + idle-hide + cursor-driven
+  // visuals don't translate to touch. If someone lands here on mobile
+  // (deep link, etc), bounce them back to the home page.
+  if (isMobile) return <Navigate to="/" replace />;
 
   useEffect(() => {
     // Start centered so the very first frame isn't all-dark.
