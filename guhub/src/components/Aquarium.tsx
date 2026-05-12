@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useUserFish } from '../hooks/useUserFish';
 import './Aquarium.css';
@@ -727,17 +728,37 @@ type Drifter = {
   opacity: number;
   duration: number;
   delay: number;
+  /** Used by some patterns (sweep) and decides SVG flip. Random patterns
+   *  may override this for their own direction. */
   direction: 'ltr' | 'rtl';
   bobAmp: number;
   bobDur: number;
-  /** Optional. vh of vertical drift across the full horizontal pass —
-   *  creates a slow diagonal travel. Positive = drifts down, negative = up. */
+  /** Optional. vh of vertical drift while in 'sweep' patterns. */
   verticalDrift?: number;
-  /** Optional. Scale oscillation range that multiplies the base scale across
-   *  the pass: [min, max]. Cycles min → max → min once per pass. Creates a
-   *  depth illusion (creature approaches and recedes). */
+  /** Optional. Scale oscillation range for depth illusion. */
   depthRange?: [number, number];
 };
+
+// ── Random movement patterns ─────────────────────────────────────
+// Each drifter picks one of these at mount. Defines how the creature
+// enters, traverses, and exits. Picked once and stable for the lifetime
+// of the drifter so it doesn't twitch across cycles.
+type Pattern =
+  | 'sweep-ltr'         // off-left → off-right, full opacity
+  | 'sweep-rtl'         // off-right → off-left, full opacity
+  | 'enter-l-fade'      // off-left → mid, then fades out
+  | 'enter-r-fade'      // off-right → mid, then fades out
+  | 'phase-exit-r'      // fades in mid-left, exits off-right
+  | 'phase-exit-l'      // fades in mid-right, exits off-left
+  | 'phase-hold'        // fades in mid-screen, hangs, fades out
+  ;
+
+const PATTERNS: Pattern[] = [
+  'sweep-ltr', 'sweep-rtl',
+  'enter-l-fade', 'enter-r-fade',
+  'phase-exit-r', 'phase-exit-l',
+  'phase-hold',
+];
 
 const DRIFTERS: Drifter[] = [
   // existing creatures (frequent)
@@ -765,23 +786,86 @@ const DRIFTERS: Drifter[] = [
   { Cmp: Seahorse,     top: '90%', scale: 0.42, opacity: 0.34, duration: 260, delay: -170, direction: 'rtl', bobAmp: 4,  bobDur: 7,  verticalDrift: -42 },
 ];
 
-// Shared drifter renderer used by both built-in DRIFTERS (SVG component
-// children) and user-uploaded fish (img children). Pulls all the motion
-// behavior (linear horizontal sweep, optional diagonal drift, optional
-// depth-scale oscillation, bob).
-function renderDrifter(
-  d: Omit<Drifter, 'Cmp'>,
-  key: React.Key,
-  child: React.ReactNode,
-) {
-  const fromX = d.direction === 'ltr' ? '-30vw' : '130vw';
-  const toX   = d.direction === 'ltr' ? '130vw' : '-30vw';
-  const outerAnimate: { x: string; y?: string[] } = { x: toX };
-  if (d.verticalDrift !== undefined) {
+// Resolve a Pattern into an x animation + opacity keyframes + a flip sign.
+// All patterns share the same duration but use different timing/positions.
+function patternToAnim(p: Pattern, d: Omit<Drifter, 'Cmp'>) {
+  const baseOpacity = d.opacity;
+  // pick a random "rest" position inside the viewport for patterns that
+  // fade-in or fade-out at midscreen, so they don't all stop in the same spot.
+  const mid = 15 + Math.random() * 70;        // 15..85vw
+
+  switch (p) {
+    case 'sweep-ltr':
+      return {
+        xFrom: '-30vw', xTo: '130vw', flipX: 1,
+        opacityKf: [baseOpacity, baseOpacity], opacityTimes: [0, 1],
+      };
+    case 'sweep-rtl':
+      return {
+        xFrom: '130vw', xTo: '-30vw', flipX: -1,
+        opacityKf: [baseOpacity, baseOpacity], opacityTimes: [0, 1],
+      };
+    case 'enter-l-fade':
+      return {
+        xFrom: '-30vw', xTo: `${mid}vw`, flipX: 1,
+        opacityKf: [baseOpacity, baseOpacity, 0], opacityTimes: [0, 0.55, 1],
+      };
+    case 'enter-r-fade':
+      return {
+        xFrom: '130vw', xTo: `${mid}vw`, flipX: -1,
+        opacityKf: [baseOpacity, baseOpacity, 0], opacityTimes: [0, 0.55, 1],
+      };
+    case 'phase-exit-r':
+      return {
+        xFrom: `${mid}vw`, xTo: '130vw', flipX: 1,
+        opacityKf: [0, baseOpacity, baseOpacity], opacityTimes: [0, 0.35, 1],
+      };
+    case 'phase-exit-l':
+      return {
+        xFrom: `${mid}vw`, xTo: '-30vw', flipX: -1,
+        opacityKf: [0, baseOpacity, baseOpacity], opacityTimes: [0, 0.35, 1],
+      };
+    case 'phase-hold':
+      return {
+        xFrom: `${mid}vw`, xTo: `${mid}vw`, flipX: Math.random() < 0.5 ? 1 : -1,
+        opacityKf: [0, baseOpacity, baseOpacity, 0], opacityTimes: [0, 0.2, 0.8, 1],
+      };
+  }
+}
+
+// Each drifter is its own component so it can useMemo a stable random
+// pattern (picked once at mount). Random duration variation is also
+// applied so creatures don't move in lockstep.
+function DrifterSlot({
+  d,
+  child,
+  slotKey,
+}: {
+  d: Omit<Drifter, 'Cmp'>;
+  child: React.ReactNode;
+  slotKey: React.Key;
+}) {
+  const { pattern, duration } = useMemo(() => {
+    return {
+      pattern: PATTERNS[Math.floor(Math.random() * PATTERNS.length)],
+      duration: d.duration * (0.7 + Math.random() * 0.6), // 0.7x..1.3x of base
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const { xFrom, xTo, flipX, opacityKf, opacityTimes } = patternToAnim(pattern, d);
+
+  const supportsVerticalDrift = pattern === 'sweep-ltr' || pattern === 'sweep-rtl';
+  const outerAnimate: { x: string; y?: string[]; opacity: number[] } = {
+    x: xTo,
+    opacity: opacityKf,
+  };
+  if (supportsVerticalDrift && d.verticalDrift !== undefined) {
     outerAnimate.y = ['0vh', `${d.verticalDrift}vh`];
   }
+
   const depthKeyframes = d.depthRange ? [d.depthRange[0], d.depthRange[1], d.depthRange[0]] : null;
-  const flip = d.direction === 'rtl' ? ' scaleX(-1)' : '';
+  const flip = flipX === -1 ? ' scaleX(-1)' : '';
 
   const inner = (
     <div style={{ transform: `scale(${d.scale})${flip}`, transformOrigin: 'top left' }}>
@@ -791,15 +875,19 @@ function renderDrifter(
 
   return (
     <motion.div
-      key={key}
+      key={slotKey}
       className="drifter"
       role="button"
       tabIndex={-1}
       onClick={() => window.dispatchEvent(new Event('viewdeck:enter'))}
-      style={{ top: d.top, opacity: d.opacity, position: 'absolute' }}
-      initial={{ x: fromX, y: 0 }}
+      style={{ top: d.top, position: 'absolute' }}
+      initial={{ x: xFrom, y: 0, opacity: opacityKf[0] }}
       animate={outerAnimate}
-      transition={{ duration: d.duration, repeat: Infinity, ease: 'linear', delay: d.delay }}
+      transition={{
+        x: { duration, ease: 'linear', repeat: Infinity, delay: d.delay },
+        y: { duration, ease: 'linear', repeat: Infinity, delay: d.delay },
+        opacity: { duration, times: opacityTimes, ease: 'easeInOut', repeat: Infinity, delay: d.delay },
+      }}
     >
       <motion.div
         animate={{ y: [-d.bobAmp / 2, d.bobAmp / 2, -d.bobAmp / 2] }}
@@ -809,7 +897,7 @@ function renderDrifter(
         {depthKeyframes ? (
           <motion.div
             animate={{ scale: depthKeyframes }}
-            transition={{ duration: d.duration, repeat: Infinity, ease: 'easeInOut' }}
+            transition={{ duration, repeat: Infinity, ease: 'easeInOut' }}
             style={{ display: 'inline-block', transformOrigin: 'center center' }}
           >
             {inner}
@@ -824,12 +912,14 @@ export default function Aquarium() {
   const { fish: userFish } = useUserFish();
   return (
     <div className="aquarium" aria-hidden="true">
-      {DRIFTERS.map((d, i) =>
-        renderDrifter(d, `built-${i}`, <d.Cmp />),
-      )}
-      {userFish.map(f =>
-        renderDrifter(
-          {
+      {DRIFTERS.map((d, i) => (
+        <DrifterSlot key={`built-${i}`} slotKey={`built-${i}`} d={d} child={<d.Cmp />} />
+      ))}
+      {userFish.map(f => (
+        <DrifterSlot
+          key={f.id}
+          slotKey={f.id}
+          d={{
             top: f.top,
             scale: f.scale,
             opacity: f.opacity,
@@ -840,11 +930,10 @@ export default function Aquarium() {
             bobDur: f.bobDur,
             verticalDrift: f.verticalDrift,
             depthRange: f.depthRange,
-          },
-          f.id,
-          <img src={f.dataUrl} alt="" className="userFishImg" />,
-        ),
-      )}
+          }}
+          child={<img src={f.dataUrl} alt="" className="userFishImg" />}
+        />
+      ))}
     </div>
   );
 }
