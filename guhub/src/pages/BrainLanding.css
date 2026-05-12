@@ -253,20 +253,24 @@
 }
 
 /* ── Shimmer-swap word ────────────────────────────────── */
-/* Solid sage backdrop (no gradient — transparency was mixing with the
-   warm radial bg and reading brass). Three nth-of-type variants rotate
-   the shade so adjacent highlights aren't identical. */
+/* 100% opaque sage. No alpha so the warm radial bg + bgGrain overlay
+   blend can't tint it. !important to defeat any inherited rule. */
 .shimmer {
   display: inline;
   color: var(--bone);
   padding: 0 0.18em;
   border-radius: 2px;
-  background: rgba(60, 90, 50, 0.72);
+  background-color: #3c5a32 !important;
+  background-image: none !important;
   transition: opacity 0.35s ease, color 0.35s ease;
+  /* lift above bgGrain (which uses mix-blend-mode: overlay at z-index 2) */
+  position: relative;
+  z-index: 3;
+  isolation: isolate;
 }
-.shimmer:nth-of-type(3n+1) { background: rgba(60, 90, 50, 0.72); }
-.shimmer:nth-of-type(3n+2) { background: rgba(115, 145, 102, 0.60); }
-.shimmer:nth-of-type(3n+3) { background: rgba(50, 76, 42, 0.80); }
+.shimmer:nth-of-type(3n+1) { background-color: #3c5a32 !important; }
+.shimmer:nth-of-type(3n+2) { background-color: #4d6641 !important; }
+.shimmer:nth-of-type(3n+3) { background-color: #2e4226 !important; }
 .shimmer.in  { opacity: 1; }
 .shimmer.out { opacity: 0; }
 
