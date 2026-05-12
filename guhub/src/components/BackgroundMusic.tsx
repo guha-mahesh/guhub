@@ -196,11 +196,16 @@ const BackgroundMusicInner = () => {
 
   // Click anywhere = first-play. The click handler is the single source
   // of truth for first-play; we do not re-trigger from the build effect.
+  // sessionStorage 'music:paused' = '1' means the user explicitly paused
+  // before refreshing — honor that and don't auto-start on first click.
   useEffect(() => {
     const tryPlay = async () => {
       if (hasClickedRef.current) return;
       hasClickedRef.current = true;
       setNeedsInteraction(false);
+      try {
+        if (window.sessionStorage.getItem('music:paused') === '1') return;
+      } catch {}
       try {
         const np = await fetch(`${API}/api/spotify/now-playing`).then(r => r.json());
         if (np.isPlaying && np.uri) {
@@ -241,6 +246,8 @@ const BackgroundMusicInner = () => {
       }
       stopSource(true);
       setIsPlaying(false);
+      // persist pause across refreshes within the tab
+      try { window.sessionStorage.setItem('music:paused', '1'); } catch {}
     } else {
       // resume from saved offset if we have a buffer, otherwise (re)start
       const ctx = audioCtxRef.current;
@@ -267,6 +274,8 @@ const BackgroundMusicInner = () => {
       } else {
         await playIndex(queueIndexRef.current);
       }
+      // clear the pause flag now that the user has explicitly resumed
+      try { window.sessionStorage.removeItem('music:paused'); } catch {}
     }
   };
 

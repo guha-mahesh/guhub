@@ -23,6 +23,12 @@ export interface UserFish {
 }
 
 const STORAGE_KEY = 'aquarium:user-fish';
+// Same-tab sync: each useUserFish() instance has its own React state.
+// The browser 'storage' event only fires on OTHER tabs, so adding a
+// fish in the modal wouldn't update the Aquarium living next to it.
+// We dispatch a custom event after every persist so every instance
+// re-reads from localStorage.
+const UPDATE_EVENT = 'aquarium:user-fish:updated';
 export const MAX_USER_FISH = 3;
 
 function load(): UserFish[] {
@@ -34,7 +40,10 @@ function load(): UserFish[] {
 }
 
 function persist(fish: UserFish[]) {
-  try { window.localStorage.setItem(STORAGE_KEY, JSON.stringify(fish)); } catch {}
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(fish));
+    window.dispatchEvent(new Event(UPDATE_EVENT));
+  } catch {}
 }
 
 function rand(min: number, max: number) { return min + Math.random() * (max - min); }
@@ -58,13 +67,18 @@ function randomMotion(): Omit<UserFish, 'id' | 'dataUrl'> {
 export function useUserFish() {
   const [fish, setFish] = useState<UserFish[]>(load);
 
-  // sync across tabs
+  // sync — same-tab via custom event, cross-tab via storage event
   useEffect(() => {
+    const onLocalUpdate = () => setFish(load());
     const onStorage = (e: StorageEvent) => {
       if (e.key === STORAGE_KEY) setFish(load());
     };
+    window.addEventListener(UPDATE_EVENT, onLocalUpdate);
     window.addEventListener('storage', onStorage);
-    return () => window.removeEventListener('storage', onStorage);
+    return () => {
+      window.removeEventListener(UPDATE_EVENT, onLocalUpdate);
+      window.removeEventListener('storage', onStorage);
+    };
   }, []);
 
   const add = useCallback((dataUrl: string) => {
