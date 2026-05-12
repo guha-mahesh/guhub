@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useCrenshaw } from '../contexts/CrenshawContext';
 import { useMeta, metaLabel } from '../contexts/MetaContext';
+import { useIsMobile } from '../hooks/useIsMobile';
 import './TabNavigation.css';
 
 const BASE_TABS = [
@@ -15,13 +16,14 @@ const TabNavigation = () => {
   const location = useLocation();
   const { currentRoute: crenshawRoute } = useCrenshaw();
   const { level, crenshawFreed, optedOut } = useMeta();
+  const isMobile = useIsMobile();
   const prefix = level > 0 ? metaLabel(level).toLowerCase() + ' ' : '';
 
   return (
     <nav className="tabNavigation">
       <div className="tabContainer">
         {BASE_TABS.map((tab) => {
-          const hasCrenshaw = !crenshawFreed && !optedOut && tab.path === crenshawRoute && tab.path !== location.pathname;
+          const hasCrenshaw = !crenshawFreed && !optedOut && !isMobile && tab.path === crenshawRoute && tab.path !== location.pathname;
           const label = `${prefix}${tab.base}`;
           const shortLabel = `${prefix}${tab.short}`;
           return (
