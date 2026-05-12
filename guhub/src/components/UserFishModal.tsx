@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useUserFish, MAX_USER_FISH } from '../hooks/useUserFish';
+import { useUserFish } from '../hooks/useUserFish';
 import { processFishImage } from '../utils/processFishImage';
 import './UserFishModal.css';
 
