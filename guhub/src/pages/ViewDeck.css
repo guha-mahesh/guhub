@@ -9,7 +9,7 @@
 .viewDeckLabel {
   position: fixed;
   top: 96px;
-  left: 2rem;
+  right: 2rem; /* moved off the left side — the music play button lives there */
   font-family: 'IBM Plex Mono', 'Special Elite', monospace;
   font-size: 0.78rem;
   color: var(--brass, #b08d57);
