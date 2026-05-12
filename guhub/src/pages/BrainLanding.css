@@ -251,27 +251,20 @@
 }
 
 /* ── Shimmer-swap word ────────────────────────────────── */
-/* Sage backdrop because the dossier text is about Guha, not Crenshaw.
-   Higher opacity than before — at 0.16 the warm radial bg bleeds through
-   and reads brass. Three nth-of-type variants rotate through sage / sage-
-   bright / sage-deep so adjacent highlighted words don't sit in the
-   exact same tint. */
+/* Solid sage backdrop (no gradient — transparency was mixing with the
+   warm radial bg and reading brass). Three nth-of-type variants rotate
+   the shade so adjacent highlights aren't identical. */
 .shimmer {
   display: inline;
   color: var(--bone);
-  padding: 0 0.15em;
-  border-radius: 1px;
+  padding: 0 0.18em;
+  border-radius: 2px;
+  background: rgba(60, 90, 50, 0.72);
   transition: opacity 0.35s ease, color 0.35s ease;
 }
-.shimmer:nth-of-type(3n+1) {
-  background: linear-gradient(120deg, transparent 0%, rgba(115, 145, 102, 0.38) 40%, transparent 80%);
-}
-.shimmer:nth-of-type(3n+2) {
-  background: linear-gradient(120deg, transparent 0%, rgba(167, 196, 154, 0.32) 40%, transparent 80%);
-}
-.shimmer:nth-of-type(3n+3) {
-  background: linear-gradient(120deg, transparent 0%, rgba(77, 102, 65, 0.55) 40%, transparent 80%);
-}
+.shimmer:nth-of-type(3n+1) { background: rgba(60, 90, 50, 0.72); }
+.shimmer:nth-of-type(3n+2) { background: rgba(115, 145, 102, 0.60); }
+.shimmer:nth-of-type(3n+3) { background: rgba(50, 76, 42, 0.80); }
 .shimmer.in  { opacity: 1; }
 .shimmer.out { opacity: 0; }
 
