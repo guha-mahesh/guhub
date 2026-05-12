@@ -19,7 +19,11 @@ export default function UserFishAddButton() {
       >
         + fish
       </button>
-      <UserFishModal open={open} onClose={() => setOpen(false)} />
+      <UserFishModal open={open} onClose={() => {
+        setOpen(false)
+        window.location.reload()
+        
+        }} />
     </>
   );
 }
