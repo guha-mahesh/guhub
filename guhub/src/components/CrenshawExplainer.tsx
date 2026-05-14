@@ -61,7 +61,7 @@ export default function CrenshawExplainer() {
                 </button>
               ) : (
                 <button className="explainerBtn explainerBtnQuiet" onClick={handleOptOut}>
-                  no thanks, hide the mini-game
+                  I'd rather not play, hide the mini-game
                 </button>
               )}
               <button className="explainerBtn" onClick={closeExplainer}>close</button>
