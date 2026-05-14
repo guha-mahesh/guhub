@@ -9,8 +9,8 @@ const BASE_TABS = [
   { path: '/projects',  short: 'projects',  base: 'projects'  },
   { path: '/about',     short: 'resume',    base: 'resume'    },
   { path: '/log',       short: 'log',       base: 'log'       },
-  { path: '/listening', short: 'listening', base: 'listening' },
   { path: '/aquarium',  short: 'aquarium',  base: 'aquarium'  },
+  { path: '/listening', short: 'listening', base: 'listening' },
 ];
 
 const TabNavigation = () => {
