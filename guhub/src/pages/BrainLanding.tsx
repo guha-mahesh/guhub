@@ -24,7 +24,7 @@ const ROOT: Frag[] = [
   { t: 'sh', vs: ['between stints at', 'on co-op from', 'still enrolled at', 'on co-op out of'] },
   { t: 'txt', v: ' ' },
   { t: 'sh', vs: ['a co-op-shaped university', 'Northeastern', 'a school in Boston', 'a New England school'] },
-  { t: 'txt', v: '. Before that, a teenager in Sugar Land. I keep ' },
+  { t: 'txt', v: '. Before that, a teenager in Sugar Land, Tx. I keep ' },
   { t: 'sh', vs: ['a list', 'a folder', 'an ongoing tally', 'a small ledger'] },
   { t: 'txt', v: ' of things I would ' },
   { t: 'sh', vs: ['argue with', 'fight', 'make a small enemy of', 'talk too long with'] },
