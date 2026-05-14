@@ -140,7 +140,19 @@ const BackgroundMusicInner = () => {
     // a later call may have superseded us while we were awaiting
     if (loadingUriRef.current !== track.uri) return;
 
-    stopSource(true);
+    // Swap source: detach the OLD source's onended so its end (whether
+    // natural or stop-induced) can't fire any handler. Don't use
+    // stopSource(true) here — that sets intentionalStopRef=true, which
+    // would persist past the new source's start and short-circuit the
+    // new source's natural-end auto-advance.
+    const old = sourceRef.current;
+    if (old) {
+      try { old.onended = null; } catch {}
+      try { old.stop(); } catch {}
+      try { old.disconnect(); } catch {}
+      sourceRef.current = null;
+    }
+    intentionalStopRef.current = false;
     bufferRef.current = buffer;
     pausedOffsetRef.current = 0;
 
