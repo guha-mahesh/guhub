@@ -19,7 +19,6 @@ import MiuPuzzle from "./components/MiuPuzzle";
 import ResetCrenshawModal from "./components/ResetCrenshawModal";
 import CrenshawExplainer from "./components/CrenshawExplainer";
 import CrenshawOptInButton from "./components/CrenshawOptInButton";
-import ViewDeckTransition from "./components/ViewDeckTransition";
 import BrainLanding from "./pages/BrainLanding";
 import ProjectsTab from "./pages/ProjectsTab";
 import AboutTab from "./pages/AboutTab";
@@ -37,11 +36,6 @@ function App() {
         <InventoryProvider>
         <CrenshawProvider>
           <SiteBackdrop />
-          <ViewDeckTransition />
-          {/* Everything below is "chrome" + the current route. Wrapped so
-              a single CSS rule can animate it all (fade + slide down)
-              during the view_deck enter transition. SiteBackdrop and
-              the transition controller stay outside the wrapper. */}
           <div className="appChrome">
             <TabNavigation />
             <Sidebar />
@@ -68,6 +62,7 @@ function App() {
               <Route path="/log" element={<BlogPage />} />
               <Route path="/blog" element={<BlogPage />} />
               <Route path="/listening" element={<QueuePage />} />
+              <Route path="/aquarium" element={<ViewDeck />} />
               <Route path="/view_deck" element={<ViewDeck />} />
             </Routes>
           </div>

@@ -73,7 +73,7 @@ export default function ViewDeck() {
 
   return (
     <div className="viewDeck">
-      <span className="viewDeckLabel">{prefix}view deck</span>
+      <span className="viewDeckLabel">{prefix}aquarium</span>
       <CoralReef />
       <UserFishAddButton />
       <div ref={flashlightRef} className="viewDeckFlashlight" />

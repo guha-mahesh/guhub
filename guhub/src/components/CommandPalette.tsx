@@ -28,7 +28,7 @@ const CommandPalette = () => {
     { id: 'nav-log', label: 'Go to log', action: () => navigate('/log'), category: 'navigate' },
     { id: 'nav-listening', label: 'Go to listening', action: () => navigate('/listening'), category: 'navigate' },
     // hidden: not in TabNavigation, only discoverable through here
-    { id: 'nav-view-deck', label: 'Go to view deck', sublabel: 'idle aquarium space', action: () => navigate('/view_deck'), category: 'misc' },
+    { id: 'nav-aquarium', label: 'Go to aquarium', sublabel: 'idle aquarium space', action: () => navigate('/aquarium'), category: 'navigate' },
     // Projects
     { id: 'proj-bioclock', label: 'BioClock', sublabel: 'CNN · satellite · biodiversity prediction', action: () => window.open('https://github.com/guha-mahesh/BioClock', '_blank'), category: 'project' },
     { id: 'proj-flightscope', label: 'FlightScope', sublabel: 'birdwatching · Poisson models · Flask', action: () => window.open('https://github.com/guha-mahesh/FlightScope', '_blank'), category: 'project' },

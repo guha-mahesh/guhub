@@ -877,45 +877,6 @@ function DrifterSlot({
     <motion.div
       key={slotKey}
       className="drifter"
-      role="button"
-      tabIndex={-1}
-      onClick={(e) => {
-        // The drifter SVG path captured this click, but there may be a
-        // real interactive page element underneath (a project node, a
-        // button, a link). Walk the stacked elements at the click point;
-        // if the first non-aquarium element looks interactive — by tag,
-        // role, known class, OR computed cursor: pointer — forward the
-        // click there and skip view_deck. Only if the first non-aquarium
-        // hit is a non-interactive container do we fire view_deck.
-        const els = document.elementsFromPoint(e.clientX, e.clientY);
-        for (const el of els) {
-          if (el === e.currentTarget) continue;
-          if (el.closest?.('.aquarium')) continue;
-          const explicit = el.closest(
-            'a, button, input, select, textarea, label, [role="button"], [role="link"], [onclick], .clickable, .tab, .nodeCircle, .nodeLabel, .projectGroup, .treeCardLink, .interestTag, .floatingButton, .musicToggle, .moonAnchorClickable, .realTalkButton, .sidebarToggle, .crenshawAtPeace, .userFishAddBtn, .crenshawOptIn',
-          );
-          let cursorPointer = false;
-          try { cursorPointer = getComputedStyle(el as Element).cursor === 'pointer'; } catch {}
-          if (explicit || cursorPointer) {
-            const target = (explicit ?? el) as HTMLElement;
-            target.dispatchEvent(
-              new MouseEvent('click', {
-                bubbles: true,
-                cancelable: true,
-                clientX: e.clientX,
-                clientY: e.clientY,
-              }),
-            );
-            return;
-          }
-          // First non-aquarium hit isn't interactive — that means the
-          // click is in genuinely empty page space (just creature paint
-          // over a page background container). Fall through and fire
-          // view_deck.
-          break;
-        }
-        window.dispatchEvent(new Event('viewdeck:enter'));
-      }}
       style={{ top: d.top, position: 'absolute' }}
       initial={{ x: xFrom, y: 0, opacity: opacityKf[0] }}
       animate={outerAnimate}

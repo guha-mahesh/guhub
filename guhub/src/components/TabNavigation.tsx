@@ -10,6 +10,7 @@ const BASE_TABS = [
   { path: '/about',     short: 'resume',    base: 'resume'    },
   { path: '/log',       short: 'log',       base: 'log'       },
   { path: '/listening', short: 'listening', base: 'listening' },
+  { path: '/aquarium',  short: 'aquarium',  base: 'aquarium'  },
 ];
 
 const TabNavigation = () => {

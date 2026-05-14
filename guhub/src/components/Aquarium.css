@@ -16,41 +16,9 @@
 .drifter {
   width: max-content;
   will-change: transform;
-  /* Tight hitbox: the wrapper div itself does NOT receive pointer events,
-     so empty rectangular space around the SVG is "see-through". Inside,
-     <svg> elements default to pointer-events: visiblePainted which only
-     fires on actually-painted pixels (filled paths, stroked lines). User
-     <img> fish still register on their bounding box — there's no
-     transparency-aware alternative for raster images without canvas. */
+  /* Fully decorative — never receives pointer events. Aquarium creatures
+     are background ambience; the aquarium tab is reached via the tab nav. */
   pointer-events: none;
-  cursor: pointer;
-}
-.drifter svg {
-  pointer-events: auto;
-}
-.drifter img {
-  pointer-events: auto;
-}
-/* hover-highlight on any drifter EXCEPT when on /view_deck (handled
-   below — view_deck already glows each creature) */
-body:not(.viewDeckMode) .drifter:hover {
-  filter: drop-shadow(0 0 14px rgba(245, 180, 80, 0.55))
-          drop-shadow(0 0 26px rgba(176, 141, 87, 0.3));
-  transition: filter 0.2s ease;
-}
-/* On view_deck the click affordance is gone (you're already here). */
-body.viewDeckMode .drifter { cursor: default; }
-
-/* Mobile: aquarium creatures are fully non-interactable so a stray tap
-   on a drifting fish never triggers the view_deck transition (and never
-   eats a tap meant for the project card or anything else underneath). */
-@media (max-width: 768px) {
-  .drifter,
-  .drifter svg,
-  .drifter img {
-    pointer-events: none !important;
-    cursor: default !important;
-  }
 }
 
 /* ── creature line styles ──────────────────────────────── */
