@@ -173,7 +173,7 @@ const top25: AlbumListConfig = {
       title: 'Merriweather Post Pavilion',
       year: 2009,
       review:
-        "Yea this is just the best psychedelia album by a couple magnitudes. This album is beyond incredible and to some extent perfect. Every single song is practically equal in quality. It's perfectly consistent throughout the entire album to almost a creepy extent & it always feels euphoric to listen through. Also the album cover is sick.",
+        "Yea this is just the best psychedelia album by a couple magnitudes. This album is beyond incredible and to some extent perfect. Every single song is practically equal in quality. It's perfectly consistent throughout the entire album almost to a creepy extent & it always feels euphoric to listen through. Also the album cover is sick.",
       spotifyEmbed: 'https://open.spotify.com/embed/track/6dRAwuJNZ79vGXvcYuPaM8?utm_source=generator',
     },
     {
