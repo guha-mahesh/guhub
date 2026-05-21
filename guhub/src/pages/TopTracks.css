@@ -127,6 +127,18 @@
   font-family: Georgia, serif;
 }
 
+.albumYear {
+  margin-left: 0.7rem;
+  padding-left: 0.7rem;
+  border-left: 1px solid rgba(115, 145, 102, 0.3);
+  font-size: 0.7em;
+  font-style: normal;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.1em;
+  color: rgba(115, 145, 102, 0.5);
+  vertical-align: middle;
+}
+
 .albumReview {
   color: rgba(115, 145, 102, 0.85);
   font-size: 1.05rem;

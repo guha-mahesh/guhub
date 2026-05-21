@@ -13,6 +13,13 @@ type View = 'list' | 'post';
 // Static items pinned at the top of the log. Edit this list to add more.
 const PINNED: Array<{ to: string; date: string; title: string; tags: string[]; excerpt?: string }> = [
   {
+    to: '/music/2',
+    date: 'all time',
+    title: 'Top 25 Albums (All Time)',
+    tags: ['music', 'list'],
+    excerpt: 'the ones I keep coming back to',
+  },
+  {
     to: '/music/1',
     date: '2025',
     title: 'Top Albums 2025',
