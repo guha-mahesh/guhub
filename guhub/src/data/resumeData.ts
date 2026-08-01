@@ -56,7 +56,8 @@ export const resumeData: ResumeData = {
       date: "Dec 2025 – Sep 2026",
       globePinId: "sf",
       bullets: [
-        "Designed **entity resolution for the core memory API**: a KNN classifier that identifies who appears in a memory without their name being mentioned, running **353x better than random chance**; now in production",
+        "Led the **entity prediction** work. Given a search query, figure out which people it involves. I benchmarked linear and RBF SVMs, label propagation, and retrieval voting over a **19,393-memory, 4,856-entity** knowledge graph, scoring against **1,367 real user feedback documents**. Retrieval voting won at **73.3% top-1** and **55.6% on hard queries** where the person's name never appears in the query text. Both numbers undercount, since ground truth only covered people attached to memories the user had already rated, so a right answer outside that set scored as a miss",
+        "Sole author of the technical report. Embeddings turned out to carry topic and very little about who was involved, so the system that won uses them only to find similar memories and then reads the people off whatever comes back",
         "Built **five clients on top of that API** (iOS, macOS, Chrome extension, web, Meta Ray-Bans) as the surfaces investors actually held during the seed raise; the round closed, the names and the number go public soon",
         "Contributed to a research blog post grounded in a real study on what people need to recall in daily life; helped collect and analyze a **1,940-question dataset from a 134-person Prolific study** across 18 memory categories",
         "Shipped the **macOS and iOS apps end-to-end in Swift**: wrote an algorithm that detects to-do items from screen context and cross-references them with active work to passively track task progress; **cut API costs by 75%** through smart batching and deduplication",
