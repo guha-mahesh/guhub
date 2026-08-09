@@ -247,14 +247,17 @@
 .lpGhostBtn:hover { border-color: #444; color: #eee; }
 
 /* ── right: collapsible tracklist ─────────────────────────── */
+/* clears .casperBanner, fixed at top 70px / right 1.6rem on every
+   page but the landing, which would otherwise sit on the toggle */
 .lpSide {
   justify-self: end;
   align-self: start;
+  margin-top: 6rem;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 0.5rem;
-  max-height: 100%;
+  max-height: calc(100% - 6rem);
   min-height: 0;
   width: 320px;
 }
@@ -310,14 +313,22 @@
 .lpTrackTime { font-size: 0.56rem; color: #333; flex-shrink: 0; }
 
 /* ── caption strip ────────────────────────────────────────── */
-/* bottom-left belongs to the fixed contact.exe toggle (z-index 1001),
-   so the caption sits bottom-right and clears it entirely */
+/* The bottom band is fully spoken for by fixed, app-wide chrome:
+     bottom-left  .sidebarToggle (contact.exe)  bottom 2rem  left 2rem
+     bottom-right .cmdPaletteHint               bottom 24px  right 24px
+                  CrenshawExplainer btn         bottom 24px  right 70px
+                  UserFishAddButton             bottom 24px  right 110px
+                  MetaNpcs berry                bottom 64px  right 24px
+                  AdminPanel toggle             bottom 2rem  right 8rem
+   Only dead centre is free, so the caption goes there with hard
+   clearance on both sides. It is hover-driven, so it is dropped
+   entirely on touch widths where nothing can hover anyway. */
 .lpFoot {
   position: absolute;
-  right: 2.5rem;
-  bottom: 1.1rem;
-  left: 14rem;
-  text-align: right;
+  left: 13rem;
+  right: 15rem;
+  bottom: 1.4rem;
+  text-align: center;
   font-size: 0.66rem;
   letter-spacing: 0.04em;
   white-space: nowrap;
@@ -362,9 +373,10 @@
     align-items: start;
     padding: 1.25rem;
   }
-  .lpSide { grid-row: 1; justify-self: end; width: min(320px, 100%); }
+  .lpSide { grid-row: 1; justify-self: end; width: min(320px, 100%); margin-top: 4.5rem; max-height: calc(100% - 4.5rem); }
   .lpMain { grid-row: 2; align-self: end; padding-bottom: 4rem; }
   .lpTitle { font-size: 1.8rem; }
-  .lpFoot { left: 10rem; right: 1.25rem; bottom: 0.6rem; }
+  /* no hover on touch, and the bottom band is wall-to-wall chrome here */
+  .lpFoot { display: none; }
   .lpResults { max-height: 28vh; }
 }
