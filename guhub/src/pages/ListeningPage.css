@@ -322,6 +322,7 @@
   pointer-events: none;
 }
 
+.footPlay { color: #1db954; }
 .footAlbum { color: #d8d8d8; }
 .footSep { color: #3a3a3a; }
 .footArtist { color: var(--sage-bright); }

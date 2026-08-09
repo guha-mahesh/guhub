@@ -78,17 +78,70 @@ export default function ListeningPage() {
   const [recent, setRecent] = useState<TrackResult[]>([]);
   const [recentLoading, setRecentLoading] = useState(true);
   const [nowPlaying, setNowPlaying] = useState<TrackResult | null>(null);
-  const [npLoaded, setNpLoaded] = useState(false);
   const [hovered, setHovered] = useState<Cover | null>(null);
+  const [previewOn, setPreviewOn] = useState(false);
   const [listOpen, setListOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // one shared element for the drum, so a new hover cuts off the last one
+  const drumAudioRef = useRef<HTMLAudioElement | null>(null);
+  const hoverToken = useRef(0);
+  const primed = useRef(false);
+
+  const getDrumAudio = () => {
+    if (!drumAudioRef.current) {
+      const a = new Audio();
+      a.volume = 0.55;
+      a.onended = () => setPreviewOn(false);
+      drumAudioRef.current = a;
+    }
+    return drumAudioRef.current;
+  };
+
+  // browsers block audio until the page has been interacted with, so spend the
+  // first click unlocking the element
+  const prime = () => {
+    if (primed.current) return;
+    primed.current = true;
+    const a = getDrumAudio();
+    a.muted = true;
+    a.play().catch(() => {}).finally(() => { a.pause(); a.muted = false; });
+  };
+
+  const hoverCover = async (c: Cover | null) => {
+    setHovered(c);
+    const token = ++hoverToken.current;
+    const a = getDrumAudio();
+    a.pause();
+    setPreviewOn(false);
+    if (!c) return;
+
+    let url = c.previewUrl ?? null;
+    if (!url && c.uri) {
+      const id = c.uri.replace('spotify:track:', '');
+      if (!(id in previewCache)) {
+        try {
+          const d = await fetch(`${API}/api/spotify/preview?id=${id}`).then(r => r.json());
+          previewCache[id] = d.previewUrl ?? '';
+        } catch { previewCache[id] = ''; }
+      }
+      url = previewCache[id] || null;
+    }
+    // hover moved on while we were fetching
+    if (!url || token !== hoverToken.current) return;
+
+    a.src = url;
+    a.currentTime = 0;
+    a.play().then(() => setPreviewOn(true)).catch(() => {});
+  };
+
+  useEffect(() => () => { drumAudioRef.current?.pause(); }, []);
 
   useEffect(() => {
     const fetchNP = () => fetch(`${API}/api/spotify/now-playing`)
       .then(r => r.json())
       .then(d => d.isPlaying ? setNowPlaying(d) : setNowPlaying(null))
-      .catch(() => {})
-      .finally(() => setNpLoaded(true));
+      .catch(() => {});
     fetchNP();
     const interval = setInterval(fetchNP, 30_000);
     return () => clearInterval(interval);
@@ -110,7 +163,14 @@ export default function ListeningPage() {
       const key = `${t.album}|${t.artist}`.toLowerCase();
       if (!t.albumArt || seen.has(key)) continue;
       seen.add(key);
-      out.push({ album: t.album, artist: t.artist, art: t.albumArt, url: t.spotifyUrl });
+      out.push({
+        album: t.album,
+        artist: t.artist,
+        art: t.albumArt,
+        url: t.spotifyUrl,
+        uri: t.uri,
+        previewUrl: t.previewUrl ?? null,
+      });
     }
     return out;
   }, [recent]);
@@ -170,23 +230,27 @@ export default function ListeningPage() {
   };
 
   const footLeft = hovered
-    ? <><span className="footAlbum">{hovered.album}</span><span className="footSep"> / </span><span className="footArtist">{hovered.artist}</span></>
+    ? (
+      <>
+        {previewOn && <span className="footPlay">▶ </span>}
+        <span className="footAlbum">{hovered.album}</span>
+        <span className="footSep"> / </span>
+        <span className="footArtist">{hovered.artist}</span>
+      </>
+    )
     : <span className="footIdle">// {covers.length} albums, deduped, most recent first</span>;
 
   return (
-    <div className="lp">
-      <CoverDrum covers={covers} dimmed={queueOpen} onHover={setHovered} />
+    <div className="lp" onPointerDown={prime}>
+      <CoverDrum covers={covers} dimmed={queueOpen} onHover={hoverCover} />
       <div className="lpVeil" />
 
       <div className="lpHud">
         {/* ── left: state + queue ── */}
         <div className="lpMain">
-          <p className="lpLabel">
-            {!npLoaded ? '> checking' : queueOpen ? '> queue open' : '> queue closed'}
-          </p>
-
           {queueOpen && nowPlaying ? (
             <>
+              <p className="lpLabel">&gt; queue open</p>
               <div className="lpNow">
                 {nowPlaying.albumArt && <img src={nowPlaying.albumArt} alt="" className="lpNowArt" />}
                 <div className="lpNowText">
@@ -263,14 +327,8 @@ export default function ListeningPage() {
               )}
             </>
           ) : (
-            <>
-              <h1 className="lpTitle">nothing playing</h1>
-              <p className="lpSub">
-                the queue needs a live device on the other end, so it opens back up when i put
-                something on. until then, everything here is what's been spinning.
-              </p>
-              {queueState === 'error' && message && <p className="lpError">{message}</p>}
-            </>
+            // nothing playing: no copy, no chrome, just the covers
+            queueState === 'error' && message ? <p className="lpError">{message}</p> : null
           )}
         </div>
 

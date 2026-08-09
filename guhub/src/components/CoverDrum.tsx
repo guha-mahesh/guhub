@@ -6,6 +6,8 @@ export interface Cover {
   artist: string;
   art: string;
   url: string;
+  uri?: string;
+  previewUrl?: string | null;
 }
 
 // deterministic 0..1 per index, so covers hold their places across renders
