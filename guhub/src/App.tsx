@@ -25,7 +25,7 @@ import AboutTab from "./pages/AboutTab";
 import MusicLanding from "./pages/MusicLanding";
 import TopTracks from "./pages/TopTracks";
 import BlogPage from "./pages/BlogPage";
-import QueuePage from "./pages/QueuePage";
+import ListeningPage from "./pages/ListeningPage";
 import ViewDeck from "./pages/ViewDeck";
 
 function App() {
@@ -61,7 +61,7 @@ function App() {
               <Route path="/music/:id" element={<TopTracks />} />
               <Route path="/log" element={<BlogPage />} />
               <Route path="/blog" element={<BlogPage />} />
-              <Route path="/listening" element={<QueuePage />} />
+              <Route path="/listening" element={<ListeningPage />} />
               <Route path="/aquarium" element={<ViewDeck />} />
               <Route path="/view_deck" element={<ViewDeck />} />
             </Routes>
