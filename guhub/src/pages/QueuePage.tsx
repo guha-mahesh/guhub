@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
+import AlbumRing, { type Cover } from '../components/AlbumRing';
 import './QueuePage.css';
 
 const previewCache: Record<string, string> = {};
@@ -78,25 +79,43 @@ export default function QueuePage() {
   const [recent, setRecent] = useState<TrackResult[]>([]);
   const [recentLoading, setRecentLoading] = useState(true);
   const [nowPlaying, setNowPlaying] = useState<TrackResult | null>(null);
+  const [npLoaded, setNpLoaded] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const fetchNP = () => fetch(`${API}/api/spotify/now-playing`)
       .then(r => r.json())
       .then(d => d.isPlaying ? setNowPlaying(d) : setNowPlaying(null))
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setNpLoaded(true));
     fetchNP();
     const interval = setInterval(fetchNP, 30_000);
     return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
-    fetch(`${API}/api/spotify/recent?limit=15`)
+    fetch(`${API}/api/spotify/recent?limit=50`)
       .then(r => r.json())
       .then(d => setRecent(d.tracks ?? []))
       .catch(() => {})
       .finally(() => setRecentLoading(false));
   }, []);
+
+  // one cover per album, in the order they were last heard
+  const covers = useMemo<Cover[]>(() => {
+    const seen = new Set<string>();
+    const out: Cover[] = [];
+    for (const t of recent) {
+      const key = `${t.album}|${t.artist}`.toLowerCase();
+      if (!t.albumArt || seen.has(key)) continue;
+      seen.add(key);
+      out.push({ album: t.album, artist: t.artist, art: t.albumArt, url: t.spotifyUrl });
+    }
+    return out;
+  }, [recent]);
+
+  // the queue only exists while a device is awake; nothing to queue onto otherwise
+  const queueOpen = nowPlaying !== null;
 
   const search = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -131,6 +150,8 @@ export default function QueuePage() {
         const data = await r.json();
         setQueueState('error');
         setMessage(data.error ?? 'queue failed');
+        // device went to sleep between page load and submit: close the queue
+        if (r.status === 403 || r.status === 404) setNowPlaying(null);
       }
     } catch {
       setQueueState('error');
@@ -154,12 +175,33 @@ export default function QueuePage() {
         {/* ── left: queue ── */}
         <div className="queueLeft">
           <div className="queueHeader">
-            <p className="queueLabel">&gt; queue a song</p>
-            <h1 className="queueTitle">add to my spotify</h1>
-            <p className="queueSub">i'm listening. search for anything and it'll land in my queue.</p>
+            <p className="queueLabel">
+              {queueOpen ? '> queue a song' : '> queue closed'}
+            </p>
+            <h1 className="queueTitle">
+              {queueOpen ? 'add to my spotify' : 'nothing playing'}
+            </h1>
+            <p className="queueSub">
+              {queueOpen
+                ? "i'm listening. search for anything and it'll land in my queue."
+                : "the queue needs a live device on the other end, so it opens back up when i put something on. here's what's been spinning lately."}
+            </p>
           </div>
 
-          {queueState === 'success' && queued ? (
+          {!npLoaded ? (
+            <p className="recentEmpty">checking...</p>
+          ) : !queueOpen ? (
+            <div className="queueClosed">
+              {queueState === 'error' && message && <p className="queueError">{message}</p>}
+              {recentLoading ? (
+                <p className="recentEmpty">loading...</p>
+              ) : covers.length === 0 ? (
+                <p className="recentEmpty">// nothing yet</p>
+              ) : (
+                <AlbumRing covers={covers} />
+              )}
+            </div>
+          ) : queueState === 'success' && queued ? (
             <div className="queueSuccess">
               <div className="successTrack">
                 {queued.albumArt && <img src={queued.albumArt} alt="" className="successArt" />}
@@ -252,7 +294,7 @@ export default function QueuePage() {
             <p className="recentEmpty">// nothing yet</p>
           ) : (
             <div className="recentList">
-              {recent.map((track, i) => (
+              {recent.slice(0, 15).map((track, i) => (
                 <div key={i} className="recentRow">
                   {track.albumArt && <img src={track.albumArt} alt="" className="recentArt" />}
                   <div className="recentText">

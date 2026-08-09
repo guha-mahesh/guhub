@@ -1,0 +1,113 @@
+/* ── rotating album ring ──────────────────────────────────
+   covers sit on a wobbling cylinder, tilted at odd angles,
+   filtered down to the site's greens until you hover one.   */
+
+.ringWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ringScene {
+  position: relative;
+  height: 320px;
+  perspective: 780px;
+  perspective-origin: 50% 42%;
+  animation: ringTilt 27s ease-in-out infinite alternate;
+  overflow: hidden;
+  border: 1px solid #111;
+  background:
+    radial-gradient(ellipse at 50% 45%, rgba(115, 145, 102, 0.055), transparent 62%),
+    #060606;
+}
+
+@keyframes ringTilt {
+  from { perspective-origin: 42% 34%; }
+  to   { perspective-origin: 58% 56%; }
+}
+
+.ringInner {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transform: rotateX(-8deg);
+  animation: ringSpin 58s linear infinite;
+}
+
+@keyframes ringSpin {
+  from { transform: rotateX(-8deg) rotateY(0deg); }
+  to   { transform: rotateX(-8deg) rotateY(360deg); }
+}
+
+.ringScene:hover .ringInner { animation-play-state: paused; }
+
+.ringCover {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: block;
+  transform-style: preserve-3d;
+  backface-visibility: visible;
+  transition: opacity 0.25s;
+}
+
+.ringCover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  box-shadow: 0 0 0 1px rgba(115, 145, 102, 0.16), 0 8px 24px rgba(0, 0, 0, 0.55);
+  transition: box-shadow 0.3s;
+  /* each cover breathes on its own offset, inherited from the inline delay */
+  animation: coverBreathe 13s ease-in-out infinite alternate;
+  animation-delay: inherit;
+}
+
+@keyframes coverBreathe {
+  from { filter: grayscale(1) brightness(0.46) contrast(1.3) sepia(0.5) hue-rotate(48deg) saturate(1.5); }
+  to   { filter: grayscale(1) brightness(0.78) contrast(1.15) sepia(0.45) hue-rotate(48deg) saturate(1.2); }
+}
+
+.ringCover:hover img,
+.ringCover.lit img {
+  animation: none;
+  filter: grayscale(0.15) brightness(1) contrast(1.05) saturate(1.05);
+  box-shadow: 0 0 0 1px var(--sage-bright, #a7c49a), 0 10px 30px rgba(0, 0, 0, 0.7);
+}
+
+.ringCover:hover,
+.ringCover.lit { opacity: 1 !important; }
+
+/* fade the box edges so covers dissolve instead of clipping */
+.ringScene::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, #060606 0%, transparent 14%, transparent 86%, #060606 100%);
+}
+
+.ringCaption {
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  min-height: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ringCapAlbum { color: #d8d8d8; }
+.ringCapSep { color: #3a3a3a; }
+.ringCapArtist { color: var(--sage-bright, #a7c49a); }
+.ringCapIdle { color: #2f2f2f; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ringInner,
+  .ringScene,
+  .ringCover img { animation: none; }
+  .ringCover img { filter: grayscale(1) brightness(0.7) contrast(1.2) sepia(0.45) hue-rotate(48deg) saturate(1.3); }
+}
+
+@media (max-width: 768px) {
+  .ringScene { height: 240px; perspective: 620px; }
+}

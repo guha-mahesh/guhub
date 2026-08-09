@@ -250,6 +250,9 @@
 
 .queueAgain:hover { border-color: #444; color: #ccc; }
 
+/* ── closed queue: album ring stands in for the search box ── */
+.queueClosed { display: flex; flex-direction: column; gap: 0.75rem; }
+
 /* ── right: recently played ──────────────────────────── */
 .recentRight { padding: 2.5rem; }
 
