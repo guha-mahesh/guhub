@@ -1,4 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { renderCover } from './_cover';
 
 async function getAccessToken(): Promise<string> {
   const basic = Buffer.from(`${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`).toString('base64');
@@ -89,6 +90,34 @@ async function queue(req: VercelRequest, res: VercelResponse) {
   }
 }
 
+// The Xteink reader polls this. It sends back the current album art already
+// dithered to the panel's 1-bit 528x792 format, so the device only has to
+// write bytes to the screen - it has no room to decode or resample a JPEG.
+async function cover(res: VercelResponse) {
+  try {
+    const token = await getAccessToken();
+    const r = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (r.status === 204 || r.status > 400) return res.status(404).json({ error: 'nothing playing' });
+
+    const data = await r.json();
+    const art = data?.item?.album?.images?.[0]?.url;
+    if (!art) return res.status(404).json({ error: 'no art' });
+
+    const bmp = await renderCover(art);
+    res.setHeader('Content-Type', 'image/bmp');
+    res.setHeader('Content-Length', String(bmp.length));
+    // Rendering runs per request, and the device polls; a short cache keeps a
+    // burst of polls from re-rendering the same cover repeatedly, while still
+    // turning over fast enough to follow a track change.
+    res.setHeader('Cache-Control', 'public, max-age=10');
+    return res.status(200).send(bmp);
+  } catch (e: any) {
+    return res.status(500).json({ error: e.message });
+  }
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -97,6 +126,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const action = req.query.action;
   if (action === 'now-playing') return nowPlaying(res);
+  if (action === 'cover') return cover(res);
   if (action === 'recent') return recent(req, res);
   if (action === 'queue') return queue(req, res);
   return res.status(400).json({ error: 'Invalid action' });
