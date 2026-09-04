@@ -59,29 +59,6 @@
   z-index: 2;
 }
 
-.rat {
-  position: fixed;
-  left: 18px;
-  bottom: 14px;
-  width: clamp(120px, 15vw, 190px);
-  height: auto;
-  opacity: 0.95;
-  pointer-events: none;
-  z-index: 2;
-}
-
-.dancer {
-  position: fixed;
-  right: 5vw;
-  top: 28%;
-  width: clamp(120px, 15vw, 230px);
-  height: auto;
-  display: block;
-  transform: rotate(4deg);
-  pointer-events: none;
-  z-index: 2;
-}
-
 .wheel {
   position: fixed;
   right: -70px;
@@ -184,22 +161,18 @@
 .watcher {
   position: fixed;
   left: 50%;
-  bottom: 14vh;
+  bottom: 20vh;
   transform: translateX(-50%);
-  height: 76vh;
+  height: 88vh;
   width: auto;
-  opacity: 0.34;
+  opacity: 0.5;
   z-index: 0;
   pointer-events: none;
-  /* the window beam survived the key at the top; dissolve it instead of
-     cutting, so he fades out of the dark rather than ending on a hard edge */
-  -webkit-mask-image: linear-gradient(to bottom, transparent 8%, rgba(0,0,0,0.35) 26%, #000 44%);
-  mask-image: linear-gradient(to bottom, transparent 8%, rgba(0,0,0,0.35) 26%, #000 44%);
   animation: breathe 13s ease-in-out infinite;
 }
 @keyframes breathe {
-  0%, 100% { opacity: 0.28; transform: translateX(-50%) scale(1); }
-  45% { opacity: 0.52; transform: translateX(-50%) scale(1.02); }
+  0%, 100% { opacity: 0.42; transform: translateX(-50%) scale(1); }
+  45% { opacity: 0.66; transform: translateX(-50%) scale(1.015); }
 }
 
 /* His larvae, clinging to the branches, each twitching on its own clock. */
@@ -208,7 +181,6 @@
   z-index: 3;
   pointer-events: none;
   opacity: 1;
-  filter: drop-shadow(0 3px 7px rgba(0, 0, 0, 0.7)) contrast(1.15);
   animation-name: gnaw;
   animation-iteration-count: infinite;
   animation-timing-function: ease-in-out;

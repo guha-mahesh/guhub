@@ -64,11 +64,9 @@ const SECTIONS: { key: string; label: string; body: ReactNode }[] = [
 
 // Where the larvae sit on the tree. Hand-placed so they read as clinging.
 const GRUBS = [
-  { left: "43%", top: "34%", w: 128, rot: -22, flip: 1, delay: "0s", dur: "9s" },
-  { left: "57%", top: "48%", w: 96, rot: 28, flip: -1, delay: "-3s", dur: "11s" },
-  { left: "36%", top: "60%", w: 82, rot: -46, flip: 1, delay: "-6s", dur: "13s" },
-  { left: "62%", top: "26%", w: 68, rot: 14, flip: -1, delay: "-1.5s", dur: "10s" },
-  { left: "48%", top: "72%", w: 108, rot: 6, flip: 1, delay: "-8s", dur: "12s" },
+  { left: "44%", top: "36%", w: 104, rot: -20, flip: 1, delay: "0s", dur: "9s" },
+  { left: "58%", top: "52%", w: 78, rot: 26, flip: -1, delay: "-4s", dur: "12s" },
+  { left: "47%", top: "70%", w: 62, rot: 8, flip: 1, delay: "-8s", dur: "14s" },
 ];
 
 export default function Noria() {
@@ -97,23 +95,7 @@ export default function Noria() {
         </g>
       </svg>
 
-      {/* an original gnawing rat, bottom-left near the roots (Rustgnawer's mood) */}
-      <svg className="rat" viewBox="0 0 180 96" aria-hidden>
-        <path d="M28 74 C 6 70 10 54 30 60" fill="none" stroke="#050505" strokeWidth="3.5" strokeLinecap="round" />
-        <g fill="#050505">
-          <path d="M42 78 C 28 72 32 50 56 46 C 82 41 118 46 136 60 C 148 69 145 79 132 81 C 104 85 62 86 42 78 Z" />
-          <path d="M132 60 C 154 55 170 62 167 69 C 164 76 146 75 132 72 Z" />
-          <circle cx="124" cy="50" r="9" />
-          <path d="M62 82 l-3 9 M84 84 l0 9 M110 82 l3 9" fill="none" stroke="#050505" strokeWidth="3.2" strokeLinecap="round" />
-        </g>
-        <circle cx="152" cy="65" r="1.8" fill="#6b0a0a" />
-      </svg>
-
-      {/* Toulouse-Lautrec, Moulin Rouge / La Goulue (1891, public domain), run
-          through the crimson/glitch augmentation to match the page. */}
-      <img className="dancer" src="/art/lautrec_aug.png" alt="" aria-hidden="true" />
-
-      {/* the bowler man, mirrored into one central eye. He breathes behind the tree. */}
+      {/* the bowler man, mirrored into one central eye; he breathes behind the tree */}
       <img className="watcher" src="/art/watcher.png" alt="" aria-hidden="true" />
 
       {/* his larvae, keyed off a trading card, infesting the branches */}
