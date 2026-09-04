@@ -154,46 +154,5 @@
   .vulture { width: 84px; top: 20px; right: 18px; }
 }
 
-/* ── the found images, made native to the page ───────────────── */
-
-/* The bowler man, mirror-symmetrised into a single central eye. He stands
-   behind the tree and breathes, so you are never sure he moved. */
-.watcher {
-  position: fixed;
-  left: 50%;
-  bottom: 20vh;
-  transform: translateX(-50%);
-  height: 88vh;
-  width: auto;
-  opacity: 0.5;
-  z-index: 0;
-  pointer-events: none;
-  animation: breathe 13s ease-in-out infinite;
-}
-@keyframes breathe {
-  0%, 100% { opacity: 0.42; transform: translateX(-50%) scale(1); }
-  45% { opacity: 0.66; transform: translateX(-50%) scale(1.015); }
-}
-
-/* His larvae, clinging to the branches, each twitching on its own clock. */
-.grub {
-  position: fixed;
-  z-index: 3;
-  pointer-events: none;
-  opacity: 1;
-  animation-name: gnaw;
-  animation-iteration-count: infinite;
-  animation-timing-function: ease-in-out;
-  transform-origin: 50% 80%;
-}
-@keyframes gnaw {
-  0%, 100% { translate: 0 0; }
-  25% { translate: 3px -4px; }
-  50% { translate: -3px 2px; }
-  75% { translate: 4px 3px; }
-}
-
 @media (max-width: 640px) {
-  .watcher { height: 58vh; opacity: 0.26; }
-  .grub { opacity: 0.9; }
 }

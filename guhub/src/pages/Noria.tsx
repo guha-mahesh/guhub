@@ -62,13 +62,6 @@ const SECTIONS: { key: string; label: string; body: ReactNode }[] = [
   { key: "who", label: "who", body: (<><p>{LOREM_1}</p></>) },
 ];
 
-// Where the larvae sit on the tree. Hand-placed so they read as clinging.
-const GRUBS = [
-  { left: "44%", top: "36%", w: 104, rot: -20, flip: 1, delay: "0s", dur: "9s" },
-  { left: "58%", top: "52%", w: 78, rot: 26, flip: -1, delay: "-4s", dur: "12s" },
-  { left: "47%", top: "70%", w: 62, rot: 8, flip: 1, delay: "-8s", dur: "14s" },
-];
-
 export default function Noria() {
   const [openKey, setOpenKey] = useState<string | null>(null);
   const limbs = useMemo(() => grow(0x9a17), []);
@@ -94,28 +87,6 @@ export default function Noria() {
           </g>
         </g>
       </svg>
-
-      {/* the bowler man, mirrored into one central eye; he breathes behind the tree */}
-      <img className="watcher" src="/art/watcher.png" alt="" aria-hidden="true" />
-
-      {/* his larvae, keyed off a trading card, infesting the branches */}
-      {GRUBS.map((g, i) => (
-        <img
-          key={i}
-          className="grub"
-          src="/art/grub.png"
-          alt=""
-          aria-hidden="true"
-          style={{
-            left: g.left,
-            top: g.top,
-            width: g.w,
-            transform: `rotate(${g.rot}deg) scaleX(${g.flip})`,
-            animationDelay: g.delay,
-            animationDuration: g.dur,
-          }}
-        />
-      ))}
 
       {/* the tree, black on crimson */}
       <svg className="tree" viewBox="-260 -520 520 540" preserveAspectRatio="xMidYMax meet" aria-hidden>
