@@ -27,6 +27,8 @@ import TopTracks from "./pages/TopTracks";
 import BlogPage from "./pages/BlogPage";
 import ListeningPage from "./pages/ListeningPage";
 import ViewDeck from "./pages/ViewDeck";
+import BizarreDesk from "./pages/BizarreDesk";
+import Noria from "./pages/Noria";
 
 function App() {
   return (
@@ -64,6 +66,8 @@ function App() {
               <Route path="/listening" element={<ListeningPage />} />
               <Route path="/aquarium" element={<ViewDeck />} />
               <Route path="/view_deck" element={<ViewDeck />} />
+              <Route path="/desk" element={<BizarreDesk />} />
+              <Route path="/noria" element={<Noria />} />
             </Routes>
           </div>
         </CrenshawProvider>

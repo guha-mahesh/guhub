@@ -1,0 +1,227 @@
+/* Crimson. Black tree, vulture, sunk wheel. Raw buttons. Minimal on purpose. */
+
+.crim {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  overflow-y: auto;
+  background: #6b0a0a;
+  color: #050505;
+  font-family: Georgia, "Times New Roman", serif;
+  cursor: default;
+}
+.crim::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(90% 70% at 50% 120%, #2c0202 0%, transparent 60%),
+    radial-gradient(70% 50% at 50% -10%, #8a1414 0%, transparent 55%);
+}
+
+/* second colour: a thin near-black mourning band near the top */
+.crimBand {
+  position: fixed;
+  top: 46px;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: #050505;
+  opacity: 0.85;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.tree {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: min(70vw, 560px);
+  height: 78vh;
+  stroke: #050505;
+  fill: none;
+  stroke-linecap: round;
+  pointer-events: none;
+  opacity: 0.96;
+}
+
+.vulture {
+  position: fixed;
+  top: 40px;
+  right: 40px;
+  width: clamp(120px, 16vw, 210px);
+  height: auto;
+  transform: rotate(-10deg);
+  opacity: 0.92;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.rat {
+  position: fixed;
+  left: 18px;
+  bottom: 14px;
+  width: clamp(120px, 15vw, 190px);
+  height: auto;
+  opacity: 0.95;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.dancer {
+  position: fixed;
+  right: 5vw;
+  top: 28%;
+  width: clamp(120px, 15vw, 230px);
+  height: auto;
+  display: block;
+  transform: rotate(4deg);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.wheel {
+  position: fixed;
+  right: -70px;
+  bottom: -70px;
+  width: 260px;
+  height: 260px;
+  stroke: #050505;
+  fill: none;
+  stroke-width: 2;
+  opacity: 0.5;
+  pointer-events: none;
+}
+.wheelSpin { transform-origin: 0 0; animation: turn 40s linear infinite; }
+@keyframes turn { to { transform: rotate(360deg); } }
+
+.crimHead {
+  position: relative;
+  z-index: 2;
+  padding: 60px 30px 0;
+}
+.crimHead h1 {
+  font-size: clamp(60px, 16vw, 170px);
+  margin: 0;
+  line-height: 1;
+  font-weight: normal;
+  letter-spacing: -0.02em;
+}
+/* clear the giant descenders of "guha" so the subtitle never overlaps */
+.crimSub {
+  margin: 18px 0 0;
+  font-size: 15px;
+  font-style: italic;
+  max-width: 34ch;
+}
+
+.crimNav {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 40px 30px;
+}
+/* raw buttons: browser default look, only sized up. */
+.crimNav button {
+  font-family: Georgia, serif;
+  font-size: 26px;
+  background: buttonface;
+  color: #050505;
+  padding: 2px 6px;
+  cursor: pointer;
+}
+.crimNav button[aria-expanded="true"] { font-weight: bold; }
+.crimNav-exit {
+  margin-top: 18px;
+  color: #050505;
+  font-size: 13px;
+  font-style: italic;
+}
+
+.crimPanel {
+  position: relative;
+  z-index: 2;
+  margin: 0 30px 90px;
+  max-width: 64ch;
+  background: #6b0a0a;
+  border-top: 2px solid #050505;
+  padding-top: 18px;
+}
+.crimPanelName {
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.crimPanel p { font-size: 18px; line-height: 1.55; margin: 0 0 15px; }
+.rawlist { margin: 0 0 15px; padding-left: 20px; }
+.rawlist li { font-size: 17px; line-height: 1.5; margin-bottom: 7px; }
+.crimClose {
+  font-family: Georgia, serif;
+  font-size: 15px;
+  background: buttonface;
+  color: #050505;
+  padding: 3px 10px;
+  cursor: pointer;
+  margin-top: 6px;
+}
+
+@media (max-width: 640px) {
+  .tree { width: 100vw; opacity: 0.85; }
+  .crimNav button { font-size: 30px; }
+  .vulture { width: 84px; top: 20px; right: 18px; }
+}
+
+/* ── the found images, made native to the page ───────────────── */
+
+/* The bowler man, mirror-symmetrised into a single central eye. He stands
+   behind the tree and breathes, so you are never sure he moved. */
+.watcher {
+  position: fixed;
+  left: 50%;
+  bottom: 14vh;
+  transform: translateX(-50%);
+  height: 76vh;
+  width: auto;
+  opacity: 0.34;
+  z-index: 0;
+  pointer-events: none;
+  /* the window beam survived the key at the top; dissolve it instead of
+     cutting, so he fades out of the dark rather than ending on a hard edge */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 8%, rgba(0,0,0,0.35) 26%, #000 44%);
+  mask-image: linear-gradient(to bottom, transparent 8%, rgba(0,0,0,0.35) 26%, #000 44%);
+  animation: breathe 13s ease-in-out infinite;
+}
+@keyframes breathe {
+  0%, 100% { opacity: 0.28; transform: translateX(-50%) scale(1); }
+  45% { opacity: 0.52; transform: translateX(-50%) scale(1.02); }
+}
+
+/* His larvae, clinging to the branches, each twitching on its own clock. */
+.grub {
+  position: fixed;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 1;
+  filter: drop-shadow(0 3px 7px rgba(0, 0, 0, 0.7)) contrast(1.15);
+  animation-name: gnaw;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  transform-origin: 50% 80%;
+}
+@keyframes gnaw {
+  0%, 100% { translate: 0 0; }
+  25% { translate: 3px -4px; }
+  50% { translate: -3px 2px; }
+  75% { translate: 4px 3px; }
+}
+
+@media (max-width: 640px) {
+  .watcher { height: 58vh; opacity: 0.26; }
+  .grub { opacity: 0.9; }
+}
