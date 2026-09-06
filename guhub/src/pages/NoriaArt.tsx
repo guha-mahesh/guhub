@@ -355,8 +355,10 @@ export function Scribe() {
       {/* the notebook, held low and to the right */}
       <g className="scribeHand">
         <rect x="34" y="-74" width="46" height="34" fill="#0c0606" />
-        <g stroke="#6b0a0a" strokeWidth="2" fill="none">
-          <path d="M40 -64 L74 -64 M40 -56 L74 -56 M40 -48 L66 -48" />
+        <g className="scribeWriting" stroke="#6b0a0a" strokeWidth="2" fill="none">
+          <path d="M40 -64 L74 -64" />
+          <path d="M40 -56 L74 -56" />
+          <path d="M40 -48 L66 -48" />
         </g>
         {/* the pen, nib pointing up and away from the page */}
         <g className="scribePen">

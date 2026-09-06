@@ -100,7 +100,7 @@
 
 .current {
   stroke-dasharray: 120 260;
-  animation: currentRun 5.5s linear infinite;
+  animation: currentRun 4s linear infinite;
 }
 
 @keyframes currentRun { to { stroke-dashoffset: -380; } }
@@ -143,9 +143,11 @@
   fill: #0c0606;
 }
 
+/* the water runs right to left and the wheel turns as though it did not.
+   Nobody clocks this immediately, which is the point. */
 .wheelSpin {
   transform-origin: 0 0;
-  animation: wheelTurn 26s linear infinite;
+  animation: wheelTurn 30s linear infinite;
 }
 
 @keyframes wheelTurn { to { transform: rotate(360deg); } }
@@ -703,3 +705,28 @@
 .skyBand:nth-child(7) { -webkit-mask-image: linear-gradient(to bottom, transparent 52%, #000 52%, #000 57%, transparent 57%); mask-image: linear-gradient(to bottom, transparent 52%, #000 52%, #000 57%, transparent 57%); }
 
 
+
+
+/* ── the page that never fills ─────────────────────────────────────────
+   Each line writes itself, the page resets, and he begins again. */
+.scribeWriting path {
+  stroke-dasharray: 40;
+  stroke-dashoffset: 40;
+  animation: writeLine 7s linear infinite;
+}
+
+.scribeWriting path:nth-child(2) { animation-delay: 2.2s; }
+.scribeWriting path:nth-child(3) { animation-delay: 4.4s; }
+
+@keyframes writeLine {
+  0%        { stroke-dashoffset: 40; }
+  22%, 88%  { stroke-dashoffset: 0; }
+  96%, 100% { stroke-dashoffset: 40; }
+}
+
+/* the exit was too dark to find */
+.crimLeave { opacity: 0.62; }
+
+@media (prefers-reduced-motion: reduce) {
+  .scribeWriting path { animation: none; stroke-dashoffset: 0; }
+}

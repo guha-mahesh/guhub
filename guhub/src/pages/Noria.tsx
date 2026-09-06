@@ -327,6 +327,11 @@ export default function Noria() {
           {/* something long under the surface, only its back showing */}
           <Prop place={{ x: 640, y: 322, z: -900, s: 2.1 }} className="submerged"><DeepMass /></Prop>
 
+          {/* The same tree again, smaller and further back. Same seed, so it
+              is not a similar tree, it is the same tree. Nobody notices for
+              a moment, and then they do. */}
+          <Prop place={{ x: -210, y: 96, z: -1420, s: 0.5, fade: 0.28 }}><DeadTree /></Prop>
+
           {/* ── the clickable things ── */}
           {THINGS.map((t) => (
             <div
