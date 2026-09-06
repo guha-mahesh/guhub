@@ -342,28 +342,31 @@ export function Vulture() {
  */
 export function Scribe() {
   return (
-    <svg className="art artScribe" viewBox="-90 -190 180 200" aria-hidden>
+    <svg className="art artScribe" viewBox="-90 -200 180 210" aria-hidden>
       <g fill="#0c0606">
-        {/* coat, seen from behind, hem broken by the ground */}
-        <path d="M-46 10 C -50 -60 -40 -104 -22 -120 L 22 -120 C 40 -104 50 -60 46 10 Z" />
-        {/* head and collar */}
-        <path d="M-20 -120 C -20 -134 -14 -142 0 -142 C 14 -142 20 -134 20 -120 Z" />
-        <ellipse cx="0" cy="-158" rx="21" ry="23" />
-        {/* the shoulder and arm that does the writing */}
-        <path d="M28 -112 C 48 -104 58 -84 56 -64 L 40 -62 C 40 -80 34 -92 22 -98 Z" />
+        {/* the hat does more for the register than anything else on him */}
+        <path d="M-17 -162 L-17 -192 Q0 -198 17 -192 L17 -162 Z" />
+        <ellipse cx="0" cy="-161" rx="32" ry="6" />
+        {/* the back of the head, and a collar standing up against it */}
+        <ellipse cx="0" cy="-148" rx="13" ry="11" />
+        <path d="M-17 -142 L17 -142 L15 -130 L-15 -130 Z" />
+        {/* long coat, narrow at the shoulder, opening toward the hem */}
+        <path d="M-31 -134 C -41 -104 -47 -52 -51 8 L 51 8 C 47 -52 41 -104 31 -134 Z" />
+        {/* the vent up the back of the coat, cut in ground colour */}
+        <path d="M0 8 L0 -60" stroke="#6b0a0a" strokeWidth="2" fill="none" opacity="0.4" />
+        {/* the writing arm, reaching across to the book */}
+        <path d="M31 -126 C 51 -118 60 -100 57 -78 L 43 -76 C 45 -92 39 -106 27 -114 Z" />
       </g>
-      {/* the notebook, held low and to the right */}
       <g className="scribeHand">
-        <rect x="34" y="-74" width="46" height="34" fill="#0c0606" />
+        <rect x="34" y="-76" width="46" height="34" fill="#0c0606" />
         <g className="scribeWriting" stroke="#6b0a0a" strokeWidth="2" fill="none">
-          <path d="M40 -64 L74 -64" />
-          <path d="M40 -56 L74 -56" />
-          <path d="M40 -48 L66 -48" />
+          <path d="M40 -66 L74 -66" />
+          <path d="M40 -58 L74 -58" />
+          <path d="M40 -50 L66 -50" />
         </g>
-        {/* the pen, nib pointing up and away from the page */}
         <g className="scribePen">
-          <rect x="52" y="-104" width="4.5" height="30" fill="#0c0606" transform="rotate(14 54 -90)" />
-          <path d="M56 -106 L62 -114 L58 -100 Z" fill="#0c0606" transform="rotate(14 54 -90)" />
+          <rect x="52" y="-106" width="4.5" height="30" fill="#0c0606" transform="rotate(14 54 -92)" />
+          <path d="M56 -108 L62 -116 L58 -102 Z" fill="#0c0606" transform="rotate(14 54 -92)" />
         </g>
       </g>
     </svg>

@@ -183,7 +183,7 @@
 .artSmoke {
   width: 80px;
   height: 190px;
-  opacity: 0.45;
+  opacity: 0.8;
   animation: smokeRise 11s ease-out infinite;
 }
 
@@ -191,8 +191,8 @@
 
 @keyframes smokeRise {
   0%   { opacity: 0; transform: translateY(24px) scale(0.7); }
-  22%  { opacity: 0.45; }
-  100% { opacity: 0; transform: translateY(-130px) scale(1.5); }
+  22%  { opacity: 0.8; }
+  100% { opacity: 0; transform: translateY(-150px) scale(1.6); }
 }
 
 /* what the outfall puts into the river */
@@ -244,12 +244,12 @@
 /* ── the observer ──────────────────────────────────────────────────── */
 .artScribe {
   width: 180px;
-  height: 200px;
+  height: 210px;
 }
 
 /* the hand never stops, and the pen is the wrong way round */
 .scribeHand {
-  transform-origin: 56px -58px;
+  transform-origin: 56px -60px;
   animation: scribble 1.9s ease-in-out infinite;
 }
 
