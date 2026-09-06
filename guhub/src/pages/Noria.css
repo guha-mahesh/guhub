@@ -776,3 +776,9 @@
   background-repeat: repeat;
   background-size: 300px 300px;
 }
+
+
+/* the flat silhouette steps aside for the drawing */
+.thing.silenced .art { opacity: 0; transition: opacity 0.35s; }
+
+.artRaptor { width: 1040px; height: 700px; }

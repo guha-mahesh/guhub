@@ -8,6 +8,7 @@ import {
 import Grain from "./Grain";
 import Tartan from "./Tartan";
 import Bite from "./Bite";
+import Raptor from "./Raptor";
 import { useCreak } from "./useCreak";
 import "./Noria.css";
 
@@ -184,6 +185,15 @@ const THINGS: Thing[] = [
     body: (<><p>{LOREM_2}</p><ul className="rawlist">{LOREM_ITEMS.map((t) => <li key={t}>{t}</li>)}</ul></>),
   },
   {
+    key: "vulture",
+    label: "the bird",
+    place: { x: 300, y: -300, z: -1050, s: 1.05 },
+    shot: { tx: 300, ty: -300, tz: -1050, yaw: 4, pitch: -6, dist: 700 },
+    panel: { ox: -300, oy: 190 },
+    art: <Vulture />,
+    body: null, // the drawing is the content here
+  },
+  {
     key: "who",
     label: "who",
     place: { x: -120, y: 128, z: 40, s: 0.62 },
@@ -319,7 +329,6 @@ export default function Noria() {
 
           {/* ── background: ridges and the bird ── */}
           <Prop place={{ x: 60, y: 386, z: -2200, s: 3.4 }} className="far"><Ridge seed={ridges[0]} /></Prop>
-          <Prop place={{ x: 300, y: -300, z: -1050, s: 1.05 }} className="circling"><Vulture /></Prop>
 
           {/* ── the ground, and the river laid flat on it ── */}
           <Prop place={{ x: 0, y: 342, z: -1100, rot: "rotateX(90deg)" }} className="ground">
@@ -346,7 +355,9 @@ export default function Noria() {
           {THINGS.map((t) => (
             <div
               key={t.key}
-              className={`prop thing ${openKey === t.key ? "open" : ""} ${hoverKey === t.key ? "hot" : ""}`}
+              className={`prop thing ${openKey === t.key ? "open" : ""} ${hoverKey === t.key ? "hot" : ""} ${
+                t.key === "vulture" && openKey === "vulture" ? "silenced" : ""
+              }`}
               style={styleFor(t.place)}
               onPointerEnter={() => setHoverKey(t.key)}
               onPointerLeave={() => setHoverKey((k) => (k === t.key ? null : k))}
@@ -366,6 +377,11 @@ export default function Noria() {
           <Detail place={{ x: -620, y: 326, z: -536, s: 0.45 }} show={atTree}><Mushrooms /></Detail>
           <Detail place={{ x: -330, y: 332, z: -530, s: 0.5 }} show={atTree} className="crawling"><Beetle /></Detail>
           <Detail place={{ x: -448, y: 236, z: -520, s: 0.5 }} show={atTree} className="fluttering"><Moth /></Detail>
+
+          {/* the bird, drawn properly, once you are up there with it */}
+          <Detail place={{ x: -73, y: -547, z: -1046, s: 0.27 }} show={openKey === "vulture"}>
+            <Raptor />
+          </Detail>
 
           {/* the shed's working parts */}
           <Detail place={{ x: 600, y: 158, z: -588, s: 0.66 }} show={openKey === "built"}><FactoryGuts /></Detail>
