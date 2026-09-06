@@ -25,39 +25,52 @@ function growLimbs(seed: number): Limb[] {
   const rng = makeRng(seed);
   const limbs: Limb[] = [];
   function branch(x: number, y: number, angle: number, len: number, w: number, depth: number) {
-    if (depth > 9 || len < 6) return;
-    const sway = (rng() - 0.5) * 0.5;
+    if (depth > 6 || len < 9) return;
+    const sway = (rng() - 0.5) * 0.72;
     const x2 = x + Math.cos(angle + sway) * len;
     const y2 = y + Math.sin(angle + sway) * len;
     limbs.push({ x1: x, y1: y, x2, y2, w });
-    const forks = rng() < 0.28 ? 3 : 2;
+    // mostly two ways, occasionally one: a dead tree is sparse, not bushy
+    const forks = rng() < 0.22 ? 1 : 2;
     for (let i = 0; i < forks; i++) {
-      const spread = (i - (forks - 1) / 2) * (0.4 + rng() * 0.4);
-      branch(x2, y2, angle + spread + (rng() - 0.5) * 0.2, len * (0.72 + rng() * 0.12), Math.max(0.6, w * 0.68), depth + 1);
+      const spread = forks === 1 ? (rng() - 0.5) * 0.5 : (i - 0.5) * (0.6 + rng() * 0.6);
+      branch(x2, y2, angle + spread + (rng() - 0.5) * 0.25, len * (0.7 + rng() * 0.14), Math.max(0.8, w * 0.62), depth + 1);
     }
   }
-  branch(0, 0, -Math.PI / 2, 78, 9, 0);
+  branch(0, 0, -Math.PI / 2 + 0.06, 104, 11, 0);
   return limbs;
 }
 
 /**
- * The tree. A swollen, knotted trunk rather than a stick: the silhouette
- * carries the menace, so the branches stay bare. A hollow sits at the base.
+ * The tree. Not a cone: the trunk leans, changes width unevenly as it climbs,
+ * and carries a knot. The silhouette does the work; the only marks inside it
+ * are cut back to the ground colour, the way an engraver leaves paper showing.
  */
 export function DeadTree({ seed = 0x9a17 }: { seed?: number }) {
   const limbs = growLimbs(seed);
   return (
-    <svg className="art artTree" viewBox="-260 -540 520 620" aria-hidden>
+    <svg className="art artTree" viewBox="-260 -560 520 640" aria-hidden>
       <g fill="#0c0606">
-        {/* trunk: wider at the foot, pinching at the crown, buttressed roots */}
-        <path d="M-16 -300 C -26 -200 -34 -110 -44 -30 C -52 20 -76 46 -108 56 L -108 72 L 112 72 L 112 56 C 78 46 54 20 46 -30 C 36 -110 26 -200 16 -300 Z" />
-        {/* root flares reaching out of frame */}
-        <path d="M-104 60 C -140 58 -180 66 -214 62 L -214 72 L -104 72 Z" />
-        <path d="M108 60 C 146 58 186 66 220 62 L 220 72 L 108 72 Z" />
+        <path d="M-30 -272 C -40 -214 -30 -160 -38 -104 C -44 -60 -60 -26 -84 -6 C -100 8 -118 16 -140 22 L -140 44 L 132 44 L 132 22
+                 C 110 16 92 8 78 -8 C 58 -30 48 -62 44 -104 C 39 -158 46 -212 34 -272 Z" />
+        {/* roots, not a plinth: short, uneven, and they taper into the dirt */}
+        <path d="M-138 20 C -158 26 -172 36 -186 44 L -138 44 Z" />
+        <path d="M130 20 C 150 27 164 36 178 44 L 130 44 Z" />
+        <path d="M-104 6 C -126 20 -140 32 -150 44 L -96 44 Z" />
+        <path d="M96 4 C 116 18 128 32 136 44 L 88 44 Z" />
+      </g>
+      <g className="barkLines">
+        <path d="M-18 -258 C -26 -180 -20 -104 -34 -40" />
+        <path d="M8 -260 C 2 -180 6 -104 16 -44" />
+        <path d="M-2 -240 C -8 -170 -4 -110 2 -52" />
+      </g>
+      <g className="knot">
+        <ellipse cx="20" cy="-150" rx="12" ry="19" />
+        <ellipse cx="20" cy="-150" rx="5" ry="9" />
       </g>
       <g stroke="#0c0606" fill="none" strokeLinecap="round">
         {limbs.map((l, i) => (
-          <line x1={l.x1} y1={l.y1 - 290} x2={l.x2} y2={l.y2 - 290} strokeWidth={l.w} key={i} />
+          <line x1={l.x1} y1={l.y1 - 268} x2={l.x2} y2={l.y2 - 268} strokeWidth={l.w} key={i} />
         ))}
       </g>
     </svg>
@@ -150,6 +163,40 @@ export function Factory() {
         ))}
         <rect x="452" y="266" width="18" height="24" />
         <rect x="486" y="266" width="18" height="24" />
+      </g>
+      <g className="plateLines">
+        {/* courses across the hall wall */}
+        <path d="M150 196 L430 196 M150 258 L430 258 M150 300 L430 300" />
+        {/* the saw-tooth roof, planked */}
+        {Array.from({ length: 8 }).map((_, i) => (
+          <path key={i} d={`M${152 + i * 34} 176 L${169 + i * 34} 158`} />
+        ))}
+        {/* stack banding */}
+        <path d="M236 44 L268 44 M236 62 L268 62 M312 88 L334 88" />
+        {/* annex, boarded */}
+        <path d="M430 262 L536 262 M430 292 L536 292 M470 236 L470 340 M502 236 L502 340" />
+        {/* the outfall pipe, jointed */}
+        <path d="M62 300 L62 322 M78 300 L78 322 M20 310 L20 330" />
+      </g>
+    </svg>
+  );
+}
+
+/**
+ * The waterline. Drawn in front of the wheel so it cuts the paddles off
+ * where they enter the race, which is the only thing that makes a wheel
+ * look like it is in water rather than hanging over it.
+ */
+export function Waterline() {
+  return (
+    <svg className="art artWaterline" viewBox="-260 -40 520 120" aria-hidden>
+      <path className="wlBody" d="M-260 -6 C -150 -18 -60 -22 0 -22 C 70 -22 160 -16 260 -4 L260 80 L-260 80 Z" />
+      <g className="wlHatch">
+        {Array.from({ length: 34 }).map((_, i) => {
+          const x = -252 + i * 15;
+          const y = -4 + ((i * 5) % 17);
+          return <path key={i} d={`M${x} ${y} L${x + 9 + (i % 4) * 5} ${y}`} />;
+        })}
       </g>
     </svg>
   );

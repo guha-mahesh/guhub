@@ -3,7 +3,7 @@ import type { CSSProperties, ReactNode } from "react";
 import {
   DeadTree, Hollow, Waterwheel, Splash, Factory, Effluent, Smoke,
   River, Ridge, Vulture, Scribe, Squirrel,
-  TrunkDetail, Beetle, Mushrooms, Moth, FactoryGuts, DeepMass,
+  TrunkDetail, Beetle, Mushrooms, Moth, FactoryGuts, DeepMass, Waterline,
 } from "./NoriaArt";
 import { useCreak } from "./useCreak";
 import "./Noria.css";
@@ -149,8 +149,8 @@ const THINGS: Thing[] = [
   {
     key: "read",
     label: "the hollow",
-    place: { x: -520, y: 250, z: -520 },
-    shot: { tx: -520, ty: 250, tz: -520, yaw: -5, pitch: -4, dist: 640 },
+    place: { x: -520, y: 150, z: -516 },
+    shot: { tx: -520, ty: 150, tz: -516, yaw: -5, pitch: -3, dist: 640 },
     panel: { ox: 250, oy: 40 },
     art: <Hollow />,
     body: (<ul className="rawlist">{LOREM_ITEMS.map((t) => <li key={t}>{t}</li>)}</ul>),
@@ -322,6 +322,8 @@ export default function Noria() {
           <Prop place={{ x: 600, y: -58, z: -596, fade: 0.35 }}><Smoke delay={-5.5} /></Prop>
           <Prop place={{ x: 404, y: 292, z: -580 }}><Effluent /></Prop>
           <Prop place={{ x: 285, y: 330, z: -376 }}><Splash /></Prop>
+          {/* cuts the wheel where it enters the race */}
+          <Prop place={{ x: 285, y: 352, z: -370, s: 1.15 }} className="waterline"><Waterline /></Prop>
           {/* something long under the surface, only its back showing */}
           <Prop place={{ x: 640, y: 322, z: -900, s: 2.1 }} className="submerged"><DeepMass /></Prop>
 

@@ -108,10 +108,14 @@
 
 /* ── the tree ──────────────────────────────────────────────────────── */
 .artTree {
-  width: 540px;
-  height: 820px;
+  width: 520px;
+  height: 640px;
   stroke: #0c0606;
 }
+
+/* bark and knot are cut into the black with the ground colour */
+.barkLines path { fill: none; stroke: #6b0a0a; stroke-width: 2.2; opacity: 0.5; }
+.knot ellipse { fill: none; stroke: #6b0a0a; stroke-width: 2.4; opacity: 0.55; }
 
 .artHollow {
   width: 80px;
@@ -638,3 +642,27 @@
   -webkit-mask-image: linear-gradient(to top, #000 0%, #000 22%, transparent 43%);
   mask-image: linear-gradient(to top, #000 0%, #000 22%, transparent 43%);
 }
+
+
+/* ── plate linework ────────────────────────────────────────────────────
+   Thin rules cut back to the ground colour, the way an engraver leaves
+   paper showing inside a mass. Structure without adding objects. */
+.plateLines path {
+  fill: none;
+  stroke: #6b0a0a;
+  stroke-width: 2;
+  opacity: 0.42;
+}
+
+/* ── waterline ─────────────────────────────────────────────────────── */
+.artWaterline { width: 520px; height: 120px; }
+
+/* the ends dissolve, so it reads as the surface continuing rather than as
+   a slab that stops */
+.waterline {
+  z-index: 7;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 22%, #000 74%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 22%, #000 74%, transparent 100%);
+}
+.wlBody { fill: #85180f; opacity: 0.96; }
+.wlHatch path { fill: none; stroke: var(--ink); stroke-width: 1.5; opacity: 0.3; }
