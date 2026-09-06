@@ -1,47 +1,114 @@
-import { useMemo, useState } from "react";
-import type { ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import type { CSSProperties, ReactNode } from "react";
+import {
+  DeadTree, Hollow, Waterwheel, Splash, Factory, Effluent, Smoke,
+  River, Ridge, Vulture, Scribe, Squirrel,
+  TrunkDetail, Beetle, Mushrooms, Moth, FactoryGuts, DeepMass,
+} from "./NoriaArt";
+import { useCreak } from "./useCreak";
 import "./Noria.css";
 
 /**
- * A crimson field: one black tree, a perched vulture, a half-sunk water-wheel.
- * Raw buttons, almost no styling. Only the TOPICS are real; every panel body
- * is lorem placeholder for Guha to overwrite. Fixed fullscreen.
+ * Orchestrator. NoriaArt draws the objects; this file decides where each one
+ * stands, what the camera does when you click it, and what it has to say.
+ *
+ * There is no navigation. You click the thing itself: the tree, the hollow
+ * at its foot, the wheel, the factory, the man in front taking notes. Each
+ * object owns a camera pose, and the rig flies there. Panels are placed in
+ * world space at that pose and pre-rotated by its inverse, so they land
+ * square to the viewer once the move settles.
+ *
+ * Only the TOPICS are real. Panel bodies are lorem for Guha to overwrite.
  */
 
-// mulberry32 seeded PRNG so the tree grows the same crooked way every load.
-function makeRng(seed: number) {
-  let a = seed >>> 0;
-  return () => {
-    a |= 0;
-    a = (a + 0x6d2b79f5) | 0;
-    let t = Math.imul(a ^ (a >>> 15), 1 | a);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
+// ── camera ───────────────────────────────────────────────────────────
+/** A camera pose: where it looks (tx,ty,tz), how it is turned, how close. */
+type Shot = { tx: number; ty: number; tz: number; yaw: number; pitch: number; dist: number };
 
-type Limb = { x1: number; y1: number; x2: number; y2: number; w: number };
+const HOME: Shot = { tx: 0, ty: -40, tz: -300, yaw: 0, pitch: 0, dist: 0 };
 
-// Recursive bare tree. Grows upward from (x,y), splitting at crooked angles.
-function grow(seed: number): Limb[] {
-  const rng = makeRng(seed);
-  const limbs: Limb[] = [];
-  function branch(x: number, y: number, angle: number, len: number, w: number, depth: number) {
-    if (depth > 9 || len < 6) return;
-    const sway = (rng() - 0.5) * 0.5;
-    const x2 = x + Math.cos(angle + sway) * len;
-    const y2 = y + Math.sin(angle + sway) * len;
-    limbs.push({ x1: x, y1: y, x2, y2, w });
-    const forks = rng() < 0.28 ? 3 : 2;
-    for (let i = 0; i < forks; i++) {
-      const spread = (i - (forks - 1) / 2) * (0.4 + rng() * 0.4);
-      branch(x2, y2, angle + spread + (rng() - 0.5) * 0.2, len * (0.72 + rng() * 0.12), Math.max(0.6, w * 0.68), depth + 1);
+/* The stage's perspective depth is 900px (see .crimStage); every shot's
+   `dist` stays well under that so the world never passes through the lens. */
+
+type Channel = keyof Shot;
+const CHANNELS: Channel[] = ["tx", "ty", "tz", "yaw", "pitch", "dist"];
+
+/**
+ * Critically-ish damped spring per channel, integrated on rAF and written
+ * straight to the element's transform. No React re-render while flying.
+ */
+function useCameraRig(
+  worldRef: React.RefObject<HTMLDivElement | null>,
+  shot: Shot,
+  still: boolean,
+  engaged: boolean,
+) {
+  const pos = useRef<Shot>({ ...HOME });
+  const vel = useRef<Record<Channel, number>>({ tx: 0, ty: 0, tz: 0, yaw: 0, pitch: 0, dist: 0 });
+  const target = useRef<Shot>(shot);
+  // 0 while parked at the establishing frame, 1 once inside a shot. Free-look
+  // and idle drift scale by this, so the home frame stays flat and locked.
+  const eng = useRef(0);
+  const engTarget = useRef(0);
+  target.current = shot;
+  engTarget.current = engaged ? 1 : 0;
+
+  useEffect(() => {
+    if (still) {
+      const s = target.current;
+      if (worldRef.current) {
+        worldRef.current.style.transform =
+          `translate3d(0,0,${s.dist}px) rotateX(${s.pitch}deg) rotateY(${s.yaw}deg) translate3d(${-s.tx}px,${-s.ty}px,${-s.tz}px)`;
+      }
+      return;
     }
-  }
-  branch(0, 0, -Math.PI / 2, 78, 9, 0);
-  return limbs;
+
+    let raf = 0;
+    let last = performance.now();
+    const K = 46;   // stiffness
+    const C = 13.5; // damping
+
+    const tick = (now: number) => {
+      const dt = Math.min((now - last) / 1000, 1 / 30);
+      last = now;
+      const t = target.current;
+      const p = pos.current;
+      const v = vel.current;
+
+      for (const c of CHANNELS) {
+        const a = -K * (p[c] - t[c]) - C * v[c];
+        v[c] += a * dt;
+        p[c] += v[c] * dt;
+      }
+
+      // ease the free-look weight in and out rather than snapping it
+      eng.current += (engTarget.current - eng.current) * Math.min(1, dt * 3.2);
+      const w = eng.current;
+
+      // idle breath and pointer look, both only once you are inside a shot
+      const breath = now / 1000;
+      const bx = Math.sin(breath * 0.23) * 7 * w;
+      const by = Math.cos(breath * 0.19) * 5 * w;
+      const byaw = Math.sin(breath * 0.16) * 0.5 * w;
+
+      const yaw = p.yaw + byaw;
+      const pitch = p.pitch;
+
+      if (worldRef.current) {
+        worldRef.current.style.transform =
+          `translate3d(0,0,${p.dist}px) rotateX(${pitch}deg) rotateY(${yaw}deg) ` +
+          `translate3d(${-(p.tx + bx)}px,${-(p.ty + by)}px,${-p.tz}px)`;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [worldRef, still]);
+
 }
 
+// ── content ──────────────────────────────────────────────────────────
 const LOREM_1 =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.";
 const LOREM_2 =
@@ -53,85 +120,286 @@ const LOREM_ITEMS = [
   "Dolore magna aliqua ut enim",
 ];
 
-// Only the topics are defined. Bodies are placeholder.
-const SECTIONS: { key: string; label: string; body: ReactNode }[] = [
-  { key: "engramme", label: "engramme", body: (<><p>{LOREM_1}</p><p>{LOREM_2}</p></>) },
-  { key: "sounds", label: "sounds", body: (<><p>{LOREM_1}</p></>) },
-  { key: "read", label: "read", body: (<ul className="rawlist">{LOREM_ITEMS.map((t) => <li key={t}>{t}</li>)}</ul>) },
-  { key: "built", label: "built", body: (<><p>{LOREM_2}</p><ul className="rawlist">{LOREM_ITEMS.map((t) => <li key={t}>{t}</li>)}</ul></>) },
-  { key: "who", label: "who", body: (<><p>{LOREM_1}</p></>) },
+/** Where a thing stands in the world. */
+type Place = { x: number; y: number; z: number; s?: number; rot?: string; fade?: number };
+
+type Thing = {
+  key: string;
+  label: string;
+  place: Place;
+  shot: Shot;
+  panel: { ox: number; oy: number };
+  body: ReactNode;
+  art: ReactNode;
+};
+
+/* Layout, left to right: the tree alone on the left, the wheel centre-right
+   where the race pinches, the factory on the right feeding that race, the
+   observer close in front. Everything else is scenery. */
+const THINGS: Thing[] = [
+  {
+    key: "engramme",
+    label: "engramme",
+    place: { x: -520, y: -62, z: -560 },
+    shot: { tx: -520, ty: 218, tz: -560, yaw: -10, pitch: -5, dist: 470 },
+    panel: { ox: 280, oy: 20 },
+    art: <DeadTree />,
+    body: (<><p>{LOREM_1}</p><p>{LOREM_2}</p></>),
+  },
+  {
+    key: "read",
+    label: "the hollow",
+    place: { x: -520, y: 250, z: -520 },
+    shot: { tx: -520, ty: 250, tz: -520, yaw: -5, pitch: -4, dist: 640 },
+    panel: { ox: 250, oy: 40 },
+    art: <Hollow />,
+    body: (<ul className="rawlist">{LOREM_ITEMS.map((t) => <li key={t}>{t}</li>)}</ul>),
+  },
+  {
+    key: "sounds",
+    label: "sounds",
+    place: { x: 285, y: 222, z: -390, s: 1.15 },
+    shot: { tx: 285, ty: 200, tz: -390, yaw: 6, pitch: -2, dist: 440 },
+    panel: { ox: -280, oy: -40 },
+    art: <Waterwheel />,
+    body: (<><p>{LOREM_1}</p></>),
+  },
+  {
+    key: "built",
+    label: "built",
+    place: { x: 600, y: 150, z: -600, s: 1 },
+    shot: { tx: 600, ty: 120, tz: -600, yaw: 13, pitch: 2, dist: 470 },
+    panel: { ox: -270, oy: 70 },
+    art: <Factory />,
+    body: (<><p>{LOREM_2}</p><ul className="rawlist">{LOREM_ITEMS.map((t) => <li key={t}>{t}</li>)}</ul></>),
+  },
+  {
+    key: "who",
+    label: "who",
+    place: { x: -120, y: 128, z: 40, s: 0.62 },
+    shot: { tx: -120, ty: 100, tz: 40, yaw: -2, pitch: -2, dist: 170 },
+    panel: { ox: 300, oy: -30 },
+    art: <Scribe />,
+    body: null, // replaced by the conversation
+  },
 ];
 
+
+/**
+ * The man will talk, in his fashion. He does not stop writing while he does.
+ * Replace the lines; the shape is a small graph, so any node can point at
+ * any other and an `end` closes the exchange.
+ */
+type Line = { says: string; choices?: { ask: string; to: string }[] };
+
+const TALK: Record<string, Line> = {
+  start: {
+    says: "He does not look up. The pen moves the wrong way round, nib in the air, and the page fills anyway.",
+    choices: [
+      { ask: "what are you writing", to: "writing" },
+      { ask: "who are you", to: "who" },
+      { ask: "why backwards", to: "pen" },
+    ],
+  },
+  writing: {
+    says: "Lorem ipsum dolor sit amet. Everything that happens here, in the order it happens. The wheel turns, so there is always something to put down.",
+    choices: [
+      { ask: "does anyone read it", to: "read" },
+      { ask: "why backwards", to: "pen" },
+      { ask: "step back", to: "end" },
+    ],
+  },
+  who: {
+    says: "Consectetur adipiscing elit. He gives a name that is not quite the one on the header, and goes back to the page.",
+    choices: [
+      { ask: "what are you writing", to: "writing" },
+      { ask: "step back", to: "end" },
+    ],
+  },
+  pen: {
+    says: "Sed do eiusmod tempor. He turns the pen over, considers it, and puts it back the way it was.",
+    choices: [
+      { ask: "does anyone read it", to: "read" },
+      { ask: "step back", to: "end" },
+    ],
+  },
+  read: {
+    says: "Ut enim ad minim veniam. The bird does, he says. Not kindly.",
+    choices: [
+      { ask: "start again", to: "start" },
+      { ask: "step back", to: "end" },
+    ],
+  },
+  end: { says: "" },
+};
+
+function Conversation({ onClose }: { onClose: () => void }) {
+  const [at, setAt] = useState("start");
+  const line = TALK[at];
+
+  useEffect(() => { if (at === "end") onClose(); }, [at, onClose]);
+  if (at === "end") return null;
+
+  return (
+    <div className="talk">
+      <p className="talkSays">{line.says}</p>
+      <div className="talkChoices">
+        {line.choices?.map((c) => (
+          <button key={c.ask} className="talkAsk" onClick={() => setAt(c.to)}>
+            {c.ask}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── placement ────────────────────────────────────────────────────────
+function styleFor({ x, y, z, s = 1, rot = "", fade = 0 }: Place): CSSProperties {
+  return {
+    // the trailing translate centres the box on its own size, so the element's
+    // hit area sits exactly where the art is drawn. Centring with negative
+    // margins on the child would move the drawing and leave the box behind.
+    transform: `translate3d(${x}px,${y}px,${z}px) ${rot} scale(${s}) translate(-50%,-50%)`,
+    opacity: 1 - fade,
+  };
+}
+
+/** Scenery: placed, never clickable. */
+function Prop({ place, className = "", children }: { place: Place; className?: string; children: ReactNode }) {
+  return <div className={`prop ${className}`} style={styleFor(place)}>{children}</div>;
+}
+
+/** Detail that only exists once the camera has come to look at it. */
+function Detail({ place, show, className = "", children }: {
+  place: Place; show: boolean; className?: string; children: ReactNode;
+}) {
+  return (
+    <div className={`prop detail ${className} ${show ? "lit" : ""}`} style={styleFor(place)}>{children}</div>
+  );
+}
+
+// ── page ─────────────────────────────────────────────────────────────
 export default function Noria() {
   const [openKey, setOpenKey] = useState<string | null>(null);
-  const limbs = useMemo(() => grow(0x9a17), []);
-  const open = SECTIONS.find((s) => s.key === openKey) || null;
+  const [hoverKey, setHoverKey] = useState<string | null>(null);
+  const worldRef = useRef<HTMLDivElement>(null);
+  const open = THINGS.find((t) => t.key === openKey) ?? null;
+  const hover = THINGS.find((t) => t.key === hoverKey) ?? null;
+  const [sound, toggleSound] = useCreak();
+  // the tree and its hollow share one interior
+  const atTree = openKey === "engramme" || openKey === "read";
+  const ridges = useMemo(() => [0x51ae, 0x7c31], []);
+
+  const still = typeof window !== "undefined"
+    && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+  useCameraRig(worldRef, open?.shot ?? HOME, !!still, !!open);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpenKey(null); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
   return (
     <div className="crim">
-      {/* second colour: a thin mourning band across the top */}
-      <div className="crimBand" aria-hidden />
+      <div className="crimStage">
+        <div className="crimWorld" ref={worldRef}>
 
-      {/* a vulture circling overhead, top right */}
-      <svg className="vulture" viewBox="0 0 240 130" aria-hidden>
-        <g fill="#050505">
-          {/* head + body + tail down the centre */}
-          <circle cx="120" cy="34" r="7" />
-          <ellipse cx="120" cy="63" rx="7.5" ry="27" />
-          <path d="M112 86 L128 86 L120 106 Z" />
-          {/* left wing: swept leading edge, splayed primary 'fingers' on the trailing edge */}
-          <path d="M116 50 C 86 39 54 42 28 55 L 35 60 L 27 64 L 40 65 L 32 71 L 46 69 L 39 76 L 55 73 L 50 80 L 66 77 L 62 84 L 82 81 C 98 80 108 79 116 78 Z" />
-          {/* right wing: the same shape mirrored about the body axis */}
-          <g transform="translate(240,0) scale(-1,1)">
-            <path d="M116 50 C 86 39 54 42 28 55 L 35 60 L 27 64 L 40 65 L 32 71 L 46 69 L 39 76 L 55 73 L 50 80 L 66 77 L 62 84 L 82 81 C 98 80 108 79 116 78 Z" />
-          </g>
-        </g>
-      </svg>
+          {/* ── background: ridges and the bird ── */}
+          <Prop place={{ x: 60, y: 386, z: -2200, s: 3.4 }} className="far"><Ridge seed={ridges[0]} /></Prop>
+          <Prop place={{ x: 300, y: -300, z: -1050, s: 1.05 }} className="circling"><Vulture /></Prop>
 
-      {/* the tree, black on crimson */}
-      <svg className="tree" viewBox="-260 -520 520 540" preserveAspectRatio="xMidYMax meet" aria-hidden>
-        {limbs.map((l, i) => (
-          <line x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} strokeWidth={l.w} key={i} />
-        ))}
-      </svg>
+          {/* ── the ground, and the river laid flat on it ── */}
+          <Prop place={{ x: 0, y: 342, z: -1100, rot: "rotateX(90deg)" }} className="ground">
+            <div className="groundFace" />
+          </Prop>
+          <Prop place={{ x: 240, y: 334, z: -430, rot: "rotateX(90deg)", s: 2.3 }} className="riverPlane"><River /></Prop>
 
-      {/* half-sunk water wheel, turning slow */}
-      <svg className="wheel" viewBox="-110 -110 220 220" aria-hidden>
-        <g className="wheelSpin">
-          <circle r="100" />
-          <circle r="72" />
-          {Array.from({ length: 16 }).map((_, i) => {
-            const a = (i / 16) * Math.PI * 2;
-            return <line x1="0" y1="0" x2={Math.cos(a) * 100} y2={Math.sin(a) * 100} key={i} />;
-          })}
-        </g>
-      </svg>
+          {/* ── the machine: factory venting into the race that drives the wheel ── */}
+          <Prop place={{ x: 546, y: -96, z: -596, fade: 0.3 }}><Smoke /></Prop>
+          <Prop place={{ x: 600, y: -58, z: -596, fade: 0.35 }}><Smoke delay={-5.5} /></Prop>
+          <Prop place={{ x: 404, y: 292, z: -580 }}><Effluent /></Prop>
+          <Prop place={{ x: 285, y: 330, z: -376 }}><Splash /></Prop>
+          {/* something long under the surface, only its back showing */}
+          <Prop place={{ x: 640, y: 322, z: -900, s: 2.1 }} className="submerged"><DeepMass /></Prop>
+
+          {/* ── the clickable things ── */}
+          {THINGS.map((t) => (
+            <div
+              key={t.key}
+              className={`prop thing ${openKey === t.key ? "open" : ""} ${hoverKey === t.key ? "hot" : ""}`}
+              style={styleFor(t.place)}
+              onPointerEnter={() => setHoverKey(t.key)}
+              onPointerLeave={() => setHoverKey((k) => (k === t.key ? null : k))}
+              onClick={() => setOpenKey(openKey === t.key ? null : t.key)}
+              role="button"
+              tabIndex={0}
+              aria-label={t.label}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") setOpenKey(openKey === t.key ? null : t.key); }}
+            >
+              {t.art}
+            </div>
+          ))}
+
+          {/* ── life at the tree's foot, only once you are down there ── */}
+          {/* the tree's ecosystem: nothing here exists until you are down at the roots */}
+          <Detail place={{ x: -520, y: 120, z: -548 }} show={atTree}><TrunkDetail /></Detail>
+          <Detail place={{ x: -404, y: 296, z: -540, s: 1.05 }} show={atTree}><Squirrel /></Detail>
+          <Detail place={{ x: -614, y: 322, z: -536 }} show={atTree}><Mushrooms /></Detail>
+          <Detail place={{ x: -330, y: 330, z: -530, s: 1.1 }} show={atTree} className="crawling"><Beetle /></Detail>
+          <Detail place={{ x: -448, y: 206, z: -520 }} show={atTree} className="fluttering"><Moth /></Detail>
+
+          {/* the shed's working parts */}
+          <Detail place={{ x: 600, y: 158, z: -588, s: 0.66 }} show={openKey === "built"}><FactoryGuts /></Detail>
+
+          {/* ── the panel, placed at the shot and turned to face the camera ── */}
+          {open && (
+            <div
+              className="crimPanel"
+              key={open.key}
+              style={{
+                transform:
+                  `translate3d(${open.shot.tx}px,${open.shot.ty}px,${open.shot.tz}px) ` +
+                  `rotateY(${-open.shot.yaw}deg) rotateX(${-open.shot.pitch}deg) ` +
+                  `translate3d(${open.panel.ox}px,${open.panel.oy}px,${-open.shot.dist}px)`,
+              }}
+            >
+              <div className="crimPanelName">{open.label}</div>
+              {open.key === "who"
+                ? <Conversation onClose={() => setOpenKey(null)} />
+                : open.body}
+              <button className="crimClose" onClick={() => setOpenKey(null)}>step back</button>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* screen-locked dither: the grain never scales with the world */}
+      <div className="dth dth-30 dthSky" aria-hidden />
+      <div className="dth dth-30 dthFloor" aria-hidden />
+      <div className="dth dth-42 dthVig" aria-hidden />
+      <div className="hatch" aria-hidden />
+      <div className="crimHorizon" aria-hidden />
+      <div className="crimPlate" aria-hidden />
+      <div className="crimPlateCap" aria-hidden>pl. i — the noria</div>
 
       <header className="crimHead">
         <h1>guha</h1>
         <p className="crimSub">De hac re submisse loquere, sed non assidue.</p>
       </header>
 
-      <nav className="crimNav">
-        {SECTIONS.map((s) => (
-          <button
-            key={s.key}
-            onClick={() => setOpenKey(openKey === s.key ? null : s.key)}
-            aria-expanded={openKey === s.key}
-          >
-            {openKey === s.key ? "[ " + s.label + " ]" : s.label}
-          </button>
-        ))}
-        <a className="crimNav-exit" href="/">leave</a>
-      </nav>
+      {/* the only readout: what your cursor is over */}
+      <div className={`crimReadout ${hover && !open ? "up" : ""}`} aria-hidden>
+        {hover?.label ?? ""}
+      </div>
 
-      {open && (
-        <section className="crimPanel">
-          <div className="crimPanelName">{open.label}</div>
-          {open.body}
-          <button className="crimClose" onClick={() => setOpenKey(null)}>close</button>
-        </section>
-      )}
+      <a className="crimLeave" href="/">leave</a>
+
+      <button className="crimSound" onClick={toggleSound} aria-pressed={sound}>
+        {sound ? "sound ■" : "sound □"}
+      </button>
     </div>
   );
 }

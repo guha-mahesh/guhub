@@ -1,158 +1,640 @@
-/* Crimson. Black tree, vulture, sunk wheel. Raw buttons. Minimal on purpose. */
+/* Crimson field, black ink. One colour and its absence, with an ordered
+   dither doing every tone in between. Nothing is blurred: distance is
+   carried by flat opacity, so the frame stays crisp at any depth. */
 
 .crim {
+  /* deep red carries the frame; salmon only lifts the horizon, the water
+     and the far haze, so the whole thing still reads as red */
+  /* red is the whole palette. salmon is a hue inside it, never a band:
+     it only warms the horizon, the water surface and the far haze. */
+  --paper: #6b0a0a;
+  --paper-lo: #2c0303;
+  --salmon: #8f2418;
+  --salmon-deep: #6d1710;
+  --ink: #0c0606;
+
   position: fixed;
   inset: 0;
   z-index: 9999;
-  overflow-y: auto;
-  background: #6b0a0a;
-  color: #050505;
+  overflow: hidden;
+  background: #7a1410;
+  color: var(--ink);
   font-family: Georgia, "Times New Roman", serif;
   cursor: default;
 }
+
 .crim::before {
   content: "";
-  position: fixed;
+  position: absolute;
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(90% 70% at 50% 120%, #2c0202 0%, transparent 60%),
-    radial-gradient(70% 50% at 50% -10%, #8a1414 0%, transparent 55%);
+    linear-gradient(180deg, #5e0d0a 0%, #7a1410 42%, #93231b 57%, #7a1410 63%, #6b0f0b 100%);
 }
 
-/* second colour: a thin near-black mourning band near the top */
+/* ── world ─────────────────────────────────────────────────────────── */
+/* Both of these are plain boxes sitting at z=0 inside the 3D context, so
+   anything placed behind them (every object with negative Z) would be hit-
+   tested *through* them. Making them transparent to the pointer lets the
+   clicks reach the objects; .thing sets pointer-events back to auto. */
+.crimStage {
+  position: absolute;
+  inset: 0;
+  perspective: 900px;
+  perspective-origin: 50% 50%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.crimWorld {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  will-change: transform;
+  pointer-events: none;
+}
+
+.prop {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+.art { display: block; overflow: visible; }
+
+/* ── the things you can click ──────────────────────────────────────── */
+.thing {
+  pointer-events: auto;
+  cursor: pointer;
+  z-index: 6;
+  transition: opacity 0.25s;
+}
+
+/* the drawing must take the clicks too, not just the box behind it */
+.thing * { pointer-events: auto; }
+
+.thing:focus-visible { outline: 2px solid #0c0606; outline-offset: 6px; }
+
+/* hover reads as the object leaning in, not as a web rollover */
+.thing .art { transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1); }
+.thing.hot .art { transform: scale(1.05) translateY(-5px); }
+.thing.open { cursor: default; }
+
+/* ── ground and river ──────────────────────────────────────────────── */
+.groundFace {
+  width: 7000px;
+  height: 5200px;
+  background: #5a0d09;
+}
+
+.riverPlane { z-index: 0; }
+
+.artRiver {
+  width: 1600px;
+  height: 700px;
+}
+
+.artRiver .body { fill: #8d1c15; }
+.artRiver .lip { fill: #0c0606; opacity: 0.55; }
+
+.current {
+  stroke-dasharray: 120 260;
+  animation: currentRun 5.5s linear infinite;
+}
+
+@keyframes currentRun { to { stroke-dashoffset: -380; } }
+
+/* ── the tree ──────────────────────────────────────────────────────── */
+.artTree {
+  width: 540px;
+  height: 820px;
+  stroke: #0c0606;
+}
+
+.artHollow {
+  width: 80px;
+  height: 56px;
+}
+
+.artSquirrel {
+  width: 130px;
+  height: 90px;
+}
+
+.squirrelHead {
+  transform-origin: 0 -18px;
+  animation: gnaw 0.36s ease-in-out infinite alternate;
+}
+
+@keyframes gnaw {
+  from { transform: rotate(-3.5deg) translateY(0); }
+  to   { transform: rotate(1.5deg) translateY(1.4px); }
+}
+
+/* ── the wheel ─────────────────────────────────────────────────────── */
+.artWheel {
+  width: 300px;
+  height: 300px;
+  fill: #0c0606;
+}
+
+.wheelSpin {
+  transform-origin: 0 0;
+  animation: wheelTurn 26s linear infinite;
+}
+
+@keyframes wheelTurn { to { transform: rotate(360deg); } }
+
+/* water thrown off the paddles */
+.artSplash {
+  position: relative;
+  width: 200px;
+  height: 90px;
+}
+
+.drop {
+  position: absolute;
+  bottom: 0;
+  width: 5px;
+  height: 5px;
+  background: #0c0606;
+  animation: throw 2.4s ease-out infinite;
+}
+
+@keyframes throw {
+  0%   { opacity: 0; transform: translate(0, 0) scale(0.6); }
+  18%  { opacity: 0.9; }
+  100% { opacity: 0; transform: translate(-46px, -74px) scale(0.35); }
+}
+
+/* ── the factory ───────────────────────────────────────────────────── */
+.artFactory {
+  width: 620px;
+  height: 340px;
+}
+
+.artSmoke {
+  width: 80px;
+  height: 190px;
+  opacity: 0.45;
+  animation: smokeRise 11s ease-out infinite;
+}
+
+.artSmoke svg { width: 100%; height: 100%; overflow: visible; }
+
+@keyframes smokeRise {
+  0%   { opacity: 0; transform: translateY(24px) scale(0.7); }
+  22%  { opacity: 0.45; }
+  100% { opacity: 0; transform: translateY(-130px) scale(1.5); }
+}
+
+/* what the outfall puts into the river */
+.artEffluent {
+  width: 220px;
+  height: 90px;
+  opacity: 0.8;
+}
+
+.artEffluent svg { width: 100%; height: 100%; }
+
+.effRow { animation: effDrift 6s linear infinite; }
+
+@keyframes effDrift {
+  from { transform: translateX(30px); opacity: 0; }
+  20%  { opacity: 1; }
+  to   { transform: translateX(-150px); opacity: 0; }
+}
+
+/* ── background ────────────────────────────────────────────────────── */
+.artRidge {
+  width: 900px;
+  height: 200px;
+  overflow: visible;
+}
+
+/* far scenery stays black; the dither layers over it do the hazing */
+/* same tone as the ground, so where the hills meet it there is no seam */
+/* engraved distance: one ruled line with hatching hung beneath it.
+   A filled mass reads as cardboard; a line reads as terrain. */
+.ridgeLine { fill: none; stroke: var(--ink); stroke-width: 2.5; opacity: 0.6; }
+.ridgeHatch path { fill: none; stroke: var(--ink); stroke-width: 1.5; opacity: 0.28; }
+.far .ridgeLine { opacity: 0.42; stroke-width: 2; }
+.far .ridgeHatch path { opacity: 0.18; }
+
+.artVulture {
+  width: 210px;
+  height: auto;
+  transform: rotate(-10deg);
+}
+
+.circling { animation: circle 34s ease-in-out infinite alternate; }
+
+@keyframes circle {
+  from { margin-left: -70px; }
+  to   { margin-left: 90px; }
+}
+
+/* ── the observer ──────────────────────────────────────────────────── */
+.artScribe {
+  width: 180px;
+  height: 200px;
+}
+
+/* the hand never stops, and the pen is the wrong way round */
+.scribeHand {
+  transform-origin: 56px -58px;
+  animation: scribble 1.9s ease-in-out infinite;
+}
+
+@keyframes scribble {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(-3px, 1px) rotate(-2deg); }
+  60% { transform: translate(2px, -1px) rotate(1.5deg); }
+}
+
+.scribePen { transform-origin: 54px -90px; animation: penTwitch 0.42s ease-in-out infinite alternate; }
+
+@keyframes penTwitch {
+  from { transform: rotate(-3deg); }
+  to   { transform: rotate(3deg); }
+}
+
+/* ── detail that only exists once you arrive ───────────────────────── */
+/* hidden with visibility, since styleFor writes opacity inline and would
+   otherwise win over any opacity rule here */
+.detail {
+  visibility: hidden;
+  transition: visibility 0s linear 0.3s;
+}
+
+.detail > * {
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+
+.detail.lit { visibility: visible; transition-delay: 0s; }
+.detail.lit > * { opacity: 1; transition-delay: 0.35s; }
+
+/* ── screen-locked dither ──────────────────────────────────────────── */
+.dth-12 { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' fill='%23050505'%3E%3Crect x='0' y='0' width='1' height='1'/%3E%3Crect x='2' y='0' width='1' height='1'/%3E%3Crect x='4' y='0' width='1' height='1'/%3E%3Crect x='6' y='0' width='1' height='1'/%3E%3Crect x='2' y='2' width='1' height='1'/%3E%3Crect x='6' y='2' width='1' height='1'/%3E%3Crect x='0' y='4' width='1' height='1'/%3E%3Crect x='2' y='4' width='1' height='1'/%3E%3Crect x='4' y='4' width='1' height='1'/%3E%3Crect x='6' y='4' width='1' height='1'/%3E%3Crect x='2' y='6' width='1' height='1'/%3E%3Crect x='6' y='6' width='1' height='1'/%3E%3C/svg%3E"); }
+.dth-30 { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' fill='%23050505'%3E%3Crect x='0' y='0' width='1' height='1'/%3E%3Crect x='2' y='0' width='1' height='1'/%3E%3Crect x='4' y='0' width='1' height='1'/%3E%3Crect x='6' y='0' width='1' height='1'/%3E%3Crect x='1' y='1' width='1' height='1'/%3E%3Crect x='3' y='1' width='1' height='1'/%3E%3Crect x='5' y='1' width='1' height='1'/%3E%3Crect x='7' y='1' width='1' height='1'/%3E%3Crect x='0' y='2' width='1' height='1'/%3E%3Crect x='2' y='2' width='1' height='1'/%3E%3Crect x='4' y='2' width='1' height='1'/%3E%3Crect x='6' y='2' width='1' height='1'/%3E%3Crect x='1' y='3' width='1' height='1'/%3E%3Crect x='3' y='3' width='1' height='1'/%3E%3Crect x='7' y='3' width='1' height='1'/%3E%3Crect x='0' y='4' width='1' height='1'/%3E%3Crect x='2' y='4' width='1' height='1'/%3E%3Crect x='4' y='4' width='1' height='1'/%3E%3Crect x='6' y='4' width='1' height='1'/%3E%3Crect x='1' y='5' width='1' height='1'/%3E%3Crect x='3' y='5' width='1' height='1'/%3E%3Crect x='5' y='5' width='1' height='1'/%3E%3Crect x='7' y='5' width='1' height='1'/%3E%3Crect x='0' y='6' width='1' height='1'/%3E%3Crect x='2' y='6' width='1' height='1'/%3E%3Crect x='4' y='6' width='1' height='1'/%3E%3Crect x='6' y='6' width='1' height='1'/%3E%3Crect x='3' y='7' width='1' height='1'/%3E%3Crect x='5' y='7' width='1' height='1'/%3E%3Crect x='7' y='7' width='1' height='1'/%3E%3C/svg%3E"); }
+.dth-42 { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' fill='%23050505'%3E%3Crect x='0' y='0' width='1' height='1'/%3E%3Crect x='1' y='0' width='1' height='1'/%3E%3Crect x='2' y='0' width='1' height='1'/%3E%3Crect x='3' y='0' width='1' height='1'/%3E%3Crect x='4' y='0' width='1' height='1'/%3E%3Crect x='5' y='0' width='1' height='1'/%3E%3Crect x='6' y='0' width='1' height='1'/%3E%3Crect x='1' y='1' width='1' height='1'/%3E%3Crect x='3' y='1' width='1' height='1'/%3E%3Crect x='5' y='1' width='1' height='1'/%3E%3Crect x='7' y='1' width='1' height='1'/%3E%3Crect x='0' y='2' width='1' height='1'/%3E%3Crect x='2' y='2' width='1' height='1'/%3E%3Crect x='3' y='2' width='1' height='1'/%3E%3Crect x='4' y='2' width='1' height='1'/%3E%3Crect x='6' y='2' width='1' height='1'/%3E%3Crect x='7' y='2' width='1' height='1'/%3E%3Crect x='1' y='3' width='1' height='1'/%3E%3Crect x='3' y='3' width='1' height='1'/%3E%3Crect x='5' y='3' width='1' height='1'/%3E%3Crect x='7' y='3' width='1' height='1'/%3E%3Crect x='0' y='4' width='1' height='1'/%3E%3Crect x='1' y='4' width='1' height='1'/%3E%3Crect x='2' y='4' width='1' height='1'/%3E%3Crect x='4' y='4' width='1' height='1'/%3E%3Crect x='5' y='4' width='1' height='1'/%3E%3Crect x='6' y='4' width='1' height='1'/%3E%3Crect x='7' y='4' width='1' height='1'/%3E%3Crect x='1' y='5' width='1' height='1'/%3E%3Crect x='3' y='5' width='1' height='1'/%3E%3Crect x='5' y='5' width='1' height='1'/%3E%3Crect x='7' y='5' width='1' height='1'/%3E%3Crect x='0' y='6' width='1' height='1'/%3E%3Crect x='2' y='6' width='1' height='1'/%3E%3Crect x='3' y='6' width='1' height='1'/%3E%3Crect x='4' y='6' width='1' height='1'/%3E%3Crect x='6' y='6' width='1' height='1'/%3E%3Crect x='7' y='6' width='1' height='1'/%3E%3Crect x='1' y='7' width='1' height='1'/%3E%3Crect x='3' y='7' width='1' height='1'/%3E%3Crect x='5' y='7' width='1' height='1'/%3E%3Crect x='7' y='7' width='1' height='1'/%3E%3C/svg%3E"); }
+.dth-54 { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' fill='%23050505'%3E%3Crect x='0' y='0' width='1' height='1'/%3E%3Crect x='1' y='0' width='1' height='1'/%3E%3Crect x='2' y='0' width='1' height='1'/%3E%3Crect x='3' y='0' width='1' height='1'/%3E%3Crect x='4' y='0' width='1' height='1'/%3E%3Crect x='5' y='0' width='1' height='1'/%3E%3Crect x='6' y='0' width='1' height='1'/%3E%3Crect x='7' y='0' width='1' height='1'/%3E%3Crect x='0' y='1' width='1' height='1'/%3E%3Crect x='1' y='1' width='1' height='1'/%3E%3Crect x='3' y='1' width='1' height='1'/%3E%3Crect x='4' y='1' width='1' height='1'/%3E%3Crect x='5' y='1' width='1' height='1'/%3E%3Crect x='7' y='1' width='1' height='1'/%3E%3Crect x='0' y='2' width='1' height='1'/%3E%3Crect x='1' y='2' width='1' height='1'/%3E%3Crect x='2' y='2' width='1' height='1'/%3E%3Crect x='3' y='2' width='1' height='1'/%3E%3Crect x='4' y='2' width='1' height='1'/%3E%3Crect x='5' y='2' width='1' height='1'/%3E%3Crect x='6' y='2' width='1' height='1'/%3E%3Crect x='7' y='2' width='1' height='1'/%3E%3Crect x='1' y='3' width='1' height='1'/%3E%3Crect x='2' y='3' width='1' height='1'/%3E%3Crect x='3' y='3' width='1' height='1'/%3E%3Crect x='5' y='3' width='1' height='1'/%3E%3Crect x='7' y='3' width='1' height='1'/%3E%3Crect x='0' y='4' width='1' height='1'/%3E%3Crect x='1' y='4' width='1' height='1'/%3E%3Crect x='2' y='4' width='1' height='1'/%3E%3Crect x='3' y='4' width='1' height='1'/%3E%3Crect x='4' y='4' width='1' height='1'/%3E%3Crect x='5' y='4' width='1' height='1'/%3E%3Crect x='6' y='4' width='1' height='1'/%3E%3Crect x='7' y='4' width='1' height='1'/%3E%3Crect x='0' y='5' width='1' height='1'/%3E%3Crect x='1' y='5' width='1' height='1'/%3E%3Crect x='3' y='5' width='1' height='1'/%3E%3Crect x='4' y='5' width='1' height='1'/%3E%3Crect x='5' y='5' width='1' height='1'/%3E%3Crect x='7' y='5' width='1' height='1'/%3E%3Crect x='0' y='6' width='1' height='1'/%3E%3Crect x='1' y='6' width='1' height='1'/%3E%3Crect x='2' y='6' width='1' height='1'/%3E%3Crect x='3' y='6' width='1' height='1'/%3E%3Crect x='4' y='6' width='1' height='1'/%3E%3Crect x='5' y='6' width='1' height='1'/%3E%3Crect x='6' y='6' width='1' height='1'/%3E%3Crect x='7' y='6' width='1' height='1'/%3E%3Crect x='1' y='7' width='1' height='1'/%3E%3Crect x='3' y='7' width='1' height='1'/%3E%3Crect x='5' y='7' width='1' height='1'/%3E%3Crect x='6' y='7' width='1' height='1'/%3E%3Crect x='7' y='7' width='1' height='1'/%3E%3C/svg%3E"); }
+
+.dth {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-repeat: repeat;
+  /* fixed = locked to the viewport, so the grain never scales with the world */
+  background-attachment: fixed;
+}
+
+.dthSky {
+  z-index: 2;
+  opacity: 0.55;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 44%);
+  mask-image: linear-gradient(to bottom, #000 0%, transparent 44%);
+}
+
+.dthFloor {
+  z-index: 2;
+  opacity: 0.4;
+  -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 34%);
+  mask-image: linear-gradient(to top, #000 0%, transparent 34%);
+}
+
+.dthVig {
+  z-index: 3;
+  opacity: 0.3;
+  -webkit-mask-image: radial-gradient(82% 74% at 50% 48%, transparent 55%, #000 100%);
+  mask-image: radial-gradient(82% 74% at 50% 48%, transparent 55%, #000 100%);
+}
+
+/* ── chrome ────────────────────────────────────────────────────────── */
 .crimBand {
-  position: fixed;
+  position: absolute;
   top: 46px;
   left: 0;
   right: 0;
   height: 5px;
-  background: #050505;
+  background: #0c0606;
   opacity: 0.85;
   pointer-events: none;
-  z-index: 1;
+  z-index: 3;
 }
 
-.tree {
-  position: fixed;
-  left: 50%;
-  bottom: 0;
-  transform: translateX(-50%);
-  width: min(70vw, 560px);
-  height: 78vh;
-  stroke: #050505;
-  fill: none;
-  stroke-linecap: round;
+.crimHead {
+  position: absolute;
+  top: 70px;
+  left: 40px;
+  z-index: 4;
   pointer-events: none;
-  opacity: 0.96;
 }
 
-.vulture {
-  position: fixed;
-  top: 40px;
+.crimHead h1 {
+  margin: 0;
+  font-size: 2.6rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+.crimSub {
+  margin: 0.2rem 0 0;
+  font-size: 0.8rem;
+  font-style: italic;
+  opacity: 0.7;
+}
+
+/* the only readout: the name of whatever is under the cursor */
+.crimReadout {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 56px;
+  z-index: 4;
+  text-align: center;
+  font-size: 1.05rem;
+  letter-spacing: 0.3em;
+  text-transform: lowercase;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.crimReadout.up { opacity: 0.85; transform: translateY(0); }
+
+.crimLeave {
+  position: absolute;
+  left: 40px;
+  bottom: 40px;
+  z-index: 4;
+  font-size: 0.78rem;
+  color: #0c0606;
+  opacity: 0.5;
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+}
+
+.crimLeave:hover { opacity: 0.95; }
+
+.crimSound {
+  position: absolute;
   right: 40px;
-  width: clamp(120px, 16vw, 210px);
-  height: auto;
-  transform: rotate(-10deg);
-  opacity: 0.92;
-  pointer-events: none;
-  z-index: 2;
+  bottom: 40px;
+  z-index: 4;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  font-size: 0.74rem;
+  letter-spacing: 0.16em;
+  color: #0c0606;
+  opacity: 0.5;
+  cursor: pointer;
 }
 
-.wheel {
-  position: fixed;
-  right: -70px;
-  bottom: -70px;
-  width: 260px;
-  height: 260px;
-  stroke: #050505;
-  fill: none;
-  stroke-width: 2;
+.crimSound:hover { opacity: 0.9; }
+
+/* ── panels ────────────────────────────────────────────────────────── */
+.crimPanel {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 340px;
+  margin-left: -170px;
+  margin-top: -120px;
+  padding: 1.1rem 1.2rem 2.4rem;
+  background: rgba(12, 6, 6, 0.92);
+  border: 1px solid #0c0606;
+  color: #f0cdc2;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  pointer-events: auto;
+  transform-style: preserve-3d;
+  animation: panelIn 0.5s ease-out 0.42s backwards;
+}
+
+@keyframes panelIn { from { opacity: 0; } to { opacity: 1; } }
+
+.crimPanel p { margin: 0 0 0.7rem; }
+.crimPanel p:last-of-type { margin-bottom: 0; }
+
+.crimPanelName {
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  margin-bottom: 0.6rem;
+}
+
+.rawlist { margin: 0; padding-left: 1.1rem; }
+.rawlist li { margin-bottom: 0.3rem; }
+
+.crimClose {
+  position: absolute;
+  left: 1.2rem;
+  bottom: 0.9rem;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  font-size: 0.72rem;
+  color: #f0cdc2;
+  opacity: 0.5;
+  cursor: pointer;
+  border-bottom: 1px solid currentColor;
+}
+
+.crimClose:hover { opacity: 0.9; }
+
+@media (prefers-reduced-motion: reduce) {
+  .wheelSpin, .circling, .current, .drop, .artSmoke, .effRow,
+  .squirrelHead, .scribeHand, .scribePen { animation: none; }
+  .detail, .crimPanel { transition: none; animation: none; }
+}
+
+@media (max-width: 768px) {
+  .crimHead { left: 20px; top: 62px; }
+  .crimHead h1 { font-size: 1.9rem; }
+  .crimLeave { left: 20px; bottom: 24px; }
+  .crimSound { right: 20px; bottom: 24px; }
+  .crimPanel { width: 260px; margin-left: -130px; }
+}
+
+/* ── interiors ─────────────────────────────────────────────────────── */
+.artTrunkDetail { width: 260px; height: 380px; }
+.artMushrooms { width: 120px; height: 56px; }
+.artBeetle { width: 48px; height: 28px; }
+.artMoth { width: 40px; height: 28px; }
+.artGuts { width: 360px; height: 240px; }
+
+.beetleLegs { animation: scuttle 0.22s steps(2, end) infinite alternate; }
+@keyframes scuttle { from { transform: translateX(-0.7px); } to { transform: translateX(0.7px); } }
+
+/* the beetle walks a short patch of root and turns around */
+.crawling { animation: crawl 13s ease-in-out infinite alternate; }
+@keyframes crawl {
+  from { margin-left: -60px; }
+  to   { margin-left: 70px; }
+}
+
+.mothWingL { transform-origin: -2px 0; animation: flapL 0.11s ease-in-out infinite alternate; }
+.mothWingR { transform-origin: 2px 0; animation: flapR 0.11s ease-in-out infinite alternate; }
+@keyframes flapL { from { transform: scaleX(1); } to { transform: scaleX(0.35); } }
+@keyframes flapR { from { transform: scaleX(1); } to { transform: scaleX(0.35); } }
+
+/* it works the same patch of air and gets nowhere */
+.fluttering { animation: flit 5.5s ease-in-out infinite alternate; }
+@keyframes flit {
+  from { margin: 0 0 0 -26px; }
+  to   { margin: -22px 0 0 30px; }
+}
+
+.gutsGearA { transform-origin: -96px -20px; animation: wheelTurn 7s linear infinite; }
+.gutsGearB { transform-origin: -16px -20px; animation: wheelTurn 5s linear infinite reverse; }
+.gutsPiston { animation: pump 2.5s ease-in-out infinite alternate; }
+@keyframes pump { from { transform: translateX(0); } to { transform: translateX(26px); } }
+
+/* the vats fill and never empty */
+.gutsLevelA { animation: fill 9s ease-in infinite; transform-origin: 30px 88px; }
+.gutsLevelB { animation: fill 11s ease-in infinite 2s; transform-origin: 104px 88px; }
+@keyframes fill {
+  0%   { transform: scaleY(0.15); }
+  80%  { transform: scaleY(1); }
+  100% { transform: scaleY(1); }
+}
+
+/* ── the conversation ──────────────────────────────────────────────── */
+.talk { display: flex; flex-direction: column; gap: 0.9rem; }
+
+.talkSays {
+  margin: 0;
+  font-size: 0.84rem;
+  line-height: 1.65;
+}
+
+.talkChoices { display: flex; flex-direction: column; align-items: flex-start; gap: 0.25rem; }
+
+.talkAsk {
+  background: none;
+  border: none;
+  padding: 0.1rem 0;
+  font-family: inherit;
+  font-size: 0.78rem;
+  color: #f0cdc2;
+  opacity: 0.66;
+  cursor: pointer;
+  text-align: left;
+  transition: opacity 0.15s, transform 0.15s;
+}
+
+.talkAsk::before { content: "> "; opacity: 0.5; }
+.talkAsk:hover { opacity: 1; transform: translateX(3px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .beetleLegs, .crawling, .mothWingL, .mothWingR, .fluttering,
+  .gutsGearA, .gutsGearB, .gutsPiston, .gutsLevelA, .gutsLevelB { animation: none; }
+}
+
+/* ── the vast things ───────────────────────────────────────────────────
+   Tone is everything here: only a few steps off the sky, so the dither
+   layers on top break their edges up and refuse to resolve them. */
+.vast {
+  color: #1c0404;
+  opacity: 0.26;
+}
+
+.artGreatWheel { width: 640px; height: 640px; }
+
+/* one turn every six minutes: slow enough that you are not sure it moved */
+.greatSpin {
+  transform-origin: 0 0;
+  animation: wheelTurn 360s linear infinite;
+}
+
+.artColossus { width: 400px; height: 760px; }
+
+.submerged { color: #4a0d0a; opacity: 0.7; }
+.artDeepMass { width: 600px; height: 90px; }
+
+/* it surfaces, holds, and is gone before you are sure */
+.submerged { animation: surfacing 47s ease-in-out infinite; }
+
+@keyframes surfacing {
+  0%, 62%   { opacity: 0; }
+  72%, 84%  { opacity: 1; }
+  94%, 100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .greatSpin, .submerged { animation: none; }
+}
+
+
+/* ── engraved plate ────────────────────────────────────────────────────
+   A double rule inset from the edge. Victorian plates are set inside
+   ruled borders, and it does more for the register than any amount of
+   scenery: it says printed page rather than viewport. */
+.crimPlate {
+  position: absolute;
+  inset: 22px;
+  z-index: 4;
+  pointer-events: none;
+  border: 1px solid var(--ink);
+  opacity: 0.85;
+}
+
+.crimPlate::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 2px solid var(--ink);
+  opacity: 0.55;
+}
+
+/* the plate's caption, bottom right, like an engraver's line */
+.crimPlateCap {
+  position: absolute;
+  right: 40px;
+  bottom: 34px;
+  z-index: 4;
+  font-size: 0.6rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
   opacity: 0.5;
   pointer-events: none;
 }
-.wheelSpin { transform-origin: 0 0; animation: turn 40s linear infinite; }
-@keyframes turn { to { transform: rotate(360deg); } }
 
-.crimHead {
-  position: relative;
+/* the horizon, ruled rather than faded */
+.crimHorizon {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  top: 57%;
+  height: 1px;
+  z-index: 3;
+  background: var(--ink);
+  opacity: 0.32;
+  pointer-events: none;
+}
+
+
+/* ── ground hatch ──────────────────────────────────────────────────────
+   Engravings shade ground with ruled strokes, not with flat tone. Same
+   viewport-locked trick as the dither so it never slides with the world. */
+.hatch {
+  position: absolute;
+  inset: 0;
   z-index: 2;
-  padding: 60px 30px 0;
-}
-.crimHead h1 {
-  font-size: clamp(60px, 16vw, 170px);
-  margin: 0;
-  line-height: 1;
-  font-weight: normal;
-  letter-spacing: -0.02em;
-}
-/* clear the giant descenders of "guha" so the subtitle never overlaps */
-.crimSub {
-  margin: 18px 0 0;
-  font-size: 15px;
-  font-style: italic;
-  max-width: 34ch;
-}
-
-.crimNav {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 4px;
-  padding: 40px 30px;
-}
-/* raw buttons: browser default look, only sized up. */
-.crimNav button {
-  font-family: Georgia, serif;
-  font-size: 26px;
-  background: buttonface;
-  color: #050505;
-  padding: 2px 6px;
-  cursor: pointer;
-}
-.crimNav button[aria-expanded="true"] { font-weight: bold; }
-.crimNav-exit {
-  margin-top: 18px;
-  color: #050505;
-  font-size: 13px;
-  font-style: italic;
-}
-
-.crimPanel {
-  position: relative;
-  z-index: 2;
-  margin: 0 30px 90px;
-  max-width: 64ch;
-  background: #6b0a0a;
-  border-top: 2px solid #050505;
-  padding-top: 18px;
-}
-.crimPanelName {
-  font-size: 12px;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  margin-bottom: 14px;
-}
-.crimPanel p { font-size: 18px; line-height: 1.55; margin: 0 0 15px; }
-.rawlist { margin: 0 0 15px; padding-left: 20px; }
-.rawlist li { font-size: 17px; line-height: 1.5; margin-bottom: 7px; }
-.crimClose {
-  font-family: Georgia, serif;
-  font-size: 15px;
-  background: buttonface;
-  color: #050505;
-  padding: 3px 10px;
-  cursor: pointer;
-  margin-top: 6px;
-}
-
-@media (max-width: 640px) {
-  .tree { width: 100vw; opacity: 0.85; }
-  .crimNav button { font-size: 30px; }
-  .vulture { width: 84px; top: 20px; right: 18px; }
-}
-
-@media (max-width: 640px) {
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6'%3E%3Cpath d='M-1 5 L5 -1 M1 7 L7 1' stroke='%230c0606' stroke-width='0.9'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-attachment: fixed;
+  opacity: 0.22;
+  -webkit-mask-image: linear-gradient(to top, #000 0%, #000 22%, transparent 43%);
+  mask-image: linear-gradient(to top, #000 0%, #000 22%, transparent 43%);
 }
