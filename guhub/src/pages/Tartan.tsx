@@ -15,14 +15,21 @@ import { useEffect } from "react";
  * it costs one image and nothing per frame.
  */
 
+/**
+ * The void palette. Not the cloth dimmed uniformly: the ground is taken
+ * almost to black so the corner reads as an absence, while the guards and
+ * overchecks keep just enough light to say tartan. If everything is scaled
+ * by the same factor you get a dark rectangle; the pattern only survives if
+ * the light threads stay relatively lighter than the ground.
+ */
 const C = {
-  R: [168, 18, 22],    // red ground
-  K: [16, 15, 14],     // black
-  W: [238, 233, 224],  // white
-  B: [22, 44, 105],    // navy
-  Y: [206, 150, 26],   // yellow
-  G: [18, 66, 48],     // bottle green
-  A: [40, 96, 186],    // azure
+  R: [30, 6, 7],       // red ground, nearly gone
+  K: [5, 4, 4],        // black
+  W: [104, 98, 94],    // white guards, dimmed to ash
+  B: [10, 17, 38],     // navy
+  Y: [74, 55, 12],     // yellow
+  G: [8, 26, 19],      // bottle green
+  A: [16, 38, 72],     // azure
 } as const;
 
 type Key = keyof typeof C;

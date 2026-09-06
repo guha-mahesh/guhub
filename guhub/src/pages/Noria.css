@@ -17,26 +17,18 @@
   inset: 0;
   z-index: 9999;
   overflow: hidden;
-  background-color: #7a1410;
-  background-image: var(--tartan);
-  background-repeat: repeat;
+  background: #7a1410;
   color: var(--ink);
   font-family: Georgia, "Times New Roman", serif;
   cursor: default;
 }
 
-/* a wash, not a curtain: the weave has to stay legible through it */
 .crim::before {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(180deg,
-    rgba(28, 4, 3, 0.62) 0%,
-    rgba(40, 6, 4, 0.34) 34%,
-    rgba(120, 26, 18, 0.12) 56%,
-    rgba(30, 5, 4, 0.4) 62%,
-    rgba(18, 3, 2, 0.66) 100%);
+  background: linear-gradient(180deg, #6d0f0b 0%, #85170f 34%, #9a251c 56%, #7d1410 58%, #690e0a 100%);
 }
 
 /* ── world ─────────────────────────────────────────────────────────── */
@@ -105,7 +97,7 @@
   height: 700px;
 }
 
-.artRiver .body { fill: rgba(150, 32, 22, 0.45); }
+.artRiver .body { fill: #8d1c15; }
 .artRiver .lip { fill: #0c0606; opacity: 0.55; }
 
 .current {
@@ -676,7 +668,7 @@
   -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 22%, #000 74%, transparent 100%);
   mask-image: linear-gradient(90deg, transparent 0%, #000 22%, #000 74%, transparent 100%);
 }
-.wlBody { fill: rgba(140, 28, 18, 0.6); }
+.wlBody { fill: #85180f; opacity: 0.96; }
 .wlHatch path { fill: none; stroke: var(--ink); stroke-width: 1.5; opacity: 0.3; }
 
 
@@ -768,5 +760,19 @@
   pointer-events: none;
 }
 
-.biteBody { fill: var(--ink); }
-.biteRule { fill: var(--paper-lo); }
+/* the corner is cloth. The ink layer sits fractionally proud of it so the
+   torn edge is outlined, the way the plate border is ruled. */
+.biteCloth,
+.biteEdge {
+  position: absolute;
+  inset: 0;
+}
+
+.biteEdge { background: #2a0605; }
+
+.biteCloth {
+  background-color: #050404;
+  background-image: var(--tartan);
+  background-repeat: repeat;
+  background-size: 300px 300px;
+}

@@ -41,16 +41,18 @@ function tornEdge(seed: number, inset = 0) {
       pts.push([Math.max(0, x - back * 0.8), Math.min(100, y + back * 0.8)]);
     }
   }
-  return `M100,0 L100,100 ` + pts.reverse().map(([x, y]) => `L${x.toFixed(2)},${y.toFixed(2)}`).join(" ") + " Z";
+  const edge = pts.reverse().map(([x, y]) => `${x.toFixed(2)}% ${y.toFixed(2)}%`).join(", ");
+  return `polygon(100% 0%, 100% 100%, ${edge})`;
 }
 
 export default function Bite() {
-  const outer = useMemo(() => tornEdge(0x51d3, 0), []);
-  const inner = useMemo(() => tornEdge(0x51d3, 1.6), []);
+  // the ink layer is cut slightly wider, so it shows as a rule along the tear
+  const edge = useMemo(() => tornEdge(0x51d3, 0), []);
+  const under = useMemo(() => tornEdge(0x51d3, 1.8), []);
   return (
-    <svg className="bite" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
-      <path className="biteRule" d={inner} />
-      <path className="biteBody" d={outer} />
-    </svg>
+    <div className="bite" aria-hidden>
+      <div className="biteEdge" style={{ clipPath: under }} />
+      <div className="biteCloth" style={{ clipPath: edge }} />
+    </div>
   );
 }
