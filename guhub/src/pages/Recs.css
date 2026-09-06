@@ -1,0 +1,335 @@
+@import '@fontsource/ibm-plex-mono/400.css';
+@import '@fontsource/ibm-plex-mono/700.css';
+
+/* Same idiom as ListeningPage: mono, dark panels over the site backdrop,
+   sage accents, small letterspaced labels. */
+
+.rc {
+  position: relative;
+  min-height: calc(100vh - 52px);
+  margin-top: 52px;
+  /* Top padding clears the fixed music toggle parked at top:80px/left:2rem,
+     which is a 50px circle in a column that grows with its mute hint. Other
+     pages dodge it by centring (MusicLanding) or bottom-aligning
+     (ListeningPage); this one is top-left, so it has to start below it. */
+  padding: 9rem 2.5rem 5rem;
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+}
+
+.rcVeil {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 80% at 28% 45%, rgba(4, 5, 4, 0.96), transparent 76%),
+    linear-gradient(180deg, rgba(4, 5, 4, 0.55), rgba(4, 5, 4, 0.25));
+}
+
+.rcInner {
+  position: relative;
+  max-width: 620px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.rcLabel {
+  font-size: 0.65rem;
+  color: var(--sage);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.rcTitle {
+  font-size: 2.6rem;
+  color: #f0f0f0;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.9);
+}
+
+.rcSub {
+  font-size: 0.9rem;
+  color: #e4e4e4;
+  margin: 0;
+  line-height: 1.8;
+  max-width: 46ch;
+}
+
+.rcPanel {
+  border: 1px solid #3a4138;
+  background: #070907;
+  padding: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.rcSteps {
+  margin: 0;
+  padding-left: 1.2rem;
+  font-size: 0.9rem;
+  color: #e4e4e4;
+  line-height: 1.9;
+}
+
+.rcSteps li { margin-bottom: 0.4rem; }
+.rcSteps b { color: #f0f0f0; font-weight: 700; }
+
+.rcConnect {
+  display: block;
+  text-align: center;
+  border: 1px solid #46603f;
+  background: #0e130d;
+  color: #f4f4f4;
+  font-family: inherit;
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.95rem;
+  text-decoration: none;
+  transition: color 0.1s, background 0.1s, border-color 0.1s;
+}
+
+.rcConnect:hover {
+  color: #f0f0f0;
+  background: #0d110c;
+  border-color: #3a4a36;
+}
+
+.rcOr {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #8a8a8a;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.rcOr::before,
+.rcOr::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #2e2e2e;
+}
+
+.rcUpload {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.rcField {
+  background: transparent;
+  border: 1px solid #333;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 0.85rem;
+  padding: 0.9rem 0.9rem;
+  outline: none;
+  caret-color: var(--sage);
+}
+
+.rcField::placeholder { color: #8a8a8a; }
+.rcField:focus { border-color: #3a4a36; }
+
+/* The native file input is unstyleable, so hide it and use the label. */
+.rcFile {
+  border: 1px dashed #3d3d3d;
+  padding: 0.95rem;
+  font-size: 0.85rem;
+  color: #d0d0d0;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.1s, color 0.1s;
+}
+
+.rcFile:hover { border-color: #3a4a36; color: #d0d0d0; }
+.rcFile input { display: none; }
+
+.rcConnect:disabled {
+  /* Readable rather than nearly invisible: a disabled control still has to be
+     legible enough to show what it will become. */
+  opacity: 1;
+  color: #7a7a7a;
+  background: transparent;
+  border-color: #2a2a2a;
+  cursor: default;
+}
+
+.rcHint {
+  font-size: 0.75rem;
+  color: #8a8a8a;
+  margin: -0.35rem 0 0;
+  text-align: center;
+}
+
+.rcFine {
+  font-size: 0.8rem;
+  color: #bdbdbd;
+  margin: 0;
+  line-height: 1.7;
+}
+
+.rcErr {
+  font-size: 0.8rem;
+  color: #d96b6b;
+  margin: 0;
+  letter-spacing: 0.04em;
+}
+
+/* ── progress ─────────────────────────────────────────────── */
+
+.rcStage {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.72rem;
+  color: var(--sage);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.rcDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--sage);
+  flex-shrink: 0;
+}
+
+/* Only pulse while something is happening. A blinking dot on a finished job
+   reads as still-working. */
+.rcStage--pending .rcDot,
+.rcStage--queued .rcDot,
+.rcStage--running .rcDot {
+  animation: rcPulse 2s ease-in-out infinite;
+}
+
+.rcStage--done .rcDot { background: #1db954; box-shadow: 0 0 6px #1db954; }
+.rcStage--failed .rcDot { background: #8a3333; }
+.rcStage--failed { color: #8a3333; }
+
+@keyframes rcPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .rcDot { animation: none; }
+}
+
+.rcBlurb {
+  font-size: 0.9rem;
+  color: #e4e4e4;
+  margin: 0;
+  line-height: 1.75;
+}
+
+.rcWho { font-size: 0.75rem; color: #a8a8a8; margin: 0; }
+.rcWho b { color: #e4e4e4; font-weight: 400; }
+
+.rcStats {
+  display: flex;
+  gap: 2rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid #2e2e2e;
+}
+
+.rcNum {
+  display: block;
+  font-size: 1.4rem;
+  color: #f0f0f0;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.rcStatLabel {
+  display: block;
+  font-size: 0.65rem;
+  color: #a8a8a8;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-top: 0.25rem;
+}
+
+@media (max-width: 640px) {
+  /* Same clearance rule: the toggle is fixed at the same offset on mobile. */
+  .rc { padding: 8.5rem 1.25rem 4rem; }
+  .rcTitle { font-size: 1.75rem; }
+  .rcStats { gap: 1.25rem; }
+}
+
+/* ── admin queue (Cmd+Shift+. to unlock) ──────────────────── */
+
+.rcAdmin {
+  border: 1px solid #46603f;
+  background: #070907;
+  padding: 1.1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: .85rem;
+}
+
+.rcAdminLabel {
+  font-size: .65rem;
+  color: var(--sage);
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.rcAdminRow {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  padding-top: .85rem;
+  border-top: 1px solid #1e241d;
+}
+
+.rcAdminWho {
+  display: flex;
+  align-items: baseline;
+  gap: .6rem;
+  flex-wrap: wrap;
+  font-size: .85rem;
+  color: #e4e4e4;
+}
+
+.rcTag {
+  font-size: .6rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  padding: .15rem .45rem;
+  border: 1px solid currentColor;
+  color: #9a9a9a;
+}
+
+/* State reads at a glance without parsing the word. */
+.rcTag--pending { color: #d9b64a; }
+.rcTag--queued,
+.rcTag--running { color: var(--sage); }
+.rcTag--done    { color: #1db954; }
+.rcTag--failed  { color: #d96b6b; }
+
+.rcAdminBtns { display: flex; gap: .4rem; flex-wrap: wrap; }
+
+.rcAdminBtns button {
+  font-family: inherit;
+  font-size: .7rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  background: transparent;
+  color: #d0d0d0;
+  border: 1px solid #333;
+  padding: .45rem .7rem;
+  cursor: pointer;
+  transition: color .1s, border-color .1s;
+}
+
+.rcAdminBtns button:hover:not(:disabled) { color: #fff; border-color: var(--sage); }
+.rcAdminBtns button:disabled { opacity: .4; cursor: default; }
+.rcAdminBtns button:focus-visible { outline: 2px solid var(--sage); outline-offset: 2px; }
