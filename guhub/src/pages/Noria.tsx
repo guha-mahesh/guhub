@@ -379,7 +379,9 @@ export default function Noria() {
       </div>
 
       {/* screen-locked dither: the grain never scales with the world */}
-      <div className="dth dth-30 dthSky" aria-hidden />
+      <div className="skyBands" aria-hidden>
+        {Array.from({ length: 7 }).map((_, i) => <div key={i} className="skyBand" />)}
+      </div>
       <div className="dth dth-30 dthFloor" aria-hidden />
       <div className="dth dth-42 dthVig" aria-hidden />
       <div className="hatch" aria-hidden />

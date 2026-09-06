@@ -28,8 +28,7 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background:
-    linear-gradient(180deg, #5e0d0a 0%, #7a1410 42%, #93231b 57%, #7a1410 63%, #6b0f0b 100%);
+  background: linear-gradient(180deg, #6d0f0b 0%, #85170f 34%, #9a251c 56%, #7d1410 58%, #690e0a 100%);
 }
 
 /* ── world ─────────────────────────────────────────────────────────── */
@@ -666,3 +665,41 @@
 }
 .wlBody { fill: #85180f; opacity: 0.96; }
 .wlHatch path { fill: none; stroke: var(--ink); stroke-width: 1.5; opacity: 0.3; }
+
+
+/* ── stepped sky ───────────────────────────────────────────────────────
+   Obra Dinn's skies are not smooth: they are bands of one dither density
+   each, with visible steps between them. Same viewport-locked tiles as
+   the rest of the plate, masked into hard-edged horizontal courses. */
+.skyBands {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.skyBand {
+  position: absolute;
+  inset: 0;
+  background-repeat: repeat;
+  background-attachment: fixed;
+  opacity: 0.5;
+}
+
+.skyBand:nth-child(1) { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' fill='%230c0606'%3E%3Crect x='0' y='0' width='1' height='1'/%3E%3Crect x='2' y='0' width='1' height='1'/%3E%3Crect x='4' y='0' width='1' height='1'/%3E%3Crect x='6' y='0' width='1' height='1'/%3E%3Crect x='1' y='1' width='1' height='1'/%3E%3Crect x='5' y='1' width='1' height='1'/%3E%3Crect x='0' y='2' width='1' height='1'/%3E%3Crect x='2' y='2' width='1' height='1'/%3E%3Crect x='4' y='2' width='1' height='1'/%3E%3Crect x='6' y='2' width='1' height='1'/%3E%3Crect x='0' y='4' width='1' height='1'/%3E%3Crect x='2' y='4' width='1' height='1'/%3E%3Crect x='4' y='4' width='1' height='1'/%3E%3Crect x='6' y='4' width='1' height='1'/%3E%3Crect x='1' y='5' width='1' height='1'/%3E%3Crect x='5' y='5' width='1' height='1'/%3E%3Crect x='0' y='6' width='1' height='1'/%3E%3Crect x='2' y='6' width='1' height='1'/%3E%3Crect x='4' y='6' width='1' height='1'/%3E%3Crect x='6' y='6' width='1' height='1'/%3E%3C/svg%3E"); }
+.skyBand:nth-child(2) { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' fill='%230c0606'%3E%3Crect x='0' y='0' width='1' height='1'/%3E%3Crect x='2' y='0' width='1' height='1'/%3E%3Crect x='4' y='0' width='1' height='1'/%3E%3Crect x='6' y='0' width='1' height='1'/%3E%3Crect x='0' y='2' width='1' height='1'/%3E%3Crect x='2' y='2' width='1' height='1'/%3E%3Crect x='4' y='2' width='1' height='1'/%3E%3Crect x='6' y='2' width='1' height='1'/%3E%3Crect x='0' y='4' width='1' height='1'/%3E%3Crect x='2' y='4' width='1' height='1'/%3E%3Crect x='4' y='4' width='1' height='1'/%3E%3Crect x='6' y='4' width='1' height='1'/%3E%3Crect x='2' y='6' width='1' height='1'/%3E%3Crect x='4' y='6' width='1' height='1'/%3E%3Crect x='6' y='6' width='1' height='1'/%3E%3C/svg%3E"); }
+.skyBand:nth-child(3) { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' fill='%230c0606'%3E%3Crect x='0' y='0' width='1' height='1'/%3E%3Crect x='2' y='0' width='1' height='1'/%3E%3Crect x='4' y='0' width='1' height='1'/%3E%3Crect x='6' y='0' width='1' height='1'/%3E%3Crect x='2' y='2' width='1' height='1'/%3E%3Crect x='6' y='2' width='1' height='1'/%3E%3Crect x='0' y='4' width='1' height='1'/%3E%3Crect x='4' y='4' width='1' height='1'/%3E%3Crect x='6' y='4' width='1' height='1'/%3E%3Crect x='2' y='6' width='1' height='1'/%3E%3Crect x='6' y='6' width='1' height='1'/%3E%3C/svg%3E"); }
+.skyBand:nth-child(4) { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' fill='%230c0606'%3E%3Crect x='0' y='0' width='1' height='1'/%3E%3Crect x='4' y='0' width='1' height='1'/%3E%3Crect x='2' y='2' width='1' height='1'/%3E%3Crect x='6' y='2' width='1' height='1'/%3E%3Crect x='0' y='4' width='1' height='1'/%3E%3Crect x='4' y='4' width='1' height='1'/%3E%3Crect x='2' y='6' width='1' height='1'/%3E%3Crect x='6' y='6' width='1' height='1'/%3E%3C/svg%3E"); }
+.skyBand:nth-child(5) { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' fill='%230c0606'%3E%3Crect x='0' y='0' width='1' height='1'/%3E%3Crect x='4' y='0' width='1' height='1'/%3E%3Crect x='2' y='2' width='1' height='1'/%3E%3Crect x='0' y='4' width='1' height='1'/%3E%3Crect x='4' y='4' width='1' height='1'/%3E%3C/svg%3E"); }
+.skyBand:nth-child(6) { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' fill='%230c0606'%3E%3Crect x='0' y='0' width='1' height='1'/%3E%3Crect x='4' y='0' width='1' height='1'/%3E%3Crect x='4' y='4' width='1' height='1'/%3E%3C/svg%3E"); }
+.skyBand:nth-child(7) { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' fill='%230c0606'%3E%3Crect x='0' y='0' width='1' height='1'/%3E%3C/svg%3E"); }
+
+.skyBand:nth-child(1) { -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 0%, #000 13%, transparent 13%); mask-image: linear-gradient(to bottom, transparent 0%, #000 0%, #000 13%, transparent 13%); }
+.skyBand:nth-child(2) { -webkit-mask-image: linear-gradient(to bottom, transparent 13%, #000 13%, #000 24%, transparent 24%); mask-image: linear-gradient(to bottom, transparent 13%, #000 13%, #000 24%, transparent 24%); }
+.skyBand:nth-child(3) { -webkit-mask-image: linear-gradient(to bottom, transparent 24%, #000 24%, #000 33%, transparent 33%); mask-image: linear-gradient(to bottom, transparent 24%, #000 24%, #000 33%, transparent 33%); }
+.skyBand:nth-child(4) { -webkit-mask-image: linear-gradient(to bottom, transparent 33%, #000 33%, #000 41%, transparent 41%); mask-image: linear-gradient(to bottom, transparent 33%, #000 33%, #000 41%, transparent 41%); }
+.skyBand:nth-child(5) { -webkit-mask-image: linear-gradient(to bottom, transparent 41%, #000 41%, #000 47%, transparent 47%); mask-image: linear-gradient(to bottom, transparent 41%, #000 41%, #000 47%, transparent 47%); }
+.skyBand:nth-child(6) { -webkit-mask-image: linear-gradient(to bottom, transparent 47%, #000 47%, #000 52%, transparent 52%); mask-image: linear-gradient(to bottom, transparent 47%, #000 47%, #000 52%, transparent 52%); }
+.skyBand:nth-child(7) { -webkit-mask-image: linear-gradient(to bottom, transparent 52%, #000 52%, #000 57%, transparent 57%); mask-image: linear-gradient(to bottom, transparent 52%, #000 52%, #000 57%, transparent 57%); }
+
+
