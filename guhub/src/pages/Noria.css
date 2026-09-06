@@ -113,7 +113,7 @@
 }
 
 /* bark and knot are cut into the black with the ground colour */
-.barkLines path { fill: none; stroke: #6b0a0a; stroke-width: 2.2; opacity: 0.5; }
+.barkLines path { fill: none; stroke: #6b0a0a; stroke-width: 2.2; opacity: 0.32; }
 .knot ellipse { fill: none; stroke: #6b0a0a; stroke-width: 2.4; opacity: 0.55; }
 
 .artHollow {
@@ -471,7 +471,7 @@
 }
 
 /* ── interiors ─────────────────────────────────────────────────────── */
-.artTrunkDetail { width: 260px; height: 380px; }
+.artTrunkDetail { width: 260px; height: 380px; opacity: 0.55; }
 .artMushrooms { width: 120px; height: 56px; }
 .artBeetle { width: 48px; height: 28px; }
 .artMoth { width: 40px; height: 28px; }

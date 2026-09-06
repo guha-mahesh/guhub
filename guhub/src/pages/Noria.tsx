@@ -3,7 +3,7 @@ import type { CSSProperties, ReactNode } from "react";
 import {
   DeadTree, Hollow, Waterwheel, Splash, Factory, Effluent, Smoke,
   River, Ridge, Vulture, Scribe, Squirrel,
-  TrunkDetail, Beetle, Mushrooms, Moth, FactoryGuts, DeepMass, Waterline,
+  Beetle, Mushrooms, Moth, FactoryGuts, DeepMass, Waterline,
 } from "./NoriaArt";
 import { useCreak } from "./useCreak";
 import "./Noria.css";
@@ -141,8 +141,8 @@ const THINGS: Thing[] = [
     key: "engramme",
     label: "engramme",
     place: { x: -520, y: -62, z: -560 },
-    shot: { tx: -520, ty: 218, tz: -560, yaw: -10, pitch: -5, dist: 470 },
-    panel: { ox: 280, oy: 20 },
+    shot: { tx: -520, ty: 196, tz: -560, yaw: -9, pitch: -4, dist: 360 },
+    panel: { ox: 430, oy: 40 },
     art: <DeadTree />,
     body: (<><p>{LOREM_1}</p><p>{LOREM_2}</p></>),
   },
@@ -352,11 +352,10 @@ export default function Noria() {
 
           {/* ── life at the tree's foot, only once you are down there ── */}
           {/* the tree's ecosystem: nothing here exists until you are down at the roots */}
-          <Detail place={{ x: -520, y: 120, z: -548 }} show={atTree}><TrunkDetail /></Detail>
-          <Detail place={{ x: -404, y: 296, z: -540, s: 1.05 }} show={atTree}><Squirrel /></Detail>
-          <Detail place={{ x: -614, y: 322, z: -536 }} show={atTree}><Mushrooms /></Detail>
-          <Detail place={{ x: -330, y: 330, z: -530, s: 1.1 }} show={atTree} className="crawling"><Beetle /></Detail>
-          <Detail place={{ x: -448, y: 206, z: -520 }} show={atTree} className="fluttering"><Moth /></Detail>
+          <Detail place={{ x: -404, y: 306, z: -540, s: 0.5 }} show={atTree}><Squirrel /></Detail>
+          <Detail place={{ x: -620, y: 326, z: -536, s: 0.45 }} show={atTree}><Mushrooms /></Detail>
+          <Detail place={{ x: -330, y: 332, z: -530, s: 0.5 }} show={atTree} className="crawling"><Beetle /></Detail>
+          <Detail place={{ x: -448, y: 236, z: -520, s: 0.5 }} show={atTree} className="fluttering"><Moth /></Detail>
 
           {/* the shed's working parts */}
           <Detail place={{ x: 600, y: 158, z: -588, s: 0.66 }} show={openKey === "built"}><FactoryGuts /></Detail>
