@@ -6,6 +6,8 @@ import {
   Beetle, Mushrooms, Moth, FactoryGuts, DeepMass, Waterline,
 } from "./NoriaArt";
 import Grain from "./Grain";
+import Tartan from "./Tartan";
+import Bite from "./Bite";
 import { useCreak } from "./useCreak";
 import "./Noria.css";
 
@@ -390,8 +392,13 @@ export default function Noria() {
         </div>
       </div>
 
+      {/* the cloth, generated once and handed to CSS */}
+      <Tartan />
       {/* the whole atmosphere, drawn once into one layer */}
       <Grain />
+
+      {/* something is taking the corner of the plate */}
+      <Bite />
       <div className="crimHorizon" aria-hidden />
       <div className="crimPlate" aria-hidden />
       <div className="crimPlateCap" aria-hidden>pl. i — the noria</div>
