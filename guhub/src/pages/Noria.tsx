@@ -5,6 +5,7 @@ import {
   River, Ridge, Vulture, Scribe, Squirrel,
   Beetle, Mushrooms, Moth, FactoryGuts, DeepMass, Waterline,
 } from "./NoriaArt";
+import Grain from "./Grain";
 import { useCreak } from "./useCreak";
 import "./Noria.css";
 
@@ -50,6 +51,7 @@ function useCameraRig(
   // and idle drift scale by this, so the home frame stays flat and locked.
   const eng = useRef(0);
   const engTarget = useRef(0);
+  const lastWritten = useRef("");
   target.current = shot;
   engTarget.current = engaged ? 1 : 0;
 
@@ -94,10 +96,16 @@ function useCameraRig(
       const yaw = p.yaw + byaw;
       const pitch = p.pitch;
 
-      if (worldRef.current) {
-        worldRef.current.style.transform =
-          `translate3d(0,0,${p.dist}px) rotateX(${pitch}deg) rotateY(${yaw}deg) ` +
-          `translate3d(${-(p.tx + bx)}px,${-(p.ty + by)}px,${-p.tz}px)`;
+      const next =
+        `translate3d(0,0,${p.dist.toFixed(2)}px) rotateX(${pitch.toFixed(3)}deg) rotateY(${yaw.toFixed(3)}deg) ` +
+        `translate3d(${(-(p.tx + bx)).toFixed(2)}px,${(-(p.ty + by)).toFixed(2)}px,${(-p.tz).toFixed(2)}px)`;
+      // Writing an identical transform still invalidates the whole 3D subtree
+      // and forces the overlay stack to repaint. When the spring has settled
+      // and nothing is drifting, this is the difference between an idle page
+      // and one repainting the viewport sixty times a second.
+      if (worldRef.current && next !== lastWritten.current) {
+        worldRef.current.style.transform = next;
+        lastWritten.current = next;
       }
       raf = requestAnimationFrame(tick);
     };
@@ -382,13 +390,8 @@ export default function Noria() {
         </div>
       </div>
 
-      {/* screen-locked dither: the grain never scales with the world */}
-      <div className="skyBands" aria-hidden>
-        {Array.from({ length: 7 }).map((_, i) => <div key={i} className="skyBand" />)}
-      </div>
-      <div className="dth dth-30 dthFloor" aria-hidden />
-      <div className="dth dth-42 dthVig" aria-hidden />
-      <div className="hatch" aria-hidden />
+      {/* the whole atmosphere, drawn once into one layer */}
+      <Grain />
       <div className="crimHorizon" aria-hidden />
       <div className="crimPlate" aria-hidden />
       <div className="crimPlateCap" aria-hidden>pl. i — the noria</div>
