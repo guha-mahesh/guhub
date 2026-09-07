@@ -61,10 +61,10 @@ function paint(cv: HTMLCanvasElement) {
 
     for (let x = 0; x < w; x++) {
       let a = 0;
-      if (!below && level && row[x & 7] < level) a = 0.5;
+      if (!below && level && row[x & 7] < level) a = 0.3;
       if (below) {
         // ground: a lighter dither, plus ruled diagonal hatch
-        if (row[x & 7] < 8) a = 0.34;
+        if (row[x & 7] < 8) a = 0.2;
         if ((x + y) % 6 === 0) a = Math.max(a, 0.22 * Math.min(1, (ty - HORIZON) / 0.18));
       }
       // vignette, elliptical, only biting near the edges

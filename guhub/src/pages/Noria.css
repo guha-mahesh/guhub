@@ -17,7 +17,10 @@
   inset: 0;
   z-index: 9999;
   overflow: hidden;
-  background: #7a1410;
+  background-color: #7a1410;
+  background-image: var(--tartan);
+  background-repeat: repeat;
+  background-size: 560px 560px;
   color: var(--ink);
   font-family: Georgia, "Times New Roman", serif;
   cursor: default;
@@ -28,7 +31,12 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(180deg, #6d0f0b 0%, #85170f 34%, #9a251c 56%, #7d1410 58%, #690e0a 100%);
+  background: linear-gradient(180deg,
+    rgba(24, 4, 3, 0.66) 0%,
+    rgba(36, 6, 4, 0.36) 34%,
+    rgba(120, 26, 18, 0.1) 56%,
+    rgba(28, 5, 4, 0.42) 62%,
+    rgba(16, 3, 2, 0.7) 100%);
 }
 
 /* ── world ─────────────────────────────────────────────────────────── */
@@ -87,7 +95,7 @@
 .groundFace {
   width: 4200px;
   height: 2800px;
-  background: #5a0d09;
+  background: rgba(22, 4, 3, 0.52);
 }
 
 .riverPlane { z-index: 0; }
@@ -97,7 +105,7 @@
   height: 700px;
 }
 
-.artRiver .body { fill: #8d1c15; }
+.artRiver .body { fill: rgba(150, 32, 22, 0.42); }
 .artRiver .lip { fill: #0c0606; opacity: 0.55; }
 
 .current {
@@ -668,7 +676,7 @@
   -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 22%, #000 74%, transparent 100%);
   mask-image: linear-gradient(90deg, transparent 0%, #000 22%, #000 74%, transparent 100%);
 }
-.wlBody { fill: #85180f; opacity: 0.96; }
+.wlBody { fill: rgba(140, 28, 18, 0.55); }
 .wlHatch path { fill: none; stroke: var(--ink); stroke-width: 1.5; opacity: 0.3; }
 
 
@@ -771,10 +779,7 @@
 .biteEdge { background: #2a0605; }
 
 .biteCloth {
-  background-color: #050404;
-  background-image: var(--tartan);
-  background-repeat: repeat;
-  background-size: 300px 300px;
+  background: #7d1410;
 }
 
 
