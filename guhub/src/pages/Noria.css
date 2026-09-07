@@ -139,17 +139,31 @@
 }
 
 /* ── the wheel ─────────────────────────────────────────────────────── */
-.artWheel {
+/* The rig stacks the turning wheel and the fixed axle. They have to be two
+   separate svgs: the rotation now lives on the svg ELEMENT rather than on a
+   group inside it, so the compositor can carry it instead of repainting a
+   170-node subtree every frame, and the axle must not come along for the ride. */
+.wheelRig {
+  position: relative;
   width: 320px;
   height: 320px;
-  fill: #0c0606;
 }
+
+.wheelRig .art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.artWheel, .artAxle { fill: #0c0606; }
 
 /* the water runs right to left and the wheel turns as though it did not.
    Nobody clocks this immediately, which is the point. */
 .wheelSpin {
-  transform-origin: 0 0;
+  transform-origin: 50% 50%;
   animation: wheelTurn 30s linear infinite;
+  will-change: transform;
 }
 
 @keyframes wheelTurn { to { transform: rotate(360deg); } }
@@ -239,8 +253,8 @@
 .circling { animation: circle 34s ease-in-out infinite alternate; }
 
 @keyframes circle {
-  from { margin-left: -70px; }
-  to   { margin-left: 90px; }
+  from { translate: -70px 0; }
+  to   { translate: 90px 0; }
 }
 
 /* ── the observer ──────────────────────────────────────────────────── */
@@ -282,6 +296,16 @@
 }
 
 .detail.lit { visibility: visible; transition-delay: 0s; }
+
+/* An interior you are not looking at still ran every animation inside it:
+   the squirrel gnawing, the beetle scuttling, the gears turning, all
+   invisible. Measured at 21ms of CPU per second, about 15% of the total.
+   Their phase does not matter, unlike the wheel's buckets, so they simply
+   stop until you arrive. */
+.detail:not(.lit),
+.detail:not(.lit) * {
+  animation-play-state: paused;
+}
 .detail.lit > * { opacity: 1; transition-delay: 0.35s; }
 
 /* ── screen-locked dither ──────────────────────────────────────────── */
@@ -487,8 +511,8 @@
 /* the beetle walks a short patch of root and turns around */
 .crawling { animation: crawl 13s ease-in-out infinite alternate; }
 @keyframes crawl {
-  from { margin-left: -60px; }
-  to   { margin-left: 70px; }
+  from { translate: -60px 0; }
+  to   { translate: 70px 0; }
 }
 
 .mothWingL { transform-origin: -2px 0; animation: flapL 0.11s ease-in-out infinite alternate; }
@@ -499,8 +523,8 @@
 /* it works the same patch of air and gets nowhere */
 .fluttering { animation: flit 5.5s ease-in-out infinite alternate; }
 @keyframes flit {
-  from { margin: 0 0 0 -26px; }
-  to   { margin: -22px 0 0 30px; }
+  from { translate: -26px 0; }
+  to   { translate: 30px -22px; }
 }
 
 .gutsGearA { transform-origin: -96px -20px; animation: wheelTurn 7s linear infinite; }
@@ -967,25 +991,21 @@
   97%, 100% { transform: scaleY(0); }
 }
 
-/* the spill only exists in the moment it tips */
+/* The spill only exists in the moment the bucket tips. The fall is on the
+   group rather than on each droplet: five drops per bucket meant thirty-five
+   separate animations for something the eye reads as one gesture. */
 .bucketSpill {
   animation: bucketSpill 30s linear infinite;
 }
 
 @keyframes bucketSpill {
-  0%, 2%    { opacity: 1; }
-  9%, 100%  { opacity: 0; }
+  0%       { opacity: 1; translate: 0 0; }
+  2%       { opacity: 1; translate: 0 14px; }
+  7%       { opacity: 0; translate: 0 40px; }
+  8%, 100% { opacity: 0; translate: 0 0; }
 }
 
-.spillDrop {
-  fill: #d3583c;
-  animation: spillFall 0.9s linear infinite;
-}
-
-@keyframes spillFall {
-  from { transform: translateY(0); opacity: 1; }
-  to   { transform: translateY(38px); opacity: 0; }
-}
+.spillDrop { fill: #d3583c; }
 
 @media (prefers-reduced-motion: reduce) {
   .bucketLevel, .bucketSwing, .bucketWater, .bucketSpill, .spillDrop { animation: none; }

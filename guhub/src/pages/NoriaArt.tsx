@@ -108,8 +108,9 @@ export function Waterwheel() {
   const SPIN = 30; // seconds per revolution — must match .wheelSpin in the CSS
 
   return (
-    <svg className="art artWheel" viewBox="-132 -132 264 264" aria-hidden>
-      <g className="wheelSpin">
+    <div className="wheelRig">
+      <svg className="art artWheel wheelSpin" viewBox="-132 -132 264 264" aria-hidden>
+      <g>
         {/* paddle boards, spanning between the two rims */}
         <g fill="#0c0606">
           {Array.from({ length: N }).map((_, i) => (
@@ -170,15 +171,8 @@ export function Waterwheel() {
                     <path className="bucketYoke" d="M-15,-21 L0,-34 L15,-21" />
                     {/* what tips out over the top of the wheel */}
                     <g className="bucketSpill" style={{ animationDelay: `${phase}s` }}>
-                      {[0, 1, 2, 3, 4].map(d => (
-                        <circle
-                          key={d}
-                          className="spillDrop"
-                          cx={-8 + d * 4}
-                          cy={8}
-                          r={2.2 - (d % 2) * 0.7}
-                          style={{ animationDelay: `${-d * 0.17}s` }}
-                        />
+                      {[0, 1, 2].map(d => (
+                        <circle key={d} className="spillDrop" cx={-7 + d * 7} cy={9 + d * 3} r={2.4 - (d % 2) * 0.7} />
                       ))}
                     </g>
                   </g>
@@ -192,11 +186,14 @@ export function Waterwheel() {
         <circle r="22" fill="#0c0606" />
         <circle r="9" fill="#6b0a0a" />
       </g>
-      {/* the axle: fixed, so it does not turn with the wheel */}
-      <rect x="-116" y="-6" width="232" height="12" fill="#0c0606" />
-      <rect x="-124" y="-12" width="18" height="24" fill="#0c0606" />
-      <rect x="106" y="-12" width="18" height="24" fill="#0c0606" />
-    </svg>
+      </svg>
+      {/* the axle, in its own svg so it stays put while the wheel turns */}
+      <svg className="art artAxle" viewBox="-132 -132 264 264" aria-hidden>
+        <rect x="-116" y="-6" width="232" height="12" fill="#0c0606" />
+        <rect x="-124" y="-12" width="18" height="24" fill="#0c0606" />
+        <rect x="106" y="-12" width="18" height="24" fill="#0c0606" />
+      </svg>
+    </div>
   );
 }
 
@@ -205,7 +202,8 @@ export function Waterwheel() {
  * each on its own offset, so the throw never reads as a loop.
  */
 export function Splash() {
-  const drops = Array.from({ length: 16 }).map((_, i) => {
+  // ten reads the same as sixteen and animates ten fewer nodes
+  const drops = Array.from({ length: 10 }).map((_, i) => {
     const rng = makeRng(0x2200 + i);
     return { x: -60 + rng() * 120, d: rng() * 2.4, s: 0.6 + rng() * 0.9 };
   });
