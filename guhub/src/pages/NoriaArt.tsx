@@ -82,7 +82,7 @@ export function Hollow() {
   return (
     <svg className="art artHollow" viewBox="-40 -46 80 56" aria-hidden>
       {/* the opening itself, a hole in the trunk's black: crimson shows through */}
-      <path d="M-22 8 C -26 -18 -12 -36 0 -36 C 12 -36 26 -18 22 8 Z" fill="#6b0a0a" />
+      <path d="M-22 8 C -26 -18 -12 -36 0 -36 C 12 -36 26 -18 22 8 Z" fill="#e6dccd" />
       {/* the dark inside it, so the hole reads as depth not as a cut-out */}
       <path d="M-15 8 C -18 -14 -8 -28 0 -28 C 8 -28 18 -14 15 8 Z" fill="#0c0606" />
       {/* splintered lip */}
@@ -265,7 +265,7 @@ export function River() {
         d="M-40 292 L540 292 C 628 292 668 274 704 218 C 748 150 796 68 900 54 L1600 32 L1600 44 L904 66 C 802 80 754 162 710 230 C 674 286 632 304 540 304 L-40 304 Z"
       />
       {/* current lines, quickening as the channel narrows */}
-      <g stroke="#6b0a0a" fill="none" strokeLinecap="round" strokeWidth="5">
+      <g stroke="#e6dccd" fill="none" strokeLinecap="round" strokeWidth="5">
         {Array.from({ length: 7 }).map((_, i) => (
           <path
             key={i}
@@ -353,13 +353,13 @@ export function Scribe() {
         {/* long coat, narrow at the shoulder, opening toward the hem */}
         <path d="M-31 -134 C -41 -104 -47 -52 -51 8 L 51 8 C 47 -52 41 -104 31 -134 Z" />
         {/* the vent up the back of the coat, cut in ground colour */}
-        <path d="M0 8 L0 -60" stroke="#6b0a0a" strokeWidth="2" fill="none" opacity="0.4" />
+        <path d="M0 8 L0 -60" stroke="#e6dccd" strokeWidth="2" fill="none" opacity="0.4" />
         {/* the writing arm, reaching across to the book */}
         <path d="M31 -126 C 51 -118 60 -100 57 -78 L 43 -76 C 45 -92 39 -106 27 -114 Z" />
       </g>
       <g className="scribeHand">
         <rect x="34" y="-76" width="46" height="34" fill="#0c0606" />
-        <g className="scribeWriting" stroke="#6b0a0a" strokeWidth="2" fill="none">
+        <g className="scribeWriting" stroke="#e6dccd" strokeWidth="2" fill="none">
           <path d="M40 -66 L74 -66" />
           <path d="M40 -58 L74 -58" />
           <path d="M40 -50 L66 -50" />
@@ -385,7 +385,7 @@ export function Squirrel() {
           <ellipse cx="-18" cy="-20" rx="12" ry="10.5" />
           <path d="M-28 -22 L -38 -18 L -28 -14 Z" />
           <path d="M-14 -30 C -18 -38 -8 -40 -8 -32 Z" />
-          <circle cx="-22" cy="-22" r="1.6" fill="#6b0a0a" />
+          <circle cx="-22" cy="-22" r="1.6" fill="#e6dccd" />
           <path d="M-22 -10 L -30 -6 L -26 -3 L -18 -7 Z" />
         </g>
         <ellipse cx="-32" cy="-6" rx="5" ry="6" />
@@ -408,7 +408,7 @@ export function TrunkDetail() {
   }));
   return (
     <svg className="art artTrunkDetail" viewBox="-130 -300 260 380" aria-hidden>
-      <g stroke="#6b0a0a" fill="none" strokeLinecap="round" opacity="0.8">
+      <g stroke="#e6dccd" fill="none" strokeLinecap="round" opacity="0.8">
         {hatch.map((h, i) => (
           <path key={i} d={`M${-18 + h.bow} ${h.y} q 7 5 ${h.len * 0.5} 1`} strokeWidth={i % 4 === 0 ? 2.4 : 1.2} />
         ))}
@@ -432,7 +432,7 @@ export function Beetle() {
       <g fill="#0c0606">
         <ellipse cx="0" cy="0" rx="14" ry="8.5" />
         <ellipse cx="-13" cy="0" rx="5" ry="4.5" />
-        <rect x="-1.2" y="-8" width="2.4" height="16" fill="#6b0a0a" />
+        <rect x="-1.2" y="-8" width="2.4" height="16" fill="#e6dccd" />
       </g>
       <g stroke="#0c0606" strokeWidth="1.6" strokeLinecap="round" className="beetleLegs">
         <path d="M-6 6 L -10 12 M0 8 L 0 14 M6 6 L 10 12" />
@@ -482,7 +482,7 @@ export function FactoryGuts() {
             <rect key={i} x="-4" y="-48" width="8" height="13" transform={`rotate(${(i / 14) * 360})`} />
           ))}
           <circle r="37" />
-          <circle r="9" fill="#6b0a0a" />
+          <circle r="9" fill="#e6dccd" />
         </g>
       </g>
       <g className="gutsGearB" transform="translate(-16 -20)">
@@ -491,7 +491,7 @@ export function FactoryGuts() {
             <rect key={i} x="-3.4" y="-34" width="6.8" height="11" transform={`rotate(${(i / 10) * 360})`} />
           ))}
           <circle r="25" />
-          <circle r="7" fill="#6b0a0a" />
+          <circle r="7" fill="#e6dccd" />
         </g>
       </g>
       {/* piston driven off the small gear */}
@@ -505,7 +505,7 @@ export function FactoryGuts() {
         <path d="M22 44 L 78 44 L 70 96 L 30 96 Z" />
         <path d="M96 44 L 152 44 L 144 96 L 104 96 Z" />
       </g>
-      <g fill="#6b0a0a">
+      <g fill="#e6dccd">
         <rect className="gutsLevelA" x="30" y="58" width="40" height="30" />
         <rect className="gutsLevelB" x="104" y="66" width="40" height="22" />
       </g>
