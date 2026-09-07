@@ -901,3 +901,10 @@
 .mMass { fill: #241310; }
 .mCut { fill: #f6efe1; }
 .mShade { fill: #a8452f; opacity: 0.9; }
+
+/* A prop standing well in front of whatever you went to see steps aside, the
+   way a foreground object falls out of focus when the lens racks past it.
+   The fade itself is applied inline in styleFor, because that function writes
+   opacity inline and inline always beats a rule here. This only kills the
+   pointer target so you cannot click what you cannot see. */
+.thing.outOfWay { pointer-events: none; }

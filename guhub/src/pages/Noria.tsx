@@ -160,8 +160,8 @@ const THINGS: Thing[] = [
   {
     key: "read",
     label: "the hollow",
-    place: { x: -631, y: 158, z: -516 },
-    shot: { tx: -631, ty: 158, tz: -516, yaw: -5, pitch: -3, dist: 640 },
+    place: { x: -601, y: 248, z: -516 },
+    shot: { tx: -601, ty: 248, tz: -516, yaw: -5, pitch: -3, dist: 640 },
     panel: { ox: 250, oy: 40 },
     art: <Hollow />,
     body: (<ul className="rawlist">{LOREM_ITEMS.map((t) => <li key={t}>{t}</li>)}</ul>),
@@ -309,6 +309,9 @@ export default function Noria() {
   const [sound, toggleSound] = useCreak();
   // the tree and its hollow share one interior
   const atTree = openKey === "engramme" || openKey === "read";
+
+  /** true for a prop sitting well in front of whatever you went to look at */
+  const inTheWay = (z: number) => !!open && z - open.shot.tz > 260;
   const ridges = useMemo(() => [0x51ae, 0x7c31], []);
 
   const still = typeof window !== "undefined"
@@ -357,8 +360,12 @@ export default function Noria() {
               key={t.key}
               className={`prop thing ${openKey === t.key ? "open" : ""} ${hoverKey === t.key ? "hot" : ""} ${
                 t.key === "vulture" && openKey === "vulture" ? "silenced" : ""
-              }`}
-              style={styleFor(t.place)}
+              } ${openKey !== t.key && inTheWay(t.place.z) ? "outOfWay" : ""}`}
+              style={styleFor(
+                openKey !== t.key && inTheWay(t.place.z)
+                  ? { ...t.place, fade: 0.9 }
+                  : t.place
+              )}
               onPointerEnter={() => setHoverKey(t.key)}
               onPointerLeave={() => setHoverKey((k) => (k === t.key ? null : k))}
               onClick={() => setOpenKey(openKey === t.key ? null : t.key)}
