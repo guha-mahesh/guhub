@@ -94,26 +94,56 @@ export function Hollow() {
   );
 }
 
-/** The wheel: paddles on the rim, hub, and the arms between. */
+/**
+ * The wheel. Read as a waterwheel, not a Ferris wheel.
+ *
+ * The Ferris look came from boxes hanging OUTSIDE the rim like gondolas.
+ * A waterwheel is two concentric rims with flat paddle boards spanning
+ * between them, a heavy hub, a real axle sticking out of it, and cross
+ * bracing between the spokes. The paddles sit in the rim, not on it.
+ */
 export function Waterwheel() {
+  const N = 14;
   return (
-    <svg className="art artWheel" viewBox="-124 -124 248 248" aria-hidden>
+    <svg className="art artWheel" viewBox="-132 -132 264 264" aria-hidden>
       <g className="wheelSpin">
-        <g stroke="#0c0606" fill="none" strokeWidth="5">
-          <circle r="104" />
-          <circle r="74" />
-          {Array.from({ length: 16 }).map((_, i) => {
-            const a = (i / 16) * Math.PI * 2;
-            return <line key={i} x1={Math.cos(a) * 18} y1={Math.sin(a) * 18} x2={Math.cos(a) * 104} y2={Math.sin(a) * 104} />;
-          })}
-        </g>
+        {/* paddle boards, spanning between the two rims */}
         <g fill="#0c0606">
-          <circle r="18" />
-          {Array.from({ length: 16 }).map((_, i) => (
-            <rect key={i} x="-10" y="-118" width="20" height="24" transform={`rotate(${(i / 16) * 360})`} />
+          {Array.from({ length: N }).map((_, i) => (
+            <rect key={i} x="-9" y="-112" width="18" height="40" transform={`rotate(${(i / N) * 360})`} />
           ))}
         </g>
+        {/* the two rims the boards are set into */}
+        <g stroke="#0c0606" fill="none">
+          <circle r="108" strokeWidth="7" />
+          <circle r="74" strokeWidth="5" />
+        </g>
+        {/* spokes: fewer and heavier than a fairground wheel, with bracing */}
+        <g stroke="#0c0606" fill="none" strokeWidth="6">
+          {Array.from({ length: 8 }).map((_, i) => {
+            const a = (i / 8) * Math.PI * 2;
+            return (
+              <line key={i} x1={Math.cos(a) * 20} y1={Math.sin(a) * 20} x2={Math.cos(a) * 74} y2={Math.sin(a) * 74} />
+            );
+          })}
+        </g>
+        <g stroke="#0c0606" fill="none" strokeWidth="3">
+          {Array.from({ length: 8 }).map((_, i) => {
+            const a = (i / 8) * Math.PI * 2;
+            const b = ((i + 1) / 8) * Math.PI * 2;
+            return (
+              <line key={i} x1={Math.cos(a) * 70} y1={Math.sin(a) * 70} x2={Math.cos(b) * 30} y2={Math.sin(b) * 30} />
+            );
+          })}
+        </g>
+        {/* the hub */}
+        <circle r="22" fill="#0c0606" />
+        <circle r="9" fill="#6b0a0a" />
       </g>
+      {/* the axle: fixed, so it does not turn with the wheel */}
+      <rect x="-116" y="-6" width="232" height="12" fill="#0c0606" />
+      <rect x="-124" y="-12" width="18" height="24" fill="#0c0606" />
+      <rect x="106" y="-12" width="18" height="24" fill="#0c0606" />
     </svg>
   );
 }

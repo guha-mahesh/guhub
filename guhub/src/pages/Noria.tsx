@@ -151,8 +151,8 @@ const THINGS: Thing[] = [
   {
     key: "engramme",
     label: "engramme",
-    place: { x: -520, y: -62, z: -560 },
-    shot: { tx: -520, ty: 196, tz: -560, yaw: -9, pitch: -4, dist: 360 },
+    place: { x: -683, y: 44, z: -560, s: 0.78 },
+    shot: { tx: -683, ty: 196, tz: -560, yaw: -9, pitch: -4, dist: 360 },
     panel: { ox: 430, oy: 40 },
     art: <DeadTree />,
     body: (<><p>{LOREM_1}</p><p>{LOREM_2}</p></>),
@@ -160,8 +160,8 @@ const THINGS: Thing[] = [
   {
     key: "read",
     label: "the hollow",
-    place: { x: -520, y: 150, z: -516 },
-    shot: { tx: -520, ty: 150, tz: -516, yaw: -5, pitch: -3, dist: 640 },
+    place: { x: -631, y: 158, z: -516 },
+    shot: { tx: -631, ty: 158, tz: -516, yaw: -5, pitch: -3, dist: 640 },
     panel: { ox: 250, oy: 40 },
     art: <Hollow />,
     body: (<ul className="rawlist">{LOREM_ITEMS.map((t) => <li key={t}>{t}</li>)}</ul>),
@@ -169,8 +169,8 @@ const THINGS: Thing[] = [
   {
     key: "sounds",
     label: "sounds",
-    place: { x: 285, y: 222, z: -390, s: 1.15 },
-    shot: { tx: 285, ty: 200, tz: -390, yaw: 6, pitch: -2, dist: 440 },
+    place: { x: -143, y: 246, z: -390, s: 0.86 },
+    shot: { tx: -143, ty: 232, tz: -390, yaw: 2, pitch: -2, dist: 400 },
     panel: { ox: -280, oy: -40 },
     art: <Waterwheel />,
     body: (<><p>{LOREM_1}</p></>),
@@ -178,8 +178,8 @@ const THINGS: Thing[] = [
   {
     key: "built",
     label: "built",
-    place: { x: 600, y: 150, z: -600, s: 1 },
-    shot: { tx: 600, ty: 120, tz: -600, yaw: 13, pitch: 2, dist: 470 },
+    place: { x: 1339, y: 320, z: -1150, s: 2.6 },
+    shot: { tx: 1339, ty: 250, tz: -1150, yaw: 8, pitch: 2, dist: 640 },
     panel: { ox: -270, oy: 70 },
     art: <Factory />,
     body: (<><p>{LOREM_2}</p><ul className="rawlist">{LOREM_ITEMS.map((t) => <li key={t}>{t}</li>)}</ul></>),
@@ -187,8 +187,8 @@ const THINGS: Thing[] = [
   {
     key: "vulture",
     label: "the bird",
-    place: { x: 300, y: -300, z: -1050, s: 1.05 },
-    shot: { tx: 300, ty: -300, tz: -1050, yaw: 4, pitch: -6, dist: 700 },
+    place: { x: -430, y: -540, z: -1050, s: 1.05 },
+    shot: { tx: -430, ty: -540, tz: -1050, yaw: -3, pitch: -6, dist: 700 },
     panel: { ox: -300, oy: 190 },
     art: <Vulture />,
     body: null, // the drawing is the content here
@@ -196,8 +196,8 @@ const THINGS: Thing[] = [
   {
     key: "who",
     label: "who",
-    place: { x: -120, y: 128, z: 40, s: 0.62 },
-    shot: { tx: -120, ty: 100, tz: 40, yaw: -2, pitch: -2, dist: 170 },
+    place: { x: -212, y: 128, z: 40, s: 0.62 },
+    shot: { tx: -212, ty: 100, tz: 40, yaw: -2, pitch: -2, dist: 170 },
     panel: { ox: 300, oy: -30 },
     art: <Scribe />,
     body: null, // replaced by the conversation
@@ -334,15 +334,15 @@ export default function Noria() {
           <Prop place={{ x: 0, y: 342, z: -1100, rot: "rotateX(90deg)" }} className="ground">
             <div className="groundFace" />
           </Prop>
-          <Prop place={{ x: 240, y: 334, z: -430, rot: "rotateX(90deg)", s: 2.3 }} className="riverPlane"><River /></Prop>
+          <Prop place={{ x: 120, y: 334, z: -430, rot: "rotateX(90deg)", s: 2.3 }} className="riverPlane"><River /></Prop>
 
           {/* ── the machine: factory venting into the race that drives the wheel ── */}
-          <Prop place={{ x: 546, y: -96, z: -596, fade: 0.3 }}><Smoke /></Prop>
-          <Prop place={{ x: 600, y: -58, z: -596, fade: 0.35 }}><Smoke delay={-5.5} /></Prop>
-          <Prop place={{ x: 404, y: 292, z: -580 }}><Effluent /></Prop>
-          <Prop place={{ x: 285, y: 330, z: -376 }}><Splash /></Prop>
+          <Prop place={{ x: 1278, y: -40, z: -1140, s: 2.2, fade: 0.3 }}><Smoke /></Prop>
+          <Prop place={{ x: 1418, y: 50, z: -1140, s: 2.2, fade: 0.35 }}><Smoke delay={-5.5} /></Prop>
+          <Prop place={{ x: 900, y: 330, z: -900, s: 1.6 }}><Effluent /></Prop>
+          <Prop place={{ x: -143, y: 336, z: -376 }}><Splash /></Prop>
           {/* cuts the wheel where it enters the race */}
-          <Prop place={{ x: 285, y: 352, z: -370, s: 1.15 }} className="waterline"><Waterline /></Prop>
+          <Prop place={{ x: -143, y: 352, z: -370, s: 1.1 }} className="waterline"><Waterline /></Prop>
           {/* something long under the surface, only its back showing */}
           <Prop place={{ x: 640, y: 322, z: -900, s: 2.1 }} className="submerged"><DeepMass /></Prop>
 
@@ -373,13 +373,13 @@ export default function Noria() {
 
           {/* ── life at the tree's foot, only once you are down there ── */}
           {/* the tree's ecosystem: nothing here exists until you are down at the roots */}
-          <Detail place={{ x: -404, y: 306, z: -540, s: 0.5 }} show={atTree}><Squirrel /></Detail>
-          <Detail place={{ x: -620, y: 326, z: -536, s: 0.45 }} show={atTree}><Mushrooms /></Detail>
-          <Detail place={{ x: -330, y: 332, z: -530, s: 0.5 }} show={atTree} className="crawling"><Beetle /></Detail>
-          <Detail place={{ x: -448, y: 236, z: -520, s: 0.5 }} show={atTree} className="fluttering"><Moth /></Detail>
+          <Detail place={{ x: -560, y: 306, z: -540, s: 0.5 }} show={atTree}><Squirrel /></Detail>
+          <Detail place={{ x: -790, y: 326, z: -536, s: 0.45 }} show={atTree}><Mushrooms /></Detail>
+          <Detail place={{ x: -500, y: 332, z: -530, s: 0.5 }} show={atTree} className="crawling"><Beetle /></Detail>
+          <Detail place={{ x: -610, y: 236, z: -520, s: 0.5 }} show={atTree} className="fluttering"><Moth /></Detail>
 
           {/* the shed's working parts */}
-          <Detail place={{ x: 600, y: 158, z: -588, s: 0.66 }} show={openKey === "built"}><FactoryGuts /></Detail>
+          <Detail place={{ x: 1339, y: 330, z: -1140, s: 1.5 }} show={openKey === "built"}><FactoryGuts /></Detail>
 
           {/* ── the panel, placed at the shot and turned to face the camera ── */}
           {open && open.key !== "vulture" && (
