@@ -87,7 +87,7 @@
 .groundFace {
   width: 4200px;
   height: 2800px;
-  background: #5a0d09;
+  background: #1d1408;
 }
 
 .riverPlane { z-index: 0; }
@@ -567,7 +567,7 @@
 
 .artColossus { width: 400px; height: 760px; }
 
-.submerged { color: #4a0d0a; opacity: 0.7; }
+.submerged { color: #221806; opacity: 0.7; }
 .artDeepMass { width: 600px; height: 90px; }
 
 /* it surfaces, holds, and is gone before you are sure */
@@ -768,7 +768,7 @@
   inset: 0;
 }
 
-.biteEdge { background: #2a0605; }
+.biteEdge { background: #14100a; }
 
 .biteCloth {
   background-color: #050404;
