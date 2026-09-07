@@ -908,3 +908,85 @@
    opacity inline and inline always beats a rule here. This only kills the
    pointer target so you cannot click what you cannot see. */
 .thing.outOfWay { pointer-events: none; }
+
+/* ── the wheel's buckets ───────────────────────────────────────────────
+   Present at all times, revealed only once you have gone to the wheel.
+   They cannot be mounted on click: a CSS animation keeps running while its
+   element is hidden, and mounting late would start each bucket's rotation
+   at zero while the wheel was already mid-turn. */
+.wheelBuckets {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.45s ease-out 0.35s, visibility 0s linear 0.35s;
+}
+
+.thing.open .wheelBuckets { visibility: visible; opacity: 1; }
+
+/* the pivot: counter-rotates against the wheel so the bucket hangs level */
+.bucketLevel {
+  animation: bucketLevel 30s linear infinite;
+}
+
+@keyframes bucketLevel {
+  from { transform: rotate(var(--a)); }
+  to   { transform: rotate(calc(var(--a) - 360deg)); }
+}
+
+/* and on top of that it thrashes, because nothing hanging off a turning
+   wheel hangs still */
+.bucketSwing {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+  animation: bucketSwing 2.4s ease-in-out infinite alternate;
+}
+
+@keyframes bucketSwing {
+  from { transform: rotate(-9deg); }
+  to   { transform: rotate(9deg); }
+}
+
+.bucketBody { fill: #0c0606; }
+.bucketRim { stroke: #0c0606; stroke-width: 3.4; stroke-linecap: round; }
+.bucketYoke { fill: none; stroke: #0c0606; stroke-width: 2.6; stroke-linejoin: round; }
+
+/* the water: empty on the way down, scooped at the bottom, carried up full,
+   tipped out over the top */
+.bucketWater {
+  fill: #d3583c;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: bucketFill 30s linear infinite;
+}
+
+@keyframes bucketFill {
+  0%        { transform: scaleY(0); }
+  36%       { transform: scaleY(0.06); }
+  48%       { transform: scaleY(1); }
+  52%       { transform: scaleY(1); }
+  90%       { transform: scaleY(1); }
+  97%, 100% { transform: scaleY(0); }
+}
+
+/* the spill only exists in the moment it tips */
+.bucketSpill {
+  animation: bucketSpill 30s linear infinite;
+}
+
+@keyframes bucketSpill {
+  0%, 2%    { opacity: 1; }
+  9%, 100%  { opacity: 0; }
+}
+
+.spillDrop {
+  fill: #d3583c;
+  animation: spillFall 0.9s linear infinite;
+}
+
+@keyframes spillFall {
+  from { transform: translateY(0); opacity: 1; }
+  to   { transform: translateY(38px); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bucketLevel, .bucketSwing, .bucketWater, .bucketSpill, .spillDrop { animation: none; }
+}

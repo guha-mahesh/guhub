@@ -103,7 +103,10 @@ export function Hollow() {
  * bracing between the spokes. The paddles sit in the rim, not on it.
  */
 export function Waterwheel() {
-  const N = 14;
+  const N = 14;   // paddle boards
+  const B = 7;    // buckets
+  const SPIN = 30; // seconds per revolution — must match .wheelSpin in the CSS
+
   return (
     <svg className="art artWheel" viewBox="-132 -132 264 264" aria-hidden>
       <g className="wheelSpin">
@@ -122,20 +125,69 @@ export function Waterwheel() {
         <g stroke="#0c0606" fill="none" strokeWidth="6">
           {Array.from({ length: 8 }).map((_, i) => {
             const a = (i / 8) * Math.PI * 2;
-            return (
-              <line key={i} x1={Math.cos(a) * 20} y1={Math.sin(a) * 20} x2={Math.cos(a) * 74} y2={Math.sin(a) * 74} />
-            );
+            return <line key={i} x1={Math.cos(a) * 20} y1={Math.sin(a) * 20} x2={Math.cos(a) * 74} y2={Math.sin(a) * 74} />;
           })}
         </g>
         <g stroke="#0c0606" fill="none" strokeWidth="3">
           {Array.from({ length: 8 }).map((_, i) => {
             const a = (i / 8) * Math.PI * 2;
             const b = ((i + 1) / 8) * Math.PI * 2;
+            return <line key={i} x1={Math.cos(a) * 70} y1={Math.sin(a) * 70} x2={Math.cos(b) * 30} y2={Math.sin(b) * 30} />;
+          })}
+        </g>
+
+        {/* ── the buckets ──
+            This is what a noria actually is: buckets on the rim that scoop at
+            the bottom, ride up full, and tip out at the top.
+
+            They are mounted at all times and only revealed on the zoom, because
+            a CSS animation keeps running while its element is hidden. Mounting
+            them on click instead would start their rotation at zero while the
+            wheel was already mid-turn, and they would sit at the wrong angles.
+
+            Each bucket hangs on a pivot: an inner group counter-rotates against
+            the wheel over the same 30s so the bucket stays level, and a shorter
+            swing on top of that lets it thrash. Fill and spill are phase-shifted
+            per bucket by -SPIN*i/B, which is exactly the time offset that
+            matches its position on the rim. */}
+        <g className="wheelBuckets">
+          {Array.from({ length: B }).map((_, i) => {
+            const a = (i / B) * 360;
+            const phase = -(SPIN * i) / B;
             return (
-              <line key={i} x1={Math.cos(a) * 70} y1={Math.sin(a) * 70} x2={Math.cos(b) * 30} y2={Math.sin(b) * 30} />
+              <g key={i} transform={`rotate(${a}) translate(0,-92)`}>
+                <g
+                  className="bucketLevel"
+                  style={{ animationDelay: `${phase}s`, ["--a" as string]: `${-a}deg` } as React.CSSProperties}
+                >
+                  <g className="bucketSwing" style={{ animationDelay: `${-i * 0.37}s` }}>
+                    {/* the water first, so the bucket's rim laps over it */}
+                    <rect className="bucketWater" x="-13" y="-19" width="26" height="25" style={{ animationDelay: `${phase}s` }} />
+                    {/* the bucket: a tapered box, open at the top */}
+                    <path className="bucketBody" d="M-15,-21 L15,-21 L11,7 L-11,7 Z" />
+                    <path className="bucketRim" d="M-16,-21 L16,-21" />
+                    {/* the yoke it hangs from */}
+                    <path className="bucketYoke" d="M-15,-21 L0,-34 L15,-21" />
+                    {/* what tips out over the top of the wheel */}
+                    <g className="bucketSpill" style={{ animationDelay: `${phase}s` }}>
+                      {[0, 1, 2, 3, 4].map(d => (
+                        <circle
+                          key={d}
+                          className="spillDrop"
+                          cx={-8 + d * 4}
+                          cy={8}
+                          r={2.2 - (d % 2) * 0.7}
+                          style={{ animationDelay: `${-d * 0.17}s` }}
+                        />
+                      ))}
+                    </g>
+                  </g>
+                </g>
+              </g>
             );
           })}
         </g>
+
         {/* the hub */}
         <circle r="22" fill="#0c0606" />
         <circle r="9" fill="#6b0a0a" />
