@@ -893,3 +893,11 @@
 @media (prefers-reduced-motion: reduce) {
   .mangaPage, .mBang, .mStreaks { animation: none; }
 }
+
+/* ── spot blacks ───────────────────────────────────────────────────────
+   The bird is a black mass; the drawing is what gets cut back out of it.
+   No outlines anywhere on the creature, because a uniform outline around a
+   light fill is what reads as cartoon. */
+.mMass { fill: #241310; }
+.mCut { fill: #f6efe1; }
+.mShade { fill: #a8452f; opacity: 0.9; }

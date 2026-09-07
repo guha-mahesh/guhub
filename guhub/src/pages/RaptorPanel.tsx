@@ -7,8 +7,9 @@
  * rather than the fill of the bird, which is why the paper is warm cream and
  * every line is a warm brown-rose instead of black.
  *
- * Drawn as ink linework, not as metal: contour plus hatching is what manga
- * actually does, and it is the one drawing idiom SVG is genuinely good at.
+ * The bird itself is built from spot blacks: one heavy mass with cream cut
+ * back out of it. Uniform outlines around light fills is coloring-book
+ * grammar, and it is what made every earlier attempt read as a cartoon.
  */
 
 const C = {
@@ -40,48 +41,6 @@ function burst(cx: number, cy: number, spikes: number, r1: number, r2: number) {
     pts.push(`${(cx + Math.cos(a) * r * 1.5).toFixed(0)},${(cy + Math.sin(a) * r).toFixed(0)}`);
   }
   return pts.join(" ");
-}
-
-/** a run of parallel hatch strokes filling a wedge */
-function hatch(x: number, y: number, n: number, step: number, len: number, ang: number) {
-  const a = (ang * Math.PI) / 180;
-  return Array.from({ length: n }, (_, i) => {
-    const ox = x + i * step * Math.cos(a + Math.PI / 2);
-    const oy = y + i * step * Math.sin(a + Math.PI / 2);
-    const l = len * (1 - Math.abs(i - n / 2) / (n * 1.4));
-    return `M${ox.toFixed(1)},${oy.toFixed(1)} l${(Math.cos(a) * l).toFixed(1)},${(Math.sin(a) * l).toFixed(1)}`;
-  });
-}
-
-
-/** one quill: a long tapered leaf from an origin, bent by `curve` */
-function plume(x: number, y: number, deg: number, len: number, wid: number, curve: number) {
-  const a = (deg * Math.PI) / 180;
-  const tx = x + Math.cos(a) * len;
-  const ty = y + Math.sin(a) * len;
-  const nx = -Math.sin(a), ny = Math.cos(a);
-  const bx = x + Math.cos(a) * len * 0.45, by = y + Math.sin(a) * len * 0.45;
-  const c1x = bx + nx * wid * curve, c1y = by + ny * wid * curve;
-  const c2x = bx - nx * wid * 0.72, c2y = by - ny * wid * 0.72;
-  return `M${x.toFixed(1)},${y.toFixed(1)} Q${c1x.toFixed(1)},${c1y.toFixed(1)} ${tx.toFixed(1)},${ty.toFixed(1)} Q${c2x.toFixed(1)},${c2y.toFixed(1)} ${x.toFixed(1)},${y.toFixed(1)} Z`;
-}
-
-/** a run of quills fanning from one hand point, longest in the middle */
-function plumes(x: number, y: number, deg: number, n: number, wid: number, len: number, spread: number, curve: number) {
-  return Array.from({ length: n }, (_, i) => {
-    const t = n === 1 ? 0.5 : i / (n - 1);
-    const a = deg + (t - 0.5) * spread;
-    const l = len * (1 - Math.abs(t - 0.4) * 0.42);
-    return plume(x, y, a, l, wid * (1 - Math.abs(t - 0.4) * 0.3), curve);
-  });
-}
-
-/** the hook on the end of a toe */
-function talon(x: number, y: number, deg: number) {
-  const a = ((deg + 34) * Math.PI) / 180;
-  const tx = x + Math.cos(a) * 44, ty = y + Math.sin(a) * 44;
-  const mx = x + Math.cos((deg * Math.PI) / 180) * 26, my = y + Math.sin((deg * Math.PI) / 180) * 26;
-  return `M${x.toFixed(1)},${y.toFixed(1)} Q${mx.toFixed(1)},${my.toFixed(1)} ${tx.toFixed(1)},${ty.toFixed(1)} Q${(x + (tx - x) * 0.3).toFixed(1)},${(y + (ty - y) * 0.62).toFixed(1)} ${x.toFixed(1)},${y.toFixed(1)} Z`;
 }
 
 export default function RaptorPanel({ onClose }: { onClose: () => void }) {
@@ -130,135 +89,121 @@ export default function RaptorPanel({ onClose }: { onClose: () => void }) {
 
         {/* ── the burst and the lettering ── */}
         <g className="mBang">
-          <polygon points={burst(830, 585, 17, 210, 128)} fill={C.rose} stroke={C.ink} strokeWidth="5" />
-          <polygon points={burst(830, 585, 17, 178, 104)} fill="none" stroke={C.paperHi} strokeWidth="3" opacity="0.75" />
-          <text className="mBangText mBangShadow" x="830" y="622">BANG!</text>
-          <text className="mBangText mBangFace" x="826" y="617">BANG!</text>
+          <polygon points={burst(908, 632, 17, 206, 126)} fill={C.rose} stroke={C.ink} strokeWidth="5" />
+          <polygon points={burst(908, 632, 17, 174, 102)} fill="none" stroke={C.paperHi} strokeWidth="3" opacity="0.75" />
+          <text className="mBangText mBangShadow" x="908" y="668">BANG!</text>
+          <text className="mBangText mBangFace" x="904" y="663">BANG!</text>
         </g>
 
-        {/* ── the bird, diving left and down ──
-            The wing is an ARC OF OVERLAPPING FEATHERS, not a filled lozenge.
-            A single smooth shape reads as a shell or a shrimp; what says bird
-            is the row of separate quills each with its own outline. */}
-        <g className="mBird">
-          {/* far wing, behind the body, shorter and flatter */}
-          <g className="mWingFar">
-            {plumes(560, 356, -38, 6, 30, 176, 52, 0.9).map((d, i) => (
-              <path key={i} d={d} fill={C.paper} stroke={C.ink} strokeWidth="4.5" />
-            ))}
-            <path d="M520,360 C572,330 632,306 692,296 C664,332 610,362 556,376 C534,382 522,374 520,360 Z"
-              fill={C.paper} stroke={C.ink} strokeWidth="5" />
+        {/* ── the bird ──
+            Proportions taken off a real griffon vulture braking to land,
+            because four freehand attempts all got the same things wrong.
+            What matters, and what I had wrong every time:
+              - the wings are BROAD paddles, depth about 40% of their span,
+                not daggers. The leading edge is nearly straight and the
+                trailing edge is one big curve.
+              - the body is a compact barrel, roughly a sixth of the span.
+                Mine was a long rod, which is why it read as an insect.
+              - the head is SMALL and sits low on a curved neck, tucked down
+                and forward.
+              - the primaries only splay into fingers in the outer third.
+            Rendered as spot blacks with cream cut back out: no outlines
+            anywhere on the creature. */}
+        <g className="mBird" transform="translate(-118,-104) rotate(-9 520 470) scale(0.94)">
+          {/* far wing: broad, slightly foreshortened, behind the body */}
+          <path
+            className="mMass"
+            d="M486,424 C420,388 330,342 214,318 C168,308 150,322 158,344
+               C170,378 214,424 274,470 C336,516 410,540 470,528
+               C500,522 506,470 486,424 Z"
+          />
+          {/* its finger slots, outer third only */}
+          <g className="mCut">
+            <path d="M158,340 C186,352 214,368 240,388 L230,404 C200,382 172,362 152,350 Z" />
+            <path d="M170,372 C196,390 224,410 250,428 L240,444 C210,424 182,402 162,384 Z" />
+            <path d="M192,404 C216,424 244,444 268,460 L258,474 C230,456 204,434 182,414 Z" />
+          </g>
+          {/* one covert slash following the wing's curve */}
+          <g className="mCut">
+            <path d="M470,452 C400,414 322,378 232,354 L226,372 C314,398 392,434 462,472 Z" />
           </g>
 
-          {/* tail, trailing behind the body */}
-          <g className="mTail">
-            {plumes(626, 396, 22, 6, 26, 142, 48, 0.95).map((d, i) => (
-              <path key={i} d={d} fill={C.paper} stroke={C.ink} strokeWidth="4.5" />
-            ))}
+          {/* tail: short and square, mostly tucked behind the body */}
+          <path className="mMass" d="M596,506 C650,520 700,548 730,586 C692,600 640,592 598,566 C574,550 574,520 596,506 Z" />
+          <g className="mCut">
+            <path d="M614,528 C654,540 690,558 712,578 L704,588 C680,570 644,552 606,540 Z" />
           </g>
 
-          {/* torso */}
-          <g className="mTorso">
-            <path
-              d="M372,438 C404,382 466,346 532,344 C596,342 638,368 644,404 C650,442 612,472 554,484 C488,498 416,480 382,460 C366,452 364,446 372,438 Z"
-              fill={C.paperHi}
-              stroke={C.ink}
-              strokeWidth="6.5"
-            />
-            <path d="M402,446 C432,402 484,372 540,370 C584,368 616,384 622,410" fill="none" stroke={C.ink} strokeWidth="3.2" />
-            <g stroke={C.inkSoft} strokeWidth="2.2" fill="none" opacity="0.9">
-              {hatch(430, 464, 13, 8, 42, -58).map((d, i) => <path key={i} d={d} />)}
-            </g>
-            <path d="M524,480 C576,472 614,450 630,424" fill="none" stroke={C.roseDeep} strokeWidth="3.6" opacity="0.5" />
+          {/* torso: a compact barrel, deep and short */}
+          <path
+            className="mMass"
+            d="M462,430 C520,412 590,424 626,462 C660,498 650,542 606,558
+               C556,576 490,564 460,528 C434,496 434,446 462,430 Z"
+          />
+          <g className="mCut">
+            <path d="M486,452 C534,438 588,446 616,472 L604,486 C578,464 532,456 492,468 Z" />
+            <path d="M472,502 C514,520 566,528 612,518 L614,532 C562,544 506,534 466,516 Z" />
           </g>
 
-          {/* near wing: nine quills sweeping up and back off the hand */}
-          <g className="mWingNear">
-            {/* the arm, narrow, so the quills carry the shape */}
-            <path
-              d="M482,376 C556,312 654,246 754,204 C776,236 770,282 736,320 C696,364 616,404 540,414 C500,418 480,400 482,376 Z"
-              fill={C.paperHi}
-              stroke={C.ink}
-              strokeWidth="6"
-            />
-            {plumes(742, 214, -46, 9, 38, 252, 62, 1.05).map((d, i) => (
-              <g key={i}>
-                <path d={d} fill={C.paper} stroke={C.ink} strokeWidth="5" />
-                <path d={d} fill="url(#benday)" opacity={i % 2 ? 0.42 : 0.22} />
-              </g>
-            ))}
-            {/* covert row cut into the arm */}
-            <g stroke={C.ink} strokeWidth="3.4" fill="none">
-              <path d="M506,394 C578,338 660,282 744,238" />
-              <path d="M524,410 C592,360 668,306 742,264" />
-            </g>
-            <g stroke={C.inkSoft} strokeWidth="2.2" fill="none" opacity="0.8">
-              {hatch(560, 402, 16, 8, 58, -40).map((d, i) => <path key={i} d={d} />)}
-            </g>
-            {/* the one bright edge */}
-            <path d="M488,370 C562,306 660,242 752,202" fill="none" stroke={C.paperHi} strokeWidth="6" opacity="0.95" />
-            <path d="M494,380 C566,318 660,256 748,214" fill="none" stroke={C.gold} strokeWidth="2.8" opacity="0.7" />
+          {/* the near wing: the broad paddle that fills the right of the page */}
+          <path
+            className="mMass"
+            d="M604,438 C688,392 800,346 926,322 C1006,306 1046,320 1042,348
+               C1036,392 976,452 892,510 C800,572 692,600 630,580
+               C588,566 578,486 604,438 Z"
+          />
+          {/* primaries: distinct fingers, outer third of the wing only */}
+          <g className="mCut">
+            <path d="M1040,338 C1006,352 970,372 938,396 L950,414 C986,388 1022,364 1046,352 Z" />
+            <path d="M1026,382 C990,404 952,430 918,456 L930,474 C968,446 1008,418 1036,398 Z" />
+            <path d="M998,428 C962,454 924,482 890,506 L902,522 C940,496 980,466 1010,444 Z" />
+            <path d="M956,470 C920,496 882,520 846,540 L858,556 C896,534 936,508 968,486 Z" />
+            <path d="M902,508 C866,530 828,550 790,564 L800,580 C842,564 882,542 914,522 Z" />
           </g>
+          {/* two covert rows cut across the arm, following the curve */}
+          <g className="mCut">
+            <path d="M634,470 C716,424 818,384 928,362 L932,380 C826,404 728,442 646,490 Z" />
+            <path d="M652,516 C734,478 826,442 918,418 L920,434 C834,458 748,492 668,532 Z" />
+          </g>
+          {/* one rose plane on the underside: the only colour on the bird */}
+          <path className="mShade" d="M630,580 C692,600 800,572 892,510 C812,566 706,596 640,588 Z" />
 
-          {/* head and beak, driven down at what it is coming for */}
+          {/* the neck, curving down and forward off the shoulder */}
+          <path className="mMass" d="M470,456 C440,478 420,510 412,546 C438,556 464,540 478,512 C490,488 488,466 470,456 Z" />
+
+          {/* the head: small, low, tucked. hooked beak driving down. */}
           <g className="mHead">
-            <path d="M398,440 C374,428 356,416 344,402 C362,398 384,408 402,422 Z" fill={C.paperHi} stroke={C.ink} strokeWidth="5" />
-            <ellipse cx="326" cy="428" rx="66" ry="57" fill={C.paperHi} stroke={C.ink} strokeWidth="6.5" transform="rotate(22 326 428)" />
-            {/* bare skin, drawn as folds rather than as whiskers */}
-            <g stroke={C.inkSoft} strokeWidth="3" fill="none" opacity="0.95" strokeLinecap="round">
-              <path d="M288,394 C310,382 342,384 362,400" />
-              <path d="M280,412 C304,400 336,402 358,418" />
-              <path d="M286,452 C310,444 338,448 356,462" />
+            <path className="mMass" d="M414,528 C392,522 372,532 366,552 C360,574 374,594 398,598 C420,600 436,586 438,564 C440,542 430,530 414,528 Z" />
+            {/* the beak: heavy, hooked, the sharpest thing on the page */}
+            <path className="mMass" d="M370,566 C346,574 326,592 318,616 C332,616 350,608 366,598 C356,614 352,632 356,646 C372,636 386,614 392,592 Z" />
+            <g className="mCut">
+              <path d="M366,578 C348,586 334,598 328,612 C340,608 356,598 368,588 Z" />
             </g>
-            {/* the beak: the sharpest drawing on the page */}
-            <path
-              d="M284,450 C230,462 190,490 178,524 C208,524 244,512 276,496 C258,524 250,554 256,580 C284,562 310,522 318,484 Z"
-              fill={C.paperHi}
-              stroke={C.ink}
-              strokeWidth="7"
-            />
-            <path d="M278,456 C234,468 202,492 188,520" fill="none" stroke={C.ink} strokeWidth="3.2" />
-            <path d="M276,496 C258,524 250,554 256,580" fill="none" stroke={C.roseDeep} strokeWidth="3.4" opacity="0.75" />
-            <ellipse cx="296" cy="464" rx="8" ry="5.5" fill={C.ink} transform="rotate(20 296 464)" />
-            {/* the eye: small, hard, the only near-black on the page */}
-            <circle cx="338" cy="418" r="15" fill={C.paperHi} stroke={C.ink} strokeWidth="4.5" />
-            <circle cx="340" cy="419" r="7.5" fill="#1b0d0a" />
-            <circle cx="336" cy="415" r="2.6" fill={C.paperHi} />
-            {/* the brow is what makes it look like it means it */}
-            <path d="M306,396 C328,384 358,388 378,404" fill="none" stroke={C.ink} strokeWidth="8" strokeLinecap="round" />
-            {/* ruff: short broad plumes, not hairs */}
-            {plumes(398, 444, 116, 5, 17, 66, 74, 0.85).map((d, i) => (
-              <path key={i} d={d} fill={C.paper} stroke={C.ink} strokeWidth="4" />
-            ))}
+            {/* the eye: a small hard cream slit, one bead, no highlight */}
+            <path className="mCut" d="M396,548 C408,544 420,546 424,554 C414,558 402,558 394,554 Z" />
+            <circle cx="408" cy="551" r="4.2" fill="#1b0d0a" />
           </g>
 
-          {/* the grip, thrown forward ahead of the dive */}
-          <g className="mGrip">
-            <path d="M430,472 C426,512 410,550 382,580 L422,598 C452,566 470,526 476,488 Z" fill={C.paperHi} stroke={C.ink} strokeWidth="6" />
-            <g stroke={C.ink} strokeWidth="2.6" fill="none">
-              {[0, 1, 2, 3, 4].map(i => (
-                <path key={i} d={`M${426 - i * 5},${496 + i * 16} q 20 8 40 2`} />
-              ))}
-            </g>
-            {/* three toes forward, one back, each a clean tapered shape */}
+          {/* the legs, dangling and reaching: this is the moment of arrival */}
+          <g className="mLeg">
+            <path className="mMass" d="M508,556 C504,596 500,632 492,664 L520,668 C532,634 536,596 536,558 Z" />
+            <path className="mMass" d="M566,552 C570,590 570,624 564,654 L590,656 C598,624 598,588 592,552 Z" />
+            {/* feet: toes splayed forward, talons hooked under */}
             {[
-              { a: 196, l: 132, w: 19 },
-              { a: 222, l: 148, w: 21 },
-              { a: 250, l: 128, w: 18 },
-              { a: 40, l: 96, w: 16 },
-            ].map((t, i) => (
-              <g key={i}>
-                <path d={plume(408, 588, t.a, t.l, t.w, 0.9)} fill={C.paperHi} stroke={C.ink} strokeWidth="5.5" />
-                <path d={plume(408, 588, t.a, t.l * 0.55, t.w * 0.6, 0.9)} fill="none" stroke={C.ink} strokeWidth="2.4" />
-                {/* the talon, hooked off the toe tip */}
-                <path
-                  d={talon(408 + Math.cos((t.a * Math.PI) / 180) * t.l, 588 + Math.sin((t.a * Math.PI) / 180) * t.l, t.a)}
-                  fill={C.paperHi}
-                  stroke={C.ink}
-                  strokeWidth="4.5"
-                />
-              </g>
+              "M492,664 C468,684 440,698 410,704 C420,720 452,716 480,700 C500,688 506,674 502,666 Z",
+              "M512,668 C508,694 498,718 482,738 C500,742 518,728 530,706 C540,688 534,672 524,668 Z",
+              "M520,666 C542,684 566,696 592,700 C586,716 556,714 530,700 C512,690 508,674 512,666 Z",
+              "M564,654 C544,676 520,692 494,700 C504,716 534,710 558,694 C576,682 578,662 570,656 Z",
+              "M584,656 C600,676 618,690 640,696 C634,712 606,708 584,694 C568,684 566,662 572,656 Z",
+            ].map((d, i) => (
+              <path key={i} className="mMass" d={d} />
             ))}
+            <g className="mCut">
+              <path d="M410,704 C396,710 386,720 384,730 C396,728 408,720 416,712 Z" />
+              <path d="M482,738 C476,752 476,764 482,772 C492,762 496,748 494,740 Z" />
+              <path d="M592,700 C606,706 616,716 618,726 C606,724 594,716 586,708 Z" />
+              <path d="M640,696 C654,702 664,712 666,722 C654,720 642,712 634,704 Z" />
+            </g>
           </g>
         </g>
 
