@@ -820,3 +820,76 @@
 .rBangIn { fill: #ffd2bd; opacity: 0.16; }
 
 .artRaptor { overflow: visible; }
+
+/* ── the comic page ────────────────────────────────────────────────────
+   Takes the whole screen. Going to the bird is supposed to feel like the
+   site handed you a different object, so this sits above every piece of
+   the plate's chrome rather than inside it. */
+.mangaPage {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  background: #f2e7d5;
+  animation: mangaIn 0.34s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes mangaIn {
+  from { opacity: 0; transform: scale(1.06) rotate(0.6deg); }
+  to   { opacity: 1; transform: none; }
+}
+
+.mangaArt {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* the streaks drift, so the freeze frame is not quite frozen */
+.mStreaks { animation: streakDrift 2.6s ease-in-out infinite alternate; }
+
+@keyframes streakDrift {
+  from { transform: rotate(-24deg) translateX(-14px); }
+  to   { transform: rotate(-24deg) translateX(14px); }
+}
+
+/* the lettering: heavy, and it lands hard */
+.mBangText {
+  font-family: Impact, Haettenschweiler, "Arial Black", system-ui, sans-serif;
+  font-size: 172px;
+  letter-spacing: -0.02em;
+  text-anchor: middle;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.mBangFace { fill: #fbf4e7; stroke: #3a201a; stroke-width: 9; paint-order: stroke; }
+.mBangShadow { fill: #3a201a; }
+.mBang { animation: bangHit 0.5s cubic-bezier(0.2, 1.6, 0.3, 1) both; }
+
+@keyframes bangHit {
+  from { opacity: 0; transform: scale(0.6) rotate(-9deg); }
+  60%  { opacity: 1; transform: scale(1.08) rotate(2deg); }
+  to   { opacity: 1; transform: none; }
+}
+
+.mangaClose {
+  position: absolute;
+  right: 46px;
+  bottom: 40px;
+  z-index: 41;
+  background: #f2e7d5;
+  border: 3px solid #3a201a;
+  padding: 0.5rem 0.9rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  color: #3a201a;
+  cursor: pointer;
+  box-shadow: 4px 4px 0 #d4705c;
+}
+
+.mangaClose:hover { background: #fbf4e7; box-shadow: 6px 6px 0 #a8452f; }
+
+@media (prefers-reduced-motion: reduce) {
+  .mangaPage, .mBang, .mStreaks { animation: none; }
+}

@@ -8,7 +8,7 @@ import {
 import Grain from "./Grain";
 import Tartan from "./Tartan";
 import Bite from "./Bite";
-import Raptor from "./Raptor";
+import RaptorPanel from "./RaptorPanel";
 import { useCreak } from "./useCreak";
 import "./Noria.css";
 
@@ -378,16 +378,11 @@ export default function Noria() {
           <Detail place={{ x: -330, y: 332, z: -530, s: 0.5 }} show={atTree} className="crawling"><Beetle /></Detail>
           <Detail place={{ x: -448, y: 236, z: -520, s: 0.5 }} show={atTree} className="fluttering"><Moth /></Detail>
 
-          {/* the bird, drawn properly, once you are up there with it */}
-          <Detail place={{ x: -73, y: -547, z: -1046, s: 0.27 }} show={openKey === "vulture"}>
-            <Raptor />
-          </Detail>
-
           {/* the shed's working parts */}
           <Detail place={{ x: 600, y: 158, z: -588, s: 0.66 }} show={openKey === "built"}><FactoryGuts /></Detail>
 
           {/* ── the panel, placed at the shot and turned to face the camera ── */}
-          {open && (
+          {open && open.key !== "vulture" && (
             <div
               className="crimPanel"
               key={open.key}
@@ -407,6 +402,9 @@ export default function Noria() {
           )}
         </div>
       </div>
+
+      {/* going to the bird leaves the plate behind and opens a comic page */}
+      {openKey === "vulture" && <RaptorPanel onClose={() => setOpenKey(null)} />}
 
       {/* the cloth, generated once and handed to CSS */}
       <Tartan />
