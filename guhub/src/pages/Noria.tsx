@@ -415,6 +415,7 @@ export default function Noria() {
 
       {/* something is taking the corner of the plate */}
       <Bite />
+      <div className="rain" aria-hidden />
       <div className="crimHorizon" aria-hidden />
       <div className="crimPlate" aria-hidden />
       <div className="crimPlateCap" aria-hidden>pl. i — the noria</div>
