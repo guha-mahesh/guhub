@@ -36,7 +36,7 @@ const BANDS: [number, number][] = [
 ];
 
 const HORIZON = 0.57;
-const INK = [12, 6, 6];
+const INK = [20, 16, 13];
 
 function paint(cv: HTMLCanvasElement) {
   const w = Math.ceil(window.innerWidth);
