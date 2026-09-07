@@ -782,3 +782,41 @@
 .thing.silenced .art { opacity: 0; transition: opacity 0.35s; }
 
 .artRaptor { width: 1040px; height: 700px; }
+
+/* ── the bird, close up ────────────────────────────────────────────────
+   Vanta black plumage with rose gold only where light would actually
+   catch it. These are the classes the drawing agents were told to use,
+   defined here so the markup renders even if a part omits its own. */
+.artRaptor .vanta      { fill: #050405; }
+.artRaptor .vanta2     { fill: #0b090a; }
+.artRaptor .rose       { fill: #e7b09b; }
+.artRaptor .roseLo     { fill: #b4705a; }
+.artRaptor .roseHi     { fill: #f7ded3; }
+.artRaptor .gold       { fill: #d9a06f; }
+.artRaptor .edgeLight  { fill: none; stroke: #e7b09b; stroke-width: 1.6; stroke-linecap: round; opacity: 0.85; }
+.artRaptor .shaft      { fill: none; stroke: #b4705a; stroke-width: 1; stroke-linecap: round; opacity: 0.6; }
+
+/* the breast rows were reading as chainmail: soften their edge light */
+.artRaptor .rBody .edgeLight { opacity: 0.35; stroke-width: 1.1; }
+
+/* ── the word ──────────────────────────────────────────────────────────
+   Freeze-frame typography: struck across the frame, outlined so it reads
+   over the bird, offset so it sits in the plate rather than on the glass. */
+.rBang text {
+  font-family: Impact, Haettenschweiler, "Arial Black", system-ui, sans-serif;
+  font-size: 300px;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.rBangOut {
+  fill: none;
+  stroke: #33130f;
+  stroke-width: 26;
+  stroke-linejoin: round;
+  opacity: 0.9;
+}
+
+.rBangIn { fill: #ffd2bd; opacity: 0.16; }
+
+.artRaptor { overflow: visible; }
