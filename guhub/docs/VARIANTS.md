@@ -16,6 +16,7 @@ git checkout v-night && cd guhub && npm run dev
 | `v-bone` | Inverted: black ink on bone paper. | This is the register Obra Dinn actually used, and the silhouettes are far stronger against light than against dark. The tartan corner becomes the only colour in the frame. |
 | `v-storm` | The plate under rain, ruled at a constant angle across the whole frame in two layers at different speeds. | Rain as engraver's hatching rather than as particles. Costs one element and reads as weather immediately. |
 | `v-brass` | Brass and soot instead of red. | Warm metal light on a brown-black field. Closest in feel to HEAD while reading as a different material entirely. |
+| `v-site` | **Site-wide, not just /noria.** The whole site pulled into the plate's register: warm rose palette at the token layer, the same ordered dither laid over every page, and a ruled plate border around every view. | The only variant that touches pages other than /noria. Because the site already had a token layer, this is a palette shift plus two fixed elements rather than per-page edits. Screenshots for home, projects and noria are all on the branch. |
 | `v-cloth` | The exact inverse of HEAD: the whole plate is dark tartan, and the torn corner is clean bright plate cut out of it. | The strongest departure of the set. Reads as though the cloth was underneath all along and the plate is what got torn away. Darkest of the five, so the objects read as shapes rather than as detail. |
 
 ## Notes for whoever picks one up
