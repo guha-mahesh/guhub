@@ -103,9 +103,7 @@ export function Hollow() {
  * bracing between the spokes. The paddles sit in the rim, not on it.
  */
 export function Waterwheel() {
-  const N = 14;   // paddle boards
-  const B = 7;    // buckets
-  const SPIN = 30; // seconds per revolution — must match .wheelSpin in the CSS
+  const N = 14; // paddle boards
 
   return (
     <div className="wheelRig">
@@ -134,51 +132,6 @@ export function Waterwheel() {
             const a = (i / 8) * Math.PI * 2;
             const b = ((i + 1) / 8) * Math.PI * 2;
             return <line key={i} x1={Math.cos(a) * 70} y1={Math.sin(a) * 70} x2={Math.cos(b) * 30} y2={Math.sin(b) * 30} />;
-          })}
-        </g>
-
-        {/* ── the buckets ──
-            This is what a noria actually is: buckets on the rim that scoop at
-            the bottom, ride up full, and tip out at the top.
-
-            They are mounted at all times and only revealed on the zoom, because
-            a CSS animation keeps running while its element is hidden. Mounting
-            them on click instead would start their rotation at zero while the
-            wheel was already mid-turn, and they would sit at the wrong angles.
-
-            Each bucket hangs on a pivot: an inner group counter-rotates against
-            the wheel over the same 30s so the bucket stays level, and a shorter
-            swing on top of that lets it thrash. Fill and spill are phase-shifted
-            per bucket by -SPIN*i/B, which is exactly the time offset that
-            matches its position on the rim. */}
-        <g className="wheelBuckets">
-          {Array.from({ length: B }).map((_, i) => {
-            const a = (i / B) * 360;
-            const phase = -(SPIN * i) / B;
-            return (
-              <g key={i} transform={`rotate(${a}) translate(0,-92)`}>
-                <g
-                  className="bucketLevel"
-                  style={{ animationDelay: `${phase}s`, ["--a" as string]: `${-a}deg` } as React.CSSProperties}
-                >
-                  <g className="bucketSwing" style={{ animationDelay: `${-i * 0.37}s` }}>
-                    {/* the water first, so the bucket's rim laps over it */}
-                    <rect className="bucketWater" x="-13" y="-19" width="26" height="25" style={{ animationDelay: `${phase}s` }} />
-                    {/* the bucket: a tapered box, open at the top */}
-                    <path className="bucketBody" d="M-15,-21 L15,-21 L11,7 L-11,7 Z" />
-                    <path className="bucketRim" d="M-16,-21 L16,-21" />
-                    {/* the yoke it hangs from */}
-                    <path className="bucketYoke" d="M-15,-21 L0,-34 L15,-21" />
-                    {/* what tips out over the top of the wheel */}
-                    <g className="bucketSpill" style={{ animationDelay: `${phase}s` }}>
-                      {[0, 1, 2].map(d => (
-                        <circle key={d} className="spillDrop" cx={-7 + d * 7} cy={9 + d * 3} r={2.4 - (d % 2) * 0.7} />
-                      ))}
-                    </g>
-                  </g>
-                </g>
-              </g>
-            );
           })}
         </g>
 
@@ -555,37 +508,39 @@ export function Moth() {
 export function FactoryGuts() {
   return (
     <svg className="art artGuts" viewBox="-180 -120 360 240" aria-hidden>
-      {/* two meshed gears */}
-      <g className="gutsGearA" transform="translate(-96 -20)">
-        <g fill="#0c0606">
-          {Array.from({ length: 14 }).map((_, i) => (
-            <rect key={i} x="-4" y="-48" width="8" height="13" transform={`rotate(${(i / 14) * 360})`} />
-          ))}
-          <circle r="37" />
-          <circle r="9" fill="#6b0a0a" />
+      {/* Cut out of the shed's black in the ground colour rather than drawn in
+          black on black, which is what made them invisible inside it. */}
+      <g className="gutsInk">
+        {/* two meshed gears */}
+        <g transform="translate(-96 -20)">
+          <g className="gutsGearA">
+            {Array.from({ length: 14 }).map((_, i) => (
+              <rect key={i} x="-4" y="-48" width="8" height="13" transform={`rotate(${(i / 14) * 360})`} />
+            ))}
+            <circle r="37" />
+            <circle r="9" className="gutsHole" />
+          </g>
         </g>
-      </g>
-      <g className="gutsGearB" transform="translate(-16 -20)">
-        <g fill="#0c0606">
-          {Array.from({ length: 10 }).map((_, i) => (
-            <rect key={i} x="-3.4" y="-34" width="6.8" height="11" transform={`rotate(${(i / 10) * 360})`} />
-          ))}
-          <circle r="25" />
-          <circle r="7" fill="#6b0a0a" />
+        <g transform="translate(-16 -20)">
+          <g className="gutsGearB">
+            {Array.from({ length: 10 }).map((_, i) => (
+              <rect key={i} x="-3.4" y="-34" width="6.8" height="11" transform={`rotate(${(i / 10) * 360})`} />
+            ))}
+            <circle r="25" />
+            <circle r="7" className="gutsHole" />
+          </g>
         </g>
-      </g>
-      {/* piston driven off the small gear */}
-      <g className="gutsPiston">
-        <rect x="12" y="-26" width="86" height="12" fill="#0c0606" />
-        <rect x="92" y="-34" width="26" height="28" fill="#0c0606" />
-      </g>
-      <g fill="#0c0606">
+        {/* piston driven off the small gear */}
+        <g className="gutsPiston">
+          <rect x="12" y="-26" width="86" height="12" />
+          <rect x="92" y="-34" width="26" height="28" />
+        </g>
         <rect x="118" y="-40" width="14" height="40" />
         {/* vats, filling and never emptying */}
         <path d="M22 44 L 78 44 L 70 96 L 30 96 Z" />
         <path d="M96 44 L 152 44 L 144 96 L 104 96 Z" />
       </g>
-      <g fill="#6b0a0a">
+      <g className="gutsLevel">
         <rect className="gutsLevelA" x="30" y="58" width="40" height="30" />
         <rect className="gutsLevelB" x="104" y="66" width="40" height="22" />
       </g>

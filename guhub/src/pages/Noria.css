@@ -437,6 +437,7 @@
   position: absolute;
   left: 50%;
   top: 50%;
+  z-index: 30;
   width: 340px;
   margin-left: -170px;
   margin-top: -120px;
@@ -505,6 +506,12 @@
 .artMoth { width: 40px; height: 28px; }
 .artGuts { width: 360px; height: 240px; }
 
+/* the machinery is cut out of the shed's mass in the ground colour, the same
+   way the plate's other interior lines are */
+.gutsInk { fill: #6b0a0a; }
+.gutsHole { fill: #0c0606; }
+.gutsLevel rect { fill: #a8321f; }
+
 .beetleLegs { animation: scuttle 0.22s steps(2, end) infinite alternate; }
 @keyframes scuttle { from { transform: translateX(-0.7px); } to { transform: translateX(0.7px); } }
 
@@ -527,14 +534,14 @@
   to   { translate: 30px -22px; }
 }
 
-.gutsGearA { transform-origin: -96px -20px; animation: wheelTurn 7s linear infinite; }
-.gutsGearB { transform-origin: -16px -20px; animation: wheelTurn 5s linear infinite reverse; }
+.gutsGearA { transform-origin: 0 0; animation: wheelTurn 7s linear infinite; }
+.gutsGearB { transform-origin: 0 0; animation: wheelTurn 5s linear infinite reverse; }
 .gutsPiston { animation: pump 2.5s ease-in-out infinite alternate; }
 @keyframes pump { from { transform: translateX(0); } to { transform: translateX(26px); } }
 
 /* the vats fill and never empty */
-.gutsLevelA { animation: fill 9s ease-in infinite; transform-origin: 30px 88px; }
-.gutsLevelB { animation: fill 11s ease-in infinite 2s; transform-origin: 104px 88px; }
+.gutsLevelA { animation: fill 9s ease-in infinite; transform-box: fill-box; transform-origin: 50% 100%; }
+.gutsLevelB { animation: fill 11s ease-in infinite 2s; transform-box: fill-box; transform-origin: 50% 100%; }
 @keyframes fill {
   0%   { transform: scaleY(0.15); }
   80%  { transform: scaleY(1); }
@@ -933,80 +940,4 @@
    pointer target so you cannot click what you cannot see. */
 .thing.outOfWay { pointer-events: none; }
 
-/* ── the wheel's buckets ───────────────────────────────────────────────
-   Present at all times, revealed only once you have gone to the wheel.
-   They cannot be mounted on click: a CSS animation keeps running while its
-   element is hidden, and mounting late would start each bucket's rotation
-   at zero while the wheel was already mid-turn. */
-.wheelBuckets {
-  visibility: hidden;
-  opacity: 0;
-  transition: opacity 0.45s ease-out 0.35s, visibility 0s linear 0.35s;
-}
 
-.thing.open .wheelBuckets { visibility: visible; opacity: 1; }
-
-/* the pivot: counter-rotates against the wheel so the bucket hangs level */
-.bucketLevel {
-  animation: bucketLevel 30s linear infinite;
-}
-
-@keyframes bucketLevel {
-  from { transform: rotate(var(--a)); }
-  to   { transform: rotate(calc(var(--a) - 360deg)); }
-}
-
-/* and on top of that it thrashes, because nothing hanging off a turning
-   wheel hangs still */
-.bucketSwing {
-  transform-box: fill-box;
-  transform-origin: 50% 0;
-  animation: bucketSwing 2.4s ease-in-out infinite alternate;
-}
-
-@keyframes bucketSwing {
-  from { transform: rotate(-9deg); }
-  to   { transform: rotate(9deg); }
-}
-
-.bucketBody { fill: #0c0606; }
-.bucketRim { stroke: #0c0606; stroke-width: 3.4; stroke-linecap: round; }
-.bucketYoke { fill: none; stroke: #0c0606; stroke-width: 2.6; stroke-linejoin: round; }
-
-/* the water: empty on the way down, scooped at the bottom, carried up full,
-   tipped out over the top */
-.bucketWater {
-  fill: #d3583c;
-  transform-box: fill-box;
-  transform-origin: 50% 100%;
-  animation: bucketFill 30s linear infinite;
-}
-
-@keyframes bucketFill {
-  0%        { transform: scaleY(0); }
-  36%       { transform: scaleY(0.06); }
-  48%       { transform: scaleY(1); }
-  52%       { transform: scaleY(1); }
-  90%       { transform: scaleY(1); }
-  97%, 100% { transform: scaleY(0); }
-}
-
-/* The spill only exists in the moment the bucket tips. The fall is on the
-   group rather than on each droplet: five drops per bucket meant thirty-five
-   separate animations for something the eye reads as one gesture. */
-.bucketSpill {
-  animation: bucketSpill 30s linear infinite;
-}
-
-@keyframes bucketSpill {
-  0%       { opacity: 1; translate: 0 0; }
-  2%       { opacity: 1; translate: 0 14px; }
-  7%       { opacity: 0; translate: 0 40px; }
-  8%, 100% { opacity: 0; translate: 0 0; }
-}
-
-.spillDrop { fill: #d3583c; }
-
-@media (prefers-reduced-motion: reduce) {
-  .bucketLevel, .bucketSwing, .bucketWater, .bucketSpill, .spillDrop { animation: none; }
-}

@@ -179,8 +179,8 @@ const THINGS: Thing[] = [
     key: "built",
     label: "built",
     place: { x: 1339, y: 320, z: -1150, s: 2.6 },
-    shot: { tx: 1339, ty: 250, tz: -1150, yaw: 8, pitch: 2, dist: 640 },
-    panel: { ox: -270, oy: 70 },
+    shot: { tx: 804, ty: 45, tz: -1150, yaw: 6, pitch: 2, dist: -520 },
+    panel: { ox: -420, oy: -170 },
     art: <Factory />,
     body: (<><p>{LOREM_2}</p><ul className="rawlist">{LOREM_ITEMS.map((t) => <li key={t}>{t}</li>)}</ul></>),
   },
@@ -386,7 +386,7 @@ export default function Noria() {
           <Detail place={{ x: -610, y: 236, z: -520, s: 0.5 }} show={atTree} className="fluttering"><Moth /></Detail>
 
           {/* the shed's working parts */}
-          <Detail place={{ x: 1339, y: 330, z: -1140, s: 1.5 }} show={openKey === "built"}><FactoryGuts /></Detail>
+          <Detail place={{ x: 809, y: 353, z: -1140, s: 1.76 }} show={openKey === "built"}><FactoryGuts /></Detail>
 
           {/* ── the panel, placed at the shot and turned to face the camera ── */}
           {open && open.key !== "vulture" && (
