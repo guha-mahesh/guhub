@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { useLocation } from 'react-router-dom';
 import { FaPlay, FaPause, FaTimes } from 'react-icons/fa';
 import { useIsMobile } from '../hooks/useIsMobile';
 import './BackgroundMusic.css';
@@ -19,11 +20,21 @@ interface Track {
 // platform Media Session, so macOS Now Playing / F8 won't pick it up.
 // ──────────────────────────────────────────────────────────────────────
 
+// Routes that own their own sound and must not be talked over. /noria has a
+// synthesised water-wheel creak of its own, and two ambiences at once is just
+// noise. Unmounting is a real stop, not a mute: the inner component closes its
+// AudioContext on unmount.
+const SILENT_ROUTES = ['/noria'];
+
 const BackgroundMusic = () => {
   const isMobile = useIsMobile();
+  const { pathname } = useLocation();
+  // Both hooks run before any early return, so the hook order stays stable.
+
   // Disabled entirely on mobile: no autoplay click handler, no Web Audio
   // setup, no toast, no toggle button. Saves bandwidth + screen real estate.
   if (isMobile) return null;
+  if (SILENT_ROUTES.includes(pathname)) return null;
   return <BackgroundMusicInner />;
 };
 
