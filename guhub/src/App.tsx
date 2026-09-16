@@ -4,6 +4,7 @@ import { MetaProvider } from "./contexts/MetaContext";
 import Noria from "./pages/Noria";
 import BlogPage from "./pages/BlogPage";
 import ListeningPage from "./pages/ListeningPage";
+import Topster from "./pages/Topster";
 
 /**
  * The plate is the site. There is no tab bar and no chrome around it: you are
@@ -17,6 +18,7 @@ function App() {
         <MetaProvider>
           <Routes>
             <Route path="/" element={<Noria />} />
+            <Route path="/topster" element={<Topster />} />
             {/* unlisted: no tab points here, and nothing on the plate links to it */}
             <Route path="/log" element={<BlogPage />} />
             <Route path="/blog" element={<BlogPage />} />

@@ -1,0 +1,38 @@
+/* ── the topster ───────────────────────────────────────────────────────
+   One picture on the same ground as the plate. The chart is the whole
+   subject, so the page gives it everything except the engraver's border. */
+
+.topsterPage {
+  display: grid;
+  place-items: center;
+  padding: 46px 40px 64px;
+  box-sizing: border-box;
+}
+
+.topsterFrame {
+  position: relative;
+  z-index: 5;
+  max-width: 100%;
+  max-height: 100%;
+  display: flex;
+}
+
+/* the chart carries its own black rule so it sits on the ground rather than
+   floating loose on it, and never crops: it fits the frame whichever way
+   round the window is */
+.topsterChart {
+  display: block;
+  max-width: 100%;
+  max-height: calc(100dvh - 110px);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border: 1px solid var(--ink);
+  box-shadow: 0 18px 60px rgba(12, 6, 6, 0.55);
+}
+
+@media (max-width: 768px) {
+  .topsterPage { padding: 30px 22px 46px; }
+  .topsterChart { max-height: calc(100dvh - 86px); }
+  .crimPlateCap { right: 24px; bottom: 22px; }
+}

@@ -93,14 +93,14 @@ const ELSEWHERE = [
   { label: "github", href: "https://github.com/guha-mahesh" },
   { label: "linkedin", href: "https://linkedin.com/in/guhamahesh" },
   { label: "instagram", href: "https://instagram.com/guha._" },
-  { label: "the covers", href: "/listening" },
+  { label: "topster", href: "/topster" },
 ];
 
 export function ElsewhereBody() {
   return (
     <ul className="rawlist">
       {ELSEWHERE.map((e) => {
-        // the covers page is this site; the rest are somewhere else entirely
+        // the topster is a page of this site; the rest are somewhere else
         const away = !e.href.startsWith("/");
         return (
           <li key={e.label}>

@@ -3,7 +3,7 @@ import type { CSSProperties, ReactNode } from "react";
 import {
   DeadTree, Hollow, Waterwheel, Splash, Factory, Effluent, Smoke,
   River, Ridge, Vulture, Scribe, Squirrel,
-  Beetle, Mushrooms, Moth, FactoryGuts, DeepMass, Waterline,
+  Beetle, Mushrooms, Moth, FactoryGuts, Waterline,
 } from "./NoriaArt";
 import Grain from "./Grain";
 import Tartan from "./Tartan";
@@ -252,7 +252,7 @@ export default function Noria() {
   if (isMobile) return <NoriaPlates />;
 
   return (
-    <div className="crim">
+    <div className={`crim ${open ? "focused" : ""}`}>
       <div className="crimStage">
         <div className="crimWorld" ref={worldRef}>
 
@@ -272,8 +272,6 @@ export default function Noria() {
           <Prop place={{ x: -143, y: 336, z: -376 }}><Splash /></Prop>
           {/* cuts the wheel where it enters the race */}
           <Prop place={{ x: -143, y: 352, z: -370, s: 1.1 }} className="waterline"><Waterline /></Prop>
-          {/* something long under the surface, only its back showing */}
-          <Prop place={{ x: 640, y: 322, z: -900, s: 2.1 }} className="submerged"><DeepMass /></Prop>
 
           {/* The same tree again, smaller and further back. Same seed, so it
               is not a similar tree, it is the same tree. Nobody notices for

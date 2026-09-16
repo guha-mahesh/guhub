@@ -81,7 +81,13 @@
 /* hover reads as the object leaning in, not as a web rollover */
 .thing .art { transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1); }
 .thing.hot .art { transform: scale(1.05) translateY(-5px); }
+/* Hit testing inside a preserve-3d scene follows depth, not z-index, and the
+   panel is placed further from the camera than every object that could cross
+   it on screen. So once you are inside a shot the world stops taking clicks
+   altogether and only the panel is live. Escape and step back get you out. */
 .thing.open { cursor: default; }
+.crim.focused .thing,
+.crim.focused .thing * { pointer-events: none; }
 
 /* ── ground and river ──────────────────────────────────────────────── */
 .groundFace {
