@@ -77,26 +77,27 @@ export function WorkBody() {
   return (
     <>
       <p>
-        Engramme is a human-memory lab out of Harvard. The work is what people
-        forget: catching it as it goes past, working out when they will need it
-        again, and putting it in front of them before they go looking.
+        Engramme is a human-memory lab out of Harvard. It works on forgetting.
+        The product catches what goes past you and has it ready when you want
+        it back.
       </p>
       <p>
-        I built the clients. iOS and macOS in Swift, the Chrome extension, the
-        web platform, a menubar app, a VS Code extension, the Meta Ray-Bans,
-        and an Android build for Samsung driving a heads-up display on their
-        glasses. Behind them, the Google, iMessage and WhatsApp, and Plaud
-        integrations, and the audio pipeline I built for them: Plaud recorders
-        and Meet calls diarised, ECAPA voiceprints deciding who is speaking,
-        the whole of it split into a media service of its own.
+        I built the clients. iOS and macOS in Swift. The Chrome extension, the
+        web platform, a menubar app, a VS Code extension, the Ray-Bans, and an
+        Android build for Samsung that drives a HUD on their glasses.
       </p>
       <p>
-        On the model side I took entity prediction from research into
-        production, a five-feature MLP evaluated on held-out-of-held-out splits
-        and served over Terraform and Cloud Run into the live recall path. I
-        co-authored the paper benchmarking our recall against Letta and Mem0
-        over a 418-question test set under both an LLM and a human judge, and
-        co-authored a position paper submitted to NeurIPS.
+        Then integrations. Google, iMessage and WhatsApp, Plaud. Plaud
+        recorders and Meet calls arrive as audio, get diarised, and ECAPA
+        voiceprints sort out who is talking. It outgrew the service it started
+        in, so I gave it one of its own.
+      </p>
+      <p>
+        Entity prediction I took from research to production. A five-feature
+        MLP, held-out-of-held-out splits, Terraform and Cloud Run, serving into
+        the live recall path. I co-authored the paper that benchmarks our
+        recall against Letta and Mem0, 418 questions, scored by an LLM judge
+        and a human one. There is a position paper too, submitted to NeurIPS.
       </p>
       <p>
         Nine months as a co-op, converted to full-time MTS, deferred to take a
