@@ -1,0 +1,236 @@
+/* ── the book ──────────────────────────────────────────────────────────
+   The phone gets the volume the plate was torn out of: one figure to a page,
+   ruled border, engraver's caption, the note set underneath. Scroll snapping
+   is the page turn. Same ink, same ground, no camera. */
+
+.plateBook {
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+  scroll-snap-type: y proximity;
+}
+
+/* .crim's ground and its overlays are absolute, which in a scroller means
+   they scroll off the top after one screen. Pinning them to the viewport is
+   what keeps the ground, the grain and the tear on every page. */
+.plateBook::before,
+.plateBook > .grain,
+.plateBook > .bite,
+.plateBook .mangaPage {
+  position: fixed;
+}
+
+.plate {
+  position: relative;
+  min-height: 100dvh;
+  scroll-snap-align: start;
+  /* a page that outgrows the screen stops trying to be a snap point, so the
+     end of a long note is always reachable */
+  scroll-snap-stop: normal;
+  display: flex;
+  flex-direction: column;
+  padding: 30px 26px 44px;
+  box-sizing: border-box;
+  /* the figures are drawn at their authored size and only scaled visually,
+     so the page is pinned to the screen. The clipping that keeps a 620px
+     factory inside a phone is on the figure alone: putting it here would cut
+     the bottom off any note longer than a screen. */
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+/* the engraver's double rule, per page rather than per screen */
+.plateRule {
+  position: absolute;
+  inset: 14px;
+  border: 1px solid var(--ink);
+  opacity: 0.8;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.plateRule::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 2px solid var(--ink);
+  opacity: 0.5;
+}
+
+/* ── the figure ────────────────────────────────────────────────────── */
+.plateFig {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  flex: 1 1 auto;
+  min-height: 38vh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  z-index: 5;
+}
+
+/* each drawing is authored at its own size; the scale comes in per plate */
+.plateArt {
+  transform-origin: 50% 50%;
+  line-height: 0;
+}
+
+/* the frontispiece alone gets a horizon behind it */
+.plateRidge {
+  position: absolute;
+  left: 50%;
+  bottom: 12%;
+  transform: translateX(-50%) scale(1.15);
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.plateRidge .art { width: 620px; height: 150px; }
+
+/* ── the caption ───────────────────────────────────────────────────── */
+.plateCap {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  font-size: 0.56rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--ink);
+  opacity: 0.62;
+}
+
+.plateCapRule { flex: 1; height: 1px; background: var(--ink); opacity: 0.45; }
+
+.plateNo { flex: none; }
+.plateCapName { flex: none; }
+
+/* ── the note ──────────────────────────────────────────────────────── */
+.plateNote {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 5;
+  background: rgba(12, 6, 6, 0.93);
+  border: 1px solid var(--ink);
+  color: #f6ddd2;
+  padding: 0.95rem 1rem 1.05rem;
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+.plateLabel {
+  margin: 0 0 0.55rem;
+  font-size: 1.02rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+.plateBody p { margin: 0 0 0.65rem; }
+.plateBody p:last-child { margin-bottom: 0; }
+
+/* ── the frontispiece ──────────────────────────────────────────────── */
+.plate.front .plateNote {
+  background: none;
+  border: none;
+  color: var(--ink);
+  padding: 0;
+}
+
+.plate.front .plateLabel { font-size: 2.4rem; }
+
+.plateEpigraph {
+  margin: 0;
+  font-style: italic;
+  font-size: 0.78rem;
+  opacity: 0.72;
+}
+
+/* every way off the title page, set as one line rather than a bulleted list */
+.plateWays {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.2rem 1rem;
+  margin-top: 0.7rem;
+  font-size: 0.8rem;
+}
+
+.plateWays .rawlist {
+  display: contents;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.plateAside {
+  margin: 0.6rem 0 0.4rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  opacity: 0.62;
+}
+
+.plateTap {
+  margin: 0;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+/* ── turning ───────────────────────────────────────────────────────── */
+.plateTurn {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 22px;
+  z-index: 5;
+  text-align: center;
+  font-size: 0.54rem;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--ink);
+  opacity: 0;
+  animation: turnHint 4.2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes turnHint {
+  0%, 62%  { opacity: 0; transform: translateY(0); }
+  78%      { opacity: 0.5; transform: translateY(3px); }
+  100%     { opacity: 0; transform: translateY(6px); }
+}
+
+/* ── ink on arrival ────────────────────────────────────────────────────
+   Nothing on a page moves until the reader has turned to it. */
+.plate .plateFig,
+.plate .plateCap,
+.plate .plateNote {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.plate.inked .plateFig,
+.plate.inked .plateCap,
+.plate.inked .plateNote {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.75s ease-out, transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.plate.inked .plateCap { transition-delay: 0.16s; }
+.plate.inked .plateNote { transition-delay: 0.26s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .plateBook { scroll-snap-type: none; }
+  .plateTurn { animation: none; opacity: 0.4; }
+  .plate .plateFig,
+  .plate .plateCap,
+  .plate .plateNote { opacity: 1; transform: none; transition: none; }
+}

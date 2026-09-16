@@ -10,6 +10,9 @@ import Tartan from "./Tartan";
 import Bite from "./Bite";
 import RaptorPanel from "./RaptorPanel";
 import { useCreak } from "./useCreak";
+import { useIsMobile } from "../hooks/useIsMobile";
+import NoriaPlates from "./NoriaPlates";
+import { EPIGRAPH, TOPIC_BODIES } from "./noriaTopics";
 import "./Noria.css";
 
 /**
@@ -120,17 +123,6 @@ function useCameraRig(
 }
 
 // ── content ──────────────────────────────────────────────────────────
-const LOREM_1 =
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.";
-const LOREM_2 =
-  "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.";
-const LOREM_ITEMS = [
-  "Lorem ipsum dolor sit amet",
-  "Consectetur adipiscing elit sed do",
-  "Eiusmod tempor incididunt ut labore",
-  "Dolore magna aliqua ut enim",
-];
-
 /** Where a thing stands in the world. */
 type Place = { x: number; y: number; z: number; s?: number; rot?: string; fade?: number };
 
@@ -140,6 +132,8 @@ type Thing = {
   place: Place;
   shot: Shot;
   panel: { ox: number; oy: number };
+  /** the wide plate, for a body that is a list or a whole sheet */
+  wide?: boolean;
   body: ReactNode;
   art: ReactNode;
 };
@@ -153,36 +147,28 @@ const THINGS: Thing[] = [
     label: "engramme",
     place: { x: -683, y: 44, z: -560, s: 0.78 },
     shot: { tx: -683, ty: 196, tz: -560, yaw: -9, pitch: -4, dist: 360 },
-    panel: { ox: 430, oy: 40 },
+    panel: { ox: -470, oy: 40 },
     art: <DeadTree />,
-    body: (<><p>{LOREM_1}</p><p>{LOREM_2}</p></>),
+    body: TOPIC_BODIES.engramme.body,
   },
   {
-    key: "read",
-    label: "the hollow",
-    place: { x: -601, y: 248, z: -516 },
-    shot: { tx: -601, ty: 248, tz: -516, yaw: -5, pitch: -3, dist: 640 },
-    panel: { ox: 250, oy: 40 },
-    art: <Hollow />,
-    body: (<ul className="rawlist">{LOREM_ITEMS.map((t) => <li key={t}>{t}</li>)}</ul>),
-  },
-  {
-    key: "sounds",
-    label: "sounds",
+    key: "elsewhere",
+    label: "elsewhere",
     place: { x: -143, y: 246, z: -390, s: 0.86 },
     shot: { tx: -143, ty: 232, tz: -390, yaw: 2, pitch: -2, dist: 400 },
-    panel: { ox: -280, oy: -40 },
+    panel: { ox: -300, oy: -40 },
     art: <Waterwheel />,
-    body: (<><p>{LOREM_1}</p></>),
+    body: TOPIC_BODIES.elsewhere.body,
   },
   {
     key: "built",
     label: "built",
     place: { x: 1339, y: 320, z: -1150, s: 2.6 },
     shot: { tx: 804, ty: 45, tz: -1150, yaw: 6, pitch: 2, dist: -520 },
-    panel: { ox: -420, oy: -170 },
+    panel: { ox: -360, oy: -120 },
+    wide: true,
     art: <Factory />,
-    body: (<><p>{LOREM_2}</p><ul className="rawlist">{LOREM_ITEMS.map((t) => <li key={t}>{t}</li>)}</ul></>),
+    body: TOPIC_BODIES.built.body,
   },
   {
     key: "vulture",
@@ -194,85 +180,18 @@ const THINGS: Thing[] = [
     body: null, // the drawing is the content here
   },
   {
-    key: "who",
-    label: "who",
+    key: "record",
+    label: "the record",
     place: { x: -212, y: 128, z: 40, s: 0.62 },
     shot: { tx: -212, ty: 100, tz: 40, yaw: -2, pitch: -2, dist: 170 },
-    panel: { ox: 300, oy: -30 },
+    panel: { ox: 330, oy: -40 },
+    wide: true,
     art: <Scribe />,
-    body: null, // replaced by the conversation
+    body: TOPIC_BODIES.record.body,
   },
 ];
 
 
-/**
- * The man will talk, in his fashion. He does not stop writing while he does.
- * Replace the lines; the shape is a small graph, so any node can point at
- * any other and an `end` closes the exchange.
- */
-type Line = { says: string; choices?: { ask: string; to: string }[] };
-
-const TALK: Record<string, Line> = {
-  start: {
-    says: "He does not look up. The pen moves the wrong way round, nib in the air, and the page fills anyway.",
-    choices: [
-      { ask: "what are you writing", to: "writing" },
-      { ask: "who are you", to: "who" },
-      { ask: "why backwards", to: "pen" },
-    ],
-  },
-  writing: {
-    says: "Lorem ipsum dolor sit amet. Everything that happens here, in the order it happens. The wheel turns, so there is always something to put down.",
-    choices: [
-      { ask: "does anyone read it", to: "read" },
-      { ask: "why backwards", to: "pen" },
-      { ask: "step back", to: "end" },
-    ],
-  },
-  who: {
-    says: "Consectetur adipiscing elit. He gives a name that is not quite the one on the header, and goes back to the page.",
-    choices: [
-      { ask: "what are you writing", to: "writing" },
-      { ask: "step back", to: "end" },
-    ],
-  },
-  pen: {
-    says: "Sed do eiusmod tempor. He turns the pen over, considers it, and puts it back the way it was.",
-    choices: [
-      { ask: "does anyone read it", to: "read" },
-      { ask: "step back", to: "end" },
-    ],
-  },
-  read: {
-    says: "Ut enim ad minim veniam. The bird does, he says. Not kindly.",
-    choices: [
-      { ask: "start again", to: "start" },
-      { ask: "step back", to: "end" },
-    ],
-  },
-  end: { says: "" },
-};
-
-function Conversation({ onClose }: { onClose: () => void }) {
-  const [at, setAt] = useState("start");
-  const line = TALK[at];
-
-  useEffect(() => { if (at === "end") onClose(); }, [at, onClose]);
-  if (at === "end") return null;
-
-  return (
-    <div className="talk">
-      <p className="talkSays">{line.says}</p>
-      <div className="talkChoices">
-        {line.choices?.map((c) => (
-          <button key={c.ask} className="talkAsk" onClick={() => setAt(c.to)}>
-            {c.ask}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
 
 // ── placement ────────────────────────────────────────────────────────
 function styleFor({ x, y, z, s = 1, rot = "", fade = 0 }: Place): CSSProperties {
@@ -307,8 +226,9 @@ export default function Noria() {
   const open = THINGS.find((t) => t.key === openKey) ?? null;
   const hover = THINGS.find((t) => t.key === hoverKey) ?? null;
   const [sound, toggleSound] = useCreak();
-  // the tree and its hollow share one interior
-  const atTree = openKey === "engramme" || openKey === "read";
+  const isMobile = useIsMobile();
+  // the undergrowth exists only while you are down at the roots
+  const atTree = openKey === "engramme";
 
   /** true for a prop sitting well in front of whatever you went to look at */
   const inTheWay = (z: number) => !!open && z - open.shot.tz > 260;
@@ -324,6 +244,12 @@ export default function Noria() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
+
+  // A phone is a portrait page and this drawing is a landscape one, so the
+  // camera is the wrong instrument there. The same figures are re-set as the
+  // book the plate was torn out of. Every hook above has already run, so the
+  // hook order does not change when the viewport crosses the breakpoint.
+  if (isMobile) return <NoriaPlates />;
 
   return (
     <div className="crim">
@@ -353,6 +279,10 @@ export default function Noria() {
               is not a similar tree, it is the same tree. Nobody notices for
               a moment, and then they do. */}
           <Prop place={{ x: 60, y: 96, z: -1420, s: 0.5, fade: 0.28 }}><DeadTree /></Prop>
+
+          {/* The hole in the trunk. Scenery: it is cut into the tree's face
+              and sits just in front of it, but it is not a thing you click. */}
+          <Prop place={{ x: -601, y: 248, z: -516 }}><Hollow /></Prop>
 
           {/* ── the clickable things ── */}
           {THINGS.map((t) => (
@@ -391,7 +321,7 @@ export default function Noria() {
           {/* ── the panel, placed at the shot and turned to face the camera ── */}
           {open && open.key !== "vulture" && (
             <div
-              className="crimPanel"
+              className={`crimPanel ${open.wide ? "wide" : ""}`}
               key={open.key}
               style={{
                 transform:
@@ -401,9 +331,7 @@ export default function Noria() {
               }}
             >
               <div className="crimPanelName">{open.label}</div>
-              {open.key === "who"
-                ? <Conversation onClose={() => setOpenKey(null)} />
-                : open.body}
+              <div className="crimPanelBody">{open.body}</div>
               <button className="crimClose" onClick={() => setOpenKey(null)}>step back</button>
             </div>
           )}
@@ -426,15 +354,13 @@ export default function Noria() {
 
       <header className="crimHead">
         <h1>guha</h1>
-        <p className="crimSub">De hac re submisse loquere, sed non assidue.</p>
+        <p className="crimSub">{EPIGRAPH}</p>
       </header>
 
       {/* the only readout: what your cursor is over */}
       <div className={`crimReadout ${hover && !open ? "up" : ""}`} aria-hidden>
         {hover?.label ?? ""}
       </div>
-
-      <a className="crimLeave" href="/">leave</a>
 
       <button className="crimSound" onClick={toggleSound} aria-pressed={sound}>
         {sound ? "sound ■" : "sound □"}
