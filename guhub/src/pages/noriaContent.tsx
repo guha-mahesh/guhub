@@ -73,26 +73,17 @@ export function BuiltList() {
 }
 
 // ── the tree: who he is ──────────────────────────────────────────────
+/** His words. Typos fixed, nothing else touched, lower case on purpose. */
 export function WhoBody() {
   return (
-    <>
-      <p>
-        Guha. Northeastern, data science and business analytics, 2028. On a gap
-        year at the moment.
-      </p>
-      <p>
-        Nine months of it went to a human-memory lab out of Harvard. The rest
-        of that is on the scribe's page.
-      </p>
-      <p>
-        Shoegaze. Competitive typing. Metaethics, effective altruism, animal
-        welfare, geopolitics.
-      </p>
-      <p>
-        Every line on this plate is cut by hand. Nothing here is a stock
-        illustration and nothing is a template.
-      </p>
-    </>
+    <p className="lower">
+      hello hi i&apos;m guha, i do data science and fintech at northeastern
+      &amp; i&apos;m on a gap year at the moment to work full time at a research
+      lab in san francisco. i like shoegaze and jellyfish and also the 1975 for
+      some reason. i&apos;m generally also a fan of geopolitics and normative
+      ethics but i try not to be too engrossed in it in order to not be
+      annoying
+    </p>
   );
 }
 

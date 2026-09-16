@@ -1009,6 +1009,9 @@
   opacity: 0.45;
 }
 
+/* his own paragraph, set the way he wrote it */
+.lower { text-transform: lowercase; }
+
 /* ── the sheet under his pen ───────────────────────────────────────────
    He writes and the page fills; the resume arrives the same way, a line at a
    time, in the order he would have written it. Delays are set per row in
