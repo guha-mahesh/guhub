@@ -72,36 +72,25 @@ export function BuiltList() {
   );
 }
 
-// ── the tree: what the work actually was ─────────────────────────────
-export function WorkBody() {
+// ── the tree: who he is ──────────────────────────────────────────────
+export function WhoBody() {
   return (
     <>
       <p>
-        Engramme is a human-memory lab out of Harvard. It works on forgetting.
-        The product catches what goes past you and has it ready when you want
-        it back.
+        Guha. Northeastern, data science and business analytics, 2028. On a gap
+        year at the moment.
       </p>
       <p>
-        I built the clients. iOS and macOS in Swift. The Chrome extension, the
-        web platform, a menubar app, a VS Code extension, the Ray-Bans, and an
-        Android build for Samsung that drives a HUD on their glasses.
+        Nine months of it went to a human-memory lab out of Harvard. The rest
+        of that is on the scribe's page.
       </p>
       <p>
-        Then integrations. Google, iMessage and WhatsApp, Plaud. Plaud
-        recorders and Meet calls arrive as audio, get diarised, and ECAPA
-        voiceprints sort out who is talking. It outgrew the service it started
-        in, so I gave it one of its own.
+        Shoegaze. Competitive typing. Metaethics, effective altruism, animal
+        welfare, geopolitics.
       </p>
       <p>
-        Entity prediction I took from research to production. A five-feature
-        MLP, held-out-of-held-out splits, Terraform and Cloud Run, serving into
-        the live recall path. I co-authored the paper that benchmarks our
-        recall against Letta and Mem0, 418 questions, scored by an LLM judge
-        and a human one. There is a position paper too, submitted to NeurIPS.
-      </p>
-      <p>
-        Nine months as a co-op, converted to full-time MTS, deferred to take a
-        gap year.
+        Every line on this plate is cut by hand. Nothing here is a stock
+        illustration and nothing is a template.
       </p>
     </>
   );

@@ -6,7 +6,7 @@
  * that is not in here does not exist on either.
  */
 import type { ReactNode } from "react";
-import { WorkBody, ElsewhereBody, BuiltList, SheetBody } from "./noriaContent";
+import { WhoBody, ElsewhereBody, BuiltList, SheetBody } from "./noriaContent";
 
 /** The line under the name, printed on the plate and on the title page. */
 export const EPIGRAPH = "Gloriare iis quibus frueris.";
@@ -18,7 +18,7 @@ export type Topic = {
 };
 
 export const TOPIC_BODIES: Record<string, Topic> = {
-  engramme: { caption: "the tree", body: <WorkBody /> },
+  who: { caption: "the tree", body: <WhoBody /> },
   elsewhere: { caption: "the wheel", body: <ElsewhereBody /> },
   built: { caption: "the works", body: <BuiltList /> },
   record: { caption: "the scribe", body: <SheetBody /> },

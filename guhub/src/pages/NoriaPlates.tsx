@@ -56,12 +56,12 @@ const PLATES: Plate[] = [
     ),
   },
   {
-    key: "engramme",
-    caption: TOPIC_BODIES.engramme.caption,
-    label: "engramme",
+    key: "who",
+    caption: TOPIC_BODIES.who.caption,
+    label: "who",
     scale: 0.5,
     art: <DeadTree />,
-    body: TOPIC_BODIES.engramme.body,
+    body: TOPIC_BODIES.who.body,
   },
   {
     key: "built",

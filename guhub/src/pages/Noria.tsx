@@ -143,13 +143,13 @@ type Thing = {
    observer close in front. Everything else is scenery. */
 const THINGS: Thing[] = [
   {
-    key: "engramme",
-    label: "engramme",
+    key: "who",
+    label: "who",
     place: { x: -683, y: 44, z: -560, s: 0.78 },
     shot: { tx: -683, ty: 196, tz: -560, yaw: -9, pitch: -4, dist: 360 },
     panel: { ox: -470, oy: -70 },
     art: <DeadTree />,
-    body: TOPIC_BODIES.engramme.body,
+    body: TOPIC_BODIES.who.body,
   },
   {
     key: "elsewhere",
@@ -228,7 +228,7 @@ export default function Noria() {
   const [sound, toggleSound] = useCreak();
   const isMobile = useIsMobile();
   // the undergrowth exists only while you are down at the roots
-  const atTree = openKey === "engramme";
+  const atTree = openKey === "who";
 
   /** true for a prop sitting well in front of whatever you went to look at */
   const inTheWay = (z: number) => !!open && z - open.shot.tz > 260;
