@@ -53,7 +53,7 @@ export const resumeData: ResumeData = {
     {
       title: "Engineering & Research",
       company: "Engramme (fka. Memory Machines)",
-      date: "Dec 2025 – Sep 2026",
+      date: "Dec 2025 – Present",
       globePinId: "sf",
       bullets: [
         "Led the **entity prediction** work. Given a search query, figure out which people it involves. I benchmarked linear and RBF SVMs, label propagation, and retrieval voting over a **19,393-memory, 4,856-entity** knowledge graph, scoring against **1,367 real user feedback documents**. Retrieval voting won at **73.3% top-1** and **55.6% on hard queries** where the person's name never appears in the query text. Both numbers undercount, since ground truth only covered people attached to memories the user had already rated, so a right answer outside that set scored as a miss",
