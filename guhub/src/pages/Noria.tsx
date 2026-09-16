@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
 import {
-  DeadTree, Hollow, Waterwheel, Splash, Factory, Effluent, Smoke,
+  DeadTree, Waterwheel, Splash, Factory, Effluent, Smoke,
   River, Ridge, Vulture, Scribe, Squirrel,
   Beetle, Mushrooms, Moth, FactoryGuts, Waterline,
 } from "./NoriaArt";
@@ -278,9 +278,6 @@ export default function Noria() {
               a moment, and then they do. */}
           <Prop place={{ x: 60, y: 96, z: -1420, s: 0.5, fade: 0.28 }}><DeadTree /></Prop>
 
-          {/* The hole in the trunk. Scenery: it is cut into the tree's face
-              and sits just in front of it, but it is not a thing you click. */}
-          <Prop place={{ x: -601, y: 248, z: -516 }}><Hollow /></Prop>
 
           {/* ── the clickable things ── */}
           {THINGS.map((t) => (

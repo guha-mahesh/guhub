@@ -68,6 +68,10 @@ export function DeadTree({ seed = 0x9a17 }: { seed?: number }) {
         <ellipse cx="20" cy="-150" rx="12" ry="19" />
         <ellipse cx="20" cy="-150" rx="5" ry="9" />
       </g>
+      {/* the hollow, cut into the trunk's own black */}
+      <g transform="translate(8, -52) scale(1.28) translate(0, 18)">
+        <HollowShape />
+      </g>
       <g stroke="#0c0606" fill="none" strokeLinecap="round">
         {limbs.map((l, i) => (
           <line x1={l.x1} y1={l.y1 - 268} x2={l.x2} y2={l.y2 - 268} strokeWidth={l.w} key={i} />
@@ -77,10 +81,13 @@ export function DeadTree({ seed = 0x9a17 }: { seed?: number }) {
   );
 }
 
-/** The hollow at the tree's foot. Small, dark, and clearly a way in. */
-export function Hollow() {
+/**
+ * The hole itself, in bare coordinates so the tree can carry it inside its own
+ * svg and nothing has to be kept in sync between the two.
+ */
+function HollowShape() {
   return (
-    <svg className="art artHollow" viewBox="-40 -46 80 56" aria-hidden>
+    <>
       {/* the opening itself, a hole in the trunk's black: crimson shows through */}
       <path d="M-22 8 C -26 -18 -12 -36 0 -36 C 12 -36 26 -18 22 8 Z" fill="#6b0a0a" />
       {/* the dark inside it, so the hole reads as depth not as a cut-out */}
@@ -90,6 +97,15 @@ export function Hollow() {
         <path d="M-22 8 C -18 -20 -10 -33 0 -34" />
         <path d="M22 8 C 18 -20 10 -33 0 -34" />
       </g>
+    </>
+  );
+}
+
+/** The hollow on its own, for anywhere that wants it without the tree. */
+export function Hollow() {
+  return (
+    <svg className="art artHollow" viewBox="-40 -46 80 56" aria-hidden>
+      <HollowShape />
     </svg>
   );
 }
