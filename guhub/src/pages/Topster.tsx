@@ -14,7 +14,7 @@ export default function Topster() {
   return (
     <div className="crim topsterPage">
       <div className="topsterFrame">
-        <img className="topsterChart" src="/topster.png" alt="topster" />
+        <img className="topsterChart" src="/topster.webp" alt="topster" />
       </div>
 
       <Grain />
