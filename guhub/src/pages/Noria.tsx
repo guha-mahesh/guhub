@@ -147,7 +147,7 @@ const THINGS: Thing[] = [
     label: "engramme",
     place: { x: -683, y: 44, z: -560, s: 0.78 },
     shot: { tx: -683, ty: 196, tz: -560, yaw: -9, pitch: -4, dist: 360 },
-    panel: { ox: -470, oy: 40 },
+    panel: { ox: -470, oy: -70 },
     art: <DeadTree />,
     body: TOPIC_BODIES.engramme.body,
   },

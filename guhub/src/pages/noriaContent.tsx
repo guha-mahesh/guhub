@@ -163,9 +163,6 @@ const SHORT_LINES: Record<string, string[]> = {
     "ran the beta programme: the testers, their feedback, and the analysis that fed back into the models",
     "nine months as a co-op, converted to full-time MTS, deferred for a gap year",
   ],
-  "Rev (NU Student Club)": [
-    "read 30+ applications and ran the interviews behind them",
-  ],
   Knack: [
     "ten students through pandas, NumPy, statistics and EDA; five stars",
   ],

@@ -598,7 +598,7 @@
 
 .artColossus { width: 400px; height: 760px; }
 
-.submerged { color: #4a0d0a; opacity: 0.7; }
+.submerged { color: #4a0d0a; opacity: 0; }
 .artDeepMass { width: 600px; height: 90px; }
 
 /* it surfaces, holds, and is gone before you are sure */
@@ -606,7 +606,7 @@
 
 @keyframes surfacing {
   0%, 62%   { opacity: 0; }
-  72%, 84%  { opacity: 1; }
+  72%, 84%  { opacity: 0.7; }
   94%, 100% { opacity: 0; }
 }
 
